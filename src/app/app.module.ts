@@ -9,13 +9,19 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-//ngx-translate stuff
+// ngx-translate stuff
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export function setTranslateLoader(http: HttpClient) {
  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+// Firebase stuff
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+ 
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +37,9 @@ export function setTranslateLoader(http: HttpClient) {
        useFactory: (setTranslateLoader),
        deps: [HttpClient]
      }
-    })
+    }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
   	],
   providers: [
     StatusBar,
