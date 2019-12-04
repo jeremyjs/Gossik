@@ -62,9 +62,14 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin: 0; 
 }
 
+ion-button {
+  border-radius: 20px !important;
+}
+
 .darkbutton {
   color: #FFFFFF;
   background-color: var(--ion-color-primary) !important;
+  --border-radius: 20px;
 }
 
 .alert-message {
@@ -78,4 +83,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .picker-md .picker-wrapper, .picker-md .picker-toolbar {
   background-color: #EBEBEE;
+}
+
+.calendar-hour-column, .weekview-allday-label {
+  width: 100px !important;
 }

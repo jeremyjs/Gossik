@@ -1,36 +1,38 @@
 <ion-header>
 	<ion-toolbar>
-		<div *ngIf="isApp">
-	      <ion-buttons start>
-	        <button ion-button icon-only menuToggle>
-	          <ion-icon name="menu" color="white"></ion-icon>
-	        </button>
-	      </ion-buttons>
-	    </div>
-	    <div class="header-container" *ngIf="!isApp">
-	      	<button class="header-icon" (click)="goToCapturePage()">
-	      		<img class="header-logo" src="../../assets/icon/logo_schriftzug_weiss.png" height="60">
-	    	</button>
-		    <div class="header-icons-div">
-		      <button class="header-icon" (click)="goToCalendarPage()">
-		        <img src="../../assets/icon/icon_calendar.png" height="20"> {{"Calendar" | translate }}
-		      </button>
-		      <button class="header-icon" (click)="goToToDoPage()">
-		        <img src="../../assets/icon/icon_todo.png" height="20"> {{"ToDo" | translate }}
-		      </button>
-		      <button class="header-icon" (click)="goToProjectsPage()">
-		        <img src="../../assets/icon/icon_projects.png" height="20"> {{"Projects" | translate }}
-		      </button>
-		      <button class="header-icon" (click)="goToCapturePage()">
-		        <img src="../../assets/icon/icon_captures.png" height="20"> {{"Captures" | translate }}
-		      </button>
-		      <button class="header-icon" (click)="goToSettingsPage()">
-		        <!--<img src="../../assets/icon/icon_captures.png" height="20">--> {{"Settings" | translate }}
-		      </button>
-		    </div>
-	  	</div>
+    <div *ngIf="loggedin">
+  		<div *ngIf="isApp">
+        <ion-buttons start>
+          <button ion-button icon-only menuToggle>
+            <ion-icon name="menu" color="white"></ion-icon>
+          </button>
+        </ion-buttons>
+      </div>
+      <div class="header-container" *ngIf="!isApp">
+        	<button class="header-icon" (click)="goToCapturePage()">
+        		<img class="header-logo" src="../../assets/icon/logo_schriftzug_weiss.png" height="60">
+      	</button>
+  	    <div class="header-icons-div">
+  	      <button class="header-icon" (click)="goToCalendarPage()">
+  	        <img src="../../assets/icon/icon_calendar.png" height="20"> {{"Calendar" | translate }}
+  	      </button>
+  	      <button class="header-icon" (click)="goToToDoPage()">
+  	        <img src="../../assets/icon/icon_todo.png" height="20"> {{"ToDo" | translate }}
+  	      </button>
+  	      <button class="header-icon" (click)="goToProjectsPage()">
+  	        <img src="../../assets/icon/icon_projects.png" height="20"> {{"Projects" | translate }}
+  	      </button>
+  	      <button class="header-icon" (click)="goToCapturePage()">
+  	        <img src="../../assets/icon/icon_captures.png" height="20"> {{"Captures" | translate }}
+  	      </button>
+  	      <button class="header-icon" (click)="goToSettingsPage()">
+  	        <!--<img src="../../assets/icon/icon_captures.png" height="20">--> {{"Settings" | translate }}
+  	      </button>
+  	    </div>
+    	</div>
+    </div>
 	</ion-toolbar>
-  </ion-header>
+</ion-header>
 
 <ion-content color="primary">
 
@@ -51,17 +53,17 @@
 					</ion-list>
 					<div padding-horizontal>
 						<div class="form-error">{{loginError}}</div>
-						<button ion-button full type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>			
+						<ion-button expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</ion-button>			
 					</div>
 				</form>
 				<ion-list>
-					<button ion-button icon-left class="signInButton" (click)="goToSignUp()">
+					<ion-button icon-left class="signInButton" (click)="goToSignUp()">
 						<ion-icon name="person-add"></ion-icon>
 						{{"Sign up" | translate }}
-					</button>
-					<button ion-button icon-left class="signInButton" (click)="goToForgotPassword()">
+					</ion-button>
+					<ion-button icon-left class="signInButton" (click)="goToForgotPassword()">
 						{{"Forgot password" | translate }}
-					</button>
+					</ion-button>
 				</ion-list>
 			</div>
 			<div *ngIf="pageCtrl == 'forgotPassword'">
@@ -72,7 +74,7 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal>
-						<button ion-button full type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
+						<ion-button expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</ion-button>			
 					</div>
 				</form>
 			</div>
@@ -90,7 +92,7 @@
 					<div padding-horizontal>
 						<div class="form-error">{{signupError}}</div>
 
-						<button ion-button full type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
+						<ion-button expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</ion-button>
 					</div>
 				</form>
 			</div>
@@ -99,7 +101,7 @@
 
   <!-- SettingsPage -->
   <div class="secondary border-radius-20px height-100" *ngIf="viewpoint == 'SettingsPage'">
-    <button class="darkbutton width-auto" round ion-button (click)="logout()">{{"Logout" | translate}}</button>
+    <ion-button class="darkbutton width-auto" (click)="logout()">{{"Logout" | translate}}</ion-button>
   </div>
 
 	<!-- CapturePage -->
@@ -109,7 +111,7 @@
         <ion-item class="height-50 border-radius-20px">
           <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
         </ion-item>
-        <button class="darkbutton width-auto" round ion-button (click)="addCapture(newCapture)">{{"Add" | translate}}</button>
+        <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
     </ion-row>
     <ion-row class="width-40 margin-auto height-20" *ngIf="!isApp">
@@ -117,14 +119,14 @@
         <ion-item class="height-50 border-radius-20px">
           <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
         </ion-item>
-        <button class="darkbutton width-auto" round ion-button (click)="addCapture(newCapture)">{{"Add" | translate}}</button>
+        <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
     </ion-row>
     <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px margin-top-10 padding-bottom-10">
       <div *ngIf="takenActionListNotEmpty">
       <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
-      <p class="border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
-      </p>
+      <button class="border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
+      </button>
     </div>
     <div *ngIf="captureListNotEmpty">
     <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
@@ -155,13 +157,13 @@
                 <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
               
               </div>
-              <button ion-button round class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+              <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
               </ion-card>
               <ion-card class="text-align-center margin-top-10 overflow-scroll no-scrollbar width-100 margin-left-0 display-inline-block secondary border-radius-20px">
                 <ion-item class="border-radius-20px">
                   <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
                 </ion-item>
-                <button ion-button round class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</button>
+                <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
               </ion-card>
             </ion-col>
             <ion-col>
@@ -179,9 +181,9 @@
                   </ion-row>
                   <ion-row>
                 
-                <button class="darkbutton button-left" ion-button round (click)="addAction(goal, capture)">{{"Action" | translate }}</button>
-                <button class="darkbutton button-left" ion-button round (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</button>
-                <button class="darkbutton button-left" ion-button round (click)="addReference(goal, capture)">{{"Reference" | translate }}</button>
+                <ion-button class="darkbutton button-left" (click)="addAction(goal, capture)">{{"Action" | translate }}</ion-button>
+                <ion-button class="darkbutton button-left" (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</ion-button>
+                <ion-button class="darkbutton button-left" (click)="addReference(goal, capture)">{{"Reference" | translate }}</ion-button>
                   </ion-row>
                 </ion-grid>
               </ion-card>
@@ -198,13 +200,13 @@
           <div class="max-height-500px margin-vertical-center-parent overflow-y-scroll no-scrollbar">
             <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
           </div>
-          <button ion-button round class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+          <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
         </ion-card>
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-item class="border-radius-20px">
             <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
-          <button ion-button round class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</button>
+          <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px" no-lines *ngFor="let goal of goalArray">
           <ion-grid>
@@ -218,9 +220,9 @@
             </ion-row>
             <ion-row>
           
-          <button class="darkbutton button-left width-18" ion-button small round (click)="addAction(goal, capture)">{{"Action" | translate }}</button>
-          <button class="darkbutton button-left" ion-button small round (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</button>
-          <button class="darkbutton button-left" ion-button small round (click)="addReference(goal, capture)">{{"Reference" | translate }}</button>
+          <ion-button class="darkbutton button-left width-18" (click)="addAction(goal, capture)">{{"Action" | translate }}</ion-button>
+          <ion-button class="darkbutton button-left" (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</ion-button>
+          <ion-button class="darkbutton button-left" (click)="addReference(goal, capture)">{{"Reference" | translate }}</ion-button>
             </ion-row>
           </ion-grid>
         </ion-card>
@@ -233,8 +235,8 @@
     <div *ngIf="pageCtrl == ''">
       {{"Please indicate whether you finished the action or want to abort it." | translate }}<br>
       <div class="buttons-flex-container">
-        <button class="darkbutton button-left" ion-button round (click)="actionFinished()">{{"Finished" | translate }}</button>
-        <button class="darkbutton button-right" ion-button round (click)="abortAction()">{{"Abort" | translate }}</button>
+        <ion-button class="darkbutton button-left" (click)="actionFinished()">{{"Finished" | translate }}</ion-button>
+        <ion-button class="darkbutton button-right" (click)="abortAction()">{{"Abort" | translate }}</ion-button>
       </div>
     </div>
 
@@ -245,8 +247,8 @@
     <div *ngIf="pageCtrl == 'actionFinished'">
       {{"Congrats! Is your project now accomplished and can be deleted?" | translate }}
       <div class="buttons-flex-container">
-        <button class="darkbutton button-left" ion-button round (click)="goalFinished()">{{"Accomplished" | translate }}</button>
-        <button class="darkbutton button-right" ion-button round (click)="goalNotFinished()">{{"Not yet" | translate }}</button>
+        <ion-button class="darkbutton button-left" (click)="goalFinished()">{{"Accomplished" | translate }}</ion-button>
+        <ion-button class="darkbutton button-right" (click)="goalNotFinished()">{{"Not yet" | translate }}</ion-button>
       </div>
     </div>
 
@@ -321,7 +323,7 @@
             <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
 
-          <button ion-button round class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</button>
+          <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
         <ion-card class="width-18 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
           <ion-grid>
@@ -353,12 +355,12 @@
                         <ion-row>
                           <ion-col size="9">
                             <h1>{{goal.name}}</h1>
-                            <button class="darkbutton" ion-button round (click)="deleteGoal(goal)">
+                            <ion-button class="darkbutton" (click)="deleteGoal(goal)">
                               {{"Delete" | translate}}
-                            </button>
-                            <button class="darkbutton" ion-button round (click)="editGoal(goal)">
+                            </ion-button>
+                            <ion-button class="darkbutton" (click)="editGoal(goal)">
                               {{"Edit" | translate}}
-                            </button>
+                            </ion-button>
                           </ion-col>
                           <ion-col>
                             <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
@@ -411,9 +413,9 @@
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
-                            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addAction(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addAction(goal)">
                               <ion-icon name="add"></ion-icon>
-                            </button>
+                            </ion-button>
                           </ion-buttons>
                           <button class="block width-100 no-padding" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
                             <p class="border-top">{{nextAction.content}}</p>
@@ -422,9 +424,9 @@
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
-                            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addDelegation(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addDelegation(goal)">
                               <ion-icon name="add"></ion-icon>
-                            </button>
+                            </ion-button>
                           </ion-buttons>
                           <button class="block width-100 no-padding" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
                             <p class="border-top">{{delegation.content}}</p>
@@ -433,9 +435,9 @@
                         <ion-col class="height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
-                            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addReference(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addReference(goal)">
                               <ion-icon name="add"></ion-icon>
-                            </button>
+                            </ion-button>
                           </ion-buttons>
                           <button class="block width-100 no-padding" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
                             <p class="border-top">{{reference.content}}</p>
@@ -463,7 +465,7 @@
             <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
 
-          <button ion-button round class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</button>
+          <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
         <ion-card class="height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
           <ion-grid>
@@ -489,9 +491,12 @@
             <ion-row>
               <ion-col size="9">
                 <h1>{{goal.name}}</h1>
-                <button class="darkbutton" ion-button round (click)="deleteGoal(goal)">
+                <ion-button class="darkbutton" (click)="deleteGoal(goal)">
                   {{"Delete" | translate}}
-                </button>
+                </ion-button>
+                <ion-button class="darkbutton" (click)="editGoal(goal)">
+                  {{"Edit" | translate}}
+                </ion-button>
               </ion-col>
               <ion-col>
                 <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
@@ -502,9 +507,9 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
-            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addAction(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addAction(goal)">
               <ion-icon name="add"></ion-icon>
-            </button>
+            </ion-button>
           </ion-buttons>
           <button class="block width-100 no-padding" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
             <p class="border-top">{{nextAction.content}}</p>
@@ -513,9 +518,9 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
-            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addDelegation(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addDelegation(goal)">
               <ion-icon name="add"></ion-icon>
-            </button>
+            </ion-button>
           </ion-buttons>
           <button class="block width-100 no-padding" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
             <p class="border-top">{{delegation.content}}</p>
@@ -524,9 +529,9 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
-            <button class="darkbutton size-20px border-radius-20px margin-top-0" ion-button icon-only (click)="addReference(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addReference(goal)">
               <ion-icon name="add"></ion-icon>
-            </button>
+            </ion-button>
           </ion-buttons>
           <button class="block width-100 no-padding" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
             <p class="border-top">{{reference.content}}</p>
@@ -578,13 +583,13 @@
   </div>
 
   <!-- CalendarPage -->
-    <div class="height-100 secondary border-radius-20px" *ngIf="viewpoint == 'CalendarPage'">
-      <ion-row>
+    <div class="height-90 width-90 margin-top-10 secondary border-radius-20px" *ngIf="viewpoint == 'CalendarPage'">
+      <ion-row class="width-100">
         <ion-col size="3">
           <ion-buttons start>
-            <button class="darkbutton" ion-button icon-only (click)="addEvent()">
+            <ion-button class="darkbutton" icon-only (click)="addEvent()">
               <ion-icon name="add"></ion-icon>
-            </button>
+            </ion-button>
           </ion-buttons>
         </ion-col>
         <ion-col style="text-align: center">

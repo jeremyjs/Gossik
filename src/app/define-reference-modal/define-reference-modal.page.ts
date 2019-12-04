@@ -21,17 +21,17 @@ export class DefineReferenceModalPage implements OnInit {
   	public translate: TranslateService,
   	public fb: FormBuilder
   	) {
-  	if(this.navParams.get('capture')) {
-		this.capture = this.navParams.get('capture');
-	} else {
-		this.capture = {} as Capture;
-	}
-	this.defineReferenceForm = this.fb.group({
-		content: ['', Validators.required]
-	});
   }
 
   ngOnInit() {
+    if(this.navParams.get('capture')) {
+      this.capture = this.navParams.get('capture');
+    } else {
+      this.capture = {} as Capture;
+    }
+    this.defineReferenceForm = this.fb.group({
+      content: ['', Validators.required]
+    });
   }
 
   cancel() {

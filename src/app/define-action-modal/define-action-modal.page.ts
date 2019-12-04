@@ -24,16 +24,21 @@ export class DefineActionModalPage implements OnInit {
   	public translate: TranslateService,
   	public fb: FormBuilder
   	) {
-  	if(this.navParams.get('capture')) {
+  }
+
+  ngOnInit() {
+    if(this.navParams.get('capture')) {
+      console.log('nope');
       this.capture = this.navParams.get('capture');
     } else {
+      console.log('yes');
       this.capture = {} as Capture;
     }
-  	this.defineActionForm = this.fb.group({
-		content: ['', Validators.required],
-		priority: ['', Validators.required],
-		deadline: ['', Validators.required],
-		time: ['', Validators.required]
+    this.defineActionForm = this.fb.group({
+    content: ['', Validators.required],
+    priority: ['', Validators.required],
+    deadline: ['', Validators.required],
+    time: ['', Validators.required]
     });
     this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
       this.monthLabels = [
@@ -62,9 +67,6 @@ export class DefineActionModalPage implements OnInit {
       dayLabels['Sat']
       ];
     });
-  }
-
-  ngOnInit() {
   }
 
 

@@ -24,14 +24,17 @@ export class DefineDelegationModalPage implements OnInit {
   	public translate: TranslateService,
   	public fb: FormBuilder
   	) {
-  	if(this.navParams.get('capture')) {
+  }
+
+  ngOnInit() {
+    if(this.navParams.get('capture')) {
       this.capture = this.navParams.get('capture');
     } else {
       this.capture = {} as Capture;
     }
     this.defineDelegationForm = this.fb.group({
-		  content: ['', Validators.required],
-		  deadline: ['', Validators.required]
+      content: ['', Validators.required],
+      deadline: ['', Validators.required]
     });
     this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
       this.monthLabels = [
@@ -60,9 +63,6 @@ export class DefineDelegationModalPage implements OnInit {
       dayLabels['Sat']
       ];
     });
-  }
-
-  ngOnInit() {
   }
 
   cancel() {
