@@ -25,19 +25,15 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-title {
-   color: #FFFFFF !important;
+ion-toolbar {
+    --ion-text-color: var(--ion-color-white) !important;
 }
+
 
 ion-item {
    border-radius: 5px;
    margin-bottom: 1px !important;
    background-color: var(--ion-color-secondary);
-}
-
- 
-ion-header {
-  background-color: var(--ion-color-primary) !important;
 }
 
 

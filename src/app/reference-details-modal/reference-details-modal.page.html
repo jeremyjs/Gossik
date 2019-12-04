@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{"Reference Details" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list inset class="text-align-center">
+    <form (ngSubmit)="saveReference()" [formGroup]="defineReferenceForm">
+      <ion-item no-lines>
+        <ion-input type="text" [(ngModel)]="reference.content" formControlName="content"></ion-input>
+      </ion-item>
+      <button class="darkbutton" ion-button round type="submit">{{"Save" | translate }}</button>
+    </form>
+    <button class="button-left darkbutton" ion-button round (click)="deleteReference(reference)">{{"Delete" | translate }}</button>
+  </ion-list>
+</ion-content>

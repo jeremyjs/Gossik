@@ -29,6 +29,9 @@
     "core-js": "^2.5.4",
     "eslint": "^6.7.2",
     "firebase": "^7.5.0",
+    "ionic2-calendar": "^0.5.7",
+    "ionic4-date-picker": "^0.1.0",
+    "moment": "^2.24.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

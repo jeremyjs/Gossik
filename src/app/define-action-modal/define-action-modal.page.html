@@ -1,0 +1,45 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+  	<ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{"Defining new action" | translate }}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list inset class="text-align-center">
+    <ion-item no-lines class="text-align-center" *ngIf="capture.content">
+      "{{capture.content}}"
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label>{{"Deadline required?" | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="checkDeadline"></ion-checkbox>
+    </ion-item>
+    <div *ngIf="checkDeadline">
+      <ion-item no-lines>
+        <ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
+      </ion-item>
+    </div>
+    <form (ngSubmit)="addAction()" [formGroup]="defineActionForm">
+      <ion-item no-lines>
+        <ion-input type="text" placeholder="{{'Input new action' | translate }}" formControlName="content"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{"Priority (1: low, 10: high)" | translate }}:</ion-label>
+        <ion-input class="width-30px" type="number" placeholder="0" min="0" max="10" formControlName="priority"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label block>{{"Estimated time in min" | translate }}:</ion-label>
+          <ion-input type="number" placeholder="0" min="0" max="1000" formControlName="time"></ion-input>
+      </ion-item>
+      <button class="darkbutton" ion-button round type="submit">{{"Define action" | translate }}</button>
+    </form>
+  </ion-list>
+</ion-content>
+

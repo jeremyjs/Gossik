@@ -10,6 +10,455 @@
 	background-color: var(--ion-color-secondary);
 }
 
-button {
+ion-item {
+        border-bottom: 1px solid #150931;
+        white-space: pre-line;
+    }
+
+.content-container {
+	background-color: var(--ion-color-secondary);
+	border-radius: 20px;
+	padding: 10px;
+	color: #000000;
+}
+
+ion-toolbar {
+    --color: var(--ion-color-white) !important;
+}
+
+.item-md.item-block .item-inner {
+	border-bottom: transparent;
+}
+
+.header-container {
+	background-color: var(--ion-color-primary);
+	margin-left: 20px;
+	height: 110px;
+}
+
+.header-logo {
+	margin-top: 50px;
+}
+
+.font-size-1rem {
+	font-size: 1rem !important;
+}
+
+.header-icons-div {
+	height: 22px;
+	background-color: var(--ion-color-primary);
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin-bottom: 1px;
+	margin-right: 20px;
+}
+
+.header-icon {
+	background-color: var(--ion-color-primary);
+	color: #FFFFFF;
+	font-size: 20px;
+}
+
+.weekview-header, .weekview-allday-table, .weekview-normal-event-container {
+	border: 0px;
+	background-color: var(--ion-color-secondary) !important;
+}
+
+.calendar-hour-column, .weekview-header {
+	border: 0px !important;
+}
+
+.weekview-header, .slides-container {
+	border: 0px;
+	border-radius: 20px 20px 0px 0px;
+}
+
+.weekview-normal-event-container {
+	bottom: 0px;
+	border-radius: 0px 0px 20px 20px;
+}
+
+.padding-bottom-50 {
+	padding-bottom: 50px !important;
+}
+
+.weekview-container {
+	width: 95% !important;
+	margin: auto;
+}
+
+.swiper-slide, swiper-slide-active {
+	width: 100% !important;
+}
+
+.calendar-hour-column, .weekview-allday-label {
+	width: 100px !important;
+}
+
+.scroll-content, .content {
+	scrollbar-width: none;
+}
+
+.primary {
+	background-color: var(--ion-color-primary);
 	color: var(--ion-color-white) !important;
+}
+
+.calendar-event-inner {
+	height: 100%;
+}
+
+.secondary {
+	background-color: var(--ion-color-secondary);
+	color: #000000 !important;
+}
+
+.background-white {
+	background-color: var(--ion-color-white);
+}
+
+ion-input {
+	background-color: var(--ion-color-white);
+	border-radius: 20px;
+	color: var(--ion-color-primary);
+	text-align: center;
+	input {
+    	text-align: center;
+    	::-webkit-input-placeholder {
+      		text-align: center;
+    	}
+		}
+		border-bottom-color: transparent;
+}
+
+.border-radius-20px {
+	border-radius: 20px;
+}
+
+.border-radius-5px {
+	border-radius: 5px;
+}
+
+.overflow-scroll {
+	overflow: scroll;
+}
+
+.no-scrollbar {
+	scrollbar-width: none;
+}
+
+.margin-10 {
+	margin: 10px;
+}
+
+.margin-0 {
+	margin: 0px;
+}
+
+.margin-left-0 {
+	margin-left: 0px;
+}
+
+.min-height-30px {
+	min-height: 30px;
+}
+
+.margin-bottom-1 {
+	margin-bottom: 1px;
+}
+
+.display-inline-block {
+	display: inline-block;
+}
+
+.width-70 {
+	width: 70%;
+	margin-left: 0;
+	display: inline-box
+}
+
+.width-100 {
+	width: 100%;
+}
+
+.width-18 {
+	width: 18%;
+}
+
+.width-20 {
+	width: 20%;
+}
+
+.width-auto {
+	width: auto;
+}
+
+.width-40 {
+	width: 40%;
+}
+
+.width-100px {
+	width: 100px;
+}
+
+.text-align-right {
+	text-align: right;
+}
+
+.border-top {
+	border-top: 1px solid;
+	margin-top: 5px;
+}
+
+.border-right {
+	border-right: 1px solid;
+}
+
+.height-100 {
+	height: 100%;
+}
+
+.margin-bottom-10px {
+	margin-bottom: 10px !important;
+}
+
+.height-100 {
+	height: 100%;
+}
+
+.height-70 {
+	height: 70%;
+}
+
+.height-50 {
+	height: 50%;
+}
+
+.height-45 {
+	height: 45%;
+}
+
+.height-20 {
+	height: 20%;
+}
+
+.min-height-150px {
+	min-height: 150px;
+}
+
+.min-height-100px {
+	min-height: 100px;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.margin-5 {
+	margin: 5px;
+}
+
+.margin--1 {
+	margin: -1 !important;
+}
+
+.margin-bottom-10 {
+	margin-bottom: 10px !important;
+}
+
+.margin-vertical-center-parent {
+	display: flex;
+}
+
+.margin-vertical-center {
+	margin: auto 0;
+}
+
+.label-md {
+	height: 90%;
+}
+
+.block {
+	display: block;
+}
+
+p {
+	white-space: normal;
+	text-align: left;
+}
+
+.white {
+	color: var(--ion-color-white) !important;
+}
+
+.margin-right-10 {
+	margin-right: 10px;
+}
+
+.margin-top-0 {
+	margin-top: 0px;
+}
+
+.margin-top-10 {
+	margin-top: 10px !important;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
+.margin-auto-important {
+	margin: auto !important;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.padding-left-20 {
+	padding-left: 20px;
+}
+
+.padding-10 {
+	padding: 10px;
+}
+
+.border-bottom-1 {
+	border-bottom: 1px solid !important;
+}
+
+.padding-left-20 {
+	padding-left: 20px;
+}
+
+.padding-bottom-10 {
+	padding-bottom: 10px;
+}
+
+.padding-top-10 {
+	padding-top: 10px;
+}
+
+.flex {
+	display: flex;
+}
+
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+
+.max-width-50 {
+	max-width: 50%;
+}
+
+.max-height-30px {
+	max-height: 30px;
+}
+
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+	overflow-y: hidden;
+}
+
+.max-width-400px {
+	max-width: 400px;
+}
+
+.width-300px {
+	width: 300px;
+}
+
+.height-150px {
+	height: 150px;
+}
+
+.text-overflow {
+	text-overflow: hidden;
+}
+
+.item-inner {
+	border-bottom-color: transparent;
+}
+
+.one-line {
+	white-space: nowrap;
+}
+
+.project-color {
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+}
+
+.width-90 {
+	width: 90%;
+}
+
+.margin-right-0 {
+	margin-right: 0px;
+}
+
+.text-align-right-important {
+	text-align: right !important;
+}
+
+.text-align-left {
+	text-align: left !important;
+}
+
+.table-bordered {
+	border: 1px solid #000000;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+	border: 1px solid #000000;
+}
+
+.weekview-allday-content-table td {
+	border: 1px solid #000000;
+}
+
+.height-90 {
+	height: 90%;
+}
+
+.min-width-175px {
+	min-width: 175px;
+}
+
+.padding-0 {
+	padding: 0;
+}
+
+.overflow-scroll {
+	overflow: scroll;
+}
+
+.overflow-y-scroll {
+	overflow-y: scroll;
+}
+
+.size-20px {
+	height: 20px;
+	width: 20px;
+}
+
+.max-height-500px {
+	max-height: 500px;
+}
+
+.margin-10px {
+	margin: 10px;
+}
+
+.font-white {
+	color: #FFFFFF;
+}
+
+.calendar-event-inner {
+	overflow: hidden;
 }

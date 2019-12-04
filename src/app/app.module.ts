@@ -21,7 +21,26 @@ export function setTranslateLoader(http: HttpClient) {
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
- 
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
+// Modal pages
+import { ActionDetailsModalPageModule } from './action-details-modal/action-details-modal.module';
+import { DelegationDetailsModalPageModule } from './delegation-details-modal/delegation-details-modal.module';
+import { ReferenceDetailsModalPageModule } from './reference-details-modal/reference-details-modal.module';
+import { DefineActionModalPageModule } from './define-action-modal/define-action-modal.module';
+import { DefineDelegationModalPageModule } from './define-delegation-modal/define-delegation-modal.module';
+import { DefineReferenceModalPageModule } from './define-reference-modal/define-reference-modal.module';
+import { GoalDetailsModalPageModule } from './goal-details-modal/goal-details-modal.module';
+import { CalendarEventModalPageModule } from './calendar-event-modal/calendar-event-modal.module';
+
+import { DatePickerModule } from 'ionic4-date-picker';
+
+import { NgCalendarModule  } from 'ionic2-calendar';
+
+// Necessary for calendar translation
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe, 'de');
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +59,17 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    ActionDetailsModalPageModule,
+    DelegationDetailsModalPageModule,
+    ReferenceDetailsModalPageModule,
+    DefineActionModalPageModule,
+    DefineDelegationModalPageModule,
+    DefineReferenceModalPageModule,
+    GoalDetailsModalPageModule,
+    CalendarEventModalPageModule,
+    DatePickerModule,
+    NgCalendarModule
   	],
   providers: [
     StatusBar,

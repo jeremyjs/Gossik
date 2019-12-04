@@ -1,0 +1,15 @@
+.scroll-content {
+	scrollbar-width: none;
+}
+
+ion-content {
+	background-color: --var(--ion-color-secondary) !important;
+}
+
+.item-input ion-label {
+	max-width: unset;
+}
+
+.text-align-center {
+	text-align: center;
+}

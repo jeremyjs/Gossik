@@ -15,6 +15,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 import { HomePage } from './home.page';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { HomePage } from './home.page';
         deps: [HttpClient]
       }
     }),
+    NgCalendarModule
   ],
   declarations: [HomePage]
 })

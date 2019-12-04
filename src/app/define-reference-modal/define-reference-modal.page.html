@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+  	<ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{"Defining new reference" | translate }}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<ion-list inset class="text-align-center">
+		<ion-item no-lines class="text-align-center" *ngIf="capture.content">
+	      "{{capture.content}}"
+	    </ion-item>
+		<form (ngSubmit)="addReference()" [formGroup]="defineReferenceForm">
+			<ion-item no-lines>
+				<ion-input type="text" placeholder="{{'Input new reference' | translate }}" formControlName="content"></ion-input>
+			</ion-item>
+			<button class="darkbutton" ion-button round type="submit">{{"Define reference" | translate }}</button>
+		</form>
+	</ion-list>
+</ion-content>
