@@ -18,7 +18,7 @@
               <div *ngIf="!edit">
                 <ion-item no-lines>
                   {{"Deadline" | translate}}: {{deadlineString}}
-                  <ion-button type="button" (click)="editDeadline()">{{"Edit" | translate }}</ion-button>
+                  <ion-button class="darkbutton" type="button" (click)="editDeadline()">{{"Edit" | translate }}</ion-button>
                 </ion-item>
               </div>
               <div *ngIf="edit">

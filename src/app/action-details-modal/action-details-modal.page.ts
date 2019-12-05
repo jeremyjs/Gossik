@@ -85,8 +85,6 @@ export class ActionDetailsModalPage implements OnInit {
   }
 
   saveAction() {
-    console.log('go');
-    console.log(this.action);
     if(this.action.deadline) {
       this.action.deadline = new Date (this.action.deadline).toISOString();
     }
@@ -108,8 +106,6 @@ export class ActionDetailsModalPage implements OnInit {
     this.action.deadline = new Date (deadlineFixed);
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
     this.edit = false;
-    console.log('deadline');
-    console.log(this.action);
   }
 
 }
