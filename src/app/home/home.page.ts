@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { AngularFireDatabase} from '@angular/fire/database';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { DatabaseService } from '../services/database.service';
 
@@ -337,7 +337,7 @@ export class HomePage {
 
   	// ProcessCapturePage functions
   	addGoal(goalname) {
-  		this.goalList.subscribe(
+  		this.goalList.pipe(take(1)).subscribe(
 	      goalArray => {
 	        if(goalname !== '' && goalname !== null && goalname !== undefined) {
 				this.newGoal.userid = this.auth.userid;

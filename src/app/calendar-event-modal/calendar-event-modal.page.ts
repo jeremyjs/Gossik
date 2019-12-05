@@ -50,7 +50,12 @@ export class CalendarEventModalPage implements OnInit {
 									key: c.payload.key, ...c.payload.val()
 									};
 								return goal;
-				});}));
+					});}),
+					map(
+						array => array.filter( goal => goal.active )
+						)
+
+				);
   }
 
   ngOnInit() {
