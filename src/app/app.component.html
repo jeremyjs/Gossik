@@ -1,3 +1,30 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+	<ion-menu contentId="content1" side="start">
+  		<ion-header>
+    		<ion-toolbar color="primary">
+      			<ion-title>Menu</ion-title>
+    		</ion-toolbar>
+  		</ion-header>
+  		<ion-content>
+  			<ion-list>
+  				<ion-menu-toggle auto-hide="true">
+    				<ion-item (click)="goToPage('capture')">{{"Capture" | translate}}</ion-item>
+				</ion-menu-toggle>
+  				<ion-menu-toggle auto-hide="true">
+    				<ion-item (click)="goToPage('todo')">{{"ToDo" | translate}}</ion-item>
+				</ion-menu-toggle>
+  				<ion-menu-toggle auto-hide="true">
+    				<ion-item (click)="goToPage('projects')">{{"Projects" | translate}}</ion-item>
+				</ion-menu-toggle>
+  				<ion-menu-toggle auto-hide="true">
+    				<ion-item (click)="goToPage('calendar')">{{"Calendar" | translate}}</ion-item>
+				</ion-menu-toggle>
+  				<ion-menu-toggle auto-hide="true">
+    				<ion-item (click)="goToPage('settings')">{{"Settings" | translate}}</ion-item>
+				</ion-menu-toggle>
+			</ion-list>
+  		</ion-content>
+	</ion-menu>
+	<ion-router-outlet id="content1" main></ion-router-outlet>
+  	<ion-router-outlet></ion-router-outlet>
 </ion-app>

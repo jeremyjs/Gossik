@@ -27,6 +27,10 @@ import { NgCalendarModule  } from 'ionic2-calendar';
       {
         path: '',
         component: HomePage
+      },
+      {
+        path: ':page',
+        component: HomePage
       }
     ]),
     TranslateModule.forChild({

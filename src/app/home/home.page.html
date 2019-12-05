@@ -1,11 +1,9 @@
 <ion-header>
-	<ion-toolbar>
+	<ion-toolbar color="primary">
     <div *ngIf="loggedin">
   		<div *ngIf="isApp">
         <ion-buttons start>
-          <button ion-button icon-only menuToggle>
-            <ion-icon name="menu" color="white"></ion-icon>
-          </button>
+          <ion-menu-button autoHide="false"></ion-menu-button>
         </ion-buttons>
       </div>
       <div class="header-container" *ngIf="!isApp">
@@ -106,14 +104,14 @@
 
 	<!-- CapturePage -->
   <div *ngIf="viewpoint == 'CapturePage'">
-    <ion-row class="margin-auto height-20" *ngIf="isApp">
-      <ion-card class="text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
+    <div class="margin-auto width-90 height-20" *ngIf="isApp">
+      <ion-card class="width-100 margin-top-10 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
           <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
         </ion-item>
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
-    </ion-row>
+    </div>
     <ion-row class="width-40 margin-auto margin-top-10 height-20" *ngIf="!isApp">
       <ion-card class="margin-top-10 width-100 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">

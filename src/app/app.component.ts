@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -16,7 +17,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -28,5 +30,10 @@ export class AppComponent {
       let language = this.translate.getBrowserLang();
       this.translate.use(language);
     });
+  }
+
+  goToPage(page: string) {
+    console.log('navigating to home/' + page);
+    this.router.navigate(['home/' + page]);
   }
 }

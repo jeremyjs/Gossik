@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonContent, Platform, ModalController, AlertController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -123,7 +124,8 @@ export class HomePage {
 		public platform: Platform,
 		private afDatabase: AngularFireDatabase,
 		public modalCtrl: ModalController,
-		public alertCtrl: AlertController
+		public alertCtrl: AlertController,
+		private activatedRoute: ActivatedRoute
 		) {
 		this.isApp = !this.platform.is('desktop');
 		if(this.isApp) {
@@ -139,7 +141,22 @@ export class HomePage {
 				user => {
 				  if (user) {
 				  	this.loggedin = true;
-				    this.goToCapturePage();
+				  	let page = this.activatedRoute.snapshot.paramMap.get('page');
+					if(page) {
+						if(page == 'capture') {
+							this.goToCapturePage();
+						} else if(page == 'todo') {
+							this.goToToDoPage();
+						} else if(page == 'projects') {
+							this.goToProjectsPage();
+						} else if(page == 'calendar') {
+							this.goToCalendarPage();
+						} else if(page == 'settings') {
+							this.goToSettingsPage();
+						}
+					} else {
+						this.goToCapturePage();
+					}
 				  } else {
 				  	this.loggedin = false;
 				    this.goToLoginPage();
