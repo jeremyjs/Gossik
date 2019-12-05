@@ -101,8 +101,16 @@ ion-button {
   border: 1px solid #000000 !important;
 }
 
-.weekview-allday-content-table td {
-  border: 1px solid #000000;
+.weekview-allday-content-table td, {
+  border: 1px solid #000000 !important;
+}
+
+.weekview-allday-label {
+  border-left: 1px solid #000000 !important;
+}
+
+.slide-container {
+  padding: 2px !important;
 }
 
 
@@ -172,18 +180,20 @@ ion-toolbar {
   background-color: var(--ion-color-secondary) !important;
 }
 
+.weekview-normal-event-container {
+  padding: 2px !important;
+}
+
 .calendar-hour-column, .weekview-header {
   border: 0px !important;
 }
 
 .weekview-header, .slides-container {
   border: 0px;
-  border-radius: 20px 20px 0px 0px;
 }
 
 .weekview-normal-event-container {
   bottom: 0px;
-  border-radius: 0px 0px 20px 20px;
 }
 
 .padding-bottom-50 {
@@ -323,8 +333,8 @@ ion-input {
   margin-bottom: 10px !important;
 }
 
-.height-100 {
-  height: 100%;
+.height-10 {
+  height: 10%;
 }
 
 .height-70 {
