@@ -1,10 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons start>
-      <button ion-button icon-only (click)="cancel()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-button float-right icon-only (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
     <ion-title>{{"Action Details" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -28,7 +26,7 @@
         <div *ngIf="!edit">
           <ion-item no-lines>
             {{"Deadline" | translate}}: {{deadlineString}}
-            <button (click)="editDeadline()">{{"Edit" | translate }}</button>
+            <ion-button class="darkbutton" (click)="editDeadline()">{{"Edit" | translate }}</ion-button>
           </ion-item>
         </div>
         <div *ngIf="edit">
@@ -47,8 +45,8 @@
           </ion-item>
         </div>
       </div>
-      <button class="darkbutton" ion-button round type="submit">{{"Save" | translate }}</button>
+      <ion-button class="darkbutton" type="submit">{{"Save" | translate }}</ion-button>
+      <ion-button class="button-left darkbutton" type="button" (click)="deleteAction(action)">{{"Delete" | translate }}</ion-button>
     </form>
-    <button class="button-left darkbutton" ion-button round (click)="deleteAction(action)">{{"Delete" | translate }}</button>
   </ion-list>
 </ion-content>

@@ -1,10 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons start>
-      <button ion-button icon-only (click)="cancel()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-button float-right icon-only (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
     <ion-title>{{"Create Event" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -31,9 +29,9 @@
       <ion-label>{{"End" | translate }}</ion-label>
       <ion-datetime displayFormat="DDD DD.MMM YYYY - HH:mm" dayShortNames="[{{'Sun' | translate}}, {{'Mon' | translate}}, {{'Tue' | translate}}, {{'Wed' | translate}}, {{'Thu' | translate}}, {{'Fri' | translate}}, {{'Sat' | translate}}]" pickerFormat="DD MMM YYYY - HH:mm" max="2100" [(ngModel)]="eventEndTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')"></ion-datetime>
     </ion-item>
-    <button class="darkbutton margin-auto" ion-button round icon-left (click)="save()">
+    <ion-button class="darkbutton margin-auto" (click)="save()">
     {{"Add Event" | translate }}
-  </button>
+  </ion-button>
   </ion-list>
  
 </ion-content>

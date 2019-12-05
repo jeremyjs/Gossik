@@ -85,7 +85,11 @@ export class ActionDetailsModalPage implements OnInit {
   }
 
   saveAction() {
-    this.action.deadline = new Date (this.action.deadline).toISOString();
+    console.log('go');
+    console.log(this.action);
+    if(this.action.deadline) {
+      this.action.deadline = new Date (this.action.deadline).toISOString();
+    }
     this.action.content = this.defineActionForm.value.content;
     this.action.priority = this.defineActionForm.value.priority;
     this.action.time = this.defineActionForm.value.time;
@@ -104,6 +108,8 @@ export class ActionDetailsModalPage implements OnInit {
     this.action.deadline = new Date (deadlineFixed);
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
     this.edit = false;
+    console.log('deadline');
+    console.log(this.action);
   }
 
 }

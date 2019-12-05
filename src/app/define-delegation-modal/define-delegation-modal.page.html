@@ -1,11 +1,8 @@
 <ion-header>
-
   <ion-toolbar color="primary">
-  	<ion-buttons start>
-      <button ion-button icon-only (click)="cancel()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
+  	<ion-button float-right icon-only (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
     <ion-title>{{"Defining new delegation" | translate }}</ion-title>
   </ion-toolbar>
 
@@ -30,7 +27,7 @@
             <ion-item no-lines>
               <ion-input type="text" placeholder="{{'Input new waitingFor' | translate }}" formControlName="content"></ion-input>
             </ion-item>
-            <button class="darkbutton" ion-button round type="submit">{{"Define delegation" | translate }}</button>
+            <ion-button class="darkbutton" type="submit">{{"Define delegation" | translate }}</ion-button>
           </form>
         </ion-list>
 </ion-content>
