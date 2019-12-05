@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -38,6 +38,7 @@ import * as moment from 'moment';
 export class HomePage {
 
 	@ViewChild(IonContent, { read: IonContent, static: true }) content: IonContent;
+	@ViewChild('TimeAvailable', {  static: false })  timeAvailable: IonInput;
 	loginForm: FormGroup;
 	loginError: string;
 	forgotPasswordForm: FormGroup;
@@ -976,7 +977,10 @@ export class HomePage {
     	});
     	this.goal =  <Goal>{key: 'None'};;
     	this.changePage('ToDoPage');
-  	}
+    	setTimeout(() => {
+	         this.timeAvailable.setFocus();
+	    }, 400);
+	  	}
 
   	chooseGoal(goalid) {
   		if(goalid != 'None') {
@@ -990,9 +994,6 @@ export class HomePage {
   	}
 
   	showDoableActions() {
-  		if(!this.giveTimeForm.value.timeEstimate) {
-  			this.giveTimeForm.value.timeEstimate = 10000000;
-  		}
 	    this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 		  	.snapshotChanges()
 		  	.pipe(
@@ -1009,7 +1010,13 @@ export class HomePage {
 	      	this.doableActionArray = [];
 	        for(let action of actionArray) {
 	        	if(action.active != false) {
-					if(Number(action.time) <= Number(this.giveTimeForm.value.timeEstimate) && !action.taken && ((action.goalid == this.goal.key) || this.goal.key == 'None')) {
+	        		console.log(action.time);
+	        		console.log(this.giveTimeForm.value.timeEstimate);
+	        		console.log((action.time <= this.giveTimeForm.value.timeEstimate));
+	        		console.log(action.time/1);
+	        		console.log(this.giveTimeForm.value.timeEstimate/1);
+	        		console.log((action.time/1 <= this.giveTimeForm.value.timeEstimate/1));
+					if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && ((action.goalid == this.goal.key) || this.goal.key == 'None')) {
 					this.doableActionArray.push(action);
 					}
 				}
