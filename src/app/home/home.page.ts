@@ -245,6 +245,7 @@ export class HomePage {
 	      capture.userid = this.auth.userid;
 	      capture.active = true;
 	      this.db.addCapture(capture, this.auth.userid);
+	      this.newCapture = {} as Capture;
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
