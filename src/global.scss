@@ -89,6 +89,18 @@ ion-button {
   background-color: #EBEBEE;
 }
 
+.scroll-content, .content {
+  scrollbar-width: none;
+}
+
 .calendar-hour-column, .weekview-allday-label {
   width: 100px !important;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+  border: 1px solid #000000 !important;
+}
+
+.weekview-allday-content-table td {
+  border: 1px solid #000000;
 }

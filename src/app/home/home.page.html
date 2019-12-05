@@ -114,7 +114,7 @@
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
     </ion-row>
-    <ion-row class="width-40 margin-auto height-20" *ngIf="!isApp">
+    <ion-row class="width-40 margin-auto margin-top-10 height-20" *ngIf="!isApp">
       <ion-card class="margin-top-10 width-100 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
           <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
@@ -122,26 +122,26 @@
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
     </ion-row>
-    <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px margin-top-10 padding-bottom-10">
+    <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">
       <div *ngIf="takenActionListNotEmpty">
-      <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
-      <button class="border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
-      </button>
-    </div>
-    <div *ngIf="captureListNotEmpty">
-    <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
-    <ion-grid>
-      <ion-row class="border-bottom-1 padding-left-20 width-100 min-height-30px" *ngFor="let capture of captureArray">
-      <ion-col size="11" class="height-100">
-        <button (click)="goToProcessCapturePage(capture)">{{capture.content}}
+        <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
+        <button class="border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
         </button>
-      </ion-col>
-      <ion-col size="1" class="height-100">
-        <button float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
-      </ion-col>
-    </ion-row>
-    </ion-grid>
-    </div>
+      </div>
+      <div *ngIf="captureListNotEmpty">
+      <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
+      <ion-grid>
+        <ion-row class="border-bottom-1 padding-left-20 width-100 min-height-30px" *ngFor="let capture of captureArray">
+        <ion-col size="11" class="height-100">
+          <button (click)="goToProcessCapturePage(capture)">{{capture.content}}
+          </button>
+        </ion-col>
+        <ion-col size="1" class="height-100">
+          <button float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+      </div>
     </div>
   </div>
 
@@ -350,28 +350,30 @@
               <ion-grid class="height-100 no-padding">
                 <ion-row class="height-50">
                   <ion-col size="4">
-                    <ion-card class="height-45 margin-0 margin-bottom-10 width-100 secondary border-radius-20px">
+                    <ion-card class="height-45 margin-top-10 margin-bottom-10 width-100 secondary border-radius-20px">
                       <ion-grid>
                         <ion-row>
-                          <ion-col size="9">
-                            <h1>{{goal.name}}</h1>
+                          <ion-col size="10">
+                            <h1 class="margin-0">{{goal.name}}</h1>
+                          </ion-col>
+                          <ion-col>
+                            <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
                             <ion-button class="darkbutton display-inline-block" (click)="deleteGoal(goal)">
                               {{"Delete" | translate}}
                             </ion-button>
                             <ion-button class="darkbutton display-inline-block" (click)="editGoal(goal)">
                               {{"Edit" | translate}}
                             </ion-button>
-                          </ion-col>
-                          <ion-col>
-                            <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
-                          </ion-col>
                         </ion-row>
                       </ion-grid>
                     </ion-card>
-                    <ion-item class="height-50 secondary border-radius-20px margin-top-0"><h1>{{"Team" | translate }}</h1></ion-item>
+                    <ion-item class="width-100 height-50 secondary border-radius-20px margin-top-0"><h1>{{"Team" | translate }}</h1></ion-item>
                   </ion-col>
                   <ion-col size="8">
-                    <div class="height-100 secondary padding-10 border-radius-20px">
+                    <div class="width-100 margin-top-10 height-100 secondary padding-10 border-radius-20px">
                       <ng-template #template let-displayEvent="displayEvent">
                         <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
                       </ng-template>
@@ -409,7 +411,7 @@
                   </ion-col>
                 </ion-row>
                 <ion-row class="height-50 margin-5">
-                  <ion-item class="height-100 secondary border-radius-20px">
+                  <ion-item class="margin-top-10 width-100 height-100 secondary border-radius-20px">
                     <ion-grid class="height-100">
                       <ion-row class="height-100">
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
@@ -452,7 +454,7 @@
               </ion-grid>
             </ion-col>
             <ion-col size="3">
-              <ion-item class="height-100 secondary border-radius-20px"><h1>{{"Chat" | translate }}</h1></ion-item>
+              <ion-item class="width-100 margin-top-10 height-100 secondary border-radius-20px"><h1>{{"Chat" | translate }}</h1></ion-item>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -598,7 +600,7 @@
           <h2>{{ viewTitle }}</h2>
         </ion-col>
       </ion-row>
-      <div class="padding-bottom-50 height-90">
+      <div class="padding-10 height-90">
         <ng-template #template let-displayEvent="displayEvent">
           <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
         </ng-template>
