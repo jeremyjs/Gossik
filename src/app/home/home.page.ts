@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -126,7 +126,8 @@ export class HomePage {
 		public modalCtrl: ModalController,
 		public alertCtrl: AlertController,
 		private activatedRoute: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private menuCtrl: MenuController
 		) {
 		this.isApp = !this.platform.is('desktop');
 		if(this.isApp) {
@@ -187,6 +188,10 @@ export class HomePage {
 				  this.goToLoginPage();
 				}
 			);
+  	}
+
+  	menuOpen() {
+  		this.menuCtrl.toggle();
   	}
 
 	changePage(viewpoint: string) {
