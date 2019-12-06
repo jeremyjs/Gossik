@@ -990,6 +990,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.doableActionArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
 		  	.pipe(
@@ -1019,7 +1020,7 @@ export class HomePage {
     	setTimeout(() => {
 	         this.timeAvailable.setFocus();
 	    }, 400);
-	  	}
+	}
 
   	chooseGoal(goalid) {
   		if(goalid != 'None') {
@@ -1033,43 +1034,45 @@ export class HomePage {
   	}
 
   	showDoableActions() {
-	    this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(take(1),
-				map(
-					changes => { 
-						return changes.map( c => {
-							let action: Action = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return action;
-			});}));
-	    this.actionList.subscribe(
-	      actionArray => {
-	      	this.doableActionArray = [];
-	        for(let action of actionArray) {
-	        	if(action.active != false) {
-	        		console.log(action.time);
-	        		console.log(this.giveTimeForm.value.timeEstimate);
-	        		console.log((action.time <= this.giveTimeForm.value.timeEstimate));
-	        		console.log(action.time/1);
-	        		console.log(this.giveTimeForm.value.timeEstimate/1);
-	        		console.log((action.time/1 <= this.giveTimeForm.value.timeEstimate/1));
-					if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && ((action.goalid == this.goal.key) || this.goal.key == 'None')) {
-					this.doableActionArray.push(action);
+  		if(this.giveTimeForm.value.timeEstimate) {
+		    this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(take(1),
+					map(
+						changes => { 
+							return changes.map( c => {
+								let action: Action = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return action;
+				});}));
+		    this.actionList.subscribe(
+		      actionArray => {
+		      	this.doableActionArray = [];
+		        for(let action of actionArray) {
+		        	if(action.active != false) {
+		        		console.log(action.time);
+		        		console.log(this.giveTimeForm.value.timeEstimate);
+		        		console.log((action.time <= this.giveTimeForm.value.timeEstimate));
+		        		console.log(action.time/1);
+		        		console.log(this.giveTimeForm.value.timeEstimate/1);
+		        		console.log((action.time/1 <= this.giveTimeForm.value.timeEstimate/1));
+						if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && ((action.goalid == this.goal.key) || this.goal.key == 'None')) {
+						this.doableActionArray.push(action);
+						}
 					}
-				}
-	        }
-	        console.log(this.doableActionArray);
-	        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1)
-	        console.log(this.doableActionArray);
-	        if(this.doableActionArray.length == 0) {
-	        	this.errorMsg = "There is no doable action for that time.";
-	        } else {
-	        	this.errorMsg = '';
-	        }
-	      }
-	    );
+		        }
+		        console.log(this.doableActionArray);
+		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1)
+		        console.log(this.doableActionArray);
+		        if(this.doableActionArray.length == 0) {
+		        	this.errorMsg = "There is no doable action for that time.";
+		        } else {
+		        	this.errorMsg = '';
+		        }
+		      }
+		    );
+		}
   	}
 
   	takeThisAction(action: Action) {
