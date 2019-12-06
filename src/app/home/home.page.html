@@ -123,19 +123,19 @@
     <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">
       <div *ngIf="takenActionListNotEmpty">
         <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
-        <button class="border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
+        <button class="background-white text-align-left border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
         </button>
       </div>
       <div *ngIf="captureListNotEmpty">
       <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
       <ion-grid>
-        <ion-row class="border-bottom-1 padding-left-20 width-100 min-height-30px" *ngFor="let capture of captureArray">
-        <ion-col size="11" class="height-100">
-          <button (click)="goToProcessCapturePage(capture)">{{capture.content}}
+        <ion-row class="background-white border-bottom-1 width-100 min-height-30px" *ngFor="let capture of captureArray">
+        <ion-col size="10" class="height-100">
+          <button class="background-white text-align-left" (click)="goToProcessCapturePage(capture)">{{capture.content}}
           </button>
         </ion-col>
-        <ion-col size="1" class="height-100">
-          <button float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+        <ion-col size="2" class="height-100">
+          <button class="background-white" float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
         </ion-col>
       </ion-row>
       </ion-grid>
@@ -259,7 +259,7 @@
     <div class="height-100" *ngIf="viewpoint == 'ToDoPage'">
       <div class="height-100" *ngIf="pageCtrl == ''">
         <ion-grid class="height-100">
-          <ion-row>
+          <ion-row *ngIf="!isApp">
             <ion-col size="4" class="primary flex">
               <form class="flex width-100" (ngSubmit)="showDoableActions()" [formGroup]="giveTimeForm">
                 <ion-label class="width-50 margin-auto min-width-175px primary display-inline-block">{{"Time available in minutes" | translate }}:</ion-label>
@@ -276,9 +276,28 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row class="height-100">
+          <ion-row *ngIf="isApp">
+            <ion-col class="primary flex">
+              <form class="flex width-100" (ngSubmit)="showDoableActions()" [formGroup]="giveTimeForm">
+                <ion-label class="width-50 margin-auto min-width-175px primary display-inline-block">{{"Time available in minutes" | translate }}:</ion-label>
+                <ion-input #TimeAvailable class="width-50" type="number" min="0" formControlName="timeEstimate" (ionChange)="showDoableActions()" autofocus="true"></ion-input>
+              </form>
+            </ion-col>
+          </ion-row>
+          <ion-row>
             <ion-col>
-            <div class="content-container height-100">
+              <ion-item class="border-radius-20px">
+              <ion-select [(ngModel)]="goal.key" (ionChange)="chooseGoal($event)">
+                <ion-label>{{"Project" | translate }}</ion-label>
+                <ion-select-option selected value="None">{{"All Projects" | translate }}</ion-select-option>
+                <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+            <div class="content-container min-height-150px">
               <ion-grid *ngIf="!isApp">
                 <ion-row>
                   <ion-col size="8">{{"Action" | translate}}</ion-col>
@@ -599,7 +618,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="width-100 height-90">
-        <div class="padding-10 height-90">
+        <div class="width-100 padding-10 height-90">
           <ng-template #template let-displayEvent="displayEvent">
             <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
           </ng-template>

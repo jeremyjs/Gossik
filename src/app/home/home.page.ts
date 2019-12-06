@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonContent, Platform, ModalController, AlertController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -125,7 +125,8 @@ export class HomePage {
 		private afDatabase: AngularFireDatabase,
 		public modalCtrl: ModalController,
 		public alertCtrl: AlertController,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private router: Router
 		) {
 		this.isApp = !this.platform.is('desktop');
 		if(this.isApp) {
@@ -135,12 +136,32 @@ export class HomePage {
 		}
 	}
 
-	ionViewDidEnter() {
+	ngOnInit() {
   		this.auth.afAuth.authState
 			.subscribe(
 				user => {
 				  if (user) {
 				  	this.loggedin = true;
+				  	this.router.events.subscribe(res => {
+						if (res instanceof NavigationEnd) {
+							let page = this.activatedRoute.snapshot.paramMap.get('page');
+							if(page) {
+								if(page == 'capture') {
+									this.goToCapturePage();
+								} else if(page == 'todo') {
+									this.goToToDoPage();
+								} else if(page == 'projects') {
+									this.goToProjectsPage();
+								} else if(page == 'calendar') {
+									this.goToCalendarPage();
+								} else if(page == 'settings') {
+									this.goToSettingsPage();
+								}
+							} else {
+								this.goToCapturePage();
+							}
+						} 
+					});
 				  	let page = this.activatedRoute.snapshot.paramMap.get('page');
 					if(page) {
 						if(page == 'capture') {
