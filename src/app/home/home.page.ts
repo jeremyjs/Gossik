@@ -1035,7 +1035,7 @@ export class HomePage {
   	showDoableActions() {
 	    this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 		  	.snapshotChanges()
-		  	.pipe(
+		  	.pipe(take(1),
 				map(
 					changes => { 
 						return changes.map( c => {
@@ -1076,6 +1076,7 @@ export class HomePage {
 	    action.taken = true;
 	    this.db.editAction(action, this.auth.userid);
 	    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
+	    this.viewpoint = '';
 	    this.errorMsg = "Great, have fun while taking Action! Visit the Captures to process this action when you finished it.";
   	}
 }

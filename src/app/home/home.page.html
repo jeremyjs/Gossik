@@ -194,19 +194,19 @@
     <!-- mobile -->
     <div *ngIf="isApp" class="height-100">
       <div *ngIf="pageCtrl == ''">
-        <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px text-align-center">
+        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px text-align-center">
           <div class="max-height-500px margin-vertical-center-parent overflow-y-scroll no-scrollbar">
             <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
           </div>
           <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
         </ion-card>
-        <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
+        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px">
           <ion-item class="border-radius-20px">
             <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
           <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
-        <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px" no-lines *ngFor="let goal of goalArray">
+        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px" no-lines *ngFor="let goal of goalArray">
           <ion-grid>
             <ion-row>
               <ion-col size="10">
@@ -229,7 +229,7 @@
   </div>
 
   <!-- ProcessTakenActionPage -->
-  <div *ngIf="viewpoint=='ProcessTakenActionPage'" class="primary">
+  <div *ngIf="viewpoint=='ProcessTakenActionPage'" class="secondary width-90 border-radius-20px padding-10 margin-top-10">
     <div *ngIf="pageCtrl == ''">
       {{"Please indicate whether you finished the action or want to abort it." | translate }}<br>
       <div class="buttons-flex-container">
@@ -481,14 +481,14 @@
     <!-- mobile -->
     <div *ngIf="isApp" class="height-100">
       <div *ngIf="pageCtrl == ''">
-        <ion-card class="height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px">
+        <ion-card class="width-90 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-auto secondary border-radius-20px">
           <ion-item class="border-radius-20px">
             <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
 
           <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
-        <ion-card class="height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
+        <ion-card class="width-90 margin-top-10 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-auto secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
           <ion-grid>
             <ion-row>
               <ion-col size="9">
