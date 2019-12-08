@@ -88,7 +88,6 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal>
-						<div class="form-error">{{signupError}}</div>
 
 						<ion-button expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</ion-button>
 					</div>
@@ -434,7 +433,7 @@
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
-                            <ion-button class="darkbutton" icon-only (click)="addAction(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addAction(goal, '')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
@@ -445,7 +444,7 @@
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
-                            <ion-button class="darkbutton" icon-only (click)="addDelegation(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addDelegation(goal,'')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
@@ -456,7 +455,7 @@
                         <ion-col class="height-100 overflow-scroll no-scrollbar">
                           <ion-buttons start>
                             <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
-                            <ion-button class="darkbutton" icon-only (click)="addReference(goal)">
+                            <ion-button class="darkbutton" icon-only (click)="addReference(goal,'')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
@@ -528,7 +527,7 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
-            <ion-button class="darkbutton"  icon-only (click)="addAction(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addAction(goal,'')">
               <ion-icon name="add"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -539,7 +538,7 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
-            <ion-button class="darkbutton"  icon-only (click)="addDelegation(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addDelegation(goal,'')">
               <ion-icon name="add"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -550,7 +549,7 @@
         <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
           <ion-buttons start>
             <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
-            <ion-button class="darkbutton"  icon-only (click)="addReference(goal)">
+            <ion-button class="darkbutton"  icon-only (click)="addReference(goal,'')">
               <ion-icon name="add"></ion-icon>
             </ion-button>
           </ion-buttons>

@@ -11,7 +11,6 @@ import { map, take } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { DatabaseService } from '../services/database.service';
 
-
 import { Capture } from '../../model/capture/capture.model';
 import { Goal } from '../../model/goal/goal.model';
 import { User } from '../../model/user/user.model';
@@ -57,6 +56,7 @@ export class HomePage {
 	capture: Capture;
 	goalList: Observable<Goal[]>;
 	goalArray: Goal[];
+	goalname: string = '';
 	referenceList: Observable<Reference[]>;
 	nextActionList: Observable<Action[]>;
 	delegationList: Observable<Delegation[]>;
@@ -251,7 +251,7 @@ export class HomePage {
 			//this.db.createUser(user.user.uid, user.user.email);
 		}).then(
 			() => this.pageCtrl = '',
-			error => this.signUpError = error.message
+			error => this.errorMsg = error.message
 		);
   	}
 	
@@ -775,7 +775,7 @@ export class HomePage {
 		}).then( alert => {
 			alert.present();
 		});
-  		});
+		});
   	}
 
   	// CalendarPage functions

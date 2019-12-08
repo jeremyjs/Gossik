@@ -16,9 +16,9 @@
     </ion-item>
     <ion-item no-lines>
       <ion-label>{{"Deadline required?" | translate }}</ion-label>
-      <ion-checkbox [(ngModel)]="checkDeadline"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="deadline"></ion-checkbox>
     </ion-item>
-    <div *ngIf="checkDeadline">
+    <div *ngIf="deadline">
       <ion-item no-lines>
         <ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
       </ion-item>
