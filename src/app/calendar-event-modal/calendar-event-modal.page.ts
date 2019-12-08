@@ -13,7 +13,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -27,6 +27,7 @@ export class CalendarEventModalPage implements OnInit {
   	eventEndTimeISOString: string;
   	minDate = new Date(new Date().setHours(0,0,0,0)).toISOString();
 	goalList: Observable<Goal[]>;
+	goalArray: Goal[];
 	goalid: string;
 
   constructor(
@@ -50,12 +51,18 @@ export class CalendarEventModalPage implements OnInit {
 									key: c.payload.key, ...c.payload.val()
 									};
 								return goal;
-					});}),
-					map(
-						array => array.filter( goal => goal.active )
-						)
+					});})
 
 				);
+		this.goalList.subscribe(
+	      goalArray => {
+  			this.goalArray = [];
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+		        	this.goalArray.push(goal);
+		        }
+		    }
+		});
   }
 
   ngOnInit() {

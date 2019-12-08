@@ -230,8 +230,7 @@ export class HomePage {
 			.then(
 				() => {
 					console.log('login!!!!!');
-					//this.afDatabase.database.goOnline();
-					//this.navCtrl.setRoot(HomePage);
+						this.goToCapturePage();
 				},
 				error => this.loginError = error.message
 			);
@@ -277,7 +276,6 @@ export class HomePage {
 
   	// SettingsPage functions
   	logout() {
-  		this.afDatabase.database.goOffline();
     	this.auth.signOut().then( () => this.changePage('LoginPage'));
     }
 

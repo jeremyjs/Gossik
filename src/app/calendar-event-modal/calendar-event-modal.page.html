@@ -16,7 +16,7 @@
     <ion-item>
       <ion-label>{{"Project" | translate}}</ion-label>
       <ion-select [(ngModel)]="goalid">
-        <ion-select-option *ngFor="let goal of goalList | async" value="{{goal.key}}">{{goal.name}}</ion-select-option>
+        <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
       </ion-select>
     </ion-item>
  
