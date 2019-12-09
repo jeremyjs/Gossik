@@ -23,6 +23,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 
+
 // Modal pages
 import { ActionDetailsModalPageModule } from './action-details-modal/action-details-modal.module';
 import { DelegationDetailsModalPageModule } from './delegation-details-modal/delegation-details-modal.module';
@@ -41,6 +42,9 @@ import { NgCalendarModule  } from 'ionic2-calendar';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe, 'de');
+
+
+import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 
 
 @NgModule({
@@ -73,6 +77,7 @@ registerLocaleData(localeDe, 'de');
     NgCalendarModule
   	],
   providers: [
+    FirebaseX,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

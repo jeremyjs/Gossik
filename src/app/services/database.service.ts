@@ -26,6 +26,10 @@ export class DatabaseService {
         return this.db.list('users').set(userid, this.userData); 
     }
 
+    saveDeviceToken(userid, token) {
+        return this.db.list('/users/' + userid + '/devices').push(token);
+    }
+
     getCaptureListFromUser(userid) {
         return this.db.list<Capture>('/users/' + userid + '/captures');
     }

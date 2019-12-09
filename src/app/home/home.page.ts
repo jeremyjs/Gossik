@@ -30,6 +30,8 @@ import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-m
 
 import * as moment from 'moment';
 
+import { FirebaseX } from "@ionic-native/firebase-x/ngx";
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -127,7 +129,8 @@ export class HomePage {
 		public alertCtrl: AlertController,
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private menuCtrl: MenuController
+		private menuCtrl: MenuController,
+		private firebase: FirebaseX
 		) {
 		this.isApp = !this.platform.is('desktop');
 		if(this.isApp) {
@@ -142,6 +145,21 @@ export class HomePage {
 			.subscribe(
 				user => {
 				  if (user) {
+				  	this.firebase.getToken().then(token => {
+						this.db.saveDeviceToken(this.auth.userid, token);
+					});
+					this.firebase.onMessageReceived().subscribe(data => {
+						this.alertCtrl.create({
+							message: data.body,
+							buttons: [
+								    	{
+									        text: "Ok"
+								      	}
+								    ]
+						}).then( alert => {
+							alert.present();
+						});
+					});
 				  	this.loggedin = true;
 				  	this.router.events.subscribe(res => {
 						if (res instanceof NavigationEnd) {
