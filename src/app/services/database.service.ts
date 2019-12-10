@@ -27,7 +27,31 @@ export class DatabaseService {
     }
 
     saveDeviceToken(userid, token) {
-        return this.db.list('/users/' + userid + '/devices').push(token);
+        let tokenFound: boolean = false;
+        this.db.list('/users/' + userid + '/devices')
+            .snapshotChanges()
+            .pipe(take(1),
+            map(
+                changes => { 
+                    return changes.map( c => {
+                        return { 
+                            key: c.payload.key, token: c.payload.val()
+                            }; 
+                });}))
+            .subscribe(devices => {
+                for(let device of devices) {
+                    if(device.token == token) {
+                        tokenFound = true
+                    }  
+                }
+                if(!tokenFound) {
+                    return this.db.list('/users/' + userid + '/devices').push(token);
+                }
+            });
+    }
+
+    getDeviceTokenList(userid) {
+        return this.db.list('/users/' + userid + '/devices');
     }
 
     getCaptureListFromUser(userid) {

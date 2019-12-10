@@ -145,21 +145,23 @@ export class HomePage {
 			.subscribe(
 				user => {
 				  if (user) {
-				  	this.firebase.getToken().then(token => {
-						this.db.saveDeviceToken(this.auth.userid, token);
-					});
-					this.firebase.onMessageReceived().subscribe(data => {
-						this.alertCtrl.create({
-							message: data.body,
-							buttons: [
-								    	{
-									        text: "Ok"
-								      	}
-								    ]
-						}).then( alert => {
-							alert.present();
+				  	if(this.isApp) {
+					  	this.firebase.getToken().then(token => {
+							this.db.saveDeviceToken(this.auth.userid, token);
 						});
-					});
+						this.firebase.onMessageReceived().subscribe(data => {
+							this.alertCtrl.create({
+								message: data.body,
+								buttons: [
+									    	{
+										        text: "Ok"
+									      	}
+									    ]
+							}).then( alert => {
+								alert.present();
+							});
+						});
+					}
 				  	this.loggedin = true;
 				  	this.router.events.subscribe(res => {
 						if (res instanceof NavigationEnd) {
