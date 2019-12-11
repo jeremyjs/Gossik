@@ -26,6 +26,10 @@ export class DatabaseService {
         return this.db.list('users').set(userid, this.userData); 
     }
 
+    changeLanguage(userid, language) {
+        return this.db.list('users').update(userid, {language: language});
+    }
+
     saveDeviceToken(userid, token) {
         let tokenFound: boolean = false;
         this.db.list('/users/' + userid + '/devices')
