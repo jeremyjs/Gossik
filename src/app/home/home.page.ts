@@ -151,8 +151,7 @@ export class HomePage {
 						});
 						this.firebase.onMessageReceived().subscribe(data => {
 							this.alertCtrl.create({
-								title: data.title,
-								message: data.body,
+								message: data.title + ' ' + data.body,
 								buttons: [
 									    	{
 										        text: "Ok"
