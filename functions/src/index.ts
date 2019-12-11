@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp();
-import * as moment from 'moment';
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -10,7 +9,7 @@ import * as moment from 'moment';
 //  response.send("Hello from Firebase!");
 // });
 
-exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+exports.calendarEventPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
    console.log('running');
    admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
@@ -24,21 +23,31 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
    						let ref = admin.database().ref('/users/' + user.key + '/devices');
 					    ref.once("value", function(devices) {
 					    	devices.forEach(function(device) {
-					    		let start = moment(calendarEvent.val().startTime).format('HH:mm');
-								let end = moment(calendarEvent.val().endTime).format('HH:mm');
-						         let payload = {
+					    		let language = 'en';
+					    		if(user.val().language) {
+					   				language = user.val().language;
+					   			}
+					   			let message: any = {};
+					   			message['de'] = 'Beginnt in Kürze.';
+					   			message['en'] = 'Happens soon.';
+					   			let msg = message['en'];
+					   			if(message[language]) {
+					   				msg = message[language];
+					   			}
+					    		let payload = {
 						              notification: {
 						                  title: calendarEvent.val().title,
-						                  body: start + '-' + end
+						                  body: msg
 						              }
-						         };
-						         admin.messaging().sendToDevice(device.val(), payload)
+						        };
+						        admin.messaging().sendToDevice(device.val(), payload);
 						     });})
    					}
    				})
    			})
    		})
    });
+   return null;
      }
 );
 
