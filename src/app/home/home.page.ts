@@ -163,6 +163,7 @@ export class HomePage {
 						});
 					}
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
+				  	this.db.trackLogin(this.auth.userid);
 				  	this.loggedin = true;
 				  	this.router.events.subscribe(res => {
 						if (res instanceof NavigationEnd) {

@@ -30,6 +30,11 @@ export class DatabaseService {
         return this.db.list('users').update(userid, {language: language});
     }
 
+    trackLogin(userid) {
+        let now = new Date().toISOString();
+        return this.db.list('users').update(userid, {lastLogin: now});
+    }
+
     saveDeviceToken(userid, token) {
         let tokenFound: boolean = false;
         this.db.list('/users/' + userid + '/devices')
