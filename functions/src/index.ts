@@ -9,7 +9,7 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
-exports.calendarEventPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
+exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
    console.log('running');
    admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
@@ -35,10 +35,14 @@ exports.calendarEventPush = functions.pubsub.schedule('* * * * *').onRun((contex
 					   				msg = message[language];
 					   			}
 					    		let payload = {
-						              notification: {
-						                  title: calendarEvent.val().title,
-						                  body: msg
-						              }
+						            notification: {
+						                title: calendarEvent.val().title,
+						                body: msg
+						            },
+						            data: {
+						              	title: calendarEvent.val().title,
+						                body: msg
+						            }
 						        };
 						        admin.messaging().sendToDevice(device.val(), payload);
 						     });})
