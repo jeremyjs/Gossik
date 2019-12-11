@@ -36,6 +36,9 @@ ion-item {
    background-color: var(--ion-color-secondary);
 }
 
+p, button, ion-col {
+  text-transform: capitalize !important;
+}
 
 ion-content {
     background-color: var(--ion-color-primary) !important;
