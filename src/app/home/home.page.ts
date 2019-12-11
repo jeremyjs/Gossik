@@ -723,9 +723,7 @@ export class HomePage {
 			componentProps: {action: action}
 		}).then( modal => {
 			modal.present();
-			modal.onDidDismiss().then( () => {
-				this.reviewGoal(this.goal);
-			})
+			modal.onDidDismiss();
 		});
   	}
 
@@ -735,9 +733,7 @@ export class HomePage {
 			componentProps: {delegation: delegation}
 		}).then( modal => {
 			modal.present();
-			modal.onDidDismiss().then( () => {
-				this.reviewGoal(this.goal);
-			})
+			modal.onDidDismiss();
 		});
 	}
 
@@ -747,9 +743,7 @@ export class HomePage {
 			componentProps: {reference: reference}
 		}).then( modal => {
 			modal.present();
-			modal.onDidDismiss().then( () => {
-				this.reviewGoal(this.goal);
-			})
+			modal.onDidDismiss();
 		});
   	}
 
