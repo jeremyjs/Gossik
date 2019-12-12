@@ -414,6 +414,7 @@ export class HomePage {
 				}
 				goalname = '';
 				this.db.addGoal(this.newGoal, this.auth.userid);
+				this.goalname = "";
 				this.errorMsg = "";
 			} else {
 				this.errorMsg = "You cannot create a goal without a name.";
