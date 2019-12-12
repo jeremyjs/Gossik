@@ -35,7 +35,7 @@ export class DefineActionModalPage implements OnInit {
       this.capture = {} as Capture;
     }
     this.defineActionForm = this.fb.group({
-    content: ['', Validators.required],
+    content: [this.capture.content, Validators.required],
     priority: ['', Validators.required],
     deadline: ['', Validators.required],
     time: ['', Validators.required]

@@ -11,9 +11,6 @@
 
 <ion-content padding>
   <ion-list inset class="text-align-center">
-    <ion-item no-lines class="text-align-center" *ngIf="capture.content">
-      "{{capture.content}}"
-    </ion-item>
     <ion-item no-lines>
       <ion-label>{{"Deadline required?" | translate }}</ion-label>
       <ion-checkbox [(ngModel)]="deadline"></ion-checkbox>
@@ -25,7 +22,7 @@
     </div>
     <form (ngSubmit)="addAction()" [formGroup]="defineActionForm">
       <ion-item no-lines>
-        <ion-input type="text" placeholder="{{'Input new action' | translate }}" formControlName="content"></ion-input>
+        <ion-input type="text" formControlName="content"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>{{"Priority (1: low, 10: high)" | translate }}:</ion-label>

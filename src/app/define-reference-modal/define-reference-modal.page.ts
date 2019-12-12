@@ -30,7 +30,7 @@ export class DefineReferenceModalPage implements OnInit {
       this.capture = {} as Capture;
     }
     this.defineReferenceForm = this.fb.group({
-      content: ['', Validators.required]
+      content: [this.capture.content, Validators.required]
     });
   }
 

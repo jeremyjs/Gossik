@@ -33,7 +33,7 @@ export class DefineDelegationModalPage implements OnInit {
       this.capture = {} as Capture;
     }
     this.defineDelegationForm = this.fb.group({
-      content: ['', Validators.required],
+      content: [this.capture.content, Validators.required],
       deadline: ['', Validators.required]
     });
     this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
