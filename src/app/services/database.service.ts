@@ -6,7 +6,7 @@ import { User } from '../../model/user/user.model';
 import { Action } from '../../model/action/action.model';
 import { Reference } from '../../model/reference/reference.model';
 import { Delegation } from '../../model/delegation/delegation.model';
-import { CalendarEvent } from '../../model/CalendarEvent/calendarEvent.model';
+import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
 
 import { map, take } from 'rxjs/operators';
 

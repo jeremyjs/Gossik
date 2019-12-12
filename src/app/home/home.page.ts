@@ -17,7 +17,7 @@ import { User } from '../../model/user/user.model';
 import { Action } from '../../model/action/action.model';
 import { Reference } from '../../model/reference/reference.model';
 import { Delegation } from '../../model/delegation/delegation.model';
-import { CalendarEvent } from '../../model/CalendarEvent/calendarEvent.model';
+import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
 
 import { ActionDetailsModalPage } from '../action-details-modal/action-details-modal.page';
 import { DelegationDetailsModalPage } from '../delegation-details-modal/delegation-details-modal.page';
