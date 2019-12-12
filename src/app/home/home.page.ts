@@ -402,17 +402,25 @@ export class HomePage {
   	addGoal(goalname) {
   		this.goalList.pipe(take(1)).subscribe(
 	      goalArray => {
+	      	goalArray = goalArray.filter(goal => goal.active != false);
 	        if(goalname !== '' && goalname !== null && goalname !== undefined) {
 				this.newGoal.userid = this.auth.userid;
 				this.newGoal.name = goalname;
 				this.newGoal.active = true;
 				let numberGoals = goalArray.length;
-				if(numberGoals < 8) {
-					this.newGoal.color = this.projectColors[numberGoals];
-				} else {
-					this.newGoal.color = '#FFFFFF'
+				let colorFound = false;
+				while(!colorFound) {
+					for(let color of this.projectColors) {
+						if(!goalArray.find(goal => goal.color == color)) {
+							this.newGoal.color = color;
+							colorFound = true;
+						}
+					}
+					if(!colorFound) {
+						this.newGoal.color = '#FFFFFF';
+						colorFound = true;
+					}
 				}
-				goalname = '';
 				this.db.addGoal(this.newGoal, this.auth.userid);
 				this.goalname = "";
 				this.errorMsg = "";
