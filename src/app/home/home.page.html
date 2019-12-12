@@ -359,10 +359,10 @@
       </div>
 
 
-      <div class="height-100" *ngIf="pageCtrl == 'ProjectOverview'">
+      <div class="height-90" *ngIf="pageCtrl == 'ProjectOverview'">
         <ion-grid class="height-100">
           <ion-row class="height-100">
-            <ion-col size="9" class="no-padding">
+            <ion-col size="9" class="no-padding height-100">
               <ion-grid class="height-100 no-padding">
                 <ion-row class="height-50">
                   <ion-col size="4">
@@ -427,45 +427,51 @@
                   </ion-col>
                 </ion-row>
                 <ion-row class="height-50 margin-5">
-                  <ion-item class="margin-top-10 width-100 height-100 secondary border-radius-20px">
+                  <ion-card class="margin-top-10 width-100 height-100 secondary border-radius-20px">
                     <ion-grid class="height-100">
                       <ion-row class="height-100">
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
-                          <ion-buttons start>
+                          <ion-buttons class="height-13" start>
                             <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
                             <ion-button class="darkbutton" icon-only (click)="addAction(goal, '')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
-                          <button class="block width-100 no-padding" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
-                            <p class="border-top">{{nextAction.content}}</p>
-                          </button>
+                          <ion-card class="height-80 overflow-scroll no-scrollbar">
+                            <button class="block width-100 no-padding" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
+                              <p class="border-top">{{nextAction.content}}</p>
+                            </button>
+                          </ion-card>
                         </ion-col>
                         <ion-col class="border-right height-100 overflow-scroll no-scrollbar">
-                          <ion-buttons start>
+                          <ion-buttons class="height-13" start>
                             <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
                             <ion-button class="darkbutton" icon-only (click)="addDelegation(goal,'')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
-                          <button class="block width-100 no-padding" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
-                            <p class="border-top">{{delegation.content}}</p>
-                          </button>
+                          <ion-card class="height-80 overflow-scroll no-scrollbar">
+                            <button class="block width-100 no-padding" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
+                              <p class="border-top">{{delegation.content}}</p>
+                            </button>
+                          </ion-card>
                         </ion-col>
                         <ion-col class="height-100 overflow-scroll no-scrollbar">
-                          <ion-buttons start>
+                          <ion-buttons class="height-13" start>
                             <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
                             <ion-button class="darkbutton" icon-only (click)="addReference(goal,'')">
                               <ion-icon name="add"></ion-icon>
                             </ion-button>
                           </ion-buttons>
-                          <button class="block width-100 no-padding" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
-                            <p class="border-top">{{reference.content}}</p>
-                          </button>
+                          <ion-card class="height-80 overflow-scroll no-scrollbar">
+                            <button class="block width-100 no-padding" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
+                              <p class="border-top">{{reference.content}}</p>
+                            </button>
+                          </ion-card>
                         </ion-col>
                       </ion-row>
                     </ion-grid>
-                  </ion-item>
+                  </ion-card>
                 </ion-row>
               </ion-grid>
             </ion-col>
