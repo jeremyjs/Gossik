@@ -540,19 +540,9 @@ export class HomePage {
 
 	// ProcessTakenActionPage function
 	actionFinished() {
-		this.pageCtrl = 'actionFinished';
-	}
-
-	abortAction() {
-		this.takenAction.taken = false;
-		this.db.editAction(this.takenAction, this.auth.userid);
-		this.pageCtrl = 'actionAborted';
-	}
-
-	goalFinished() {
 		this.nextActionList = this.db.getNextActionListFromGoal(this.takenAction.goalid, this.auth.userid)
 		  	.snapshotChanges()
-		  	.pipe(
+		  	.pipe(take(1),
 				map(
 					changes => { 
 						return changes.map( c => {
@@ -562,17 +552,28 @@ export class HomePage {
 							return action;
 			});}));
 		this.nextActionList.subscribe( nextActionArray => {
+			nextActionArray = nextActionArray.filter(action => action.active != false);
 			if(nextActionArray.length == 1) {
-				this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( goal => {
-					goal.key = this.takenAction.goalid;
-					this.db.deleteGoal(goal, this.auth.userid).then( () => {
-						this.pageCtrl = 'goalFinished';
-					});
-				})
+				this.pageCtrl = 'actionFinished';
 			} else {
-				this.db.deleteAction(this.takenAction, this.auth.userid).then(() => this.goToCapturePage());
+				this.goalNotFinished();
 			}
-		})
+		});
+	}
+
+	abortAction() {
+		this.takenAction.taken = false;
+		this.db.editAction(this.takenAction, this.auth.userid);
+		this.pageCtrl = 'actionAborted';
+	}
+
+	goalFinished() {
+		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( goal => {
+			goal.key = this.takenAction.goalid;
+			this.db.deleteGoal(goal, this.auth.userid).then( () => {
+				this.pageCtrl = 'goalFinished';
+			});
+		});
 	}
 
 	goalNotFinished() {
