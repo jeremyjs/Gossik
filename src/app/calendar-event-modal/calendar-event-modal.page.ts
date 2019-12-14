@@ -29,6 +29,7 @@ export class CalendarEventModalPage implements OnInit {
 	goalList: Observable<Goal[]>;
 	goalArray: Goal[];
 	goalid: string;
+	errorMsg: boolean;
 
   constructor(
   		public modalCtrl: ModalController,
@@ -73,6 +74,13 @@ export class CalendarEventModalPage implements OnInit {
 	}
  
 	save() {
+		this.errorMsg = false;
+		let startTime = new Date(this.eventStartTimeISOString);
+		let endTime = new Date(this.eventEndTimeISOString);
+		if(endTime < startTime) {
+			this.errorMsg = true;
+			return;
+		}
 		this.event.startTime = this.eventStartTimeISOString;
 		this.event.endTime = this.eventEndTimeISOString;
 		this.event.goalid = this.goalid;

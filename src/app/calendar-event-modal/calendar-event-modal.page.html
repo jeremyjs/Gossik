@@ -29,6 +29,9 @@
       <ion-label>{{"End" | translate }}</ion-label>
       <ion-datetime displayFormat="DDD DD.MMM YYYY - HH:mm" dayShortNames="[{{'Sun' | translate}}, {{'Mon' | translate}}, {{'Tue' | translate}}, {{'Wed' | translate}}, {{'Thu' | translate}}, {{'Fri' | translate}}, {{'Sat' | translate}}]" pickerFormat="DD MMM YYYY - HH:mm" max="2100" [(ngModel)]="eventEndTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')"></ion-datetime>
     </ion-item>
+    <ion-item *ngIf="errorMsg">
+      {{"The end time cannot be earlier than the start time." | translate}}
+    </ion-item>
     <ion-button class="darkbutton margin-auto" (click)="save()">
     {{"Add Event" | translate }}
   </ion-button>
