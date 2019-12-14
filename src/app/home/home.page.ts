@@ -924,17 +924,19 @@ export class HomePage {
 	onEventSelected(event){
 		this.db.getGoalFromGoalid(event.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			let goal = '';
-			let time = ''
-			if(data != null) {
-				goal = 'Goal: ' + data.name + '<br>';
-			}
-			if(!event.allDay) {
-				let start = moment(event.startTime).format('HH:mm');
-				let end = moment(event.endTime).format('HH:mm');
-				time = 'Time: ' + start + ' - ' + end;
-			}
+			let time = '';
+			this.translate.get(["Goal", "Time", "Ok", "Delete"]).subscribe( alertMessage => {
+				if(event.goalid) {
+					goal = alertMessage["Goal"] + ': ' + data.name + '<br>';
+				}
+				if(!event.allDay) {
+					let start = moment(event.startTime).format('HH:mm');
+					let end = moment(event.endTime).format('HH:mm');
+					time = alertMessage["Time"] + ': ' + start + ' - ' + end;
+				}
+			});
 			this.alertCtrl.create({
-					message: event.title + ' ' + goal + time,
+					message: event.title + '<br>' + goal + time,
 					buttons: [
 						    	{
 							        text: 'OK'
