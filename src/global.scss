@@ -106,6 +106,7 @@ ion-button {
 
 .weekview-allday-content-table td, {
   border: 1px solid #000000 !important;
+  border-top: transparent !important;
 }
 
 .weekview-allday-label {
@@ -179,8 +180,11 @@ ion-toolbar {
 }
 
 .weekview-header, .weekview-allday-table, .weekview-normal-event-container {
-  border: 0px;
   background-color: var(--ion-color-secondary) !important;
+}
+
+.weekview-allday-table {
+  border-bottom: 4px solid #000000 !important;
 }
 
 .weekview-normal-event-container {
