@@ -344,11 +344,11 @@
         <ion-card class="width-18 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
           <ion-grid>
             <ion-row class="max-height-30px margin-bottom-10">
-              <ion-col size="9">
+              <ion-col>
                 <h1 class="max-height-30px margin-0 overflow-x-hidden width-90">{{goal.name}}</h1>
               </ion-col>
-              <ion-col>
-                <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+              <ion-col class="min-width-30px">
+                <ion-card class="margin-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
               </ion-col>
             </ion-row>
             <ion-row class="overflow-scroll no-scrollbar height-100px">
@@ -364,12 +364,12 @@
           <ion-row class="height-100">
             <ion-col size="9" class="no-padding height-100">
               <ion-grid class="height-100 no-padding">
-                <ion-row class="height-50">
-                  <ion-col size="4">
-                    <ion-card class="height-45 margin-top-10 margin-bottom-10 width-100 secondary border-radius-20px">
+                <ion-row class="height-50 overflow-scroll no-scrollbar">
+                  <ion-col size="4" class="height-100">
+                    <ion-card class="overflow-scroll no-scrollbar height-45 margin-top-10 margin-bottom-10 width-100 secondary border-radius-20px">
                       <ion-grid>
                         <ion-row>
-                          <ion-col size="10">
+                          <ion-col>
                             <h1 class="margin-0">{{goal.name}}</h1>
                           </ion-col>
                           <ion-col>
