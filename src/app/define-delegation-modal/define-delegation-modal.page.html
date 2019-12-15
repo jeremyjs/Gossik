@@ -20,7 +20,7 @@
 				<ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
 			</ion-item>
 			</div>
-          <form (ngSubmit)="addDelegation()" [formGroup]="defineDelegationForm">
+          <form (ngSubmit)="check()" [formGroup]="defineDelegationForm">
             <ion-item no-lines>
               <ion-input type="text" formControlName="content"></ion-input>
             </ion-item>
