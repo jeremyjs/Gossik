@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { Goal } from '../../model/goal/goal.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
@@ -30,6 +30,7 @@ export class CalendarEventModalPage implements OnInit {
 	goalArray: Goal[];
 	goalid: string;
 	errorMsg: boolean;
+	pastCheck: boolean;
 
   constructor(
   		public modalCtrl: ModalController,
@@ -37,7 +38,8 @@ export class CalendarEventModalPage implements OnInit {
 	  	private db: DatabaseService,
 	  	public translate: TranslateService,
       	public fb: FormBuilder,
-      	private auth: AuthenticationService
+      	private auth: AuthenticationService,
+      	public alertCtrl: AlertController
       	) {
   	let preselectedDate = moment(this.navParams.get('selectedDay')).format();
 	    this.eventStartTimeISOString = preselectedDate;
@@ -64,6 +66,7 @@ export class CalendarEventModalPage implements OnInit {
 		        }
 		    }
 		});
+	this.pastCheck = false;
   }
 
   ngOnInit() {
@@ -72,8 +75,8 @@ export class CalendarEventModalPage implements OnInit {
   	cancel() {
 		this.modalCtrl.dismiss();
 	}
- 
-	save() {
+
+	check() {
 		this.errorMsg = false;
 		let startTime = new Date(this.eventStartTimeISOString);
 		let endTime = new Date(this.eventEndTimeISOString);
@@ -81,6 +84,26 @@ export class CalendarEventModalPage implements OnInit {
 			this.errorMsg = true;
 			return;
 		}
+		if(endTime < new Date() && !this.pastCheck) {
+			this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
+			  this.alertCtrl.create({
+			      message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
+			      buttons: [
+			              {
+			                  text: alertMessage["Ok"]
+			                }
+			            ]
+			  }).then ( alert => {
+			    alert.present();
+			    this.pastCheck = true
+			  });
+			});
+		} else {
+			this.save();
+		}
+  }
+ 
+	save() {
 		this.event.startTime = this.eventStartTimeISOString;
 		this.event.endTime = this.eventEndTimeISOString;
 		this.event.goalid = this.goalid;

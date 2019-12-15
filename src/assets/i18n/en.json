@@ -83,6 +83,7 @@
   "Team": "Team",
   "The end time cannot be earlier than the start time.": "The end time cannot be earlier than the start time.",
   "There is no doable action for that time.": "There is no doable action for that time.",
+  "The selected date lies in the past. Please check if that is wanted.": "The selected date lies in the past. Please check if that is wanted.",
   "Thoughts captured and ready for processing": "Post-its ready for processing",
   "Thu": "Thu",
   "Time": "Time",

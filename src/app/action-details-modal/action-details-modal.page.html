@@ -10,7 +10,7 @@
 
 <ion-content padding>
   <ion-list inset class="text-align-center">
-    <form (ngSubmit)="checkAction()" [formGroup]="defineActionForm">
+    <form (ngSubmit)="check()" [formGroup]="defineActionForm">
       <ion-item no-lines>
         <ion-input type="text" [(ngModel)]="action.content" formControlName="content"></ion-input>
       </ion-item>

@@ -84,6 +84,7 @@
   "Team": "Team",
   "The end time cannot be earlier than the start time.": "Die Endzeit kann nicht früher als die Startzeit sein.",
   "There is no doable action for that time.": "Es gibt keine Aktion die in dieser Zeit machbar ist.",
+  "The selected date lies in the past. Please check if that is wanted.": "Das gewählte Datum liegt in der Vergangenheit. Bitte vergissere dich, dass das gewollt ist.",
   "Thoughts captured and ready for processing": "Gespeicherte Post-Its bereit zum Verarbeiten",
   "Thu": "Do",
   "Time": "Zeit",

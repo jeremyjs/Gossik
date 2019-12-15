@@ -25,7 +25,7 @@ export class ActionDetailsModalPage implements OnInit {
 	edit: boolean = false;
 	deadlineString: string;
 	formatOptions: any;
-  deadlinePastCheck: boolean;
+  pastCheck: boolean;
 
   constructor(
   		  public modalCtrl: ModalController,
@@ -72,7 +72,7 @@ export class ActionDetailsModalPage implements OnInit {
     });
     this.formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
-    this.deadlinePastCheck = false;
+    this.pastCheck = false;
   }
 
   ngOnInit() {
@@ -87,14 +87,13 @@ export class ActionDetailsModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  checkAction() {
+  check() {
     if(this.action.deadline) {
       this.action.deadline = new Date (this.action.deadline).toISOString();
-      if(new Date(this.action.deadline) < new Date() && !this.deadlinePastCheck) {
-        console.log('in the past!');
-        this.translate.get(["The selected deadline lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
+      if(new Date(this.action.deadline) < new Date() && !this.pastCheck) {
+        this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
           this.alertCtrl.create({
-              message: alertMessage["The selected deadline lies in the past. Please check if that is wanted."],
+              message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
               buttons: [
                       {
                           text: alertMessage["Ok"]
@@ -102,18 +101,18 @@ export class ActionDetailsModalPage implements OnInit {
                     ]
           }).then ( alert => {
             alert.present();
-            this.deadlinePastCheck = true
+            this.pastCheck = true
           });
         });
       } else {
-        this.saveAction();
+        this.save();
       }
     } else {
-      this.saveAction();
+      this.save();
     }
   }
 
-  saveAction() {
+  save() {
     this.action.content = this.defineActionForm.value.content;
     this.action.priority = this.defineActionForm.value.priority;
     this.action.time = this.defineActionForm.value.time;
