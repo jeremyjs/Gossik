@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -17,12 +17,14 @@ export class DefineActionModalPage implements OnInit {
 	capture = {} as Capture;
 	monthLabels = [];
 	dayLabels = [];
+  pastCheck: boolean;
 
   constructor(
   	public navParams: NavParams,
   	public modalCtrl: ModalController,
   	public translate: TranslateService,
-  	public fb: FormBuilder
+  	public fb: FormBuilder,
+    public alertCtrl: AlertController
   	) {
   }
 
@@ -67,6 +69,7 @@ export class DefineActionModalPage implements OnInit {
       dayLabels['Sat']
       ];
     });
+    this.pastCheck = false;
   }
 
 
@@ -74,7 +77,31 @@ export class DefineActionModalPage implements OnInit {
     this.modalCtrl.dismiss('cancel');
   }
 
-  addAction() {
+  check() {
+    if(this.defineActionForm.value.deadline) {
+      if(new Date(this.defineActionForm.value.deadline) < new Date() && !this.pastCheck) {
+        this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
+          this.alertCtrl.create({
+              message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
+              buttons: [
+                      {
+                          text: alertMessage["Ok"]
+                        }
+                    ]
+          }).then ( alert => {
+            alert.present();
+            this.pastCheck = true
+          });
+        });
+      } else {
+        this.save();
+      }
+    } else {
+      this.save();
+    }
+  }
+
+  save() {
   	this.modalCtrl.dismiss(this.defineActionForm.value)
   }
 
