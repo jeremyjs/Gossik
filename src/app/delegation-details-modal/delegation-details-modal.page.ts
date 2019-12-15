@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { Delegation } from '../../model/delegation/delegation.model';
 
@@ -24,14 +24,16 @@ export class DelegationDetailsModalPage implements OnInit {
 	edit: boolean = false;
 	deadlineString: string;
 	formatOptions: any;
+  pastCheck: boolean;
 
   constructor(
-  		public modalCtrl: ModalController,
-	  	private navParams: NavParams,
-	  	private db: DatabaseService,
-	  	public translate: TranslateService,
+  		  public modalCtrl: ModalController,
+	  	  private navParams: NavParams,
+	  	  private db: DatabaseService,
+	  	  public translate: TranslateService,
       	public fb: FormBuilder,
-      	private auth: AuthenticationService
+      	private auth: AuthenticationService,
+        public alertCtrl: AlertController
       	) {
   	this.delegation = this.navParams.get('delegation');
     this.defineDelegationForm = this.fb.group({
@@ -83,10 +85,32 @@ export class DelegationDetailsModalPage implements OnInit {
   	this.modalCtrl.dismiss();
   }
 
-  saveDelegation() {
+  check() {
     if(this.delegation.deadline) {
       this.delegation.deadline = new Date (this.delegation.deadline).toISOString();
+      if(new Date(this.delegation.deadline) < new Date() && !this.pastCheck) {
+        this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
+          this.alertCtrl.create({
+              message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
+              buttons: [
+                      {
+                          text: alertMessage["Ok"]
+                        }
+                    ]
+          }).then ( alert => {
+            alert.present();
+            this.pastCheck = true
+          });
+        });
+      } else {
+        this.save();
+      }
+    } else {
+      this.save();
     }
+  }
+
+  save() {
     this.delegation.content = this.defineDelegationForm.value.content;
     let delegationkey = this.delegation.key;
     this.db.editDelegation(this.delegation, this.auth.userid);

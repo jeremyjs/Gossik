@@ -10,7 +10,7 @@
 
 <ion-content padding>
         <ion-list inset class="text-align-center">
-          <form (ngSubmit)="saveDelegation()" [formGroup]="defineDelegationForm">
+          <form (ngSubmit)="check()" [formGroup]="defineDelegationForm">
             <ion-item no-lines>
               <ion-input type="text" [(ngModel)]="delegation.content" formControlName="content"></ion-input>
             </ion-item>
