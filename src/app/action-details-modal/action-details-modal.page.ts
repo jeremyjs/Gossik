@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { Action } from '../../model/action/action.model';
 
@@ -25,14 +25,16 @@ export class ActionDetailsModalPage implements OnInit {
 	edit: boolean = false;
 	deadlineString: string;
 	formatOptions: any;
+  deadlinePastCheck: boolean;
 
   constructor(
-  		public modalCtrl: ModalController,
-	  	private navParams: NavParams,
-	  	private db: DatabaseService,
-	  	public translate: TranslateService,
+  		  public modalCtrl: ModalController,
+	  	  private navParams: NavParams,
+	  	  private db: DatabaseService,
+	  	  public translate: TranslateService,
       	public fb: FormBuilder,
-      	private auth: AuthenticationService
+      	private auth: AuthenticationService,
+        public alertCtrl: AlertController
       ) {
       this.action = this.navParams.get('action');
     this.deadline = !(!this.action.deadline);
@@ -70,6 +72,7 @@ export class ActionDetailsModalPage implements OnInit {
     });
     this.formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+    this.deadlinePastCheck = false;
   }
 
   ngOnInit() {
@@ -84,10 +87,33 @@ export class ActionDetailsModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  saveAction() {
+  checkAction() {
     if(this.action.deadline) {
       this.action.deadline = new Date (this.action.deadline).toISOString();
+      if(new Date(this.action.deadline) < new Date() && !this.deadlinePastCheck) {
+        console.log('in the past!');
+        this.translate.get(["The selected deadline lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
+          this.alertCtrl.create({
+              message: alertMessage["The selected deadline lies in the past. Please check if that is wanted."],
+              buttons: [
+                      {
+                          text: alertMessage["Ok"]
+                        }
+                    ]
+          }).then ( alert => {
+            alert.present();
+            this.deadlinePastCheck = true
+          });
+        });
+      } else {
+        this.saveAction();
+      }
+    } else {
+      this.saveAction();
     }
+  }
+
+  saveAction() {
     this.action.content = this.defineActionForm.value.content;
     this.action.priority = this.defineActionForm.value.priority;
     this.action.time = this.defineActionForm.value.time;
