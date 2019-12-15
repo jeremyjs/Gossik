@@ -87,4 +87,8 @@ export class CalendarEventModalPage implements OnInit {
 		this.modalCtrl.dismiss(this.event);
 	}
 
+	adaptEndDate() {
+		this.eventEndTimeISOString = this.eventStartTimeISOString;
+	}
+
 }
