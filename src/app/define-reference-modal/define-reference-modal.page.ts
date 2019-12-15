@@ -13,7 +13,8 @@ import { Capture } from '../../model/capture/capture.model';
 export class DefineReferenceModalPage implements OnInit {
 
 	defineReferenceForm: FormGroup;
-  	capture = {} as Capture;
+  capture = {} as Capture;
+  goalname: string;
 
   constructor(
   	public navParams: NavParams,
@@ -28,6 +29,9 @@ export class DefineReferenceModalPage implements OnInit {
       this.capture = this.navParams.get('capture');
     } else {
       this.capture = {} as Capture;
+    }
+    if(this.navParams.get('goal')) {
+      this.goalname = this.navParams.get('goal');
     }
     this.defineReferenceForm = this.fb.group({
       content: [this.capture.content, Validators.required]

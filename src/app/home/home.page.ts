@@ -433,7 +433,7 @@ export class HomePage {
 	addAction(goal, capture) {
 		this.modalCtrl.create({ 
 			component: DefineActionModalPage,
-			componentProps: {capture: capture}
+			componentProps: {capture: capture, goal: goal.name}
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
@@ -480,7 +480,7 @@ export class HomePage {
 	addDelegation(goal, capture) {
 		this.modalCtrl.create({
 			component: DefineDelegationModalPage,
-			componentProps: {capture: capture}
+			componentProps: {capture: capture, goal: goal.name}
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then(data => {
@@ -520,7 +520,7 @@ export class HomePage {
 	addReference(goal, capture) {
 	    let modal = this.modalCtrl.create({
 	    	component: DefineReferenceModalPage,
-	    	componentProps: {capture: capture}
+	    	componentProps: {capture: capture, goal: goal.name}
 	    }).then( modal => {
 	    	modal.present();
 			modal.onDidDismiss().then(data => {

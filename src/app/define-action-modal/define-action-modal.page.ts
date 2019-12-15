@@ -18,6 +18,7 @@ export class DefineActionModalPage implements OnInit {
 	monthLabels = [];
 	dayLabels = [];
   pastCheck: boolean;
+  goalname: string;
 
   constructor(
   	public navParams: NavParams,
@@ -30,11 +31,12 @@ export class DefineActionModalPage implements OnInit {
 
   ngOnInit() {
     if(this.navParams.get('capture')) {
-      console.log('nope');
       this.capture = this.navParams.get('capture');
     } else {
-      console.log('yes');
       this.capture = {} as Capture;
+    }
+    if(this.navParams.get('goal')) {
+      this.goalname = this.navParams.get('goal');
     }
     this.defineActionForm = this.fb.group({
     content: [this.capture.content, Validators.required],

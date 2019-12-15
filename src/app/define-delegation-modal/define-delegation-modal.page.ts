@@ -18,6 +18,7 @@ export class DefineDelegationModalPage implements OnInit {
 	monthLabels = [];
 	dayLabels = [];
   pastCheck: boolean;
+  goalname: string;
 
   constructor(
   	public navParams: NavParams,
@@ -33,6 +34,9 @@ export class DefineDelegationModalPage implements OnInit {
       this.capture = this.navParams.get('capture');
     } else {
       this.capture = {} as Capture;
+    }
+    if(this.navParams.get('goal')) {
+      this.goalname = this.navParams.get('goal');
     }
     this.defineDelegationForm = this.fb.group({
       content: [this.capture.content, Validators.required],

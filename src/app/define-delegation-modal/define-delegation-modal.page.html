@@ -10,12 +10,15 @@
 
 
 <ion-content padding>
-        <ion-list inset class="text-align-center">
-          <ion-item no-lines>
-            <ion-label>{{"Deadline required?" | translate }}</ion-label>
-            <ion-checkbox [(ngModel)]="deadline"></ion-checkbox>
-          </ion-item>
-          <div *ngIf="deadline">
+  <ion-list inset class="text-align-center">
+    <ion-item *ngIf="goalname">
+      <h2>{{"Goal" | translate}}: {{goalname}}</h2>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label>{{"Deadline required?" | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="deadline"></ion-checkbox>
+    </ion-item>
+    <div *ngIf="deadline">
 			<ion-item no-lines>
 				<ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
 			</ion-item>

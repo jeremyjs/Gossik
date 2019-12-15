@@ -11,6 +11,9 @@
 
 <ion-content padding>
   <ion-list inset class="text-align-center">
+    <ion-item *ngIf="goalname">
+      <h2>{{"Goal" | translate}}: {{goalname}}</h2>
+    </ion-item>
     <ion-item no-lines>
       <ion-label>{{"Deadline required?" | translate }}</ion-label>
       <ion-checkbox [(ngModel)]="deadline"></ion-checkbox>
