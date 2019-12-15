@@ -1059,10 +1059,10 @@ export class HomePage {
 	    }, 400);
 	}
 
-  	chooseGoal(goalid) {
-  		if(goalid != 'None') {
-	  		this.db.getGoalFromGoalid(goalid, this.auth.userid).valueChanges().subscribe( goal => {
-			this.goal = {key: goalid, name: goal.name, userid: goal.userid, color: goal.color};
+  	chooseGoal(event) {
+  		if(event.detail.value != 'None') {
+	  		this.db.getGoalFromGoalid(event.detail.value, this.auth.userid).valueChanges().subscribe( goal => {
+			this.goal = {key: event.detail.value, name: goal.name, userid: goal.userid, color: goal.color};
 			});
 		} else {
 			this.goal.key = 'None';
@@ -1088,20 +1088,12 @@ export class HomePage {
 		      	this.doableActionArray = [];
 		        for(let action of actionArray) {
 		        	if(action.active != false) {
-		        		console.log(action.time);
-		        		console.log(this.giveTimeForm.value.timeEstimate);
-		        		console.log((action.time <= this.giveTimeForm.value.timeEstimate));
-		        		console.log(action.time/1);
-		        		console.log(this.giveTimeForm.value.timeEstimate/1);
-		        		console.log((action.time/1 <= this.giveTimeForm.value.timeEstimate/1));
 						if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && ((action.goalid == this.goal.key) || this.goal.key == 'None')) {
 						this.doableActionArray.push(action);
 						}
 					}
 		        }
-		        console.log(this.doableActionArray);
-		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1)
-		        console.log(this.doableActionArray);
+		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
 		        if(this.doableActionArray.length == 0) {
 		        	this.errorMsg = "There is no doable action for that time.";
 		        } else {
