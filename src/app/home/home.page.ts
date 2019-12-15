@@ -578,13 +578,15 @@ export class HomePage {
 
 	goalNotFinished() {
 	this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
-		let capture = {} as Capture;
-		capture.content = 'Action finished: ' + this.takenAction.content + '\n from goal: ' + data.name;
-		capture.userid = this.auth.userid;
-		capture.active = true
-		this.db.deleteAction(this.takenAction, this.auth.userid).then( () => {
-			this.db.addCapture(capture, this.auth.userid);
-			this.goToCapturePage();
+		this.translate.get("Action finished").subscribe( translation => {
+			let capture = {} as Capture;
+			capture.content =  data.name + ' - ' + translation + ': ' + this.takenAction.content;
+			capture.userid = this.auth.userid;
+			capture.active = true;
+			this.db.deleteAction(this.takenAction, this.auth.userid).then( () => {
+				this.db.addCapture(capture, this.auth.userid);
+				this.goToCapturePage();
+			});
 		});
 	});
 	}
