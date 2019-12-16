@@ -1141,10 +1141,29 @@ export class HomePage {
   	}
 
   	takeThisAction(action: Action) {
-	    action.taken = true;
-	    this.db.editAction(action, this.auth.userid);
-	    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
-	    this.viewpoint = '';
-	    this.errorMsg = "Great, have fun while taking Action! Visit the Captures to process this action when you finished it.";
+  		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
+				this.alertCtrl.create({
+						title: action.content,
+						message: alertMessage["Do you want to start with this action?"],
+						buttons: [
+							      	{
+								        text: alertMessage['Start'],
+								        handler: () => {
+								          	action.taken = true;
+										    this.db.editAction(action, this.auth.userid);
+										    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
+										    this.viewpoint = '';
+										    this.errorMsg = alertMessage["Great, have fun while taking Action! Visit the Captures to process this action when you finished it."];
+  	
+								        }
+							      	},
+							      	{
+								        text: alertMessage['No']
+							      	}
+							    ]
+				}).then ( alert => {
+					alert.present();
+				});
+			});
   	}
 }
