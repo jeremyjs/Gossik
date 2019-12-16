@@ -10,6 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../services/database.service';
 import { AuthenticationService } from '../services/authentication.service';
 
+
+import { take } from 'rxjs/operators';
+
 @Component({
   selector: 'app-action-details-modal',
   templateUrl: './action-details-modal.page.html',
@@ -26,6 +29,7 @@ export class ActionDetailsModalPage implements OnInit {
 	deadlineString: string;
 	formatOptions: any;
   pastCheck: boolean;
+  deadlineChanged: boolean = false;
 
   constructor(
   		  public modalCtrl: ModalController,
@@ -119,6 +123,18 @@ export class ActionDetailsModalPage implements OnInit {
     let actionkey = this.action.key;
     this.db.editAction(this.action, this.auth.userid);
     this.action.key = actionkey;
+    if(this.deadlineChanged) {
+      this.db.getCalendarEventFromCalendarEventId(this.action.deadlineid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( calendarEvent => {
+        let deadlineStartTime = new Date (this.action.deadline).setHours(2);
+        let deadlineEndTime = new Date (this.action.deadline).setHours(5);
+        let calendarEventkey = calendarEvent.key;
+        calendarEvent.startTime = new Date (deadlineStartTime).toISOString();
+        calendarEvent.endTime = new Date (deadlineEndTime).toISOString();
+        calendarEvent.key = this.action.deadlineid;
+        this.db.editCalendarEvent(calendarEvent, this.auth.userid)
+        calendarEvent.key = calendarEventkey;
+      });
+    }
     this.modalCtrl.dismiss();
   }
 
@@ -129,6 +145,7 @@ export class ActionDetailsModalPage implements OnInit {
   deadlineSelected(event) {
     let deadlineFixed = new Date (event).setHours(2);
     this.action.deadline = new Date (deadlineFixed);
+    this.deadlineChanged = true;
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
     this.edit = false;
   }

@@ -154,6 +154,10 @@ export class DatabaseService {
         return this.db.object<Goal>('/users/' + userid + '/goals/' + goalid);
     }
 
+    getCalendarEventFromCalendarEventId(calendarEventId, userid) {
+        return this.db.object<CalendarEvent>('/users/' + userid + '/calendarEvents/' + calendarEventId);
+    }
+
     addAction(action: Action, capture: Capture, userid) {
         return this.db.list('users/' + userid + '/nextActions').push(action)
         .then( () => {
