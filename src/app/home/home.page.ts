@@ -401,6 +401,23 @@ export class HomePage {
   		this.goalList.pipe(take(1)).subscribe(
 	      goalArray => {
 	      	goalArray = goalArray.filter(goal => goal.active != false);
+	      	for(let goal of goalArray) {
+	      		if (goal.name == goalname) {
+	      			this.translate.get(["You already have a goal with that name.", "Ok"]).subscribe( alertMessage => {
+				  		this.alertCtrl.create({
+							message: alertMessage["You already have a goal with that name."],
+							buttons: [
+								    	{
+									        text: alertMessage["Ok"]
+								      	}
+								    ]
+						}).then( alert => {
+							alert.present();
+						});
+					});
+				return;
+	      		}
+	      	}
 	        if(goalname !== '' && goalname !== null && goalname !== undefined) {
 				this.newGoal.userid = this.auth.userid;
 				this.newGoal.name = goalname;

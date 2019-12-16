@@ -96,6 +96,7 @@
   "Tue": "Di",
   "Wed": "Mi",
   "Week": "Woche",
+  "You already have a goal with that name.": "Du hast bereits ein Projekt mit diesem Namen.",
   "You cannot create a goal without a name.": "Du kannst kein Projekt ohne Namen erstellen.",
   "You cannot save an empty capture.": "Du kannst keinen leeren Post-It erstellen.",
   "You aborted this action, it has been put back into your actions list.": "Du hast die Aktion abgebrochen. Sie wurde zurück in deine ToDo-Liste platziert.",

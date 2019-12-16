@@ -95,6 +95,7 @@
   "Tue": "Tue",
   "Wed": "Wed",
   "Week": "Week",
+  "You already have a goal with that name.": "You already have a goal with that name.",
   "You cannot create a goal without a name.": "You cannot create a goal without a name.",
   "You cannot save an empty capture.": "You cannot save an empty post-it.",
   "You aborted this action, it has been put back into your actions list.": "You aborted this action, it has been put back into your actions list.",
