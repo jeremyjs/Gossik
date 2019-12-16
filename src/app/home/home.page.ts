@@ -302,7 +302,6 @@ export class HomePage {
 	//CapturePage functions
 
 	ionFocus(event){
-		console.log(event);
 		event.target.firstChild.placeholder = '';
 	}
 
@@ -971,29 +970,29 @@ export class HomePage {
 					let end = moment(event.endTime).format('HH:mm');
 					time = alertMessage["Time"] + ': ' + start + ' - ' + end;
 				}
-			});
-			this.alertCtrl.create({
-					message: event.title + '<br>' + goal + time,
-					buttons: [
-						    	{
-							        text: 'OK'
-						      	},
-						      	{
-							        text: 'Delete',
-							        handler: () => {
-							          	this.db.deleteCalendarEvent(event.key, this.auth.userid)
-							          	let events = this.eventSource;
-							          	let index = events.indexOf(event);
-										events.splice(index,1);
-										this.eventSource = [];
-										setTimeout(() => {
-											this.eventSource = events;
-										});
-							        }
-						      	}
-						    ]
-			}).then ( alert => {
-				alert.present();
+				this.alertCtrl.create({
+						message: event.title + '<br>' + goal + time,
+						buttons: [
+							    	{
+								        text: alertMessage['Ok']
+							      	},
+							      	{
+								        text: alertMessage['Delete'],
+								        handler: () => {
+								          	this.db.deleteCalendarEvent(event.key, this.auth.userid)
+								          	let events = this.eventSource;
+								          	let index = events.indexOf(event);
+											events.splice(index,1);
+											this.eventSource = [];
+											setTimeout(() => {
+												this.eventSource = events;
+											});
+								        }
+							      	}
+							    ]
+				}).then ( alert => {
+					alert.present();
+				});
 			});
 		});
 	}
