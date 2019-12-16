@@ -251,7 +251,6 @@ export class HomePage {
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-					console.log('login!!!!!');
 						this.goToCapturePage();
 				},
 				error => this.loginError = error.message
@@ -783,8 +782,6 @@ export class HomePage {
   	}
 
   	deleteGoal(goal: Goal) {
-  		console.log('goal.key');
-  		console.log(goal);
   		this.translate.get(["Are you sure you want to delete this goal?", "No", "Delete"]).subscribe( alertMessage => {
   		this.alertCtrl.create({
 			message: alertMessage["Are you sure you want to delete this goal?"],
