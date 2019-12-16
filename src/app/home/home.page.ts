@@ -269,8 +269,7 @@ export class HomePage {
 			password: data.password
 		};
 		this.auth.signUp(credentials).then(user =>  {
-			console.log('done');
-			//this.db.createUser(user.user.uid, user.user.email);
+			this.db.createUser(user.user.uid, user.user.email);
 		}).then(
 			() => this.pageCtrl = '',
 			error => this.errorMsg = error.message
