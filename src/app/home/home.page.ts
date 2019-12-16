@@ -566,10 +566,25 @@ export class HomePage {
 	}
 
 	goalFinished() {
-		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( goal => {
+		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
 			goal.key = this.takenAction.goalid;
-			this.db.deleteGoal(goal, this.auth.userid).then( () => {
-				this.pageCtrl = 'goalFinished';
+			this.translate.get(["Are you sure you want to delete this goal?", "No", "Delete"]).subscribe( alertMessage => {
+		  		this.alertCtrl.create({
+					message: alertMessage["Are you sure you want to delete this goal?"],
+					buttons: [
+						    	{
+							        text: alertMessage["No"]
+						      	},
+						      	{
+							        text: alertMessage["Delete"],
+							        handler: () => {
+							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.pageCtrl = 'goalFinished');
+							        }
+						      	}
+						    ]
+				}).then( alert => {
+					alert.present();
+				});
 			});
 		});
 	}
