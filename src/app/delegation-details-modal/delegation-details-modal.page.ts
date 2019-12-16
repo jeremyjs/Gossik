@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { Delegation } from '../../model/delegation/delegation.model';
+import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -9,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { DatabaseService } from '../services/database.service';
 import { AuthenticationService } from '../services/authentication.service';
+
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delegation-details-modal',
@@ -25,6 +28,7 @@ export class DelegationDetailsModalPage implements OnInit {
 	deadlineString: string;
 	formatOptions: any;
   pastCheck: boolean;
+  deadlineChanged: boolean = false;
 
   constructor(
   		  public modalCtrl: ModalController,
@@ -113,8 +117,40 @@ export class DelegationDetailsModalPage implements OnInit {
   save() {
     this.delegation.content = this.defineDelegationForm.value.content;
     let delegationkey = this.delegation.key;
-    this.db.editDelegation(this.delegation, this.auth.userid);
-    this.delegation.key = delegationkey;
+    if(this.deadlineChanged && this.delegation.deadlineid) {
+      this.db.getCalendarEventFromCalendarEventId(this.delegation.deadlineid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( calendarEvent => {
+        let deadlineStartTime = new Date (this.delegation.deadline).setHours(2);
+        let deadlineEndTime = new Date (this.delegation.deadline).setHours(5);
+        let calendarEventkey = calendarEvent.key;
+        calendarEvent.startTime = new Date (deadlineStartTime).toISOString();
+        calendarEvent.endTime = new Date (deadlineEndTime).toISOString();
+        calendarEvent.key = this.delegation.deadlineid;
+        this.db.editCalendarEvent(calendarEvent, this.auth.userid)
+        calendarEvent.key = this.delegation.deadlineid;
+        this.db.editDelegation(this.delegation, this.auth.userid);
+        this.delegation.key = delegationkey;
+      });
+    } else if(this.deadlineChanged) {
+      this.db.getGoalFromGoalid(this.delegation.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
+        let deadlineStartTime = new Date (this.delegation.deadline).setHours(2);
+        let deadlineEndTime = new Date (this.delegation.deadline).setHours(5);
+        let eventData: CalendarEvent = {
+          userid: this.auth.userid,
+          goalid: this.delegation.goalid,
+          startTime: new Date(deadlineStartTime).toISOString(),
+          endTime: new Date (deadlineEndTime).toISOString(),
+          title: 'Deadline: ' + this.delegation.content,
+          allDay: true,
+          active: true,
+          color: goal.color
+        };
+        this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+          this.delegation.deadlineid = event.key;
+          this.db.editDelegation(this.delegation, this.auth.userid);
+          this.delegation.key = delegationkey
+        });
+      });
+    }
     this.modalCtrl.dismiss();
   }
 
@@ -125,6 +161,7 @@ export class DelegationDetailsModalPage implements OnInit {
   deadlineSelected(event) {
     let deadlineFixed = new Date (event).setHours(2);
     this.delegation.deadline = new Date (deadlineFixed);
+    this.deadlineChanged = true;
     this.deadlineString = new Date (this.delegation.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
     this.edit = false;
   }

@@ -1143,7 +1143,6 @@ export class HomePage {
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
 				this.alertCtrl.create({
-						title: action.content,
 						message: alertMessage["Do you want to start with this action?"],
 						buttons: [
 							      	{

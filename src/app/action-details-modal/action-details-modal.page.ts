@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { Action } from '../../model/action/action.model';
+import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -121,9 +122,7 @@ export class ActionDetailsModalPage implements OnInit {
     this.action.priority = this.defineActionForm.value.priority;
     this.action.time = this.defineActionForm.value.time;
     let actionkey = this.action.key;
-    this.db.editAction(this.action, this.auth.userid);
-    this.action.key = actionkey;
-    if(this.deadlineChanged) {
+    if(this.deadlineChanged && this.action.deadlineid) {
       this.db.getCalendarEventFromCalendarEventId(this.action.deadlineid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( calendarEvent => {
         let deadlineStartTime = new Date (this.action.deadline).setHours(2);
         let deadlineEndTime = new Date (this.action.deadline).setHours(5);
@@ -132,7 +131,29 @@ export class ActionDetailsModalPage implements OnInit {
         calendarEvent.endTime = new Date (deadlineEndTime).toISOString();
         calendarEvent.key = this.action.deadlineid;
         this.db.editCalendarEvent(calendarEvent, this.auth.userid)
-        calendarEvent.key = calendarEventkey;
+        calendarEvent.key = this.action.deadlineid;
+        this.db.editAction(this.action, this.auth.userid);
+        this.action.key = actionkey;
+      });
+    } else if(this.deadlineChanged) {
+      this.db.getGoalFromGoalid(this.action.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
+        let deadlineStartTime = new Date (this.action.deadline).setHours(2);
+        let deadlineEndTime = new Date (this.action.deadline).setHours(5);
+        let eventData: CalendarEvent = {
+          userid: this.auth.userid,
+          goalid: this.action.goalid,
+          startTime: new Date(deadlineStartTime).toISOString(),
+          endTime: new Date (deadlineEndTime).toISOString(),
+          title: 'Deadline: ' + this.action.content,
+          allDay: true,
+          active: true,
+          color: goal.color
+        };
+        this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+          this.action.deadlineid = event.key;
+          this.db.editAction(this.action, this.auth.userid);
+          this.action.key = actionkey
+        });
       });
     }
     this.modalCtrl.dismiss();
