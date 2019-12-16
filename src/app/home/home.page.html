@@ -43,7 +43,7 @@
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
 					<ion-list inset>
 						<ion-item no-lines>
-							<ion-input type="text" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
 						</ion-item>
 						<ion-item no-lines>
 							<ion-input type="password" placeholder="{{'Password' | translate }}" formControlName="password"></ion-input>
@@ -68,7 +68,7 @@
 				<form (ngSubmit)="resetPassword()" [formGroup]="forgotPasswordForm">
 					<ion-list inset>
 						<ion-item no-lines>
-							<ion-input type="text" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal>
@@ -80,7 +80,7 @@
 				<form (ngSubmit)="signUp()" [formGroup]="signUpForm">
 					<ion-list inset>
 						<ion-item no-lines>
-							<ion-input type="text" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
 						</ion-item>
 
 						<ion-item no-lines>
@@ -106,7 +106,7 @@
     <div class="margin-auto width-90 height-20" *ngIf="isApp">
       <ion-card class="width-100 margin-top-10 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
-          <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
         </ion-item>
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
@@ -114,7 +114,7 @@
     <ion-row class="width-40 margin-auto margin-top-10 height-20" *ngIf="!isApp">
       <ion-card class="margin-top-10 width-100 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
-          <ion-input type="text" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
         </ion-item>
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
@@ -158,7 +158,7 @@
               </ion-card>
               <ion-card class="text-align-center margin-top-10 overflow-scroll no-scrollbar width-100 margin-left-0 display-inline-block secondary border-radius-20px">
                 <ion-item class="border-radius-20px">
-                  <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+                  <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
                 </ion-item>
                 <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
               </ion-card>
@@ -201,7 +201,7 @@
         </ion-card>
         <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px">
           <ion-item class="border-radius-20px">
-            <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+            <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
           <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
         </ion-card>
@@ -339,7 +339,7 @@
       <div *ngIf="pageCtrl == ''">
         <ion-card class="width-18 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px">
           <ion-item class="border-radius-20px">
-            <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+            <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
 
           <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
@@ -495,7 +495,7 @@
       <div *ngIf="pageCtrl == ''">
         <ion-card class="width-90 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-auto secondary border-radius-20px">
           <ion-item class="border-radius-20px">
-            <ion-input type="text" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+            <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
           </ion-item>
 
           <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>

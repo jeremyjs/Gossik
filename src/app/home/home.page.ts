@@ -299,7 +299,13 @@ export class HomePage {
     	this.auth.signOut().then( () => this.changePage('LoginPage'));
     }
 
-	//HomePage functions
+	//CapturePage functions
+
+	ionFocus(event){
+		console.log(event);
+		event.target.firstChild.placeholder = '';
+	}
+
   	addCapture(capture: Capture) {
 	    if(capture.content !== '' && capture.content !== null && capture.content !== undefined) {
 	      this.errorMsg = "";

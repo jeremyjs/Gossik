@@ -10,7 +10,7 @@
 <ion-content color="secondary">
   <ion-list class="text-align-center">
     <ion-item>
-      <ion-input type="text" placeholder="{{'Input event title' | translate }}" [(ngModel)]="event.title"></ion-input>
+      <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Input event title' | translate }}" [(ngModel)]="event.title"></ion-input>
     </ion-item>
 
     <ion-item>

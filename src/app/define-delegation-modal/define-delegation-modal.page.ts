@@ -71,6 +71,10 @@ export class DefineDelegationModalPage implements OnInit {
     });
   }
 
+  ionFocus(event){
+    event.target.firstChild.placeholder = '';
+  }
+
   cancel() {
     this.modalCtrl.dismiss('cancel');
   }

@@ -71,6 +71,9 @@ export class CalendarEventModalPage implements OnInit {
 
   ngOnInit() {
   }
+  	ionFocus(event){
+		event.target.firstChild.placeholder = '';
+	}
 
   	cancel() {
 		this.modalCtrl.dismiss();

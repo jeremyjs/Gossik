@@ -25,7 +25,7 @@
     </div>
     <form (ngSubmit)="check()" [formGroup]="defineActionForm">
       <ion-item no-lines>
-        <ion-input type="text" formControlName="content"></ion-input>
+        <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Input new action' | translate}}" formControlName="content"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>{{"Priority (1: low, 10: high)" | translate }}:</ion-label>

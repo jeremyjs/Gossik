@@ -74,6 +74,10 @@ export class DefineActionModalPage implements OnInit {
     this.pastCheck = false;
   }
 
+  ionFocus(event){
+    event.target.firstChild.placeholder = '';
+  }
+
 
   cancel() {
     this.modalCtrl.dismiss('cancel');
