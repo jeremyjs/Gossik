@@ -322,7 +322,10 @@
                   <ion-col size="4" class="text-align-center">{{"Time" | translate}}</ion-col>
                 </ion-row>
                 <ion-row class="background-white margin-bottom-1 border-radius-5px" *ngFor="let action of doableActionArray" (click)="takeThisAction(action)">
-                  <ion-col size="8">{{action.content}}</ion-col>
+                  <ion-col size="8">
+                    <ion-card class="margin-0 project-color display-inline-block" [ngStyle]="{'background-color': goalDict[action.goalid].color}"></ion-card>
+                    {{action.content}}
+                  </ion-col>
                   <ion-col size="4" class="text-align-center">{{action.time}}</ion-col>
                 </ion-row>
               </ion-grid>
