@@ -629,13 +629,13 @@
           </ion-buttons>
         </ion-col>
         <ion-col style="text-align: center">
-          <button icon-only (click)="changeWeek(-1)">
+          <button class="background-transparent" icon-only (click)="changeWeek(-1)">
             <ion-icon class="size-20px" name="arrow-back"></ion-icon>
           </button>
-          <button (click)="changeDate()">
+          <button class="background-transparent" (click)="changeDate()">
             <h2 class="display-inline-block">{{ viewTitle }}</h2>
           </button>
-          <button icon-only (click)="changeWeek(1)">
+          <button class="background-transparent" icon-only (click)="changeWeek(1)">
             <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
           </button>
         </ion-col>

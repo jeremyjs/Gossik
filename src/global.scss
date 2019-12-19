@@ -254,6 +254,10 @@ ion-toolbar {
   background-color: var(--ion-color-white);
 }
 
+.background-transparent {
+  background-color: transparent;
+}
+
 ion-input {
   scrollbar-width: none;
   background-color: var(--ion-color-white) !important;
