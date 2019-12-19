@@ -33,7 +33,6 @@ export class AppComponent {
   }
 
   goToPage(page: string) {
-    console.log('navigating to home/' + page);
-    this.router.navigate(['home/' + page]);
+    this.router.navigate(['home/' + page], { replaceUrl: true });
   }
 }
