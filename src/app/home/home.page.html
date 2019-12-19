@@ -632,7 +632,9 @@
           <button icon-only (click)="changeWeek(-1)">
             <ion-icon class="size-20px" name="arrow-back"></ion-icon>
           </button>
-          <h2 class="display-inline-block">{{ viewTitle }}</h2>
+          <button (click)="changeDate()">
+            <h2 class="display-inline-block">{{ viewTitle }}</h2>
+          </button>
           <button icon-only (click)="changeWeek(1)">
             <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
           </button>

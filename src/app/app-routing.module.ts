@@ -41,6 +41,10 @@ const routes: Routes = [
     path: 'reference-details-modal',
     loadChildren: () => import('./reference-details-modal/reference-details-modal.module').then( m => m.ReferenceDetailsModalPageModule)
   },
+  {
+    path: 'change-week-modal',
+    loadChildren: () => import('./change-week-modal/change-week-modal.module').then( m => m.ChangeWeekModalPageModule)
+  },
 ];
 
 @NgModule({

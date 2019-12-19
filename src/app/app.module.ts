@@ -33,6 +33,7 @@ import { DefineDelegationModalPageModule } from './define-delegation-modal/defin
 import { DefineReferenceModalPageModule } from './define-reference-modal/define-reference-modal.module';
 import { GoalDetailsModalPageModule } from './goal-details-modal/goal-details-modal.module';
 import { CalendarEventModalPageModule } from './calendar-event-modal/calendar-event-modal.module';
+import { ChangeWeekModalPageModule } from './change-week-modal/change-week-modal.module';
 
 import { DatePickerModule } from 'ionic4-date-picker';
 
@@ -73,6 +74,7 @@ import { FirebaseX } from "@ionic-native/firebase-x/ngx";
     DefineReferenceModalPageModule,
     GoalDetailsModalPageModule,
     CalendarEventModalPageModule,
+    ChangeWeekModalPageModule,
     DatePickerModule,
     NgCalendarModule
   	],

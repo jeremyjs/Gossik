@@ -27,6 +27,7 @@ import { DefineDelegationModalPage } from '../define-delegation-modal/define-del
 import { DefineReferenceModalPage } from '../define-reference-modal/define-reference-modal.page';
 import { GoalDetailsModalPage } from '../goal-details-modal/goal-details-modal.page';
 import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-modal.page';
+import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 
 import * as moment from 'moment';
 
@@ -1067,6 +1068,17 @@ export class HomePage {
 		let nextWeek = new Date(this.calendar.currentDate);
 		nextWeek.setDate(this.calendar.currentDate.getDate() +  direction * 7);
 		this.calendar.currentDate = nextWeek;
+	}
+
+	changeDate() {
+		let modal = this.modalCtrl.create({
+				component: ChangeWeekModalPage
+			}).then (modal => {
+				modal.present();
+				modal.onDidDismiss().then(data => {
+					this.calendar.currentDate = data.data;
+				});
+			});
 	}
 
   	// ToDoPage functions
