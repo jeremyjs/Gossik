@@ -621,7 +621,7 @@
   <!-- CalendarPage -->
     <div class="height-90 width-90 margin-top-10 secondary border-radius-20px" *ngIf="viewpoint == 'CalendarPage'">
       <ion-row class="width-100 height-10">
-        <ion-col size="3">
+        <ion-col size="1">
           <ion-buttons start>
             <ion-button class="darkbutton" icon-only (click)="addEvent()">
               <ion-icon name="add"></ion-icon>
@@ -629,7 +629,13 @@
           </ion-buttons>
         </ion-col>
         <ion-col style="text-align: center">
-          <h2>{{ viewTitle }}</h2>
+          <button icon-only (click)="changeWeek(-1)">
+            <ion-icon class="size-20px" name="arrow-back"></ion-icon>
+          </button>
+          <h2 class="display-inline-block">{{ viewTitle }}</h2>
+          <button icon-only (click)="changeWeek(1)">
+            <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
+          </button>
         </ion-col>
       </ion-row>
       <ion-row class="width-100 height-90">

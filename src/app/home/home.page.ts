@@ -843,6 +843,7 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
+  		this.calendar.currentDate = new Date();
   		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
@@ -1060,6 +1061,12 @@ export class HomePage {
 				});
 			});
 		}
+	}
+
+	changeWeek(direction: number) {
+		let nextWeek = new Date(this.calendar.currentDate);
+		nextWeek.setDate(this.calendar.currentDate.getDate() +  direction * 7);
+		this.calendar.currentDate = nextWeek;
 	}
 
   	// ToDoPage functions
