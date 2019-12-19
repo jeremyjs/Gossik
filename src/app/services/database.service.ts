@@ -106,8 +106,6 @@ export class DatabaseService {
     }
 
     deleteDelegation(delegation: Delegation, userid) {
-        console.log('deleting delegation');
-        console.log(delegation);
         delegation.active = false;
         return this.editDelegation(delegation, userid).then( () =>
             {

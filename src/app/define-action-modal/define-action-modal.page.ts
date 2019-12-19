@@ -12,7 +12,8 @@ import { Capture } from '../../model/capture/capture.model';
 })
 export class DefineActionModalPage implements OnInit {
 
-	deadline: boolean;
+  hasDeadline: boolean;
+	deadline: string = '';
 	defineActionForm: FormGroup;
 	capture = {} as Capture;
 	monthLabels = [];
@@ -41,7 +42,6 @@ export class DefineActionModalPage implements OnInit {
     this.defineActionForm = this.fb.group({
     content: [this.capture.content, Validators.required],
     priority: ['', Validators.required],
-    deadline: ['', Validators.required],
     time: ['', Validators.required]
     });
     this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
@@ -84,8 +84,8 @@ export class DefineActionModalPage implements OnInit {
   }
 
   check() {
-    if(this.defineActionForm.value.deadline) {
-      if(new Date(this.defineActionForm.value.deadline) < new Date() && !this.pastCheck) {
+    if(this.deadline) {
+      if(new Date(this.deadline) < new Date() && !this.pastCheck) {
         this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
           this.alertCtrl.create({
               message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
@@ -108,12 +108,12 @@ export class DefineActionModalPage implements OnInit {
   }
 
   save() {
-  	this.modalCtrl.dismiss(this.defineActionForm.value)
+  	this.modalCtrl.dismiss({content: this.defineActionForm.value.content, deadline: this.deadline})
   }
 
   deadlineSelected(event) {
     let deadlineFixed = new Date (event).setHours(2);
-    this.defineActionForm.value.deadline = new Date (deadlineFixed).toISOString();
+    this.deadline = new Date (deadlineFixed).toISOString();
   }
 
 }

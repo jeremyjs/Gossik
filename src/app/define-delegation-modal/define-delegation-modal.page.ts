@@ -12,13 +12,14 @@ import { Capture } from '../../model/capture/capture.model';
 })
 export class DefineDelegationModalPage implements OnInit {
 
-	deadline: boolean;
+  hasDeadline: boolean;
 	defineDelegationForm: FormGroup;
 	capture = {} as Capture;
 	monthLabels = [];
 	dayLabels = [];
   pastCheck: boolean;
   goalname: string;
+  deadline: string = '';
 
   constructor(
   	public navParams: NavParams,
@@ -33,14 +34,13 @@ export class DefineDelegationModalPage implements OnInit {
     if(this.navParams.get('capture')) {
       this.capture = this.navParams.get('capture');
     } else {
-      this.capture = {} as Capture;
+      this.capture = {content: ''} as Capture;
     }
     if(this.navParams.get('goal')) {
       this.goalname = this.navParams.get('goal');
     }
     this.defineDelegationForm = this.fb.group({
-      content: [this.capture.content, Validators.required],
-      deadline: ['', Validators.required]
+      content: [this.capture.content, Validators.required]
     });
     this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
       this.monthLabels = [
@@ -80,8 +80,8 @@ export class DefineDelegationModalPage implements OnInit {
   }
 
   check() {
-    if(this.defineDelegationForm.value.deadline) {
-      if(new Date(this.defineDelegationForm.value.deadline) < new Date() && !this.pastCheck) {
+    if(this.deadline) {
+      if(new Date(this.deadline) < new Date() && !this.pastCheck) {
         this.translate.get(["The selected date lies in the past. Please check if that is wanted.", "Ok"]).subscribe( alertMessage => {
           this.alertCtrl.create({
               message: alertMessage["The selected date lies in the past. Please check if that is wanted."],
@@ -104,11 +104,11 @@ export class DefineDelegationModalPage implements OnInit {
   }
 
   save() {
-  	this.modalCtrl.dismiss(this.defineDelegationForm.value)
+  	this.modalCtrl.dismiss({content: this.defineDelegationForm.value.content, deadline: this.deadline });
   }
 
   deadlineSelected(event) {
     let deadlineFixed = new Date (event).setHours(2);
-    this.defineDelegationForm.value.deadline = new Date (deadlineFixed).toISOString();
+    this.deadline = new Date (deadlineFixed).toISOString();
   }
 }
