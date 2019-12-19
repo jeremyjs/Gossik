@@ -10,6 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ChangeWeekModalPage implements OnInit {
 
+	monthLabels = [];
+	dayLabels = [];
+	formatOptions: any;
+
   constructor(
   	private modalCtrl: ModalController,
   	public translate: TranslateService
