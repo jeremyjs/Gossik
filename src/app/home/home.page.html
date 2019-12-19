@@ -286,7 +286,7 @@
           <ion-row *ngIf="isApp">
             <ion-col>
               <ion-item class="border-radius-20px">
-              <ion-select [(ngModel)]="goal.key" (ionChange)="chooseGoal($event)">
+              <ion-select multiple [(ngModel)]="goalKeyArray" (ionChange)="chooseGoal($event)">
                 <ion-label>{{"Project" | translate }}</ion-label>
                 <ion-select-option selected value="None">{{"All Projects" | translate }}</ion-select-option>
                 <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
