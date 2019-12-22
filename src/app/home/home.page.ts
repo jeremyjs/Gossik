@@ -960,11 +960,68 @@ export class HomePage {
 		});
 	}
 
+	editCalendarEvent(calendarEvent) {
+		this.goalArray = [];
+  		this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let goal: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return goal;
+			});}));
+	    this.goalList.subscribe(
+	      goalArray => {
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+	        		this.goalArray.push(goal);
+	        	}
+	        }
+	    });
+		let modal = this.modalCtrl.create({
+			component: CalendarEventModalPage,
+			componentProps: {calendarEvent: calendarEvent}
+		}).then( modal => {
+			modal.present();
+			modal.onDidDismiss().then(data => {
+				console.log(data.data);
+				if(data.data) {
+					if(!data.data.goalid) {
+						data.data.color = "#C0C0C0";
+						data.data.goalid = '';
+					} else {
+					    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
+					    if(goal) {
+					    	data.data.color = goal.color;
+						} else {
+							data.data.color = "#C0C0C0";
+						}
+					}
+					let calendarEventkey = data.data.key;
+					this.db.editCalendarEvent(data.data, this.auth.userid)
+					data.data.key = calendarEventkey;
+					data.data.startTime = new Date(data.data.startTime);
+			        data.data.endTime = new Date(data.data.endTime);
+					let events = this.eventSource;
+					events.push(data.data);
+					this.eventSource = [];
+					setTimeout(() => {
+						this.eventSource = events;
+					});
+				}
+			});
+		});
+
+	}
+
 	onEventSelected(event){
 		this.db.getGoalFromGoalid(event.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			let goal = '';
 			let time = '';
-			this.translate.get(["Goal", "Time", "Ok", "Delete"]).subscribe( alertMessage => {
+			this.translate.get(["Goal", "Time", "Ok", "Delete", "Edit"]).subscribe( alertMessage => {
 				if(event.goalid) {
 					goal = alertMessage["Goal"] + ': ' + data.name + '<br>';
 				}
@@ -978,6 +1035,12 @@ export class HomePage {
 						buttons: [
 							    	{
 								        text: alertMessage['Ok']
+							      	},
+							      	{
+								        text: alertMessage['Edit'],
+								        handler: () => {
+								          	this.editCalendarEvent(event);
+								        }
 							      	},
 							      	{
 								        text: alertMessage['Delete'],

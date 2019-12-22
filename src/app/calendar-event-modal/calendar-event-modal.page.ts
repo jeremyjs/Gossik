@@ -34,38 +34,47 @@ export class CalendarEventModalPage implements OnInit {
 
   constructor(
   		public modalCtrl: ModalController,
-	  	private navParams: NavParams,
+	  	public navParams: NavParams,
 	  	private db: DatabaseService,
 	  	public translate: TranslateService,
       	public fb: FormBuilder,
       	private auth: AuthenticationService,
       	public alertCtrl: AlertController
       	) {
-  	let preselectedDate = moment(this.navParams.get('selectedDay')).format();
+  	if(this.navParams.get('selectedDay')) {
+	  	let preselectedDate = moment(this.navParams.get('selectedDay')).format();
 	    this.eventStartTimeISOString = preselectedDate;
 	    this.eventEndTimeISOString = preselectedDate;
-	    this.goalList = this.db.getGoalList(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(
-					map(
-						changes => { 
-							return changes.map( c => {
-								let goal: Goal = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return goal;
-					});})
-
-				);
-		this.goalList.subscribe(
-	      goalArray => {
-  			this.goalArray = [];
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-		        	this.goalArray.push(goal);
-		        }
-		    }
+	} else if(this.navParams.get('calendarEvent')) {
+		this.event = this.navParams.get('calendarEvent');
+		this.goalid = this.event.goalid;
+		this.eventStartTimeISOString = this.event.startTime.toISOString();
+		setTimeout(() => {
+			this.eventEndTimeISOString = this.event.endTime.toISOString();
 		});
+	}
+    this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let goal: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return goal;
+				});})
+
+			);
+	this.goalList.subscribe(
+      goalArray => {
+			this.goalArray = [];
+        for(let goal of goalArray) {
+        	if(goal.active != false) {
+	        	this.goalArray.push(goal);
+	        }
+	    }
+	});
 	this.pastCheck = false;
   }
 
@@ -104,7 +113,7 @@ export class CalendarEventModalPage implements OnInit {
 		} else {
 			this.save();
 		}
-  }
+  	}
  
 	save() {
 		this.event.startTime = this.eventStartTimeISOString;
@@ -114,7 +123,9 @@ export class CalendarEventModalPage implements OnInit {
 	}
 
 	adaptEndDate() {
-		this.eventEndTimeISOString = this.eventStartTimeISOString;
+		if(new Date(this.eventEndTimeISOString) <= new Date(this.eventStartTimeISOString)) {
+			this.eventEndTimeISOString = this.eventStartTimeISOString;
+		}
 	}
 
 }

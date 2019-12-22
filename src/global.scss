@@ -141,7 +141,7 @@ ion-button {
 ion-item {
         border-bottom: 1px solid #150931;
         white-space: pre-line;
-    }
+}
 
 .content-container {
   background-color: var(--ion-color-secondary);
@@ -221,6 +221,14 @@ ion-toolbar {
 
 .weekview-normal-event-container {
   bottom: 0px;
+}
+
+.alert-wrapper {
+  min-width: 350px !important;  
+}
+
+.alert-button-group-vertical {
+  flex-direction: row !important;
 }
 
 .padding-bottom-50 {
