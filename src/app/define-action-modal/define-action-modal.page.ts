@@ -108,7 +108,7 @@ export class DefineActionModalPage implements OnInit {
   }
 
   save() {
-  	this.modalCtrl.dismiss({content: this.defineActionForm.value.content, deadline: this.deadline})
+  	this.modalCtrl.dismiss({content: this.defineActionForm.value.content, priority: this.defineActionForm.value.priority , time: this.defineActionForm.value.time, deadline: this.deadline})
   }
 
   deadlineSelected(event) {
