@@ -386,6 +386,7 @@ export class HomePage {
 				});}));
 		this.goalList.subscribe( goalArray => {
 			this.goalArray = [];
+			goalArray.reverse();
 			for(let goal of goalArray) {
 				if(goal.active != false) {
 					this.goalArray.push(goal);
