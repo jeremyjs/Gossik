@@ -852,10 +852,10 @@ export class HomePage {
 				map(
 					changes => { 
 						return changes.map( c => {
-							let goal: Goal = { 
+							let data: Goal = { 
 								key: c.payload.key, ...c.payload.val()
 								};
-							return goal;
+							return data;
 			});}));
 	    this.goalList.subscribe(
 	      goalArray => {
@@ -872,10 +872,10 @@ export class HomePage {
 				map(
 					changes => { 
 						return changes.map( c => {
-							let calendarEvent: CalendarEvent = { 
+							let data: CalendarEvent = { 
 								key: c.payload.key, ...c.payload.val()
 								};
-							return calendarEvent;
+							return data;
 			});}));
 		this.calendarEventList.subscribe(
 	      	calendarEventArray => {
@@ -1160,10 +1160,10 @@ export class HomePage {
 				map(
 					changes => { 
 						return changes.map( c => {
-							let goal: Goal = { 
+							let data: Goal = { 
 								key: c.payload.key, ...c.payload.val()
 								};
-							return goal;
+							return data;
 			});}));
 		this.goalList.subscribe(
 	      goalArray => {
