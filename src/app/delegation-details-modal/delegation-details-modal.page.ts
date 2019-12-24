@@ -147,9 +147,12 @@ export class DelegationDetailsModalPage implements OnInit {
         this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
           this.delegation.deadlineid = event.key;
           this.db.editDelegation(this.delegation, this.auth.userid);
-          this.delegation.key = delegationkey
+          this.delegation.key = delegationkey;
         });
       });
+    } else {
+      this.db.editDelegation(this.delegation, this.auth.userid);
+      this.delegation.key = delegationkey;
     }
     this.modalCtrl.dismiss();
   }

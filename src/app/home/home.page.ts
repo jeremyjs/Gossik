@@ -117,6 +117,7 @@ export class HomePage {
 	goalDict = {};
 	loggedin: boolean;
 	goalKeyArray: string[];
+    deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
 
@@ -1213,9 +1214,7 @@ export class HomePage {
 		    this.actionList.subscribe(
 		      actionArray => {
 		      	this.doableActionArray = [];
-		      	console.log(this.goalKeyArray);
 		        for(let action of actionArray) {
-		      		console.log(this.goalKeyArray.indexOf(action.goalid));
 		        	if(action.active != false) {
 						if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.indexOf("None") != -1 )) {
 						this.doableActionArray.push(action);

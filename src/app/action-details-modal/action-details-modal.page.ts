@@ -152,9 +152,12 @@ export class ActionDetailsModalPage implements OnInit {
         this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
           this.action.deadlineid = event.key;
           this.db.editAction(this.action, this.auth.userid);
-          this.action.key = actionkey
+          this.action.key = actionkey;
         });
       });
+    } else {
+      this.db.editAction(this.action, this.auth.userid);
+      this.action.key = actionkey;
     }
     this.modalCtrl.dismiss();
   }
