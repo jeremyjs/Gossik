@@ -1133,6 +1133,12 @@ export class HomePage {
 		this.calendar.currentDate = nextWeek;
 	}
 
+	changeDay(direction: number) {
+		let nextDay = new Date(this.calendar.currentDate);
+		nextDay.setDate(this.calendar.currentDate.getDate() +  direction);
+		this.calendar.currentDate = nextDay;
+	}
+
 	changeDate() {
 		let modal = this.modalCtrl.create({
 				component: ChangeWeekModalPage

@@ -633,14 +633,20 @@
             <ion-icon name="add"></ion-icon>
           </ion-button>
           <br>
-          <button class="background-transparent" icon-only (click)="changeWeek(-1)">
+          <button class="background-transparent" icon-only (click)="changeWeek(-1)" *ngIf="!isApp">
+            <ion-icon class="size-20px" name="arrow-back"></ion-icon>
+          </button>
+          <button class="background-transparent" icon-only (click)="changeDay(-1)" *ngIf="isApp">
             <ion-icon class="size-20px" name="arrow-back"></ion-icon>
           </button>
           <button class="background-transparent" (click)="changeDate()">
             <h2 class="display-inline-block" *ngIf="!isApp">{{ viewTitle }}</h2>
             <h3 class="display-inline-block" *ngIf="isApp">{{ viewTitle }}</h3>
           </button>
-          <button class="background-transparent" icon-only (click)="changeWeek(1)">
+          <button class="background-transparent" icon-only (click)="changeWeek(1)" *ngIf="!isApp">
+            <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
+          </button>
+          <button class="background-transparent" icon-only (click)="changeDay(1)" *ngIf="isApp">
             <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
           </button>
         </ion-col>
