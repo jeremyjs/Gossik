@@ -117,6 +117,7 @@ export class HomePage {
 	goalDict = {};
 	loggedin: boolean;
 	goalKeyArray: string[];
+	backButton: any;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -141,6 +142,22 @@ export class HomePage {
 		} else {
 			this.calendar.mode = 'week';
 		}
+		this.backButton = this.platform.backButton;
+		this.backButton.subscribe(()=>{
+			this.alertCtrl.getTop().then ( alert => {
+				if(alert) {
+					alert.dismiss();
+				} else {
+					this.modalCtrl.getTop().then( modal => {
+						if(modal)  {
+							modal.dismiss();
+						} else {
+							navigator['app'].exitApp();
+						}
+					})
+				}
+			})
+		});
 	}
 
 	ngOnInit() {
@@ -461,6 +478,7 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
+				this.backButton.subscribe(()=>{ navigator['app'].exitApp(); });
 				if(data.data != 'cancel' && data.data.content) {
 					let action: Action = data.data;
 					action.userid = this.auth.userid;
