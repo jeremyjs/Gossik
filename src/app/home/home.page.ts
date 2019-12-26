@@ -160,27 +160,41 @@ export class HomePage {
 		});
 	}
 
+	initPushNotifications() {
+		this.firebase.getToken().then(token => {
+		this.db.saveDeviceToken(this.auth.userid, token);
+		});
+		this.firebase.onMessageReceived().subscribe(data => {
+			this.alertCtrl.create({
+				message: data.title + ' ' + data.body,
+				buttons: [
+					    	{
+						        text: "Ok"
+					      	}
+					    ]
+			}).then( alert => {
+				alert.present();
+			});
+		});
+	}
+
 	ngOnInit() {
   		this.auth.afAuth.authState
 			.subscribe(
 				user => {
 				  if (user) {
 				  	if(this.isApp) {
-					  	this.firebase.getToken().then(token => {
-							this.db.saveDeviceToken(this.auth.userid, token);
-						});
-						this.firebase.onMessageReceived().subscribe(data => {
-							this.alertCtrl.create({
-								message: data.title + ' ' + data.body,
-								buttons: [
-									    	{
-										        text: "Ok"
-									      	}
-									    ]
-							}).then( alert => {
-								alert.present();
-							});
-						});
+				  		this.firebase.hasPermission( hasPermission => {
+				  			if(hasPermission) {
+				  				this.initPushNotifications();
+					  		} else {
+					  			this.firebase.grantPermission().then( hasPermission => {
+					  				if(hasPermission) {
+					  					this.initPushNotifications();
+					  				}
+					  			})
+					  		}
+				  		})
 					}
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 				  	this.db.trackLogin(this.auth.userid);
