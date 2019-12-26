@@ -165,8 +165,24 @@ export class HomePage {
 		this.db.saveDeviceToken(this.auth.userid, token);
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
+			let title = '';
+			if(data.title) {
+				title = data.title;
+			} else if(data.notification && data.notification.title) {
+				title = data.notification.title;
+			} else if(data.aps && data.aps.alert && data.aps.alert.title) {
+				title = data.aps.alert.title;
+			}
+			let body = '';
+			if(data.body){
+		        body = data.body;
+		    } else if(data.notification && data.notification.body){
+		        body = data.notification.body;
+		    } else if(data.aps && data.aps.alert && data.aps.alert.body){
+		        body = data.aps.alert.body;
+		    }
 			this.alertCtrl.create({
-				message: data.title + ' ' + data.body,
+				message: title + ' ' + body,
 				buttons: [
 					    	{
 						        text: "Ok"
