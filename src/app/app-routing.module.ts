@@ -45,6 +45,10 @@ const routes: Routes = [
     path: 'change-week-modal',
     loadChildren: () => import('./change-week-modal/change-week-modal.module').then( m => m.ChangeWeekModalPageModule)
   },
+  {
+    path: 'privacy-policy',
+    loadChildren: () => import('./privacy-policy/privacy-policy.module').then( m => m.PrivacyPolicyPageModule)
+  },
 ];
 
 @NgModule({

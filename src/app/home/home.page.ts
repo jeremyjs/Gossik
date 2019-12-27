@@ -200,7 +200,7 @@ export class HomePage {
 				user => {
 				  if (user) {
 				  	if(this.isApp) {
-				  		this.firebase.hasPermission( hasPermission => {
+				  		this.firebase.hasPermission().then( hasPermission => {
 				  			if(hasPermission) {
 				  				this.initPushNotifications();
 					  		} else {
@@ -271,6 +271,10 @@ export class HomePage {
   		this.errorMsg = '';
   		this.pageCtrl = '';
   		this.viewpoint = viewpoint;
+  	}
+
+  	goToPrivacyPolicyPage() {
+  		this.router.navigate(['privacy-policy'], { replaceUrl: true });
   	}
 
   	// LoginPage functions
