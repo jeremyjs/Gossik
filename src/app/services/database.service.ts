@@ -16,6 +16,10 @@ import { map, take } from 'rxjs/operators';
 export class DatabaseService {
 
   	userData = {} as User;
+    tutorial = {
+            'welcome': true,
+            'postit': true
+        };
  
     constructor(
     	private db: AngularFireDatabase
@@ -23,7 +27,28 @@ export class DatabaseService {
     
     createUser(userid, email) {
         this.userData.email = email;
+        this.userData.tutorial = this.tutorial;
         return this.db.list('users').set(userid, this.userData); 
+    }
+
+    addTutorial(userid) {
+        this.db.object<any>('users/' + userid).valueChanges().pipe(take(1)).subscribe( user => {
+            if(!user.hasOwnProperty('tutorial')) {
+                return this.db.list('users/' + userid).set('tutorial', this.tutorial);
+            }
+        });
+    }
+
+    getTutorialList(userid) {
+        return this.db.object('users/' + userid + '/tutorial');
+    }
+
+    finishTutorial(userid, tutorialPart) {
+        let tutorials = {
+            "welcome": { welcome: false },
+            "postit": { postit: false }
+        }
+        return this.db.list('users/' + userid).update('tutorial', tutorials["welcome"]);
     }
 
     changeLanguage(userid, language) {

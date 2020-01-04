@@ -199,6 +199,7 @@ export class HomePage {
 			.subscribe(
 				user => {
 				  if (user) {
+					this.db.addTutorial(this.auth.userid);
 				  	if(this.isApp) {
 				  		this.firebase.hasPermission().then( hasPermission => {
 				  			if(hasPermission) {
@@ -305,7 +306,28 @@ export class HomePage {
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-						this.goToCapturePage();
+						setTimeout(() => {
+							this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
+								if(tutorial['welcome']) {
+									this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
+								  		this.alertCtrl.create({
+											message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
+											buttons: [
+												      	{
+													        text: alertMessage["OK"],
+													        handler: () => {
+													        	this.db.finishTutorial(this.auth.userid, 'postit');
+																this.goToCapturePage();
+													        }
+												      	}
+												    ]
+										}).then( alert => {
+											alert.present();
+										});
+									});
+								}
+							});
+						});
 				},
 				error => this.loginError = error.message
 			);
