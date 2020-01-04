@@ -118,6 +118,7 @@ export class HomePage {
 	loggedin: boolean;
 	goalKeyArray: string[];
 	backButton: any;
+	capturePageStarted: boolean = false;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -234,7 +235,7 @@ export class HomePage {
 							} else {
 								this.goToCapturePage();
 							}
-						} 
+						}
 					});
 				  	let page = this.activatedRoute.snapshot.paramMap.get('page');
 					if(page) {
@@ -326,28 +327,7 @@ export class HomePage {
 			this.db.createUser(user.user.uid, user.user.email);
 		}).then(
 			() => {
-				setTimeout(() => {
-					this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
-						if(tutorial['welcome']) {
-							this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
-						  		this.alertCtrl.create({
-									message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
-									buttons: [
-										      	{
-											        text: alertMessage["OK"],
-											        handler: () => {
-											        	this.db.finishTutorial(this.auth.userid, 'welcome');
-														this.goToCapturePage();
-											        }
-										      	}
-										    ]
-								}).then( alert => {
-									alert.present();
-								});
-							});
-						}
-					});
-				});
+				setTimeout(() => this.goToCapturePage());
 			});
   	}
 	
@@ -402,6 +382,31 @@ export class HomePage {
   	}
 
   	goToCapturePage() {
+  		if(!this.capturePageStarted) {
+  			console.log('hr');
+	  		this.capturePageStarted = true;
+	  		console.log('hjj');
+	  		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
+				if(tutorial['welcome']) {
+					this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
+				  		this.alertCtrl.create({
+							message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
+							buttons: [
+								      	{
+									        text: alertMessage["OK"],
+									        handler: () => {
+									        	this.db.finishTutorial(this.auth.userid, 'welcome');
+									        	this.capturePageStarted = false;
+									        }
+								      	}
+								    ]
+						}).then( alert => {
+							alert.present();
+						});
+					});
+				}
+			});
+	  	}
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
