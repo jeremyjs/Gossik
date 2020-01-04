@@ -306,28 +306,7 @@ export class HomePage {
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-						setTimeout(() => {
-							this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
-								if(tutorial['welcome']) {
-									this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
-								  		this.alertCtrl.create({
-											message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
-											buttons: [
-												      	{
-													        text: alertMessage["OK"],
-													        handler: () => {
-													        	this.db.finishTutorial(this.auth.userid, 'postit');
-																this.goToCapturePage();
-													        }
-												      	}
-												    ]
-										}).then( alert => {
-											alert.present();
-										});
-									});
-								}
-							});
-						});
+						setTimeout(() => this.goToCapturePage());
 				},
 				error => this.loginError = error.message
 			);
@@ -346,9 +325,30 @@ export class HomePage {
 		this.auth.signUp(credentials).then(user =>  {
 			this.db.createUser(user.user.uid, user.user.email);
 		}).then(
-			() => this.pageCtrl = '',
-			error => this.errorMsg = error.message
-		);
+			() => {
+				setTimeout(() => {
+					this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
+						if(tutorial['welcome']) {
+							this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
+						  		this.alertCtrl.create({
+									message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
+									buttons: [
+										      	{
+											        text: alertMessage["OK"],
+											        handler: () => {
+											        	this.db.finishTutorial(this.auth.userid, 'welcome');
+														this.goToCapturePage();
+											        }
+										      	}
+										    ]
+								}).then( alert => {
+									alert.present();
+								});
+							});
+						}
+					});
+				});
+			});
   	}
 	
 	goToForgotPassword() {

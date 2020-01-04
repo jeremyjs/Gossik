@@ -48,7 +48,7 @@ export class DatabaseService {
             "welcome": { welcome: false },
             "postit": { postit: false }
         }
-        return this.db.list('users/' + userid).update('tutorial', tutorials["welcome"]);
+        return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
     }
 
     changeLanguage(userid, language) {
