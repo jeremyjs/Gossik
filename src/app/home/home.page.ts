@@ -368,6 +368,7 @@ export class HomePage {
 	      capture.active = true;
 	      this.db.addCapture(capture, this.auth.userid);
 	      this.newCapture = {} as Capture;
+	      this.showTutorial('postitDone');
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
@@ -381,31 +382,42 @@ export class HomePage {
   		}
   	}
 
+  	showTutorial(tutorialPart) {
+  		let messages = {
+            "welcome": "Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!",
+            "postit": "Each of us has dozens of thoughts that buzz around in our head. Most of the time we don't process these thoughts immediately and therefore they get lost. Here you can write down your thought as a post-it within 5sec such that you can afterwards forget about it without regret. I'll take care of them such that you can have a free and clear mind. Let's try it, what do you have in your mind? Example: 'Plan Ski-Trip, February in Switzerland'",
+        	"postitDone": "Now you can forget your thought, you'll find it anytime down here in the list with your other post-its. As soon as you have some spare minutes, click on as post-it to process it.",
+        	"processPostit": "Great to see you taking some time to process your thought! Create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on"
+        }
+  		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
+			if(tutorial[tutorialPart]) {
+				this.translate.get([messages[tutorialPart], "OK"]).subscribe( alertMessage => {
+			  		this.alertCtrl.create({
+						message: alertMessage[messages[tutorialPart]],
+						buttons: [
+							      	{
+								        text: alertMessage["OK"],
+								        handler: () => {
+								        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+								        	if(tutorialPart == 'welcome') {
+								        		this.capturePageStarted = false;
+								        		this.showTutorial('postit');
+								        	}
+								        }
+							      	}
+							    ]
+					}).then( alert => {
+						alert.present();
+					});
+				});
+			}
+		});
+  	}
+
   	goToCapturePage() {
   		if(!this.capturePageStarted) {
-  			console.log('hr');
 	  		this.capturePageStarted = true;
-	  		console.log('hjj');
-	  		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
-				if(tutorial['welcome']) {
-					this.translate.get(["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!", "OK"]).subscribe( alertMessage => {
-				  		this.alertCtrl.create({
-							message: alertMessage["Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!"],
-							buttons: [
-								      	{
-									        text: alertMessage["OK"],
-									        handler: () => {
-									        	this.db.finishTutorial(this.auth.userid, 'welcome');
-									        	this.capturePageStarted = false;
-									        }
-								      	}
-								    ]
-						}).then( alert => {
-							alert.present();
-						});
-					});
-				}
-			});
+	  		this.showTutorial('welcome');
 	  	}
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
@@ -451,6 +463,7 @@ export class HomePage {
   	}
 
   	goToProcessCapturePage(capture: Capture) {
+  		this.showTutorial('processPostit');
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()

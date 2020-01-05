@@ -18,7 +18,9 @@ export class DatabaseService {
   	userData = {} as User;
     tutorial = {
             'welcome': true,
-            'postit': true
+            'postit': true,
+            'postitDone': true,
+            'processPostit': true
         };
  
     constructor(
@@ -46,7 +48,9 @@ export class DatabaseService {
     finishTutorial(userid, tutorialPart) {
         let tutorials = {
             "welcome": { welcome: false },
-            "postit": { postit: false }
+            "postit": { postit: false },
+            "postitDone": { postitDone: false },
+            "processPostit": { processPostit: false }
         }
         return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
     }
