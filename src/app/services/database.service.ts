@@ -20,7 +20,11 @@ export class DatabaseService {
             'welcome': true,
             'postit': true,
             'postitDone': true,
-            'processPostit': true
+            'processPostit': true,
+            'createProject': true,
+            'action': true,
+            'waitingFor': true,
+            'reference': true
         };
  
     constructor(
@@ -50,7 +54,11 @@ export class DatabaseService {
             "welcome": { welcome: false },
             "postit": { postit: false },
             "postitDone": { postitDone: false },
-            "processPostit": { processPostit: false }
+            "processPostit": { processPostit: false },
+            "createProject": { createProject: false },
+            "action": { action: false },
+            "waitingFor": { waitingFor: false },
+            "reference": { reference: false }
         }
         return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
     }

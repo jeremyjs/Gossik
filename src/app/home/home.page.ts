@@ -387,7 +387,11 @@ export class HomePage {
             "welcome": "Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!",
             "postit": "Each of us has dozens of thoughts that buzz around in our head. Most of the time we don't process these thoughts immediately and therefore they get lost. Here you can write down your thought as a post-it within 5sec such that you can afterwards forget about it without regret. I'll take care of them such that you can have a free and clear mind. Let's try it, what do you have in your mind? Example: 'Plan Ski-Trip, February in Switzerland'",
         	"postitDone": "Now you can forget your thought, you'll find it anytime down here in the list with your other post-its. As soon as you have some spare minutes, click on as post-it to process it.",
-        	"processPostit": "Great to see you taking some time to process your thought! Create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on"
+        	"processPostit": "Great to see you taking some time to process your thought! If you decide that your thought is not relevant, just delete and forget it. If it is relevant, create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on",
+        	"createProject": "You created a new project. Now you can assign post-its to your project. Projects are divided into actions, waitingFors and references. Click on the according buttons and I'll explain you in more detail what these are.",
+        	"action": "An action is a concrete next step that you yourself need to do. Example: 'Check ski equipment'. It is important to take 20sex to define a concrete action. With this, you free your mind from it because you know it is well defined. Also, you can directly start with the action once you have time without the need to rethink what exactly you need to do.",
+        	"waitingFor": "A waitingFor is an event for which you need to wait. This can be a specific date or an action from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents.",
+        	"reference": "A reference is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in a reference but also things you need to buy like 'Gloves', 'Gluwein ingredients' and so on."
         }
   		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
 			if(tutorial[tutorialPart]) {
@@ -498,6 +502,7 @@ export class HomePage {
 
   	// ProcessCapturePage functions
   	addGoal(goalname) {
+  		this.showTutorial('createProject');
   		this.goalList.pipe(take(1)).subscribe(
 	      goalArray => {
 	      	goalArray = goalArray.filter(goal => goal.active != false);
@@ -546,6 +551,7 @@ export class HomePage {
 	}
 
 	addAction(goal, capture) {
+		this.showTutorial('action');
 		this.modalCtrl.create({ 
 			component: DefineActionModalPage,
 			componentProps: {capture: capture, goal: goal.name}
@@ -594,6 +600,7 @@ export class HomePage {
 	}
 
 	addDelegation(goal, capture) {
+		this.showTutorial('waitingFor');
 		this.modalCtrl.create({
 			component: DefineDelegationModalPage,
 			componentProps: {capture: capture, goal: goal.name}
@@ -634,6 +641,7 @@ export class HomePage {
 	}
 
 	addReference(goal, capture) {
+		this.showTutorial('reference');
 	    let modal = this.modalCtrl.create({
 	    	component: DefineReferenceModalPage,
 	    	componentProps: {capture: capture, goal: goal.name}
