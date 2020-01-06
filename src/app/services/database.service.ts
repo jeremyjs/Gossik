@@ -23,8 +23,17 @@ export class DatabaseService {
             'processPostit': true,
             'createProject': true,
             'action': true,
+            'actionDefined': true,
             'waitingFor': true,
-            'reference': true
+            'reference': true,
+            'calendar': true,
+            'projects': true,
+            'todo': true,
+            'todoTime': true,
+            'todoDone': true,
+            'goalFinished': true,
+            'goalNotFinished': true,
+            'projectOverview': true
         };
  
     constructor(
@@ -57,8 +66,17 @@ export class DatabaseService {
             "processPostit": { processPostit: false },
             "createProject": { createProject: false },
             "action": { action: false },
+            "actionDefined": { actionDefined: false },
             "waitingFor": { waitingFor: false },
-            "reference": { reference: false }
+            "reference": { reference: false },
+            "calendar": { calendar: false },
+            "projects": { projects: false },
+            "todo": { todo: false },
+            "todoTime": { todoTime: false },
+            "todoDone": { todoDone: false },
+            "goalFinished": { goalFinished: false },
+            "goalNotFinished": { goalNotFinished: false },
+            "projectOverview": { projectOverview: false }
         }
         return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
     }

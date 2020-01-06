@@ -384,14 +384,23 @@ export class HomePage {
 
   	showTutorial(tutorialPart) {
   		let messages = {
-            "welcome": "Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. Come with me, I'll show you around!",
-            "postit": "Each of us has dozens of thoughts that buzz around in our head. Most of the time we don't process these thoughts immediately and therefore they get lost. Here you can write down your thought as a post-it within 5sec such that you can afterwards forget about it without regret. I'll take care of them such that you can have a free and clear mind. Let's try it, what do you have in your mind? Example: 'Plan Ski-Trip, February in Switzerland'",
-        	"postitDone": "Now you can forget your thought, you'll find it anytime down here in the list with your other post-its. As soon as you have some spare minutes, click on as post-it to process it.",
-        	"processPostit": "Great to see you taking some time to process your thought! If you decide that your thought is not relevant, just delete and forget it. If it is relevant, create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on",
-        	"createProject": "You created a new project. Now you can assign post-its to your project. Projects are divided into actions, waitingFors and references. Click on the according buttons and I'll explain you in more detail what these are.",
-        	"action": "An action is a concrete next step that you yourself need to do. Example: 'Check ski equipment'. It is important to take 20sex to define a concrete action. With this, you free your mind from it because you know it is well defined. Also, you can directly start with the action once you have time without the need to rethink what exactly you need to do.",
-        	"waitingFor": "A waitingFor is an event for which you need to wait. This can be a specific date or an action from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents.",
-        	"reference": "A reference is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in a reference but also things you need to buy like 'Gloves', 'Gluwein ingredients' and so on."
+            "welcome": "Welcome, I am Gossik. I will help you organize all your thoughts and tasks such that you can have a productive and stress-free life. In 3 phases we achieve an optimally set up workflow. Come with me, I'll show you around!",
+            "postit": "Phase 1: Each of us has dozens of thoughts that buzz around in our head. Most of the time we don't process these thoughts immediately and therefore they get lost. Here you can write down your thought as a post-it within 5sec such that you can afterwards forget about it without regret because you know you will process it at some time in phase 2. I'll take care of them such that you can have a free and clear mind. Let's try it, what do you have in your mind? Example: 'Plan Ski-Trip, February in Switzerland'",
+        	"postitDone": "You just freed your mind from that thought! Now you can forget about it, you'll find it anytime down here in the list with your other post-its. For this tutorial, let's process it right now. Click on your post-it to process it in phase 2.",
+        	"processPostit": "Phase 2: Great to see you taking some time to process your post-it! Create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on",
+        	"createProject": "You just created your first project with Gossik, amazing! Now you can assign post-its to your project. Projects are divided into actions, waitingFors and references. Let's have a look at them. Click on Reference.",
+        	"action": "An action is a concrete next step that you yourself need to do. Example: 'Check ski equipment'. It is important to take 20sex to define a concrete action. With this, you can directly start with the action once you have time without the need to rethink what exactly you need to do. Define a new action for this tutorial.",
+        	"actionDefined": "Now your post-it has been processed and is deleted from your post-its list. You can define additional actions, waitingFors and references if needed. As soon as you have some time, you can use your ToDo list to start working on your actions. Let's head over, click on ToDo.",
+        	"waitingFor": "A waitingFor is an event for which you need to wait. This can be a specific date or an action from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents. Now click on Action.",
+        	"reference": "A reference is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in a reference or the list of participants and so on. Now, click on WaitingFor.",
+        	"calendar": "You can save all your events and appointments in this calendar, I will remind you shortly before their start. You can also see the due deadlines on the top of each day. I will remind you early enough of your deadlines such that you can finish them in time.",
+        	"projects": "Here I give you an overview of all your active projects. Click on one to go to its project overview.",
+        	"projectOverview": "This is the project overview. You can have a look at all the actions, waitingFors and references. Also, you can see you calendar with only events and deadlines for this project. Later on we will add team functionality with a team chat, you can ignore the Team and Chat boxes for now.",
+        	"todo": "You want to get something done from your todo list, awesome! To avoid feeling overwhelmed, input your available time and I will show you all your todos that are doable. Like this, you don't waste time with irrelevant todos. You can also use additional filters, for example to show you all todos corresponding to a specific project. Input a time to see the action you just defined.",
+        	"todoTime": "An action is doable within that time. Click on it and start it.",
+        	"todoDone": "Great, have fun while taking Action! Visit the post-its to finish this action.",
+        	"goalFinished": "Congratulations to finishing your first goal! Now let's head on to achieve the next ones!",
+        	"goalNotFinished": "Congratulations to finishing your first action! Most actions have follow-up actions. Therefore, a new post-it has been put into your post-its list to remind you defining the next concrete follow-up action if needed. Now we are done with the tutorial and ready for a new productive and stressfree life. You can explore the two last menu buttons 'Calendar' and 'Projects' by yourself."
         }
   		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
 			if(tutorial[tutorialPart]) {
@@ -406,6 +415,9 @@ export class HomePage {
 								        	if(tutorialPart == 'welcome') {
 								        		this.capturePageStarted = false;
 								        		this.showTutorial('postit');
+								        	}
+								        	if(tutorialPart == 'reference' || tutorialPart == 'waitingFor') {
+								        		this.modalCtrl.getTop().then( modal => modal.dismiss());
 								        	}
 								        }
 							      	}
@@ -558,6 +570,7 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
+				this.showTutorial('actionDefined');
 				this.backButton.subscribe(()=>{ navigator['app'].exitApp(); });
 				if(data.data != 'cancel' && data.data.content) {
 					let action: Action = data.data;
@@ -704,7 +717,8 @@ export class HomePage {
 						      	{
 							        text: alertMessage["Delete"],
 							        handler: () => {
-							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.pageCtrl = 'goalFinished');
+										this.showTutorial('goalFinished');
+							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToCapturePage());
 							        }
 						      	}
 						    ]
@@ -716,22 +730,24 @@ export class HomePage {
 	}
 
 	goalNotFinished() {
-	this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
-		this.translate.get("Action finished").subscribe( translation => {
-			let capture = {} as Capture;
-			capture.content =  data.name + ' - ' + translation + ': ' + this.takenAction.content;
-			capture.userid = this.auth.userid;
-			capture.active = true;
-			this.db.deleteAction(this.takenAction, this.auth.userid).then( () => {
-				this.db.addCapture(capture, this.auth.userid);
-				this.goToCapturePage();
+		this.showTutorial('goalNotFinished');
+		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
+			this.translate.get("Action finished").subscribe( translation => {
+				let capture = {} as Capture;
+				capture.content =  data.name + ' - ' + translation + ': ' + this.takenAction.content;
+				capture.userid = this.auth.userid;
+				capture.active = true;
+				this.db.deleteAction(this.takenAction, this.auth.userid).then( () => {
+					this.db.addCapture(capture, this.auth.userid);
+					this.goToCapturePage();
+				});
 			});
 		});
-	});
 	}
 
 	// ProjectsPage functions
 	goToProjectsPage() {
+		this.showTutorial('projects');
   		this.goal.name = '';
 	    this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -777,6 +793,7 @@ export class HomePage {
   	}
 	
 	reviewGoal(goal: Goal) {
+		this.showTutorial('projectOverview');
 		this.content.scrollToTop();
 		this.eventSource = [];
   		this.calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
@@ -946,6 +963,7 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
+  		this.showTutorial('calendar');
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -1254,6 +1272,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.showTutorial('todo');
 		this.doableActionArray = [];
 		this.goalKeyArray = ["None"];
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -1325,6 +1344,7 @@ export class HomePage {
 		        if(this.doableActionArray.length == 0) {
 		        	this.errorMsg = "There is no doable action for that time.";
 		        } else {
+		        	this.showTutorial('todoTime');
 		        	this.errorMsg = '';
 		        }
 		      }
@@ -1343,9 +1363,7 @@ export class HomePage {
 								          	action.taken = true;
 										    this.db.editAction(action, this.auth.userid);
 										    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
-										    this.viewpoint = '';
-										    this.errorMsg = alertMessage["Great, have fun while taking Action! Visit the Captures to process this action when you finished it."];
-  	
+								        	this.showTutorial('todoDone');
 								        }
 							      	},
 							      	{
