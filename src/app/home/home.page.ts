@@ -137,7 +137,8 @@ export class HomePage {
 		private menuCtrl: MenuController,
 		private firebase: FirebaseX
 		) {
-		this.isApp = !this.platform.is('desktop');
+		this.isApp = !document.URL.startsWith('http');
+		console.log(this.isApp);
 		if(this.isApp) {
 			this.calendar.mode = 'day'
 		} else {
