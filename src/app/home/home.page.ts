@@ -137,6 +137,8 @@ export class HomePage {
 		private menuCtrl: MenuController,
 		private firebase: FirebaseX
 		) {
+		console.log('url ' + platform.url());
+		console.log(platform.platforms());
 		this.isApp = !document.URL.startsWith('http');
 		console.log(this.isApp);
 		if(this.isApp) {
