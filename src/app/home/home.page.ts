@@ -1302,7 +1302,6 @@ export class HomePage {
   		this.giveTimeForm = this.fb.group({
       		timeEstimate: ['', Validators.required]
     	});
-    	this.goal =  <Goal>{key: 'None'};;
     	this.changePage('ToDoPage');
     	setTimeout(() => {
 	         this.timeAvailable.setFocus();
@@ -1310,13 +1309,9 @@ export class HomePage {
 	}
 
   	chooseGoal(event) {
-  		if(event.detail.value != 'None') {
-	  		this.db.getGoalFromGoalid(event.detail.value, this.auth.userid).valueChanges().subscribe( goal => {
-			this.goal = {key: event.detail.value, name: goal.name, userid: goal.userid, color: goal.color};
-			});
-		} else {
-			this.goal.key = 'None';
-		}
+  		if(event.detail.value.length == 0) {
+  			this.goalKeyArray.push("None");
+  		}
   		this.showDoableActions();
   	}
 
