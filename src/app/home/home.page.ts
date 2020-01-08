@@ -497,7 +497,7 @@ export class HomePage {
 				});}));
 		this.goalList.subscribe( goalArray => {
 			this.goalArray = [];
-			goalArray.reverse();
+			goalArray.sort((a, b) => a.name.localeCompare(b.name));
 			for(let goal of goalArray) {
 				if(goal.active != false) {
 					this.goalArray.push(goal);
@@ -766,7 +766,7 @@ export class HomePage {
 	    this.goalList.subscribe(
 	      goalArray => {
   			this.goalArray = [];
-  			goalArray.reverse();
+  			goalArray.sort((a, b) => a.name.localeCompare(b.name));
 	        for(let goal of goalArray) {
 	        	if(goal.active != false) {
 		        	this.goalArray.push(goal);
