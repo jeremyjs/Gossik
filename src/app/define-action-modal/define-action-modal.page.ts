@@ -112,6 +112,7 @@ export class DefineActionModalPage implements OnInit {
   }
 
   deadlineSelected(event) {
+    console.log(event);
     let deadlineFixed = new Date (event).setHours(2);
     this.deadline = new Date (deadlineFixed).toISOString();
   }

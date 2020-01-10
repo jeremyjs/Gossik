@@ -212,21 +212,25 @@ export class DatabaseService {
     }
 
     addAction(action: Action, capture: Capture, userid) {
-        return this.db.list('users/' + userid + '/nextActions').push(action)
-        .then( () => {
-            if(capture.key) {
-                this.deleteCapture(capture, userid);
-            }
-        });
+        if(capture.key) {
+            this.deleteCapture(capture, userid);
+        }
+        return this.db.list('users/' + userid + '/nextActions').push(action);
+    }
+
+    getActionFromActionid(actionid: string, userid) {
+        return this.db.object<Action>('/users/' + userid + '/nextActions/' + actionid);
+    }
+
+    getDelegationFromDelegationid(delegationid: string, userid) {
+        return this.db.object<Delegation>('/users/' + userid + '/Delegations/' + delegationid);
     }
 
     addDelegation(delegation: Delegation, capture: Capture, userid) {
+        if(capture.key) {
+            this.deleteCapture(capture, userid);
+        }
         return this.db.list('users/' + userid + '/delegations').push(delegation)
-        .then( () => {
-            if(capture.key) {
-                this.deleteCapture(capture, userid);
-            }
-        });
     }
 
     addReference(reference: Reference, capture: Capture, userid){

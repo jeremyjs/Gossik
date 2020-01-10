@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { DatePickerModule } from 'ionic4-date-picker';
+
 import { CalendarEventModalPageRoutingModule } from './calendar-event-modal-routing.module';
 
 import { CalendarEventModalPage } from './calendar-event-modal.page';
@@ -18,7 +20,8 @@ import { CalendarEventModalPage } from './calendar-event-modal.page';
     ReactiveFormsModule,
     IonicModule,
     CalendarEventModalPageRoutingModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    DatePickerModule
   ],
   declarations: [CalendarEventModalPage]
 })

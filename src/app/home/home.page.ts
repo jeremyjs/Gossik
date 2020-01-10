@@ -605,7 +605,15 @@ export class HomePage {
 						}
 			            this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 			            	action.deadlineid = event.key;
-			            	this.db.addAction(action, capture, this.auth.userid);
+			            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
+			            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+			            				calendarEvent.key = event.key;
+			            				calendarEvent.actionid = actionAddedkey.key;
+			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+			            			});
+			            		});
+			            	});
 			            });
 			        } else {
 						this.db.addAction(action, capture, this.auth.userid);
@@ -646,7 +654,15 @@ export class HomePage {
 						}
 						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 			            	delegation.deadlineid = event.key;
-			            	this.db.addDelegation(delegation, capture, this.auth.userid);
+			            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
+			            		this.db.getDelegationFromDelegationid(delegationAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( delegationAdded => {
+			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+			            				calendarEvent.key = event.key;
+			            				calendarEvent.delegationid = delegationAddedkey.key;
+			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+			            			});
+			            		});
+			            	});
 			            });
 					} else {
 						this.db.addDelegation(delegation, capture, this.auth.userid);

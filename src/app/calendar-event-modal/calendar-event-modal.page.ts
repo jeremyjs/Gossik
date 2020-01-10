@@ -31,6 +31,8 @@ export class CalendarEventModalPage implements OnInit {
 	goalid: string;
 	errorMsg: boolean;
 	pastCheck: boolean;
+	deadline: boolean = false;
+	edit: boolean = false;
 
   constructor(
   		public modalCtrl: ModalController,
@@ -48,10 +50,43 @@ export class CalendarEventModalPage implements OnInit {
 	} else if(this.navParams.get('calendarEvent')) {
 		this.event = this.navParams.get('calendarEvent');
 		this.goalid = this.event.goalid;
-		this.eventStartTimeISOString = this.event.startTime.toISOString();
-		setTimeout(() => {
-			this.eventEndTimeISOString = this.event.endTime.toISOString();
-		});
+		if(this.event.allDay) {
+			this.deadline = true;
+			this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
+		      this.monthLabels = [
+		      monthLabels['Jan'],
+		      monthLabels['Feb'],
+		      monthLabels['Mar'],
+		      monthLabels['Apr'],
+		      monthLabels['May'],
+		      monthLabels['Jun'],
+		      monthLabels['Jul'],
+		      monthLabels['Aug'],
+		      monthLabels['Sep'],
+		      monthLabels['Oct'],
+		      monthLabels['Nov'],
+		      monthLabels['Dec']
+		      ];
+		    });
+		    this.translate.get(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).subscribe( dayLabels => {
+		      this.dayLabels = [
+		      dayLabels['Sun'],
+		      dayLabels['Mon'],
+		      dayLabels['Tue'],
+		      dayLabels['Wed'],
+		      dayLabels['Thu'],
+		      dayLabels['Fri'],
+		      dayLabels['Sat']
+		      ];
+		    });
+		    this.formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		    this.deadlineString = new Date (this.event.startTime).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+		} else {
+			this.eventStartTimeISOString = this.event.startTime.toISOString();
+			setTimeout(() => {
+				this.eventEndTimeISOString = this.event.endTime.toISOString();
+			});
+		}
 	}
     this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
@@ -126,6 +161,19 @@ export class CalendarEventModalPage implements OnInit {
 		if(new Date(this.eventEndTimeISOString) <= new Date(this.eventStartTimeISOString)) {
 			this.eventEndTimeISOString = this.eventStartTimeISOString;
 		}
+	}
+
+	editDeadline() {
+		this.edit = true;
+	}
+
+	deadlineSelected(event) {
+	    let deadlineStartFixed = new Date (event).setHours(2);
+	    this.eventStartTimeISOString = new Date (deadlineStartFixed).toISOString();
+	    let deadlineEndFixed = new Date (event).setHours(5);
+	    this.eventEndTimeISOString = new Date (deadlineEndFixed).toISOString();
+	    this.deadlineString = new Date (deadlineStartFixed).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+	    this.edit = false;
 	}
 
 }

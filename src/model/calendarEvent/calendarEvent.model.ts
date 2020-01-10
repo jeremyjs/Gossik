@@ -8,4 +8,6 @@ export interface CalendarEvent {
     allDay: boolean;
     color?: string;
     active?: boolean;
+    actionid?: string;
+    delegationid?: string;
 }
