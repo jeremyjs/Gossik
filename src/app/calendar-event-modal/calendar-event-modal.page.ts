@@ -33,6 +33,10 @@ export class CalendarEventModalPage implements OnInit {
 	pastCheck: boolean;
 	deadline: boolean = false;
 	edit: boolean = false;
+	monthLabels = [];
+	dayLabels = [];
+	deadlineString: string;
+	formatOptions: any;
 
   constructor(
   		public modalCtrl: ModalController,

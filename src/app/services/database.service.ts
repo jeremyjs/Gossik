@@ -223,7 +223,7 @@ export class DatabaseService {
     }
 
     getDelegationFromDelegationid(delegationid: string, userid) {
-        return this.db.object<Delegation>('/users/' + userid + '/Delegations/' + delegationid);
+        return this.db.object<Delegation>('/users/' + userid + '/delegations/' + delegationid);
     }
 
     addDelegation(delegation: Delegation, capture: Capture, userid) {

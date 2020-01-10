@@ -1126,7 +1126,6 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then(data => {
-				console.log(data.data);
 				if(data.data) {
 					if(!data.data.goalid) {
 						data.data.color = "#C0C0C0";
@@ -1142,6 +1141,20 @@ export class HomePage {
 					let calendarEventkey = data.data.key;
 					this.db.editCalendarEvent(data.data, this.auth.userid)
 					data.data.key = calendarEventkey;
+					if(data.data.actionid) {
+						this.db.getActionFromActionid(data.data.actionid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( action => {
+							action.key = data.data.actionid;
+							action.deadline = data.data.startTime.toISOString();
+							this.db.editAction(action, this.auth.userid);
+						})
+					}
+					if(data.data.delegationid) {
+						this.db.getDelegationFromDelegationid(data.data.delegationid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( delegation => {
+							delegation.key = data.data.delegationid;
+							delegation.deadline = data.data.startTime.toISOString();
+							this.db.editDelegation(delegation, this.auth.userid);
+						})
+					}
 					data.data.startTime = new Date(data.data.startTime);
 			        data.data.endTime = new Date(data.data.endTime);
 					let events = this.eventSource;
