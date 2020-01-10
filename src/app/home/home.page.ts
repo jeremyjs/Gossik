@@ -393,15 +393,18 @@ export class HomePage {
         	"processPostit": "Phase 2: Great to see you taking some time to process your post-it! Create a new project to organize your thoughts. A project can be anything that needs several interactions. Example: 'Plan Ski-Trip' is a project because it involves multiple things like 'Check equipment', 'Wait for confirmation from boss to take days off', 'Check rooms in Switzerland' and so on",
         	"createProject": "You just created your first project with Gossik, amazing! Now you can assign post-its to your project. Projects are divided into actions, waitingFors and references. Let's have a look at them. Click on Reference.",
         	"action": "An action is a concrete next step that you yourself need to do. Example: 'Check ski equipment'. It is important to take 20sex to define a concrete action. With this, you can directly start with the action once you have time without the need to rethink what exactly you need to do. Define a new action for this tutorial.",
-        	"actionDefined": "Now your post-it has been processed and is deleted from your post-its list. You can define additional actions, waitingFors and references if needed. As soon as you have some time, you can use your ToDo list to start working on your actions. Let's head over, click on ToDo.",
+        	"actionDefinedDesktop": "Now your post-it has been processed and is deleted from your post-its list. You can define additional actions, waitingFors and references if needed. As soon as you have some time, you can use your ToDo list to start working on your actions. Let's head over, click on ToDo.",
+        	"actionDefinedMobile": "Now your post-it has been processed and is deleted from your post-its list. You can define additional actions, waitingFors and references if needed. As soon as you have some time, you can use your ToDo list to start working on your actions. Let's head over, open the menu and click on ToDo.",
         	"waitingFor": "A waitingFor is an event for which you need to wait. This can be a specific date or an action from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents. Now click on Action.",
         	"reference": "A reference is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in a reference or the list of participants and so on. Now, click on WaitingFor.",
         	"calendar": "You can save all your events and appointments in this calendar, I will remind you shortly before their start. You can also see the due deadlines on the top of each day. I will remind you early enough of your deadlines such that you can finish them in time.",
         	"projects": "Here I give you an overview of all your active projects. Click on one to go to its project overview.",
         	"projectOverview": "This is the project overview. You can have a look at all the actions, waitingFors and references. Also, you can see you calendar with only events and deadlines for this project. Later on we will add team functionality with a team chat, you can ignore the Team and Chat boxes for now.",
-        	"todo": "You want to get something done from your todo list, awesome! To avoid feeling overwhelmed, input your available time and I will show you all your todos that are doable. Like this, you don't waste time with irrelevant todos. You can also use additional filters, for example to show you all todos corresponding to a specific project. Input a time to see the action you just defined.",
+        	"todo": "Phase 3: You want to get something done from your todo list, awesome! To avoid feeling overwhelmed, input your available time and I will show you all your todos that are doable. Like this, you don't waste time with irrelevant todos. You can also use additional filters, for example to show you all todos corresponding to a specific project. Input a time to see the action you just defined.",
         	"todoTime": "An action is doable within that time. Click on it and start it.",
         	"todoDone": "Great, have fun while taking Action! Visit the post-its to finish this action.",
+        	"finishAction": "Click on your started action.",
+        	"finishProject": "Click on 'Not yet'",
         	"goalFinished": "Congratulations to finishing your first goal! Now let's head on to achieve the next ones!",
         	"goalNotFinished": "Congratulations to finishing your first action! Most actions have follow-up actions. Therefore, a new post-it has been put into your post-its list to remind you defining the next concrete follow-up action if needed. Now we are done with the tutorial and ready for a new productive and stressfree life. You can explore the two last menu buttons 'Calendar' and 'Projects' by yourself."
         }
@@ -419,6 +422,9 @@ export class HomePage {
 								        		this.capturePageStarted = false;
 								        		this.showTutorial('postit');
 								        	}
+								        	if(tutorialPart == 'finishAction') {
+								        		this.capturePageStarted = false;
+								        	}
 								        	if(tutorialPart == 'reference' || tutorialPart == 'waitingFor') {
 								        		this.modalCtrl.getTop().then( modal => modal.dismiss());
 								        	}
@@ -426,7 +432,13 @@ export class HomePage {
 							      	}
 							    ]
 					}).then( alert => {
-						alert.present();
+						if(tutorial[tutorialPart] == 'finishAction') {
+							if(!tutorial['welcome']) {
+								alert.present();
+							}
+						} else {
+							alert.present();
+						}
 					});
 				});
 			}
@@ -436,6 +448,7 @@ export class HomePage {
   	goToCapturePage() {
   		if(!this.capturePageStarted) {
 	  		this.capturePageStarted = true;
+	  		this.showTutorial('finishAction');
 	  		this.showTutorial('welcome');
 	  	}
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
@@ -573,7 +586,11 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
-				this.showTutorial('actionDefined');
+				if(this.isApp) {
+					this.showTutorial('actionDefinedMobile');
+				} else {
+					this.showTutorial('actionDefinedDesktop');
+				}
 				this.backButton.subscribe(()=>{ navigator['app'].exitApp(); });
 				if(data.data != 'cancel' && data.data.content) {
 					let action: Action = data.data;
@@ -709,6 +726,7 @@ export class HomePage {
 			});}));
 		this.nextActionList.subscribe( nextActionArray => {
 			nextActionArray = nextActionArray.filter(action => action.active != false);
+			this.showTutorial('finishProject');
 			if(nextActionArray.length == 1) {
 				this.pageCtrl = 'actionFinished';
 			} else {
