@@ -13,10 +13,10 @@
       <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Input event title' | translate }}" [(ngModel)]="event.title"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="gotGoals">
       <ion-label>{{"Project" | translate}}</ion-label>
       <ion-select [(ngModel)]="goalid">
-        <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
+        <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}" [selected]="goal.key == goalid">{{goal.name}}</ion-select-option>
       </ion-select>
     </ion-item>
  

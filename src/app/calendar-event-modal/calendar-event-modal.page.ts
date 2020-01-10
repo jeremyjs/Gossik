@@ -13,7 +13,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -37,6 +37,7 @@ export class CalendarEventModalPage implements OnInit {
 	dayLabels = [];
 	deadlineString: string;
 	formatOptions: any;
+	gotGoals: boolean = false;
 
   constructor(
   		public modalCtrl: ModalController,
@@ -54,6 +55,8 @@ export class CalendarEventModalPage implements OnInit {
 	} else if(this.navParams.get('calendarEvent')) {
 		this.event = this.navParams.get('calendarEvent');
 		this.goalid = this.event.goalid;
+		this.eventStartTimeISOString = new Date (this.event.startTime).toISOString();
+		this.eventEndTimeISOString = new Date (this.event.endTime).toISOString();
 		if(this.event.allDay) {
 			this.deadline = true;
 			this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
@@ -113,6 +116,7 @@ export class CalendarEventModalPage implements OnInit {
 	        	this.goalArray.push(goal);
 	        }
 	    }
+	    this.gotGoals = true;
 	});
 	this.pastCheck = false;
   }
