@@ -142,7 +142,8 @@ export class DelegationDetailsModalPage implements OnInit {
           title: 'Deadline: ' + this.delegation.content,
           allDay: true,
           active: true,
-          color: goal.color
+          color: goal.color,
+          delegationid: this.delegation.key
         };
         this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
           this.delegation.deadlineid = event.key;

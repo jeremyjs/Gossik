@@ -147,7 +147,8 @@ export class ActionDetailsModalPage implements OnInit {
           title: 'Deadline: ' + this.action.content,
           allDay: true,
           active: true,
-          color: goal.color
+          color: goal.color,
+          actionid: this.action.key
         };
         this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
           this.action.deadlineid = event.key;
