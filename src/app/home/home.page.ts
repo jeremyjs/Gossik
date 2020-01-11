@@ -358,6 +358,16 @@ export class HomePage {
     	this.auth.signOut().then( () => this.changePage('LoginPage'));
     }
 
+    goToFeedbackPage() {
+    	this.changePage('FeedbackPage');
+    }
+
+    //FeedbackPage functions
+    sendFeedback(feedback) {
+    	let time = new Date();
+    	this.db.sendFeedback(feedback, time.toISOString(), this.auth.userid);
+    }
+
 	//CapturePage functions
 
 	ionFocus(event){

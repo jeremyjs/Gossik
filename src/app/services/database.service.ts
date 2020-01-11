@@ -87,6 +87,16 @@ export class DatabaseService {
         return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
     }
 
+    sendFeedback(feedback, time, userid) {
+        let fb = {
+            'userid': userid,
+            'time': time,
+            'feedback': feedback
+        }
+        return this.db.list('feedback').push(fb);
+
+    }
+
     changeLanguage(userid, language) {
         return this.db.list('users').update(userid, {language: language});
     }
