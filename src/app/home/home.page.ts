@@ -119,6 +119,7 @@ export class HomePage {
 	goalKeyArray: string[];
 	backButton: any;
 	capturePageStarted: boolean = false;
+	feedback: string;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -365,7 +366,21 @@ export class HomePage {
     //FeedbackPage functions
     sendFeedback(feedback) {
     	let time = new Date();
-    	this.db.sendFeedback(feedback, time.toISOString(), this.auth.userid);
+    	this.db.sendFeedback(feedback, time.toISOString(), this.auth.userid).then( () => {
+    		this.feedback = '';
+    		this.translate.get(["Thank you very much for your feedback. We'll do our best to improve Gossik for you.", "OK"]).subscribe( alertMessage => {
+			  		this.alertCtrl.create({
+						message: alertMessage["Thank you very much for your feedback. We'll do our best to improve Gossik for you."],
+						buttons: [
+							      	{
+								        text: alertMessage["OK"]
+							      	}
+							    ]
+					}).then( alert => {
+						alert.present();
+					});
+				});
+    	});
     }
 
 	//CapturePage functions
