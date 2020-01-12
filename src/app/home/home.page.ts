@@ -140,7 +140,7 @@ export class HomePage {
 		) {
 		console.log('url ' + platform.url());
 		console.log(platform.platforms());
-		this.isApp = !document.URL.startsWith('http');
+		this.isApp = !this.platform.is('desktop');
 		console.log(this.isApp);
 		if(this.isApp) {
 			this.calendar.mode = 'day'
