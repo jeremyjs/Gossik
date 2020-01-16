@@ -94,7 +94,10 @@ export class DatabaseService {
             'feedback': feedback
         }
         return this.db.list('feedback').push(fb);
+    }
 
+    getFeedbackList() {
+        return this.db.list('feedback');
     }
 
     changeLanguage(userid, language) {

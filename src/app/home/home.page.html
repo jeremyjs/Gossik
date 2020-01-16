@@ -108,12 +108,20 @@
     <ion-button class="darkbutton width-auto" (click)="goToPrivacyPolicyPage()">
       {{"Privacy Policy" | translate }}
     </ion-button>
+    <ion-button class="darkbutton width-auto" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
+      {{"Show Feedback" | translate }}
+    </ion-button>
   </div>
 
   <!-- FeedbackPage -->
   <div class="margin-top-10 padding-10 secondary border-radius-20px text-align-center" *ngIf="viewpoint == 'FeedbackPage'">
     <ion-textarea class="feedback background-white" rows="10" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}"></ion-textarea>
     <ion-button class="darkbutton width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</ion-button>
+  </div>
+
+  <!-- ShowFeedbackPage -->
+  <div class="margin-top-10 padding-10 secondary border-radius-20px text-align-center" *ngIf="viewpoint == 'ShowFeedbackPage'">
+    <ion-item class="margin-bottom-10" *ngFor="let feedback of feedbackArray">{{feedback.feedback}}</ion-item>
   </div>
 
 	<!-- CapturePage -->

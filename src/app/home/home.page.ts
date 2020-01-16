@@ -49,6 +49,8 @@ export class HomePage {
 	signUpError: string;
   	viewpoint: string;
 	captureList: Observable<Capture[]>;
+	feedbackList: any;
+	feedbackArray = [];
 	takenActionList: Observable<Action[]>;
 	captureListCheckEmpty: Observable<Capture[]>;
 	takenActionListCheckEmpty: Observable<Action[]>;
@@ -120,6 +122,7 @@ export class HomePage {
 	backButton: any;
 	capturePageStarted: boolean = false;
 	feedback: string;
+	isAdmin: boolean = false;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -204,6 +207,7 @@ export class HomePage {
 			.subscribe(
 				user => {
 				  if (user) {
+					this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
 					this.db.addTutorial(this.auth.userid);
 				  	if(this.isApp) {
 				  		this.firebase.hasPermission().then( hasPermission => {
@@ -363,7 +367,25 @@ export class HomePage {
     	this.changePage('FeedbackPage');
     }
 
-    //FeedbackPage functions
+    goToShowFeedbackPage() {
+    	this.feedbackList = this.db.getFeedbackList()
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let feedback = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return feedback;
+				});}))
+		.subscribe( feedbackArray => {
+			this.feedbackArray = feedbackArray;
+		});
+    	this.changePage('ShowFeedbackPage');
+    }
+
+    // FeedbackPage functions
     sendFeedback(feedback) {
     	let time = new Date();
     	this.db.sendFeedback(feedback, time.toISOString(), this.auth.userid).then( () => {
