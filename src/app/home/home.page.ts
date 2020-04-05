@@ -425,10 +425,6 @@ export class HomePage {
 		event.target.firstChild.placeholder = '';
 	}
 
-	onRenderItems(event) {
-    	event.detail.complete();
- 	}
-
   	addCapture(capture: Capture) {
 	    if(capture.content !== '' && capture.content !== null && capture.content !== undefined) {
 	      this.errorMsg = "";
