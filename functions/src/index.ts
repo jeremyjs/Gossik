@@ -9,6 +9,51 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
+exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((newPush, context) => {
+	let push = newPush.val();
+	console.log(push);
+	admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+   			if(user.val().language == 'de') {
+   				let payload = {
+		            notification: {
+		                title: 'Tipp des Tages',
+		                body: push.DE
+		            },
+		            data: {
+		              	title: 'Tipp des Tages',
+		                body: push.DE
+		            }
+		        };
+		        let ref = admin.database().ref('/users/' + user.key + '/devices');
+			    ref.once("value", function(devices) {
+			    	devices.forEach(function(device) {
+		        		admin.messaging().sendToDevice(device.val(), payload);
+		        	});
+			    });
+   			} else {
+   				let payload = {
+		            notification: {
+		                title: 'Tip of the day',
+		                body: push.EN
+		            },
+		            data: {
+		              	title: 'Tip of the day',
+		                body: push.EN
+		            }
+		        };
+		        let ref = admin.database().ref('/users/' + user.key + '/devices');
+			    ref.once("value", function(devices) {
+			    	devices.forEach(function(device) {
+		        		admin.messaging().sendToDevice(device.val(), payload);
+		        	});
+			    });
+   			}
+   		});
+   	});
+   	return null;
+});
+
 exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
    console.log('running');
    admin.database().ref('/users').once("value", function(users) {

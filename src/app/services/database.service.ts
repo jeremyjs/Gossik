@@ -100,6 +100,15 @@ export class DatabaseService {
         return this.db.list('feedback');
     }
 
+    sendPush(manualPushEN, manualPushDE) {
+        let push = {
+            'done': false,
+            'EN': manualPushEN,
+            'DE': manualPushDE
+        }
+        return this.db.list('push').push(push);
+    }
+
     changeLanguage(userid, language) {
         return this.db.list('users').update(userid, {language: language});
     }

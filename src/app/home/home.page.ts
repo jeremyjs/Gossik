@@ -123,6 +123,8 @@ export class HomePage {
 	capturePageStarted: boolean = false;
 	feedback: string;
 	isAdmin: boolean = false;
+	manualPushEN: string;
+	manualPushDE: string;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -405,11 +407,27 @@ export class HomePage {
     	});
     }
 
-	//CapturePage functions
+    goToSendPushPage() {
+    	this.changePage('SendPushPage');
+    }
+
+    // SendPushPage functions
+    sendPush(manualPushEN, manualPushDE) {
+    	this.db.sendPush(manualPushEN, manualPushDE).then(() => {
+    		this.manualPushDE = '';
+    		this.manualPushEN = '';
+    	});
+    }
+
+	// CapturePage functions
 
 	ionFocus(event){
 		event.target.firstChild.placeholder = '';
 	}
+
+	onRenderItems(event) {
+    	event.detail.complete();
+ 	}
 
   	addCapture(capture: Capture) {
 	    if(capture.content !== '' && capture.content !== null && capture.content !== undefined) {
