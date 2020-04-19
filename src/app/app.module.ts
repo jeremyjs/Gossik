@@ -47,6 +47,8 @@ registerLocaleData(localeDe, 'de');
 
 import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 
+import { Calendar } from '@ionic-native/calendar/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -79,6 +81,7 @@ import { FirebaseX } from "@ionic-native/firebase-x/ngx";
     NgCalendarModule
   	],
   providers: [
+    Calendar,
     FirebaseX,
     StatusBar,
     SplashScreen,

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { DatabaseService } from '../services/database.service';
+import { NativeCalendarService } from '../services/native-calendar.service';
 
 import { Capture } from '../../model/capture/capture.model';
 import { Goal } from '../../model/goal/goal.model';
@@ -125,6 +126,7 @@ export class HomePage {
 	isAdmin: boolean = false;
 	manualPushEN: string;
 	manualPushDE: string;
+	cals = [];
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -141,7 +143,8 @@ export class HomePage {
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
 		private menuCtrl: MenuController,
-		private firebase: FirebaseX
+		private firebase: FirebaseX,
+		private nativeCalendar: NativeCalendarService
 		) {
 		console.log('url ' + platform.url());
 		console.log(platform.platforms());
@@ -272,6 +275,10 @@ export class HomePage {
 				  this.goToLoginPage();
 				}
 			);
+  	}
+
+  	showCals() {
+  		this.cals = this.nativeCalendar.readCalendars();
   	}
 
   	menuOpen() {
