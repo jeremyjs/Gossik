@@ -44,7 +44,7 @@ export class NativeCalendarService {
   	} else if(this.plt.is('android')) {
   		let start = new Date();
   		let end = new Date();
-  		start.setDate(start.getDate() - 365);
+  		start.setDate(start.getDate() - 7);
   		end.setDate(end.getDate() + 5 * 365);
 		this.calendar.listEventsInRange(start, end).then( data => {
 			events.push(...data);
@@ -70,7 +70,7 @@ export class NativeCalendarService {
 	  		let eventAlreadyInDatabase: boolean = false;
 	  		let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
 			.snapshotChanges()
-			.pipe(
+			.pipe(take(1),
 				map(
 					changes => { 
 						return changes.map( c => {
@@ -86,6 +86,8 @@ export class NativeCalendarService {
 	  				}
 	  			}
 	  			if(!eventAlreadyInDatabase) {
+	  				console.log('add event');
+	  				console.log(calendarEvent);
 	  				this.db.addCalendarEvent(calendarEvent, this.auth.userid);
 	  			}
 	  		});
