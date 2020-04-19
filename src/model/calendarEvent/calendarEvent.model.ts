@@ -10,4 +10,5 @@ export interface CalendarEvent {
     active?: boolean;
     actionid?: string;
     delegationid?: string;
+    event_id?: string;
 }

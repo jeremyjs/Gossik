@@ -101,11 +101,6 @@
 
   <!-- SettingsPage -->
   <div class="margin-top-10 width-90 padding-10 secondary border-radius-20px height-90" *ngIf="viewpoint == 'SettingsPage'">
-    <div>
-      <ion-button (click)="showCals()">Click me </ion-button>
-      Hi, this are your calendars:
-      <ion-item class="margin-bottom-10" *ngFor="let cal of cals">{{cal.name}}</ion-item>
-    </div>
     <ion-button class="darkbutton width-auto" (click)="logout()">{{"Logout" | translate}}</ion-button>
     <ion-button class="darkbutton width-auto" (click)="goToFeedbackPage()">
       {{"Give Feedback" | translate }}
