@@ -29,13 +29,10 @@ export class NativeCalendarService {
   	}
 
   readCalendars() {
-  	console.log("Click");
-  	console.log(this.calendars);
   	return this.calendars;
   }
 
   loadEventsFromNativeCalendar() {
-  	console.log('load events');
   	let events = [];
   	if(this.plt.is('ios')) {
   		for(let calendar of this.calendars) {
@@ -47,26 +44,19 @@ export class NativeCalendarService {
   	} else if(this.plt.is('android')) {
   		let start = new Date();
   		let end = new Date();
-  		start.setDate(start.getDate() - 1);
-  		end.setDate(end.getDate() + 5 * 1);
+  		start.setDate(start.getDate() - 365);
+  		end.setDate(end.getDate() + 5 * 365);
 		this.calendar.listEventsInRange(start, end).then( data => {
 			events.push(...data);
   			this.updateDatabase(events);
 		})
   	}
-  	console.log('loaded these events');
-  	console.log(events);
 	return events;
   }
 
   updateDatabase(events) {
-  	console.log('updating Database');
-  	console.log('update these events:');
-  	console.log(events);
   	if(events.length > 0) {
 	  	for(let event of events) {
-	  		console.log('checking event:');
-	  		console.log(event);
 	  		let calendarEvent = {} as CalendarEvent;
 	  		calendarEvent.userid = this.auth.userid;
 	  		let startTime = new Date(event.dtstart);
@@ -96,14 +86,10 @@ export class NativeCalendarService {
 	  				}
 	  			}
 	  			if(!eventAlreadyInDatabase) {
-			  		console.log('adding event to db:');
-			  		console.log(event);
 	  				this.db.addCalendarEvent(calendarEvent, this.auth.userid);
 	  			}
 	  		});
 	  	}
-	} else {
-		console.log('empty');
 	}
   }
 }
