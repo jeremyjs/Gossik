@@ -122,9 +122,6 @@ export class NativeCalendarService {
 
   deleteDatabaseEventsFromDeletedNativeEvents() {
   	this.loadEventsFromNativeCalendar2().then( calEvents => {
-  	console.log('zwei');
-  	console.log(calEvents.length);
-  	console.log(calEvents);
   	let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
 	.snapshotChanges()
 	.pipe(take(1),
