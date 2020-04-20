@@ -229,6 +229,7 @@ export class HomePage {
 				  		})
 					}
 					this.nativeCalendar.loadEventsFromNativeCalendar();
+					this.nativeCalendar.deleteDatabaseEventsFromDeletedNativeEvents();
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 				  	this.db.trackLogin(this.auth.userid);
 				  	this.loggedin = true;

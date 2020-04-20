@@ -89,18 +89,10 @@ export class NativeCalendarService {
 	  				}
 	  			}
 	  			if(!eventAlreadyInDatabase) {
-	  				console.log('add event');
-	  				console.log(calendarEvent);
 	  				this.db.addCalendarEvent(calendarEvent, this.auth.userid);
 	  			} else {
-	  				console.log('found event already in database:');
-	  				console.log(eventInDatabase);
-	  				console.log('corresponding to native event:');
-	  				console.log(calendarEvent);
 	  				if(eventInDatabase.title != calendarEvent.title || eventInDatabase.startTime != calendarEvent.startTime || eventInDatabase.endTime != calendarEvent.endTime || eventInDatabase.allDay != calendarEvent.allDay || eventInDatabase.eventLocation != calendarEvent.eventLocation) {
 		  				calendarEvent.key = eventInDatabase.key;
-		  				console.log('saving edited event:');
-		  				console.log(calendarEvent);
 		  				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
 		  			}
 
@@ -108,5 +100,52 @@ export class NativeCalendarService {
 	  		});
 	  	}
 	}
+  }
+
+  async loadEventsFromNativeCalendar2() {
+  	let events = [];
+  	if(this.plt.is('ios')) {
+  		for(let calendar of this.calendars) {
+  			let nativeEvents = await this.calendar.findAllEventsInNamedCalendar(calendar.name);
+  			events.push(...nativeEvents);
+  		}
+  	} else if(this.plt.is('android')) {
+  		let start = new Date();
+  		let end = new Date();
+  		start.setDate(start.getDate() - 7);
+  		end.setDate(end.getDate() + 5 * 365);
+		let nativeEvents = await this.calendar.listEventsInRange(start, end);
+		events.push(...nativeEvents);
+  	}
+	return events;
+  }
+
+  deleteDatabaseEventsFromDeletedNativeEvents() {
+  	this.loadEventsFromNativeCalendar2().then( calEvents => {
+  	console.log('zwei');
+  	console.log(calEvents.length);
+  	console.log(calEvents);
+  	let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
+	.snapshotChanges()
+	.pipe(take(1),
+		map(
+			changes => { 
+				return changes.map( c => {
+					let calendarEvent: CalendarEvent = { 
+						key: c.payload.key, ...c.payload.val()
+						};
+					return calendarEvent;
+	});}));
+	calendarEventList.subscribe( data => {
+		for(let ev of data) {
+			if(ev.event_id && ev.active) {
+				let nEvent = calEvents.find(nativeEvent => nativeEvent.event_id == ev.event_id);
+				if(nEvent == undefined) {
+					this.db.deleteCalendarEvent(ev.key, this.auth.userid);
+				}
+			}
+		}
+	});
+  	});
   }
 }
