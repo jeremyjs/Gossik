@@ -67,7 +67,9 @@ export class NativeCalendarService {
 	  		calendarEvent.allDay = event.allDay;
 	  		calendarEvent.active = true;
 	  		calendarEvent.event_id = event.event_id;
+	  		calendarEvent.eventLocation = event.eventLocation;
 	  		let eventAlreadyInDatabase: boolean = false;
+	  		let eventInDatabase = {} as CalendarEvent;
 	  		let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
 			.snapshotChanges()
 			.pipe(take(1),
@@ -83,12 +85,25 @@ export class NativeCalendarService {
 	  			for(let ev of data) {
 	  				if(ev.event_id && ev.event_id == calendarEvent.event_id) {
 	  					eventAlreadyInDatabase = true;
+	  					eventInDatabase = ev;
 	  				}
 	  			}
 	  			if(!eventAlreadyInDatabase) {
 	  				console.log('add event');
 	  				console.log(calendarEvent);
 	  				this.db.addCalendarEvent(calendarEvent, this.auth.userid);
+	  			} else {
+	  				console.log('found event already in database:');
+	  				console.log(eventInDatabase);
+	  				console.log('corresponding to native event:');
+	  				console.log(calendarEvent);
+	  				if(eventInDatabase.title != calendarEvent.title || eventInDatabase.startTime != calendarEvent.startTime || eventInDatabase.endTime != calendarEvent.endTime || eventInDatabase.allDay != calendarEvent.allDay || eventInDatabase.eventLocation != calendarEvent.eventLocation) {
+		  				calendarEvent.key = eventInDatabase.key;
+		  				console.log('saving edited event:');
+		  				console.log(calendarEvent);
+		  				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+		  			}
+
 	  			}
 	  		});
 	  	}

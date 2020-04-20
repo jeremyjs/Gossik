@@ -11,4 +11,5 @@ export interface CalendarEvent {
     actionid?: string;
     delegationid?: string;
     event_id?: string;
+    eventLocation?: string;
 }
