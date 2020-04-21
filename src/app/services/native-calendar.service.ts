@@ -101,6 +101,13 @@ export class NativeCalendarService {
 	return events;
   }
 
+  deleteEvent(eventId) {
+  	// I had to add the catch block because otherwise we get an unhandled promise rejection error even though the event gets deleted and everything works fine.
+  	return this.calendar.deleteEventById(eventId).then( resolved => {
+  	}).catch( rejected => {
+  	});
+  }
+
   deleteDatabaseEventsFromDeletedNativeEvents() {
   	this.loadEventsFromNativeCalendar().then( calEvents => {
   	let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
@@ -128,8 +135,6 @@ export class NativeCalendarService {
   }
 
   addEvent(eventTitle, eventLocation, eventStartTime, eventEndTime) {
-  	console.log('adding event to native calendar:');
-  	console.log(event);
   	let startTime = new Date(eventStartTime);
   	let endTime = new Date(eventEndTime);
   	return this.calendar.createEvent(eventTitle, eventLocation, undefined, startTime, endTime);

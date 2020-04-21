@@ -164,8 +164,6 @@ export class DatabaseService {
     }
 
     addCalendarEvent(calendarEvent: CalendarEvent, userid) {
-        console.log('dddb event is');
-        console.log(calendarEvent);
         return this.db.list('/users/' + userid + '/calendarEvents').push(calendarEvent);
     }
     
@@ -184,10 +182,10 @@ export class DatabaseService {
         .valueChanges()
         .pipe(take(1))
         .subscribe( event => {
-                event.key = eventid;
-                event.active = false;
-                this.editCalendarEvent(event, userid); 
-            });
+            event.key = eventid;
+            event.active = false;
+            this.editCalendarEvent(event, userid); 
+        });
     }
 
     deleteDelegation(delegation: Delegation, userid) {

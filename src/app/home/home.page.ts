@@ -1294,7 +1294,8 @@ export class HomePage {
 							      	{
 								        text: alertMessage['Delete'],
 								        handler: () => {
-								          	this.db.deleteCalendarEvent(event.key, this.auth.userid)
+								          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
+								          	this.nativeCalendar.deleteEvent(event.event_id);
 								          	let events = this.eventSource;
 								          	let index = events.indexOf(event);
 											events.splice(index,1);
