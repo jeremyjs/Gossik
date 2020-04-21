@@ -33,10 +33,7 @@ export class NativeCalendarService {
   }
 
   updateDatabase() {
-  	console.log('updateDatabase called');
   	this.loadEventsFromNativeCalendar().then( events => {
-  		console.log('updating events');
-	  	console.log(events);
 	  	if(events.length > 0) {
 		  	for(let event of events) {
 		  		let calendarEvent = {} as CalendarEvent;
@@ -99,14 +96,12 @@ export class NativeCalendarService {
   		start.setDate(start.getDate() - 7);
   		end.setDate(end.getDate() + 5 * 365);
 		let nativeEvents = await this.calendar.listEventsInRange(start, end);
-		console.log(nativeEvents);
 		events.push(...nativeEvents);
   	}
 	return events;
   }
 
   deleteDatabaseEventsFromDeletedNativeEvents() {
-  	console.log('deleteDatabaseEventsFromDeletedNativeEvents called');
   	this.loadEventsFromNativeCalendar().then( calEvents => {
   	let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
 	.snapshotChanges()

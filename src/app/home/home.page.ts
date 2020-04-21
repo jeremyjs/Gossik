@@ -690,18 +690,21 @@ export class HomePage {
 							active: true,
 							color: goal.color
 						}
-			            this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-			            	action.deadlineid = event.key;
-			            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
-			            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
-			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
-			            				calendarEvent.key = event.key;
-			            				calendarEvent.actionid = actionAddedkey.key;
-			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
-			            			});
-			            		});
-			            	});
-			            });
+						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+							eventData.event_id = event_id;
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+				            	action.deadlineid = event.key;
+				            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
+				            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+				            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+				            				calendarEvent.key = event.key;
+				            				calendarEvent.actionid = actionAddedkey.key;
+				            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+				            			});
+				            		});
+				            	});
+				            });
+						});
 			        } else {
 						this.db.addAction(action, capture, this.auth.userid);
 					}
@@ -739,18 +742,21 @@ export class HomePage {
 							active: true,
 							color: goal.color
 						}
-						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-			            	delegation.deadlineid = event.key;
-			            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
-			            		this.db.getDelegationFromDelegationid(delegationAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( delegationAdded => {
-			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
-			            				calendarEvent.key = event.key;
-			            				calendarEvent.delegationid = delegationAddedkey.key;
-			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
-			            			});
-			            		});
-			            	});
-			            });
+						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+							eventData.event_id = event_id;
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+				            	delegation.deadlineid = event.key;
+				            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
+				            		this.db.getDelegationFromDelegationid(delegationAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( delegationAdded => {
+				            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+				            				calendarEvent.key = event.key;
+				            				calendarEvent.delegationid = delegationAddedkey.key;
+				            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+				            			});
+				            		});
+				            	});
+				            });
+				        });
 					} else {
 						this.db.addDelegation(delegation, capture, this.auth.userid);
 					}
@@ -1173,8 +1179,6 @@ export class HomePage {
 							eventData.color = "#C0C0C0";
 						}
 					}
-					console.log('calling nativeCalendar.addEvent');
-					console.log(eventData);
 					this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 						eventData.event_id = event_id;
 						this.db.addCalendarEvent(eventData, this.auth.userid)
@@ -1357,14 +1361,17 @@ export class HomePage {
 								eventData.color = "#C0C0C0";
 							}
 						}
-						this.db.addCalendarEvent(eventData, this.auth.userid)
-						eventData.startTime = new Date(eventData.startTime);
-				        eventData.endTime = new Date(eventData.endTime);
-						let events = this.eventSource;
-						events.push(eventData);
-						this.eventSource = [];
-						setTimeout(() => {
-							this.eventSource = events;
+						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+							eventData.event_id = event_id;
+							this.db.addCalendarEvent(eventData, this.auth.userid)
+							eventData.startTime = new Date(eventData.startTime);
+					        eventData.endTime = new Date(eventData.endTime);
+							let events = this.eventSource;
+							events.push(eventData);
+							this.eventSource = [];
+							setTimeout(() => {
+								this.eventSource = events;
+							});
 						});
 					}
 				});

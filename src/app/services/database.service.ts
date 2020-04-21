@@ -164,6 +164,8 @@ export class DatabaseService {
     }
 
     addCalendarEvent(calendarEvent: CalendarEvent, userid) {
+        console.log('dddb event is');
+        console.log(calendarEvent);
         return this.db.list('/users/' + userid + '/calendarEvents').push(calendarEvent);
     }
     
