@@ -228,8 +228,7 @@ export class HomePage {
 					  		}
 				  		})
 					}
-					this.nativeCalendar.loadEventsFromNativeCalendar();
-					this.nativeCalendar.deleteDatabaseEventsFromDeletedNativeEvents();
+					this.nativeCalendar.updateDatabase();
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 				  	this.db.trackLogin(this.auth.userid);
 				  	this.loggedin = true;
@@ -1174,14 +1173,19 @@ export class HomePage {
 							eventData.color = "#C0C0C0";
 						}
 					}
-					this.db.addCalendarEvent(eventData, this.auth.userid)
-					eventData.startTime = new Date(eventData.startTime);
-			        eventData.endTime = new Date(eventData.endTime);
-					let events = this.eventSource;
-					events.push(eventData);
-					this.eventSource = [];
-					setTimeout(() => {
-						this.eventSource = events;
+					console.log('calling nativeCalendar.addEvent');
+					console.log(eventData);
+					this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+						eventData.event_id = event_id;
+						this.db.addCalendarEvent(eventData, this.auth.userid)
+						eventData.startTime = new Date(eventData.startTime);
+				        eventData.endTime = new Date(eventData.endTime);
+						let events = this.eventSource;
+						events.push(eventData);
+						this.eventSource = [];
+						setTimeout(() => {
+							this.eventSource = events;
+						});
 					});
 				}
 			});
