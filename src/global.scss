@@ -74,6 +74,10 @@ ion-button {
   --border-radius: 20px;
 }
 
+.transparent {
+  background: rgba(0,0,0,0);
+}
+
 .display-inline-block {
   display: inline-block;
 }
@@ -275,9 +279,6 @@ ion-toolbar {
 
 ion-input {
   scrollbar-width: none;
-  background-color: var(--ion-color-white) !important;
-  border-radius: 20px;
-  color: var(--ion-color-primary) !important;
   text-align: center;
   input {
       text-align: center;

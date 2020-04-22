@@ -150,6 +150,7 @@ export class HomePage {
 		console.log('url ' + platform.url());
 		console.log(platform.platforms());
 		this.isApp = !this.platform.is('desktop');
+		this.isApp = true;
 		console.log(this.isApp);
 		if(this.isApp) {
 			this.calendar.mode = 'day'
@@ -445,6 +446,14 @@ export class HomePage {
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
+  	}
+
+  	addCapturePicture() {
+  		//ToDo
+  	}
+
+  	addCaptureVoice() {
+  		//ToDo
   	}
 
   	deleteCapture(capture: Capture) {
