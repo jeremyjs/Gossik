@@ -41,7 +41,6 @@ p::first-letter, button::first-letter, ion-col::first-letter {
 }
 
 ion-content {
-    background-color: var(--ion-color-primary) !important;
     color: #000000 !important;
     overflow: auto !important;
 }
@@ -77,6 +76,11 @@ ion-button {
 
 .display-inline-block {
   display: inline-block;
+}
+
+.background-gray {
+  --background: url('/assets/imgs/background_gray.png') no-repeat;
+  background-size: 100%;
 }
 
 .alert-message {

@@ -32,7 +32,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content color="primary">
+<ion-content class="background-gray">
 
   <span class="font-white">{{errorMsg | translate}}</span>
 
@@ -136,16 +136,8 @@
   </div>
 
 	<!-- CapturePage -->
-  <div *ngIf="viewpoint == 'CapturePage'">
-    <div class="margin-auto width-90 height-20" *ngIf="isApp">
-      <ion-card class="width-100 margin-top-10 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
-        <ion-item class="height-50 border-radius-20px">
-          <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
-        </ion-item>
-        <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
-      </ion-card>
-    </div>
-    <ion-row class="width-40 margin-auto margin-top-10 height-20" *ngIf="!isApp">
+  <div *ngIf="viewpoint == 'CapturePage' && !isApp">
+    <ion-row class="width-40 margin-auto margin-top-10 height-20">
       <ion-card class="margin-top-10 width-100 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
           <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
@@ -153,6 +145,38 @@
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
     </ion-row>
+    <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">
+      <div *ngIf="takenActionListNotEmpty">
+        <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
+        <button class="background-white width-100 text-align-left border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
+        </button>
+      </div>
+      <div *ngIf="captureListNotEmpty">
+        <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
+        <ion-grid>
+          <ion-row class="background-white border-bottom-1 width-100 min-height-30px" *ngFor="let capture of captureArray">
+            <ion-col size="10" class="height-100">
+              <button class="background-white text-align-left" (click)="goToProcessCapturePage(capture)">{{capture.content}}
+              </button>
+            </ion-col>
+            <ion-col size="2" class="height-100">
+              <button class="background-white" float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile CapturePage -->
+  <div *ngIf="viewpoint == 'CapturePage' && isApp">
+    <div class="margin-auto width-90 height-20">
+      <ion-card class="width-100 margin-top-10 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
+        <ion-item class="height-50 border-radius-20px">
+          <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+        </ion-item>
+        <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
+      </ion-card>
+    </div>
     <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">
       <div *ngIf="takenActionListNotEmpty">
         <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
