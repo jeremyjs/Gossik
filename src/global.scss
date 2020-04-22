@@ -79,8 +79,7 @@ ion-button {
 }
 
 .background-gray {
-  --background: url('/assets/imgs/background_gray.png') no-repeat;
-  background-size: 100%;
+  --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
 }
 
 .alert-message {
