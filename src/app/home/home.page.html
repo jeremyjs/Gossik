@@ -3,7 +3,9 @@
     <div *ngIf="loggedin">
   		<div *ngIf="isApp">
         <ion-buttons start>
-          <ion-menu-button autoHide="false"></ion-menu-button>
+          <ion-menu-button autoHide="false">
+            <img src="../../assets/icon/icon_menu.png" height="17">
+          </ion-menu-button>
         </ion-buttons>
       </div>
       <div class="header-container" *ngIf="!isApp">
