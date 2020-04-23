@@ -169,15 +169,34 @@
   </div>
   <!-- Mobile CapturePage -->
   <div *ngIf="viewpoint == 'CapturePage' && isApp">
-      <ion-card class="width-100 margin-0 text-align-center height-40 overflow-scroll no-scrollbar display-inline-block transparent min-height-150px">
-          <ion-input class="transparent display-inline-block margin-0 width-90" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
-          <br>
-          <button class="transparent no-padding" (click)="addCapturePicture()">
-            <img src="../../assets/icon/icon_camera.png" height="45">
-          </button>
-          <button class="transparent no-padding" (click)="addCaptureVoice()">
-            <img src="../../assets/icon/icon_microphone.png" height="45">
-          </button>
+      <ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent min-height-150px">
+        <ion-row class="width-90 margin-top-45 margin-left-auto margin-right-auto">
+          <ion-col size="9.6" class="no-padding">
+          <ion-input class="transparent display-inline-block margin-0 width-90 font-size-1-5rem placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          </ion-col>
+          <ion-col size="1.2" class="flex text-align-center no-padding">
+            <button class="transparent no-padding" (click)="addCapturePicture()">
+              <img src="../../assets/icon/icon_camera.png" height="15">
+            </button>
+          </ion-col>
+          <ion-col size="1.2" class="flex text-align-center no-padding">
+            <button class="transparent no-padding margin-auto" (click)="addCaptureVoice()">
+              <img src="../../assets/icon/icon_microphone.png" height="20" class="margin-bottom-3">
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="width-50 margin-top-85 margin-right-auto margin-left-auto">
+          <ion-col size="6" class="flex text-align-center">
+            <button class="transparent no-padding margin-auto" (click)="cancelCapture()">
+              <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
+            </button>
+          </ion-col>
+          <ion-col size="6" class="flex text-align-center">
+            <button class="transparent no-padding margin-auto" (click)="addCapture(newCapture)">
+              <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+            </button>
+          </ion-col>
+        </ion-row>
       </ion-card>
     <!--
     <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">

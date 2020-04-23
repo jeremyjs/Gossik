@@ -433,16 +433,36 @@ export class HomePage {
 
 	ionFocus(event){
 		event.target.firstChild.placeholder = '';
+		this.translate.get(["Input new capture"]).subscribe( translation => {
+	  		if(this.newCapture.content == translation["Input new capture"]) {
+	  			this.newCapture.content = '';
+	  		}
+		});
+	}
+
+	ionBlurCapture(event) {
+		console.log('lost focus');
+		console.log(this.newCapture.content);
+		this.translate.get(["Input new capture"]).subscribe( translation => {
+	  		if(!this.newCapture.content) {
+	  			this.newCapture.content = translation["Input new capture"];
+	  		} else if(this.newCapture.content == '') {
+	  			this.newCapture.content = translation["Input new capture"];
+	  		}
+		});
 	}
 
   	addCapture(capture: Capture) {
 	    if(capture.content !== '' && capture.content !== null && capture.content !== undefined) {
-	      this.errorMsg = "";
-	      capture.userid = this.auth.userid;
-	      capture.active = true;
-	      this.db.addCapture(capture, this.auth.userid);
-	      this.newCapture = {} as Capture;
-	      this.showTutorial('postitDone');
+			this.errorMsg = "";
+			capture.userid = this.auth.userid;
+			capture.active = true;
+			this.db.addCapture(capture, this.auth.userid);
+			this.newCapture = {} as Capture;
+			this.translate.get(["Input new capture"]).subscribe( translation => {
+		  		this.newCapture.content = translation["Input new capture"];
+			});
+	      	this.showTutorial('postitDone');
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
@@ -454,6 +474,12 @@ export class HomePage {
 
   	addCaptureVoice() {
   		//ToDo
+  	}
+
+  	cancelCapture() {
+  		this.translate.get(["Input new capture"]).subscribe( translation => {
+	  		this.newCapture.content = translation["Input new capture"];
+		});
   	}
 
   	deleteCapture(capture: Capture) {

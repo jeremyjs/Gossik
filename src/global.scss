@@ -183,6 +183,10 @@ ion-toolbar {
   font-size: 1rem !important;
 }
 
+.font-size-1-5rem {
+  font-size: 1.5rem !important;
+}
+
 .header-icons-div {
   height: 22px;
   background-color: var(--ion-color-primary);
@@ -317,6 +321,14 @@ ion-input {
   margin-left: 0px;
 }
 
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.margin-right-auto {
+  margin-right: auto;
+}
+
 .min-height-30px {
   min-height: 30px;
 }
@@ -327,6 +339,10 @@ ion-input {
 
 .margin-bottom-1 {
   margin-bottom: 1px;
+}
+
+.margin-bottom-3 {
+  margin-bottom: 3px;
 }
 
 .display-inline-block {
@@ -481,6 +497,14 @@ p {
   margin-top: 10px !important;
 }
 
+.margin-top-85 {
+  margin-top: 85px !important;
+}
+
+.margin-top-45 {
+  margin-top: 45px !important;
+}
+
 .margin-auto {
   margin: auto;
 }
@@ -519,6 +543,11 @@ p {
 
 .padding-top-10 {
   padding-top: 10px;
+}
+
+.placeholder-white {
+  --placeholder-color: white;
+  --placeholder-opacity: 1;
 }
 
 .flex {
