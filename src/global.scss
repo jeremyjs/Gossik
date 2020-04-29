@@ -86,6 +86,10 @@ ion-button {
   --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
 }
 
+.border-left-white-2px {
+  border-left: 2px solid #ffffff;
+}
+
 .alert-message {
     scrollbar-width: none !important;
   }
