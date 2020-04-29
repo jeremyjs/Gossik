@@ -90,6 +90,10 @@ ion-button {
   --background: url('/assets/imgs/navigation_left.png') center center/70% 40% no-repeat;
 }
 
+.background-navigation-center {
+  --background: url('/assets/imgs/navigation_center.png') center center/70% 40% no-repeat;
+}
+
 .absolute-bottom {
   position: absolute;
   bottom: 0px;
