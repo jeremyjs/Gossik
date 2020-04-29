@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar color="primary">
+	<ion-toolbar color="secondary">
     <div *ngIf="loggedin">
   		<div *ngIf="isApp">
         <ion-buttons start>
@@ -247,7 +247,7 @@
   <!-- Mobile ProcessPage -->
   <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar">
     <ion-grid>
-      <ion-row class="one-line padding-20 transparent width-100 min-height-30px height-30px" *ngFor="let capture of captureArray">
+      <ion-row class="one-line padding-20 transparent width-100 height-30px" *ngFor="let capture of captureArray">
           <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="goToProcessCapturePage(capture)">
             <img src="../../assets/imgs/circle_white.png" height="7" class=" margin-auto">
             <span class="margin-left-10 font-size-1rem">
@@ -275,79 +275,57 @@
   </div>
 
   <!-- ProcessCapturePage -->
-  <div *ngIf="viewpoint=='ProcessCapturePage'">
-    <div *ngIf="!isApp" class="height-100">
-      <div *ngIf="pageCtrl == ''">
-        <ion-grid>
-          <ion-row class="width-100">
-            <ion-col size="3">
-              <ion-card class="width-100 margin-top-0 secondary border-radius-20px text-align-center overflow-y-scroll no-scrollbar">
-                <div class="height-100 width-100 max-height-500px margin-vertical-center-parent overflow-y-scroll no-scrollbar">
-                <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
-              
-              </div>
-              <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
-              </ion-card>
-              <ion-card class="text-align-center margin-top-10 overflow-scroll no-scrollbar width-100 margin-left-0 display-inline-block secondary border-radius-20px">
-                <ion-item class="border-radius-20px">
-                  <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
-                </ion-item>
-                <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
-              </ion-card>
-            </ion-col>
-            <ion-col>
-              
-              
-              <ion-card class="width-400px overflow-x-hidden text-align-center margin-top-0 height-20 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-100px" no-lines *ngFor="let goal of goalArray">
-                <ion-grid>
-                  <ion-row>
-                      <h1 class="max-height-30px margin-0 overflow-x-hidden width-90 display-inline-block">{{goal.name}}</h1>
-                      <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
-                  </ion-row>
-                  <ion-row >
-                    <ion-button class="darkbutton button-left" (click)="addAction(goal, capture)">{{"Action" | translate }}</ion-button>
-                    <ion-button class="darkbutton button-left" (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</ion-button>
-                    <ion-button class="darkbutton button-left" (click)="addReference(goal, capture)">{{"Reference" | translate }}</ion-button>
-                  </ion-row>
-                </ion-grid>
-              </ion-card>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
+  <div *ngIf="viewpoint=='ProcessCapturePage' && !isApp">
+    <div *ngIf="pageCtrl == ''">
+      <ion-grid>
+        <ion-row class="width-100">
+          <ion-col size="3">
+            <ion-card class="width-100 margin-top-0 secondary border-radius-20px text-align-center overflow-y-scroll no-scrollbar">
+              <div class="height-100 width-100 max-height-500px margin-vertical-center-parent overflow-y-scroll no-scrollbar">
+              <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
+            </div>
+            <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
+            </ion-card>
+            <ion-card class="text-align-center margin-top-10 overflow-scroll no-scrollbar width-100 margin-left-0 display-inline-block secondary border-radius-20px">
+              <ion-item class="border-radius-20px">
+                <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+              </ion-item>
+              <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
+            </ion-card>
+          </ion-col>
+          <ion-col>
+            <ion-card class="width-400px overflow-x-hidden text-align-center margin-top-0 height-20 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-100px" no-lines *ngFor="let goal of goalArray">
+              <ion-grid>
+                <ion-row>
+                    <h1 class="max-height-30px margin-0 overflow-x-hidden width-90 display-inline-block">{{goal.name}}</h1>
+                    <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+                </ion-row>
+                <ion-row >
+                  <ion-button class="darkbutton button-left" (click)="addAction(goal, capture)">{{"Action" | translate }}</ion-button>
+                  <ion-button class="darkbutton button-left" (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</ion-button>
+                  <ion-button class="darkbutton button-left" (click)="addReference(goal, capture)">{{"Reference" | translate }}</ion-button>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
-
-    <!-- mobile -->
-    <div *ngIf="isApp" class="height-100">
-      <div *ngIf="pageCtrl == ''">
-        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px text-align-center">
-          <div class="max-height-500px margin-vertical-center-parent overflow-y-scroll no-scrollbar">
-            <p class="width-100 margin-10px overflow-y-scroll no-scrollbar text-align-center">{{capture.content}}</p>
-          </div>
-          <ion-button class="darkbutton display-block" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</ion-button>
-        </ion-card>
-        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px">
-          <ion-item class="border-radius-20px">
-            <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
-          </ion-item>
-          <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
-        </ion-card>
-        <ion-card class="margin-auto padding-10 margin-bottom-10 width-90 secondary border-radius-20px" no-lines *ngFor="let goal of goalArray">
-          <ion-grid>
-            <ion-row>
-                <h1 class="max-height-30px overflow-x-hidden width-90 display-inline-block">{{goal.name}}</h1>
-                <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
-            </ion-row>
-            <ion-row>
-          
-          <ion-button class="darkbutton button-left width-18" (click)="addAction(goal, capture)">{{"Action" | translate }}</ion-button>
-          <ion-button class="darkbutton button-left" (click)="addDelegation(goal, capture)">{{"Delegation" | translate }}</ion-button>
-          <ion-button class="darkbutton button-left" (click)="addReference(goal, capture)">{{"Reference" | translate }}</ion-button>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
-      </div>
-    </div>
+  </div>
+  <!-- Mobile ProcessCapturePage -->
+  <div *ngIf="viewpoint=='ProcessCapturePage' && isApp">
+    <ion-grid class="padding-20">
+      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px">{{capture.content}}
+      </ion-card>
+      <ion-row>
+        <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="goToProcessCapturePage(capture)">
+          <img src="../../assets/imgs/circle_white.png" height="7" class=" margin-auto">
+          <span class="margin-left-10 font-size-1rem">
+            {{"Project" | translate }}
+          </span>
+        </button>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <!-- ProcessTakenActionPage -->
