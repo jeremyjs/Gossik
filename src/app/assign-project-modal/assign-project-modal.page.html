@@ -11,5 +11,10 @@
 			<span *ngIf="goal.key != chosenGoal.key" class="font-gray">{{goal.name}}</span>
 		</button>
 	</ion-row>
+	<ion-card class="flex">
+		<button class="margin-auto transparent no-padding margin-auto" (click)="assign()">
+			<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+	    </button>
+	</ion-card>
 
 </ion-content>

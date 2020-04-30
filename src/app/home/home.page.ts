@@ -653,6 +653,7 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				this.project = data.data;
+				this.pageCtrl = 'type';
 			});
 		});
   	}

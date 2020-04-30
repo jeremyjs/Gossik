@@ -14,7 +14,9 @@ export class AssignProjectModalPage implements OnInit {
 
   constructor(
   	public navParams: NavParams,
-  	public translate: TranslateService
+  	public translate: TranslateService,
+  	public modalCtrl: ModalController,
+  	public alertCtrl: AlertController
   	) { }
 
   ngOnInit() {
@@ -23,7 +25,25 @@ export class AssignProjectModalPage implements OnInit {
 
   chooseGoal(goal) {
   	this.chosenGoal = goal;
-  	console.log(this.chosenGoal);
+  }
+
+  assign() {
+  	if(this.chosenGoal.key){
+  		this.modalCtrl.dismiss(this.chosenGoal);
+  	} else {
+  		this.translate.get(["Please choose a project to assign.", "Ok"]).subscribe( alertMessage => {
+		  this.alertCtrl.create({
+		      message: alertMessage["Please choose a project to assign."],
+		      buttons: [
+		              {
+		                  text: alertMessage["Ok"]
+		                }
+		            ]
+		  }).then( alert => {
+		    alert.present();
+		  });
+		});
+  	}
   }
 
 }
