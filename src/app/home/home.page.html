@@ -1,12 +1,17 @@
 <ion-header>
 	<ion-toolbar color="secondary">
     <div *ngIf="loggedin">
-  		<div *ngIf="isApp">
+  		<div *ngIf="isApp && viewpoint != 'ProcessCapturePage'">
         <ion-buttons start>
           <ion-menu-button autoHide="false">
             <img src="../../assets/icon/icon_menu.png" height="17">
           </ion-menu-button>
         </ion-buttons>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
+        <button class="transparent" (click)="goToProcessPage()">
+          <img src="../../assets/icon/icon_return_arrow.png" height="17">
+        </button>
       </div>
       <div class="header-container" *ngIf="!isApp">
         	<button class="header-icon" (click)="goToCapturePage()">
@@ -317,8 +322,24 @@
     <ion-grid class="padding-20">
       <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px">{{capture.content}}
       </ion-card>
+      <ion-row *ngIf="pageCtrl == ''">
+        <button class="transparent text-color-white text-align-left width-100" (click)="assignProject()">
+          <img src="../../assets/imgs/circle_white.png" height="7" class=" margin-auto">
+          <span class="margin-left-10 font-size-1rem">
+            {{"Project" | translate }}gg
+          </span>
+        </button>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl != '' && project">
+        <button class="transparent text-color-white text-align-left width-100" (click)="changePageCtrl('')">
+          <img *ngIf="" src="../../assets/imgs/icon_confirm.png" height="7" class=" margin-auto">
+          <span class="margin-left-10 font-size-1rem">
+            {{"Project" | translate }}asf
+          </span>
+        </button>
+      </ion-row>
       <ion-row>
-        <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="goToProcessCapturePage(capture)">
+        <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="changePageCtrl('brt')">
           <img src="../../assets/imgs/circle_white.png" height="7" class=" margin-auto">
           <span class="margin-left-10 font-size-1rem">
             {{"Project" | translate }}

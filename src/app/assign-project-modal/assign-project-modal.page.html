@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>{{"Assign Project" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background-gray">
+	<ion-row class="font-white" *ngFor="let goal of goalArray">
+		{{goal.name}}
+	</ion-row>
+
+</ion-content>

@@ -29,6 +29,7 @@ import { DefineReferenceModalPage } from '../define-reference-modal/define-refer
 import { GoalDetailsModalPage } from '../goal-details-modal/goal-details-modal.page';
 import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-modal.page';
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
+import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
 
 import * as moment from 'moment';
 
@@ -128,6 +129,7 @@ export class HomePage {
 	manualPushDE: string;
 	cals = [];
 	nativeEvents = [];
+	project: string;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -293,6 +295,10 @@ export class HomePage {
   		this.errorMsg = '';
   		this.pageCtrl = '';
   		this.viewpoint = viewpoint;
+  	}
+
+  	changePageCtrl(pageCtrl: string) {
+  		this.pageCtrl = pageCtrl;
   	}
 
   	goToPrivacyPolicyPage() {
@@ -629,6 +635,7 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
+    	this.project = '';
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -638,6 +645,18 @@ export class HomePage {
   	}
 
   	// ProcessCapturePage functions
+  	assignProject() {
+  		this.modalCtrl.create({ 
+			component: AssignProjectModalPage,
+			componentProps: {goalArray: this.goalArray}
+		}).then( modal => {
+			modal.present();
+			modal.onDidDismiss().then( data => {
+				this.project = data.data;
+			});
+		});
+  	}
+
   	addGoal(goalname) {
   		this.showTutorial('createProject');
   		this.goalList.pipe(take(1)).subscribe(

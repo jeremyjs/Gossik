@@ -49,6 +49,10 @@ const routes: Routes = [
     path: 'privacy-policy',
     loadChildren: () => import('./privacy-policy/privacy-policy.module').then( m => m.PrivacyPolicyPageModule)
   },
+  {
+    path: 'assign-project-modal',
+    loadChildren: () => import('./assign-project-modal/assign-project-modal.module').then( m => m.AssignProjectModalPageModule)
+  },
 ];
 
 @NgModule({

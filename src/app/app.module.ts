@@ -34,6 +34,7 @@ import { DefineReferenceModalPageModule } from './define-reference-modal/define-
 import { GoalDetailsModalPageModule } from './goal-details-modal/goal-details-modal.module';
 import { CalendarEventModalPageModule } from './calendar-event-modal/calendar-event-modal.module';
 import { ChangeWeekModalPageModule } from './change-week-modal/change-week-modal.module';
+import { AssignProjectModalPageModule } from './assign-project-modal/assign-project-modal.module';
 
 import { DatePickerModule } from 'ionic4-date-picker';
 
@@ -77,6 +78,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     GoalDetailsModalPageModule,
     CalendarEventModalPageModule,
     ChangeWeekModalPageModule,
+    AssignProjectModalPageModule,
     DatePickerModule,
     NgCalendarModule
   	],
