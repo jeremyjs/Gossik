@@ -129,7 +129,8 @@ export class HomePage {
 	manualPushDE: string;
 	cals = [];
 	nativeEvents = [];
-	project: string;
+	captureProject: string;
+	captureType: string;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -635,7 +636,7 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-    	this.project = '';
+    	this.captureProject = '';
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -652,12 +653,21 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
-				this.project = data.data;
+				this.captureProject = data.data;
 				this.pageCtrl = 'type';
 			});
 		});
   	}
 
+  	assignAction() {
+  		this.captureType = 'action';
+  		this.pageCtrl = 'time'
+  	}
+
+  	assignNote() {
+  		this.captureType = 'note';
+  		this.pageCtrl = 'done';
+  	}
   	addGoal(goalname) {
   		this.showTutorial('createProject');
   		this.goalList.pipe(take(1)).subscribe(
