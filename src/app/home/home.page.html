@@ -406,6 +406,21 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="pageCtrl == 'time'">
+        <ion-col size="1">
+        <img src="../../assets/imgs/circle_white.png" height="8" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <span class="margin-left-10 font-size-1rem font-white">
+            {{"Time" | translate }}
+          </span>
+          <div class="width-100 margin-top-10 font-size-1rem">
+            <ion-row class="width-100">
+              <ion-datetime class="font-white" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')"></ion-datetime>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </div>
 

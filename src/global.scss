@@ -85,6 +85,29 @@ ion-button {
   --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
 }
 
+.picker-md .picker-wrapper {
+  background-color: rgb(0,0,0) !important;
+  color: rgb(102,102,102) !important;
+}
+
+.picker-toolbar.sc-ion-picker-md {
+  background-color: rgb(0,0,0) !important;
+}
+
+.picker-md .picker-opt.picker-opt-selected {
+  background-color: rgb(0,0,0) !important;
+  color: rgb(255,255,255) !important;
+}
+
+.picker-toolbar-button {
+  width: 40% !important;
+}
+
+.picker-button {
+  width: 100% !important;
+  padding: 0 !important;
+}
+
 .background-navigation-left {
   --background: url('/assets/imgs/navigation_left.png') center center/70% 40% no-repeat;
 }
