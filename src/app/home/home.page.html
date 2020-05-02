@@ -416,7 +416,26 @@
           </span>
           <div class="width-100 margin-top-10 font-size-1rem">
             <ion-row class="width-100">
-              <ion-datetime class="font-white" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')"></ion-datetime>
+              <!-- the 'h' in displayFormat is not a normal h because it would translate it to the hour format, therefore it's a greek letter that looks exactly like an 'h' -->
+              <ion-datetime class="font-white" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl != 'time' && captureTime">
+        <ion-col size="1">
+        <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <button class="transparent font-gray text-align-left width-100" (click)="changePageCtrl('time')">
+            <span class="margin-left-10 font-size-1rem font-gray">
+              {{"Time" | translate }}
+            </span>
+          </button>
+          <div class="width-100 margin-top-10 font-size-1rem">
+            <ion-row class="width-100">
+              <!-- the 'h' in displayFormat is not a normal h because it would translate it to the hour format, therefore it's a greek letter that looks exactly like an 'h' -->
+              <ion-datetime class="font-white" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime>
             </ion-row>
           </div>
         </ion-col>

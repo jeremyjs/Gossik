@@ -132,6 +132,8 @@ export class HomePage {
 	captureProject: string;
 	captureType: string;
 	captureTimeISOString = new Date(0);
+	capturePriority: number;
+	captureTime: number;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -663,13 +665,20 @@ export class HomePage {
   	assignAction() {
   		this.captureType = 'action';
   		this.pageCtrl = 'time';
-  		this.captureTimeISOString.setHours(0);
+  		this.captureTimeISOString = new Date();
+  		this.captureTimeISOString.setHours(0,0,0);
   		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   	}
 
   	assignNote() {
   		this.captureType = 'note';
   		this.pageCtrl = 'done';
+  	}
+
+  	timeSet() {
+  		let time = new Date(this.captureTimeISOString);
+  		this.captureTime = time.getHours() * 60 + time.getMinutes();
+  		console.log(this.captureTime);
   	}
 
   	addGoal(goalname) {
