@@ -679,6 +679,10 @@ export class HomePage {
   		let time = new Date(this.captureTimeISOString);
   		this.captureTime = time.getHours() * 60 + time.getMinutes();
   		console.log(this.captureTime);
+  		console.log(this.capturePriority);
+  		if(!this.capturePriority && this.captureTime != 0) {
+  			this.pageCtrl = 'priority';
+  		}
   	}
 
   	addGoal(goalname) {
