@@ -435,7 +435,7 @@
           <div class="width-100 margin-top-10 font-size-1rem">
             <ion-row class="width-100">
               <!-- the 'h' in displayFormat is not a normal h because it would translate it to the hour format, therefore it's a greek letter that looks exactly like an 'h' -->
-              <ion-datetime class="font-white" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime>
+              <ion-datetime class="font-gray" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="captureTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime>
             </ion-row>
           </div>
         </ion-col>
