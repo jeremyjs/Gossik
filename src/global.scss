@@ -85,16 +85,25 @@ ion-button {
   --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
 }
 
-.picker-md .picker-wrapper {
-  background-color: rgb(0,0,0) !important;
+.picker-md, .picker-wrapper {
+  --background: rgb(0,0,0) !important;
   color: rgb(102,102,102) !important;
+  font-size: bold !important;
+}
+
+.picker-above-highlight.sc-ion-picker-ios {
+  background: rgb(0,0,0) !important;
+}
+
+.picker-below-highlight.sc-ion-picker-ios {
+  background: rgb(0,0,0) !important;
 }
 
 .picker-toolbar.sc-ion-picker-md {
   background-color: rgb(0,0,0) !important;
 }
 
-.picker-md .picker-opt.picker-opt-selected {
+.picker-opt.picker-opt-selected {
   background-color: rgb(0,0,0) !important;
   color: rgb(255,255,255) !important;
 }
@@ -132,15 +141,6 @@ ion-button {
 .alert-message {
     scrollbar-width: none !important;
   }
-
-.picker-md .picker-prefix, .picker-md .picker-suffix, .picker-md .picker-opt.picker-opt-selected {
-    font-weight: bold;
-    background-color: #DEDEDE;
-  }
-
-.picker-md .picker-wrapper, .picker-md .picker-toolbar {
-  background-color: #EBEBEE;
-}
 
 .feedback {
   margin: auto;

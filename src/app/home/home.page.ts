@@ -131,7 +131,7 @@ export class HomePage {
 	nativeEvents = [];
 	captureProject: string;
 	captureType: string;
-	captureTimeISOString = new Date(0);
+	captureTimeISOString: any;
 	capturePriority: number;
 	captureTime: number;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
