@@ -440,6 +440,77 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="pageCtrl == 'priority'">
+        <ion-col size="1">
+        <img src="../../assets/imgs/circle_white.png" height="8" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <span class="margin-left-10 font-size-1rem font-white">
+            {{"Priority" | translate }}
+          </span>
+          <div class="width-100 margin-top-10 font-size-1rem">
+            <ion-row class="width-100">
+              <ion-col>
+                <button *ngIf="priority == 0" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
+                </button>
+                <button *ngIf="priority != 0" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button *ngIf="priority == 1" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
+                </button>
+                <button *ngIf="priority != 1" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button *ngIf="priority == 2" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+                </button>
+                <button *ngIf="priority != 2" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl != 'priority' && capturePriority">
+        <ion-col size="1">
+        <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <button class="transparent font-gray text-align-left width-100" (click)="changePageCtrl('priority')">
+            <span class="margin-left-10 font-size-1rem font-gray">
+              {{"Priority" | translate }}
+            </span>
+          </button>
+          <div class="width-100 margin-top-10 font-size-1rem">
+            <ion-row class="width-100">
+              <ion-col>
+                <button *ngIf="priority == low" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
+                </button>
+                <button *ngIf="priority != low" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button *ngIf="priority == medium" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
+                </button>
+                <button *ngIf="priority != medium" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button *ngIf="priority == high" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+                </button>
+                <button *ngIf="priority != high" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl == 'done'">
+        <button class="transparent font-gray margin-auto width-100" (click)="processCapture()">
+          <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
+        </button>
+      </ion-row>
     </ion-grid>
   </div>
 

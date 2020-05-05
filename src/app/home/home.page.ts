@@ -132,8 +132,9 @@ export class HomePage {
 	captureProject: string;
 	captureType: string;
 	captureTimeISOString: any;
-	capturePriority: number;
 	captureTime: number;
+	capturePriority: number;
+	captureAction: string;
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -451,8 +452,6 @@ export class HomePage {
 	}
 
 	ionBlurCapture(event) {
-		console.log('lost focus');
-		console.log(this.newCapture.content);
 		this.translate.get(["Input new capture"]).subscribe( translation => {
 	  		if(!this.newCapture.content) {
 	  			this.newCapture.content = translation["Input new capture"];
@@ -678,11 +677,40 @@ export class HomePage {
   	timeSet() {
   		let time = new Date(this.captureTimeISOString);
   		this.captureTime = time.getHours() * 60 + time.getMinutes();
-  		console.log(this.captureTime);
-  		console.log(this.capturePriority);
   		if(!this.capturePriority && this.captureTime != 0) {
   			this.pageCtrl = 'priority';
   		}
+  	}
+
+  	assignPriority(priority) {
+  		this.capturePriority = priority;
+  		this.pageCtrl = 'done';
+  	}
+
+  	processCapture() {
+  		if(this.captureType == 'action') {
+  			this.addActionFromCapture();
+  		} else if(this.captureType == 'note'){
+  			this.addNoteFromCapture();
+  		}
+  	}
+
+  	addActionFromCapture() {
+  		let action: Action = {
+		    userid: this.auth.userid,
+		    goalid: this.captureProject,
+		    content: this.captureAction,
+		    priority: this.capturePriority,
+		    time: this.captureTime,
+		    taken: false,
+		    active: true
+  		}
+  		console.log('action to add:');
+  		console.log(action);
+  	}
+
+  	addNoteFromCapture() {
+  		//ToDo
   	}
 
   	addGoal(goalname) {
