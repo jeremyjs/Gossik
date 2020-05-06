@@ -615,6 +615,7 @@ export class HomePage {
   	goToProcessCapturePage(capture: Capture) {
   		this.showTutorial('processPostit');
   		this.capture = capture;
+  		this.captureContent = capture.content;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -667,10 +668,11 @@ export class HomePage {
   	}
 
   	assignContent(event) {
-  		if(!this.captureTimeISOString) {
+  		if(!this.captureTime) {
   			this.pageCtrl = 'time';
   			this.captureTimeISOString = new Date();
 	  		this.captureTimeISOString.setHours(0,0,0);
+	  		this.captureTime = this.captureTimeISOString.getHours() * 60 + this.captureTimeISOString.getMinutes();
 	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   		} else {
   			this.pageCtrl = 'content';
