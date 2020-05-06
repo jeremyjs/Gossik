@@ -406,6 +406,34 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="pageCtrl == 'content'">
+        <ion-col size="1">
+          <img src="../../assets/imgs/circle_white.png" height="8" class=" margin-auto">
+        </ion-col>
+        <ion-col size="11">
+            <span class="font-size-1rem font-white">
+              {{"Action" | translate }}
+            </span>
+            <div *ngIf="captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+              <ion-input class="font-white transparent margin-0 width-90 placeholder-white text-align-left" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Input new action'| translate}}"></ion-input>
+            </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl != 'content' && captureContent">
+        <ion-col size="1">
+        <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('content')">
+            <span class="font-size-1rem">
+              {{"Action" | translate }}
+            </span>
+            <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+              {{captureContent}}
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-row *ngIf="pageCtrl == 'time'">
         <ion-col size="1">
         <img src="../../assets/imgs/circle_white.png" height="8" class="margin-auto">

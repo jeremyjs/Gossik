@@ -663,13 +663,17 @@ export class HomePage {
 
   	assignAction() {
   		this.captureType = 'action';
+  		this.pageCtrl = 'content';
+  	}
+
+  	assignContent(event) {
   		if(!this.captureTimeISOString) {
   			this.pageCtrl = 'time';
   			this.captureTimeISOString = new Date();
 	  		this.captureTimeISOString.setHours(0,0,0);
 	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   		} else {
-  			this.pageCtrl = 'type';
+  			this.pageCtrl = 'content';
   		}
   	}
 
