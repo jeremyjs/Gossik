@@ -534,6 +534,35 @@
           </div>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="pageCtrl == 'done' && !captureDeadline">
+        <ion-col size="1">
+          <img src="../../assets/imgs/circle_white.png" height="8" class=" margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <button class="no-padding transparent font-gray text-align-left width-100" (click)="assignDeadline()">
+            <span class="font-size-1rem">
+              {{"Add deadline" | translate }}
+            </span>
+            <div *ngIf="captureDeadlineText" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+              {{captureDeadlineText}}
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="pageCtrl == 'done' && captureDeadline">
+        <ion-col size="1">
+        <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
+        </ion-col>
+        <ion-col size="11">
+          <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('done')">
+            <span class="font-size-1rem">
+              {{"Deadline" | translate }}
+            </span>
+            <button class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignDeadline()">{{captureDeadlineText}}
+                </button>
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-row *ngIf="pageCtrl == 'done'">
         <button class="transparent font-gray margin-auto width-100" (click)="processCapture()">
           <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">

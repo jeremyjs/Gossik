@@ -135,6 +135,10 @@ export class HomePage {
 	captureTime: number;
 	capturePriority: number;
 	captureAction: string;
+	captureContent: string;
+	captureDeadline: any;
+	captureDeadlineText: string;
+	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
  
@@ -695,6 +699,18 @@ export class HomePage {
   	assignPriority(priority) {
   		this.capturePriority = priority;
   		this.pageCtrl = 'done';
+  	}
+
+  	assignDeadline() {
+  		let modal = this.modalCtrl.create({
+			component: ChangeWeekModalPage
+		}).then (modal => {
+			modal.present();
+			modal.onDidDismiss().then(data => {
+				this.captureDeadline = data.data;
+				this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+			});
+		});
   	}
 
   	processCapture() {
