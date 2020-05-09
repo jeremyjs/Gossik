@@ -730,6 +730,7 @@ export class HomePage {
   		} else if(this.captureType == 'note'){
   			this.addNoteFromCapture();
   		}
+  		this.goToProcessPage();
   	}
 
   	addActionFromCapture() {
