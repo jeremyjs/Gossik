@@ -727,13 +727,11 @@ export class HomePage {
 		    content: this.captureContent,
 		    priority: this.capturePriority,
 		    time: this.captureTime,
-		    deadline: this.captureDeadline.toISOString(),
 		    taken: false,
 		    active: true
   		}
-  		console.log('action to add:');
-  		console.log(action);
-  		if(action.deadline) {
+  		if(this.captureDeadline) {
+  			action.deadline = this.captureDeadline.toISOString();
 			let deadlineStartTime = new Date (action.deadline).setHours(2);
 			let deadlineEndTime = new Date (action.deadline).setHours(5);
 			let eventData: CalendarEvent = {
