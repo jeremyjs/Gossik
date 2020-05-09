@@ -134,7 +134,6 @@ export class HomePage {
 	captureTimeISOString: any;
 	captureTime: number;
 	capturePriority: number;
-	captureAction: string;
 	captureContent: string;
 	captureDeadline: any;
 	captureDeadlineText: string;
