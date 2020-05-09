@@ -724,15 +724,47 @@ export class HomePage {
   	addActionFromCapture() {
   		let action: Action = {
 		    userid: this.auth.userid,
-		    goalid: this.captureProject,
-		    content: this.captureAction,
+		    goalid: this.captureProject.key,
+		    content: this.captureContent,
 		    priority: this.capturePriority,
 		    time: this.captureTime,
+		    deadline: this.captureDeadline.toISOString(),
 		    taken: false,
 		    active: true
   		}
   		console.log('action to add:');
   		console.log(action);
+  		if(action.deadline) {
+			let deadlineStartTime = new Date (action.deadline).setHours(2);
+			let deadlineEndTime = new Date (action.deadline).setHours(5);
+			let eventData: CalendarEvent = {
+				userid: this.auth.userid,
+				goalid: action.goalid,
+				startTime: new Date(deadlineStartTime).toISOString(),
+				endTime: new Date (deadlineEndTime).toISOString(),
+				title: 'Deadline: ' + action.content,
+				allDay: true,
+				active: true,
+				color: this.captureProject.color
+			}
+			this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+				eventData.event_id = event_id;
+				this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+	            	action.deadlineid = event.key;
+	            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+	            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+	            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+	            				calendarEvent.key = event.key;
+	            				calendarEvent.actionid = actionAddedkey.key;
+	            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+	            			});
+	            		});
+	            	});
+	            });
+			});
+        } else {
+			this.db.addAction(action, this.capture, this.auth.userid);
+		}
   	}
 
   	addNoteFromCapture() {
