@@ -331,13 +331,13 @@
             <span class="font-size-1rem">
               {{"Project" | translate }}
             </span>
-            <div *ngIf="captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+            <div *ngIf="captureProject.name" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
               {{captureProject.name}}
             </div>
           </button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != '' && captureProject">
+      <ion-row *ngIf="pageCtrl != '' && captureProject.name">
         <ion-col size="1">
         <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
         </ion-col>
@@ -411,10 +411,13 @@
           <img src="../../assets/imgs/circle_white.png" height="8" class=" margin-auto">
         </ion-col>
         <ion-col size="11">
-            <span class="font-size-1rem font-white">
+            <span *ngIf="captureType == 'action'" class="font-size-1rem font-white">
               {{"Action" | translate }}
             </span>
-            <div *ngIf="captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+            <span *ngIf="captureType == 'note'" class="font-size-1rem font-white">
+              {{"Note" | translate }}
+            </span>
+            <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
               <ion-input class="font-white transparent margin-0 width-90 placeholder-white text-align-left" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Input new action'| translate}}"></ion-input>
             </div>
         </ion-col>
@@ -425,16 +428,19 @@
         </ion-col>
         <ion-col size="11">
           <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('content')">
-            <span class="font-size-1rem">
+            <span *ngIf="captureType == 'action'" class="font-size-1rem font-gray">
               {{"Action" | translate }}
             </span>
+            <span *ngIf="captureType == 'note'" class="font-size-1rem font-gray">
+              {{"Note" | translate }}
+            </span>
             <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-              <ion-input class="font-white transparent margin-0 width-90 placeholder-white text-align-left" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Input new action'| translate}}"></ion-input>
+              <ion-input class="font-gray transparent margin-0 width-90 placeholder-white text-align-left" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Input new action'| translate}}"></ion-input>
             </div>
           </button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'time'">
+      <ion-row *ngIf="pageCtrl == 'time' && captureType == 'action'">
         <ion-col size="1">
         <img src="../../assets/imgs/circle_white.png" height="8" class="margin-auto">
         </ion-col>
@@ -450,7 +456,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != 'time' && captureTime">
+      <ion-row *ngIf="pageCtrl != 'time' && captureTime  && captureType == 'action'">
         <ion-col size="1">
         <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
         </ion-col>
@@ -468,7 +474,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'priority'">
+      <ion-row *ngIf="pageCtrl == 'priority'  && captureType == 'action'">
         <ion-col size="1">
         <img src="../../assets/imgs/circle_white.png" height="8" class="margin-auto">
         </ion-col>
@@ -500,7 +506,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != 'priority' && capturePriority != undefined">
+      <ion-row *ngIf="pageCtrl != 'priority' && capturePriority != undefined  && captureType == 'action'">
         <ion-col size="1">
         <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
         </ion-col>
@@ -534,7 +540,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'done' && !captureDeadline">
+      <ion-row *ngIf="pageCtrl == 'done' && !captureDeadline  && captureType == 'action'  && captureType == 'action'">
         <ion-col size="1">
           <img src="../../assets/imgs/circle_white.png" height="8" class=" margin-auto">
         </ion-col>
@@ -549,7 +555,7 @@
           </button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'done' && captureDeadline">
+      <ion-row *ngIf="pageCtrl == 'done' && captureDeadline && captureType == 'action'">
         <ion-col size="1">
         <img src="../../assets/icon/icon_confirm.png" height="15" class="margin-auto">
         </ion-col>

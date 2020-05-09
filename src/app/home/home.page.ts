@@ -129,7 +129,7 @@ export class HomePage {
 	manualPushDE: string;
 	cals = [];
 	nativeEvents = [];
-	captureProject: string;
+	captureProject = {} as Goal;
 	captureType: string;
 	captureTimeISOString: any;
 	captureTime: number;
@@ -642,7 +642,7 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-    	this.captureProject = '';
+    	this.captureProject.name = undefined;
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -667,10 +667,6 @@ export class HomePage {
 
   	assignAction() {
   		this.captureType = 'action';
-  		this.pageCtrl = 'content';
-  	}
-
-  	assignContent(event) {
   		if(!this.captureTime) {
   			this.pageCtrl = 'time';
   			this.captureTimeISOString = new Date();
@@ -678,8 +674,24 @@ export class HomePage {
 	  		this.captureTime = this.captureTimeISOString.getHours() * 60 + this.captureTimeISOString.getMinutes();
 	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   		} else {
-  			this.pageCtrl = 'content';
+  			this.pageCtrl = 'action';
   		}
+  	}
+
+  	assignContent(event) {
+  		if(this.captureType == 'action') {
+	  		if(!this.captureTime) {
+	  			this.pageCtrl = 'time';
+	  			this.captureTimeISOString = new Date();
+		  		this.captureTimeISOString.setHours(0,0,0);
+		  		this.captureTime = this.captureTimeISOString.getHours() * 60 + this.captureTimeISOString.getMinutes();
+		  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
+	  		} else {
+	  			this.pageCtrl = 'content';
+	  		}
+	  	} else if(this.captureType == 'note') {
+	  		this.pageCtrl = 'done';
+	  	}
   	}
 
   	assignNote() {
@@ -765,7 +777,13 @@ export class HomePage {
   	}
 
   	addNoteFromCapture() {
-  		//ToDo
+  		let reference: Reference = {
+  			content: this.captureContent,
+  			userid: this.auth.userid,
+  			goalid: this.captureProject.key,
+  			active: true
+  		};
+		this.db.addReference(reference, this.capture, this.auth.userid);
   	}
 
   	addGoal(goalname) {
