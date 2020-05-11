@@ -653,11 +653,8 @@
     <div class="height-100" *ngIf="pageCtrl == ''">
       <ion-grid class="height-100">
         <ion-row>
-          <ion-col class="primary flex">
-            <form class="flex width-100" (ngSubmit)="showDoableActions()" [formGroup]="giveTimeForm">
-              <ion-label class="width-50 margin-auto min-width-175px display-inline-block">{{"Time available in minutes" | translate }}:</ion-label>
-              <ion-input #TimeAvailable class="width-50" type="number" min="0" formControlName="timeEstimate" (ionChange)="showDoableActions()" autofocus="true"></ion-input>
-            </form>
+          <ion-col class="flex">
+            <ion-datetime class="font-gray" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
           </ion-col>
         </ion-row>
         <ion-row>

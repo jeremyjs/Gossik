@@ -137,6 +137,7 @@ export class HomePage {
 	captureContent: string;
 	captureDeadline: any;
 	captureDeadlineText: string;
+	timeEstimate: any;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1593,6 +1594,9 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.timeEstimateISOString = new Date();
+	  	this.timeEstimateISOString.setHours(0,0,0);
+	  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
 		this.showTutorial('todo');
 		this.doableActionArray = [];
 		this.goalKeyArray = ["None"];
@@ -1634,38 +1638,40 @@ export class HomePage {
   	}
 
   	showDoableActions() {
-  		if(this.giveTimeForm.value.timeEstimate) {
-		    this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(take(1),
-					map(
-						changes => { 
-							return changes.map( c => {
-								let action: Action = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return action;
-				});}));
-		    this.actionList.subscribe(
-		      actionArray => {
-		      	this.doableActionArray = [];
-		        for(let action of actionArray) {
-		        	if(action.active != false) {
-						if(action.time/1 <= this.giveTimeForm.value.timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.indexOf("None") != -1 )) {
-						this.doableActionArray.push(action);
-						}
+  		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
+  		let timeEstimate = this.timeEstimateISOString.getHours() * 60 + this.timeEstimateISOString.getMinutes();
+		console.log(timeEstimate);
+		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+		this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(take(1),
+				map(
+					changes => { 
+						return changes.map( c => {
+							let action: Action = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return action;
+			});}));
+	    this.actionList.subscribe(
+	      actionArray => {
+	      	this.doableActionArray = [];
+	        for(let action of actionArray) {
+	        	if(action.active != false) {
+					if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.indexOf("None") != -1 )) {
+					this.doableActionArray.push(action);
 					}
-		        }
-		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-		        if(this.doableActionArray.length == 0) {
-		        	this.errorMsg = "There is no doable action for that time.";
-		        } else {
-		        	this.showTutorial('todoTime');
-		        	this.errorMsg = '';
-		        }
-		      }
-		    );
-		}
+				}
+	        }
+	        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+	        if(this.doableActionArray.length == 0) {
+	        	this.errorMsg = "There is no doable action for that time.";
+	        } else {
+	        	this.showTutorial('todoTime');
+	        	this.errorMsg = '';
+	        }
+	      }
+	    );
   	}
 
   	takeThisAction(action: Action) {
