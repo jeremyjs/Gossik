@@ -53,6 +53,10 @@ const routes: Routes = [
     path: 'assign-project-modal',
     loadChildren: () => import('./assign-project-modal/assign-project-modal.module').then( m => m.AssignProjectModalPageModule)
   },
+  {
+    path: 'to-do-filter-modal',
+    loadChildren: () => import('./to-do-filter-modal/to-do-filter-modal.module').then( m => m.ToDoFilterModalPageModule)
+  },
 ];
 
 @NgModule({

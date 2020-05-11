@@ -30,6 +30,7 @@ import { GoalDetailsModalPage } from '../goal-details-modal/goal-details-modal.p
 import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-modal.page';
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
+import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
 
 import * as moment from 'moment';
 
@@ -137,7 +138,8 @@ export class HomePage {
 	captureContent: string;
 	captureDeadline: any;
 	captureDeadlineText: string;
-	timeEstimate: any;
+	timeEstimateISOString: any;
+	timeEstimate: number;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1632,7 +1634,7 @@ export class HomePage {
 
 	filterToDos() {
   		this.modalCtrl.create({ 
-			component: AssignProjectModalPage,
+			component: ToDoFilterModalPage,
 			componentProps: {goalArray: this.goalArray}
 		}).then( modal => {
 			modal.present();
