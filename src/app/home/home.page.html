@@ -656,6 +656,11 @@
           <ion-col class="flex">
             <ion-datetime class="font-gray" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
           </ion-col>
+          <ion-col>
+            <button class="transparent no-padding" (click)="filterToDos()">
+              <img src="../../assets/icon/icon_filter.png" height="20">
+            </button>
+          </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>

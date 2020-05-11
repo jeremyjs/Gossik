@@ -1630,6 +1630,24 @@ export class HomePage {
 	    }, 400);
 	}
 
+	filterToDos() {
+  		this.modalCtrl.create({ 
+			component: AssignProjectModalPage,
+			componentProps: {goalArray: this.goalArray}
+		}).then( modal => {
+			modal.present();
+			modal.onDidDismiss().then( data => {
+				if(data.data) {
+					this.goalKeyArray = [];
+					this.goalKeyArray.push(data.data.key);
+				} else {
+					this.goalKeyArray.push("None");
+				}
+				this.showDoableActions();
+			});
+		});
+  	}
+
   	chooseGoal(event) {
   		if(event.detail.value.length == 0) {
   			this.goalKeyArray.push("None");
@@ -1638,6 +1656,8 @@ export class HomePage {
   	}
 
   	showDoableActions() {
+  		console.log('goalKeyArray');
+  		console.log(this.goalKeyArray);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getHours() * 60 + this.timeEstimateISOString.getMinutes();
 		console.log(timeEstimate);
