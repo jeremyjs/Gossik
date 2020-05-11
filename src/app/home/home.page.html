@@ -664,17 +664,6 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-item class="border-radius-20px">
-            <ion-select multiple [(ngModel)]="goalKeyArray" (ionChange)="chooseGoal($event)">
-              <ion-label>{{"Project" | translate }}</ion-label>
-              <ion-select-option selected value="None">{{"All Projects" | translate }}</ion-select-option>
-              <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
-            </ion-select>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
           <div class="content-container min-height-150px">
             <ion-grid>
               <ion-row>
