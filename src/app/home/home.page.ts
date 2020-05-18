@@ -1596,6 +1596,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.doableActionArray = [];
 		this.timeEstimateISOString = new Date();
 	  	this.timeEstimateISOString.setHours(0,0,0);
 	  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
@@ -1627,9 +1628,11 @@ export class HomePage {
       		timeEstimate: ['', Validators.required]
     	});
     	this.changePage('ToDoPage');
-    	setTimeout(() => {
+    	if(this.timeAvailable) {
+    		setTimeout(() => {
 	         this.timeAvailable.setFocus();
 	    }, 400);
+    	}
 	}
 
 	filterToDos() {
@@ -1692,6 +1695,8 @@ export class HomePage {
 	        	this.showTutorial('todoTime');
 	        	this.errorMsg = '';
 	        }
+	        console.log('sorted');
+	        console.log(this.doableActionArray);
 	      }
 	    );
   	}
