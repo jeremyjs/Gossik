@@ -1661,11 +1661,8 @@ export class HomePage {
   	}
 
   	showDoableActions() {
-  		console.log('goalKeyArray');
-  		console.log(this.goalKeyArray);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getHours() * 60 + this.timeEstimateISOString.getMinutes();
-		console.log(timeEstimate);
 		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
 		this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 		  	.snapshotChanges()
@@ -1695,8 +1692,6 @@ export class HomePage {
 	        	this.showTutorial('todoTime');
 	        	this.errorMsg = '';
 	        }
-	        console.log('sorted');
-	        console.log(this.doableActionArray);
 	      }
 	    );
   	}
