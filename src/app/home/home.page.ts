@@ -1602,7 +1602,7 @@ export class HomePage {
 	  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
 		this.showTutorial('todo');
 		this.doableActionArray = [];
-		this.goalKeyArray = ["None"];
+		this.goalKeyArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
 		  	.pipe(
@@ -1638,16 +1638,12 @@ export class HomePage {
 	filterToDos() {
   		this.modalCtrl.create({ 
 			component: ToDoFilterModalPage,
-			componentProps: {goalArray: this.goalArray}
+			componentProps: {goalArray: this.goalArray,
+							goalKeyArray: this.goalKeyArray}
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
-				if(data.data) {
-					this.goalKeyArray = [];
-					this.goalKeyArray.push(data.data.key);
-				} else {
-					this.goalKeyArray.push("None");
-				}
+				this.goalKeyArray = data.data;
 				this.showDoableActions();
 			});
 		});
@@ -1655,12 +1651,14 @@ export class HomePage {
 
   	chooseGoal(event) {
   		if(event.detail.value.length == 0) {
-  			this.goalKeyArray.push("None");
+  			this.goalKeyArray = [];
   		}
   		this.showDoableActions();
   	}
 
   	showDoableActions() {
+  		console.log('a');
+  		console.log(this.goalKeyArray);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getHours() * 60 + this.timeEstimateISOString.getMinutes();
 		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
@@ -1680,7 +1678,7 @@ export class HomePage {
 	      	this.doableActionArray = [];
 	        for(let action of actionArray) {
 	        	if(action.active != false) {
-					if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.indexOf("None") != -1 )) {
+					if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
 					this.doableActionArray.push(action);
 					}
 				}

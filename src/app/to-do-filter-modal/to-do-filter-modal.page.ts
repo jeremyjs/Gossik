@@ -10,7 +10,7 @@ import { Goal } from '../../model/goal/goal.model';
 })
 export class ToDoFilterModalPage implements OnInit {
 	goalArray = [];
-	chosenGoal = {} as Goal;
+	chosenGoalArray = [];
 
   constructor(
   	public navParams: NavParams,
@@ -21,29 +21,25 @@ export class ToDoFilterModalPage implements OnInit {
 
   ngOnInit() {
   	this.goalArray = this.navParams.get('goalArray');
+  	this.chosenGoalArray = this.navParams.get('goalKeyArray');
+  	console.log('hi');
+  	console.log(this.goalArray);
+  	console.log(this.goalKeyArray);
   }
 
   chooseGoal(goal) {
-  	this.chosenGoal = goal;
+  	console.log(this.chosenGoalArray.indexOf(goal.key));
+  	if(this.chosenGoalArray.indexOf(goal.key) == -1) {
+  		this.chosenGoalArray.push(goal.key)
+  	} else {
+  		this.chosenGoalArray.splice(this.chosenGoalArray.indexOf(goal.key), 1);
+  	}
+  	console.log('ho');
+  	console.log(this.chosenGoalArray);
   }
 
   assign() {
-  	if(this.chosenGoal.key){
-  		this.modalCtrl.dismiss(this.chosenGoal);
-  	} else {
-  		this.translate.get(["Please choose a project to assign.", "Ok"]).subscribe( alertMessage => {
-		  this.alertCtrl.create({
-		      message: alertMessage["Please choose a project to assign."],
-		      buttons: [
-		              {
-		                  text: alertMessage["Ok"]
-		                }
-		            ]
-		  }).then( alert => {
-		    alert.present();
-		  });
-		});
-  	}
+  	this.modalCtrl.dismiss(this.chosenGoalArray);
   }
 
 }
