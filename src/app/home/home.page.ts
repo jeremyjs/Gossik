@@ -1692,6 +1692,10 @@ export class HomePage {
 	    );
   	}
 
+  	skipAction(action) {
+  		this.doableActionArray.splice(0, 1);
+  	}
+
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
 				this.alertCtrl.create({
