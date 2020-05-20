@@ -1657,8 +1657,6 @@ export class HomePage {
   	}
 
   	showDoableActions() {
-  		console.log('a');
-  		console.log(this.goalKeyArray);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getHours() * 60 + this.timeEstimateISOString.getMinutes();
 		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();

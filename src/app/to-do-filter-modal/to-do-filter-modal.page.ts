@@ -22,20 +22,14 @@ export class ToDoFilterModalPage implements OnInit {
   ngOnInit() {
   	this.goalArray = this.navParams.get('goalArray');
   	this.chosenGoalArray = this.navParams.get('goalKeyArray');
-  	console.log('hi');
-  	console.log(this.goalArray);
-  	console.log(this.goalKeyArray);
   }
 
   chooseGoal(goal) {
-  	console.log(this.chosenGoalArray.indexOf(goal.key));
   	if(this.chosenGoalArray.indexOf(goal.key) == -1) {
   		this.chosenGoalArray.push(goal.key)
   	} else {
   		this.chosenGoalArray.splice(this.chosenGoalArray.indexOf(goal.key), 1);
   	}
-  	console.log('ho');
-  	console.log(this.chosenGoalArray);
   }
 
   assign() {
