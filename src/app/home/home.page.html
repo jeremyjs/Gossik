@@ -650,39 +650,54 @@
   </div>
   <!-- Mobile ToDoPage -->
   <div class="height-100" *ngIf="viewpoint == 'ToDoPage' && isApp">
-    <div class="height-100" *ngIf="pageCtrl == ''">
-      <ion-grid class="height-100">
-        <ion-row>
-          <ion-col class="flex">
-            <ion-datetime class="font-gray" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
-          </ion-col>
-          <ion-col>
-            <button class="transparent no-padding" (click)="filterToDos()">
-              <img src="../../assets/icon/icon_filter.png" height="20">
-            </button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-          <div class="content-container min-height-150px">
-            <ion-grid>
-              <ion-row>
-                <ion-col size="8">{{"Action" | translate}}</ion-col>
-                <ion-col size="4" class="text-align-center">{{"Time" | translate}}</ion-col>
-              </ion-row>
-              <ion-row *ngIf="doableActionArray[0]" class="background-white margin-bottom-1 border-radius-5px" (click)="takeThisAction(action)">
-                <ion-col size="8">
-                  <ion-card class="margin-0 project-color display-inline-block" [ngStyle]="{'background-color': goalDict[doableActionArray[0].goalid].color}"></ion-card>
-                  {{doableActionArray[0].content}}
-                </ion-col>
-                <ion-col size="4" class="text-align-center">{{doableActionArray[0].time}}</ion-col>
-              </ion-row>
-            </ion-grid>
-          </div>
+    <ion-grid class="height-100 width-90">
+      <ion-row class="margin-top-10">
+        <ion-col class="flex">
+          <ion-datetime class="font-gray margin-right-10" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
         </ion-col>
+        <ion-col class="flex">
+          <button class="transparent no-padding margin-left-10" (click)="filterToDos()">
+            <img src="../../assets/icon/icon_filter.png" height="20">
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="margin-auto font-white font-size-1-5rem text-align-center">
+        {{doableActionArray[0].content}}
+      </ion-row>
+      <ion-row class="margin-auto font-white text-align-center">
+        <span class="margin-auto">
+          {{goalDict[doableActionArray[0].goalid].name}}
+        </span>
+      </ion-row>
+      <ion-row class="width-50 margin-top-10 margin-right-auto margin-left-auto">
+        <ion-col size="6" class="flex text-align-center">
+          <button class="transparent no-padding margin-auto" (click)="skipAction(action)">
+            <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
+          </button>
+        </ion-col>
+        <ion-col size="6" class="flex text-align-center">
+          <button class="transparent no-padding margin-auto" (click)="startAction(action)">
+            <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-card class="width-100 height-70px absolute-bottom margin-0 no-padding background-navigation-right">
+        <ion-row class="width-100 height-100">
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
+            </ion-button>
+          </ion-col>
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
+            </ion-button>
+          </ion-col>
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
+            </ion-button>
+          </ion-col>
         </ion-row>
-      </ion-grid>
-    </div>
+      </ion-card>
   </div>
 
   <!-- ProjectsPage -->

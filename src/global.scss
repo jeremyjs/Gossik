@@ -29,10 +29,6 @@ ion-toolbar {
     --ion-text-color: var(--ion-color-white) !important;
 }
 
-:host {
-  --background: rgb(0,0,0) !important;
-}
-
 
 ion-item {
    border-radius: 5px;
@@ -135,6 +131,10 @@ ion-button {
 
 .background-navigation-center {
   --background: url('/assets/imgs/navigation_center.png') center center/70% 40% no-repeat;
+}
+
+.background-navigation-right {
+  --background: url('/assets/imgs/navigation_right.png') center center/70% 40% no-repeat;
 }
 
 .absolute-bottom {
@@ -240,6 +240,10 @@ ion-toolbar {
 
 .font-size-1-5rem {
   font-size: 1.5rem !important;
+}
+
+.font-size-2rem {
+  font-size: 2rem !important;
 }
 
 .header-icons-div {
