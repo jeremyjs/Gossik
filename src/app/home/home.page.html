@@ -665,8 +665,10 @@
         <ion-col>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-white font-size-1-5rem text-align-center">
-        {{doableActionArray[0].content}}
+      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-white font-size-1-5rem">
+        <span class="margin-auto">
+          {{doableActionArray[0].content}}
+        </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
@@ -680,7 +682,7 @@
           </button>
         </ion-col>
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="startAction(action)">
+          <button class="transparent no-padding margin-auto" (click)="startAction(doableActionArray[0])">
             <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
           </button>
         </ion-col>

@@ -1696,6 +1696,13 @@ export class HomePage {
   		this.doableActionArray.splice(0, 1);
   	}
 
+  	startAction(action) {
+  		console.log(action);
+  		action.taken = true;
+		//this.db.editAction(action, this.auth.userid);
+		this.changePage('startAction')
+  	}
+
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
 				this.alertCtrl.create({
