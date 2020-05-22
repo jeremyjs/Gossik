@@ -140,6 +140,7 @@ export class HomePage {
 	captureDeadlineText: string;
 	timeEstimateISOString: any;
 	timeEstimate: number;
+	startedAction = {} as Action;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -160,11 +161,9 @@ export class HomePage {
 		private firebase: FirebaseX,
 		private nativeCalendar: NativeCalendarService
 		) {
-		console.log('url ' + platform.url());
-		console.log(platform.platforms());
 		this.isApp = !this.platform.is('desktop');
+		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
 		this.isApp = true;
-		console.log(this.isApp);
 		if(this.isApp) {
 			this.calendar.mode = 'day'
 		} else {
@@ -186,6 +185,56 @@ export class HomePage {
 				}
 			})
 		});
+	}
+
+	getStartedAction() {
+		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let action: Action = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return action;
+				});}));
+		this.takenActionList.subscribe( takenActionArray => {
+			this.takenActionArray = [];
+			for(let action of takenActionArray) {
+				if(action.active != false){
+					this.takenActionArray.push(action);
+				}
+			}
+			this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+			if(this.takenActionListNotEmpty) {
+				this.startedAction = this.takenActionArray[0];
+			}
+		});
+	}
+
+	getGoals() {
+		this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let data: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return data;
+			});}));
+		this.goalList.subscribe(
+	      goalArray => {
+  			this.goalArray = [];
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+	        		this.goalDict[goal.key] = goal;
+	        		this.goalArray.push(goal);
+	        	}
+	        }
+	    })
 	}
 
 	initPushNotifications() {
@@ -242,6 +291,8 @@ export class HomePage {
 					  		}
 				  		})
 					}
+					this.getStartedAction();
+					this.getGoals();
 					this.nativeCalendar.updateDatabase();
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 				  	this.db.trackLogin(this.auth.userid);
@@ -1623,27 +1674,6 @@ export class HomePage {
 		this.showTutorial('todo');
 		this.doableActionArray = [];
 		this.goalKeyArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let data: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return data;
-			});}));
-		this.goalList.subscribe(
-	      goalArray => {
-  			this.goalArray = [];
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalDict[goal.key] = goal;
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    })
   		this.giveTimeForm = this.fb.group({
       		timeEstimate: ['', Validators.required]
     	});
@@ -1717,9 +1747,8 @@ export class HomePage {
   	}
 
   	startAction(action) {
-  		console.log(action);
   		action.taken = true;
-		//this.db.editAction(action, this.auth.userid);
+		this.db.editAction(action, this.auth.userid);
 		this.changePage('ActionPage');
   	}
 

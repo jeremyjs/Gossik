@@ -707,7 +707,37 @@
   </div>
 
   <!-- ActionPage -->
-  <div class="height-100" *ngIf="viewpoint == 'ActionPage'">
+  <!-- No Desktop ActionPage yet -->
+  <!-- Mobile ActionPage -->
+  <div class="height-100" *ngIf="viewpoint == 'ActionPage' && isApp">
+    <ion-grid class="height-100 width-90">
+      <ion-row class="margin-top-45 margin-auto font-white font-size-1-5rem text-align-center">
+        <span class="margin-auto">
+          {{startedAction.content}}
+        </span>
+      </ion-row>
+      <ion-row class="margin-auto font-gray text-align-center">
+        <span class="margin-auto">
+          {{goalDict[startedAction.goalid].name}}
+        </span>
+      </ion-row>
+    </ion-grid>
+    <ion-card class="width-100 height-70px absolute-bottom margin-0 no-padding background-navigation-right">
+        <ion-row class="width-100 height-100">
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
+            </ion-button>
+          </ion-col>
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
+            </ion-button>
+          </ion-col>
+          <ion-col class="no-padding">
+            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
   </div>
 
   <!-- ProjectsPage -->
