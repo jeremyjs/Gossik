@@ -571,6 +571,26 @@ export class HomePage {
 	  		this.showTutorial('finishAction');
 	  		this.showTutorial('welcome');
 	  	}
+	  	this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let capture: Capture = { 
+							key: c.payload.key, userid: c.payload.val().userid, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
+							};
+						return capture;
+				});}));
+		this.captureList.subscribe( captureArray => {
+			this.captureArray = []
+			for(let capture of captureArray) {
+				if(capture.active != false){
+					this.captureArray.push(capture);
+				}
+			}
+			this.captureListNotEmpty = (this.captureArray.length > 0);
+		});
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -1700,7 +1720,7 @@ export class HomePage {
   		console.log(action);
   		action.taken = true;
 		//this.db.editAction(action, this.auth.userid);
-		this.changePage('startAction')
+		this.changePage('ActionPage');
   	}
 
   	takeThisAction(action: Action) {
