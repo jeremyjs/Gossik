@@ -1667,22 +1667,26 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
-		this.doableActionArray = [];
-		this.timeEstimateISOString = new Date();
-	  	this.timeEstimateISOString.setHours(0,0,0);
-	  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
-		this.showTutorial('todo');
-		this.doableActionArray = [];
-		this.goalKeyArray = [];
-  		this.giveTimeForm = this.fb.group({
-      		timeEstimate: ['', Validators.required]
-    	});
-    	this.changePage('ToDoPage');
-    	if(this.timeAvailable) {
-    		setTimeout(() => {
-	         this.timeAvailable.setFocus();
-	    }, 400);
-    	}
+		if(this.startedAction.key) {
+			this.changePage('ActionPage');
+		} else {
+			this.doableActionArray = [];
+			this.timeEstimateISOString = new Date();
+		  	this.timeEstimateISOString.setHours(0,0,0);
+		  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+			this.showTutorial('todo');
+			this.doableActionArray = [];
+			this.goalKeyArray = [];
+	  		this.giveTimeForm = this.fb.group({
+	      		timeEstimate: ['', Validators.required]
+	    	});
+	    	this.changePage('ToDoPage');
+	    	if(this.timeAvailable) {
+	    		setTimeout(() => {
+		         this.timeAvailable.setFocus();
+		    }, 400);
+	    	}
+		}
 	}
 
 	filterToDos() {
