@@ -728,7 +728,7 @@
           </button>
         </ion-col>
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="finishAction(startedAction)">
+          <button class="transparent no-padding margin-auto" (click)="finishAction()">
             <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
           </button>
         </ion-col>
@@ -750,6 +750,31 @@
           </ion-col>
         </ion-row>
       </ion-card>
+  </div>
+
+  <!-- FinishGoalPage -->
+  <!-- No Desktop FinishGoalPage yet -->
+  <!-- Mobile FinishGoalPage -->
+  <div class="height-100" *ngIf="viewpoint == 'FinishGoalPage' && isApp">
+    <ion-grid class="height-100 width-90">
+      <ion-row class="margin-auto font-gray text-align-center">
+        <span class="margin-auto">
+          {{"Congrats! Is your project now accomplished and can be deleted?" | translate}}
+        </span>
+      </ion-row>
+      <ion-row class="width-50 margin-top-45 margin-right-auto margin-left-auto">
+        <ion-col size="6" class="flex text-align-center">
+          <button class="transparent no-padding margin-auto" (click)="goalNotFinished(startedAction.goalid)">
+            <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
+          </button>
+        </ion-col>
+        <ion-col size="6" class="flex text-align-center">
+          <button class="transparent no-padding margin-auto" (click)="goalFinished()">
+            <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <!-- ProjectsPage -->

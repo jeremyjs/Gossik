@@ -1081,8 +1081,8 @@ export class HomePage {
 	}
 
 	goalFinished() {
-		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
-			goal.key = this.takenAction.goalid;
+		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
+			goal.key = this.startedAction.goalid;
 			this.translate.get(["Are you sure you want to delete this goal?", "No", "Delete"]).subscribe( alertMessage => {
 		  		this.alertCtrl.create({
 					message: alertMessage["Are you sure you want to delete this goal?"],
@@ -1107,13 +1107,13 @@ export class HomePage {
 
 	goalNotFinished() {
 		this.showTutorial('goalNotFinished');
-		this.db.getGoalFromGoalid(this.takenAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
+		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			this.translate.get("Action finished").subscribe( translation => {
 				let capture = {} as Capture;
-				capture.content =  data.name + ' - ' + translation + ': ' + this.takenAction.content;
+				capture.content =  data.name + ' - ' + translation + ': ' + this.startedAction.content;
 				capture.userid = this.auth.userid;
 				capture.active = true;
-				this.db.deleteAction(this.takenAction, this.auth.userid).then( () => {
+				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
 					this.db.addCapture(capture, this.auth.userid);
 					this.goToCapturePage();
 				});
@@ -1757,8 +1757,8 @@ export class HomePage {
 		this.changePage('ActionPage');
   	}
 
-  	finishAction(action) {
-  		this.nextActionList = this.db.getNextActionListFromGoal(action.goalid, this.auth.userid)
+  	finishAction() {
+  		this.nextActionList = this.db.getNextActionListFromGoal(this.startedAction.goalid, this.auth.userid)
 		  	.snapshotChanges()
 		  	.pipe(take(1),
 				map(
@@ -1772,10 +1772,11 @@ export class HomePage {
 		this.nextActionList.subscribe( nextActionArray => {
 			nextActionArray = nextActionArray.filter(action => action.active != false);
 			this.showTutorial('finishProject');
-			this.goalEmpty = nextActionArray.length == 1;
-			console.log('sadf');
-			console.log(this.goalEmpty);
-			this.changePage('FinishActionPage');
+			if(nextActionArray.length == 1) {
+				this.changePage('FinishGoalPage');
+			} else {
+				this.goToCapturePage();
+			}
 		});
   	}
 

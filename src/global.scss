@@ -298,7 +298,12 @@ ion-toolbar {
 }
 
 .alert-wrapper {
-  min-width: 350px !important;  
+  --background: rgb(0,0,0); 
+}
+
+.alert-button-group {
+  display: flex;
+  justify-content: space-around !important;
 }
 
 .alert-button-group-vertical {
