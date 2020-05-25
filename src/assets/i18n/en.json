@@ -97,6 +97,7 @@
   "Please define a valid delegation.": "Please define a valid waitingFor.",
   "Please define an action.": "Please define an action.",
   "Please indicate whether you finished the action or want to abort it.": "Please indicate whether you finished the action or want to abort it.",
+  "Please update the remaining time for this action": "Please update the remaining time for this action",
   "Priority": "Priority",
   "Priority (1: low, 10: high)": "Priority (1: low, 10: high)",
   "Privacy Policy": "Privacy Policy",

@@ -142,6 +142,7 @@ export class HomePage {
 	timeEstimate: number;
 	startedAction = {} as Action;
 	goalEmpty: boolean;
+	startedActionTimeISOString: any;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1687,7 +1688,7 @@ export class HomePage {
 	    	if(this.timeAvailable) {
 	    		setTimeout(() => {
 		         this.timeAvailable.setFocus();
-		    }, 400);
+		    	}, 400);
 	    	}
 		}
 	}
@@ -1780,6 +1781,26 @@ export class HomePage {
 				this.goalNotFinished();
 			}
 		});
+  	}
+
+  	stopAction() {
+  		let minutes = this.startedAction.time % 60;
+  		let hours = (this.startedAction.time - minutes) / 60;
+  		this.startedActionTimeISOString = new Date();
+  		this.startedActionTimeISOString.setHours(hours, minutes);
+  		this.startedActionTimeISOString = this.startedActionTimeISOString.toISOString();
+  		this.changePage('StopActionPage');
+  	}
+
+  	updateStartedActionTime() {
+  		setTimeout(() => {
+	  		let time = new Date(this.startedActionTimeISOString);
+	  		this.startedAction.time = time.getHours() * 60 + time.getMinutes();
+	  		this.startedAction.taken = false;
+	  		this.db.editAction(this.startedAction, this.auth.userid);
+	  		this.startedAction = {};
+	  		this.goToToDoPage();
+    	}, 400);
   	}
 
   	takeThisAction(action: Action) {

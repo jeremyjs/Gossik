@@ -96,6 +96,7 @@
   "Please define a valid delegation.": "Bitte definiere eine Abwarten",
   "Please define an action.": "Bitte definiere eine Aktion",
   "Please indicate whether you finished the action or want to abort it.": "Bitte gib an, ob du die Aktion beendet hast oder sie abbrechen möchtest.",
+  "Please update the remaining time for this action": "Bitte aktualisiere die verbleibene Zeit für diese Aufgabe",
   "Priority": "Priorität",
   "Priority (1: low, 10: high)": "Priorität: (1: niedrig, 10: hoch)",
   "Privacy Policy": "Datenschutzbestimmungen",

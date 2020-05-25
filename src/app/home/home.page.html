@@ -723,7 +723,7 @@
       </ion-row>
       <ion-row class="width-50 margin-top-45 margin-right-auto margin-left-auto">
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="skipAction(startedAction)">
+          <button class="transparent no-padding margin-auto" (click)="stopAction(startedAction)">
             <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
           </button>
         </ion-col>
@@ -773,6 +773,22 @@
             <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
           </button>
         </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- StopActionPage -->
+  <!-- No Desktop StopActionPage yet -->
+  <!-- Mobile StopActionPage -->
+  <div class="height-100" *ngIf="viewpoint == 'StopActionPage' && isApp">
+    <ion-grid class="height-100 width-90">
+      <ion-row class="margin-auto font-gray text-align-center">
+        <span class="margin-auto">
+          {{"Please update the remaining time for this action" | translate}}
+        </span>
+      </ion-row>
+      <ion-row class="margin-auto font-gray text-align-center">
+        <ion-datetime class="font-white margin-auto margin-top-45" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
       </ion-row>
     </ion-grid>
   </div>
