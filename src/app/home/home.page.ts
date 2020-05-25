@@ -1775,7 +1775,7 @@ export class HomePage {
 			if(nextActionArray.length == 1) {
 				this.changePage('FinishGoalPage');
 			} else {
-				this.goToCapturePage();
+				this.goalNotFinished();
 			}
 		});
   	}
