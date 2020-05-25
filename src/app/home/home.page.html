@@ -2,11 +2,22 @@
 	<ion-toolbar color="secondary">
     <div *ngIf="loggedin">
   		<div *ngIf="isApp && viewpoint != 'ProcessCapturePage'">
-        <ion-buttons start>
-          <ion-menu-button autoHide="false">
-            <img src="../../assets/icon/icon_menu.png" height="17">
-          </ion-menu-button>
-        </ion-buttons>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button *ngIf="startedAction.content" class="transparent" (click)="goToToDoPage()">
+                <img src="../../assets/icon/icon_startedAction.png" class="margin-auto-auto" height="17">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
       <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
         <button class="transparent" (click)="goToProcessPage()">

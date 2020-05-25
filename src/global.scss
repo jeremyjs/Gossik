@@ -150,6 +150,10 @@ ion-button {
   border-left: 2px solid #ffffff;
 }
 
+.align-self-end {
+  align-self: end;
+}
+
 .alert-message {
     scrollbar-width: none !important;
   }
@@ -306,8 +310,20 @@ ion-toolbar {
   justify-content: space-around !important;
 }
 
+.flex-direction-row {
+  flex-direction: row;  
+}
+
 .alert-button-group-vertical {
   flex-direction: row !important;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.margin-auto-auto {
+  margin: auto auto;
 }
 
 .padding-bottom-50 {
