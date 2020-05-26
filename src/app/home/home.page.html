@@ -1113,83 +1113,123 @@
   </div>
 
   <!-- CalendarPage -->
-    <div class="height-90 width-90 margin-top-10 secondary border-radius-20px" *ngIf="viewpoint == 'CalendarPage'">
-      <ion-row class="width-100 height-45px" *ngIf="!isApp">
-        <ion-col size="1">
-          <ion-buttons start>
-            <ion-button class="darkbutton" icon-only (click)="addEvent()">
-              <ion-icon name="add"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-col>
-        <ion-col class="text-align-center">
-          <button class="background-transparent" icon-only (click)="changeWeek(-1)">
-            <ion-icon class="size-20px" name="arrow-back"></ion-icon>
-          </button>
-          <button class="background-transparent" (click)="changeDate()">
-            <h2 class="display-inline-block margin-0" *ngIf="!isApp">{{ viewTitle }}</h2>
-          </button>
-          <button class="background-transparent" icon-only (click)="changeWeek(1)">
-            <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
-          </button>
-        </ion-col>
-      </ion-row>
-      <ion-row class="width-100 height-45px" *ngIf="isApp">
+  <div class="height-90 width-90 margin-top-10 secondary border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && !isApp">
+    <ion-row class="width-100 height-45px">
+      <ion-col size="1">
         <ion-buttons start>
           <ion-button class="darkbutton" icon-only (click)="addEvent()">
             <ion-icon name="add"></ion-icon>
           </ion-button>
         </ion-buttons>
-      </ion-row>
-      <ion-row class="width-100 height-45px" *ngIf="isApp">
-        <button class="background-transparent" icon-only (click)="changeDay(-1)">
+      </ion-col>
+      <ion-col class="text-align-center">
+        <button class="background-transparent" icon-only (click)="changeWeek(-1)">
           <ion-icon class="size-20px" name="arrow-back"></ion-icon>
         </button>
         <button class="background-transparent" (click)="changeDate()">
-          <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
+          <h2 class="display-inline-block margin-0" *ngIf="!isApp">{{ viewTitle }}</h2>
         </button>
-        <button class="background-transparent" icon-only (click)="changeDay(1)">
+        <button class="background-transparent" icon-only (click)="changeWeek(1)">
           <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
         </button>
-      </ion-row>
-      <ion-row class="width-100 height-85">
-        <div class="width-100 padding-10 height-90">
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <calendar [eventSource]="eventSource"
-                    [calendarMode]="calendar.mode"
-                    [currentDate]="calendar.currentDate"
-                    (onEventSelected)="onEventSelected($event)"
-                    (onTitleChanged)="onViewTitleChanged($event)"
-                    (onTimeSelected)="onTimeSelected($event)"
-                    step="5"
-                    class="calendar height-100"
-                    autoSelect="false"
-                    [weekviewNormalEventTemplate]="template"
-                    [weekviewAllDayEventTemplate]="template"
-                    [dayviewNormalEventTemplate]="template"
-                    [dayviewAllDayEventTemplate]="template"
-                    scrollToHour="8"
-                    [locale]="translate.currentLang"
-                    formatHourColumn="{{'formatHourColumn' | translate }}"
-                    formatWeekTitle="{{'formatWeekTitle' | translate }}"
-                    formatDayTitle="{{'formatDayTitle' | translate }}"
-                    startingDayWeek="1"
-                    allDayLabel="{{'Deadlines' | translate }}">
-          </calendar>
-        </div>
-      </ion-row>
-    </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="width-100 height-85">
+      <div class="width-100 padding-10 height-90">
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <calendar [eventSource]="eventSource"
+                  [calendarMode]="calendar.mode"
+                  [currentDate]="calendar.currentDate"
+                  (onEventSelected)="onEventSelected($event)"
+                  (onTitleChanged)="onViewTitleChanged($event)"
+                  (onTimeSelected)="onTimeSelected($event)"
+                  step="5"
+                  class="calendar height-100"
+                  autoSelect="false"
+                  [weekviewNormalEventTemplate]="template"
+                  [weekviewAllDayEventTemplate]="template"
+                  [dayviewNormalEventTemplate]="template"
+                  [dayviewAllDayEventTemplate]="template"
+                  scrollToHour="8"
+                  [locale]="translate.currentLang"
+                  formatHourColumn="{{'formatHourColumn' | translate }}"
+                  formatWeekTitle="{{'formatWeekTitle' | translate }}"
+                  formatDayTitle="{{'formatDayTitle' | translate }}"
+                  startingDayWeek="1"
+                  allDayLabel="{{'Deadlines' | translate }}">
+        </calendar>
+      </div>
+    </ion-row>
+  </div>
+  <!-- Mobile CalendarPage -->
+  <div class="height-90 width-90 margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
+    <ion-row class="width-100 height-45px">
+      <ion-buttons start>
+        <ion-button class="icon-only-button" icon-only (click)="addEvent()">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-row>
+    <ion-row class="width-100 height-45px">
+      <button class="background-transparent icon-only-button" icon-only (click)="changeDay(-1)">
+        <ion-icon class="size-20px" name="arrow-back"></ion-icon>
+      </button>
+      <button class="background-transparent font-white" (click)="changeDate()">
+        <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
+      </button>
+      <button class="background-transparent icon-only-button" icon-only (click)="changeDay(1)">
+        <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
+      </button>
+    </ion-row>
+    <ion-row class="width-100 height-85">
+      <div class="width-100 padding-10 height-90">
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <ng-template #template let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        </ng-template>
+        <calendar [eventSource]="eventSource"
+                  [calendarMode]="calendar.mode"
+                  [currentDate]="calendar.currentDate"
+                  (onEventSelected)="onEventSelected($event)"
+                  (onTitleChanged)="onViewTitleChanged($event)"
+                  (onTimeSelected)="onTimeSelected($event)"
+                  step="5"
+                  class="calendar height-100"
+                  autoSelect="false"
+                  [weekviewNormalEventTemplate]="template"
+                  [weekviewAllDayEventTemplate]="template"
+                  [dayviewNormalEventTemplate]="template"
+                  [dayviewAllDayEventTemplate]="template"
+                  scrollToHour="8"
+                  [locale]="translate.currentLang"
+                  formatHourColumn="{{'formatHourColumn' | translate }}"
+                  formatWeekTitle="{{'formatWeekTitle' | translate }}"
+                  formatDayTitle="{{'formatDayTitle' | translate }}"
+                  startingDayWeek="1"
+                  allDayLabel="{{'Deadlines' | translate }}">
+        </calendar>
+      </div>
+    </ion-row>
+  </div>
 
 
 </ion-content>

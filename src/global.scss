@@ -81,6 +81,11 @@ ion-button {
   --border-radius: 20px;
 }
 
+.icon-only-button {
+  color: #FFFFFF;
+  background-color: transparent !important;
+}
+
 .transparent {
   background: rgba(0,0,0,0);
 }
@@ -168,25 +173,30 @@ ion-button {
 
 .scroll-content, .content {
   scrollbar-width: none;
+  padding: 2px !important;
+}
+
+.calendar {
+  color: rgb(255,255,255) !important;
 }
 
 .calendar-hour-column, .weekview-allday-label, .dayview-allday-label {
   width: 100px !important;
 }
 
-.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
-  border: 1px solid #000000 !important;
-}
+
+
+
 
 .weekview-allday-content-table td, {
-  border: 1px solid #000000 !important;
+  border: 1px solid #FFFFFF !important;
   border-top: transparent !important;
 }
 
 .weekview-allday-label {
   border-top: transparent !important;
-  border-left: 1px solid #000000 !important;
-  border-bottom: 1px solid #000000 !important;
+  border-left: 1px solid #FFFFFF !important;
+  border-bottom: 1px solid #FFFFFF !important;
 }
 
 .slide-container {
@@ -268,6 +278,22 @@ ion-toolbar {
   background-color: var(--ion-color-primary);
   color: #FFFFFF;
   font-size: 20px;
+}
+
+.calendar-event-wrap, .dayview-allday-content-table {
+  border: 0px !important;
+}
+
+.dayview-allday-content-table td {
+  border: 0px !important;
+}
+
+.dayview-allday-label {
+  border: 0px !important;
+}
+
+.dayview-allday-table {
+  border: 1px solid #FFFFFF !important;
 }
 
 .weekview-header, .weekview-allday-table, .weekview-normal-event-container {
@@ -744,9 +770,7 @@ p {
   text-align: left !important;
 }
 
-.table-bordered {
-  border: 1px solid #000000;
-}
+
 
 .height-90 {
   height: 90%;
