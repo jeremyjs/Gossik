@@ -100,15 +100,19 @@ ion-button {
 }
 
 .picker-above-highlight.sc-ion-picker-ios {
-  background: rgb(0,0,0) !important;
+  background: transparent !important;
 }
 
 .picker-below-highlight.sc-ion-picker-ios {
-  background: rgb(0,0,0) !important;
+  background: transparent !important;
 }
 
 .picker-toolbar.sc-ion-picker-md {
   background-color: rgb(0,0,0) !important;
+}
+
+.picker-opt {
+  color: rgb(102,102,102) !important;
 }
 
 .picker-opt.picker-opt-selected {
