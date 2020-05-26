@@ -1095,7 +1095,7 @@ export class HomePage {
 							        text: alertMessage["Delete"],
 							        handler: () => {
 										this.showTutorial('goalFinished');
-										this.startedAction = {};
+										this.startedAction = {} as Action;
 							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToCapturePage());
 							        }
 						      	}
@@ -1117,7 +1117,7 @@ export class HomePage {
 				capture.active = true;
 				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
 					this.db.addCapture(capture, this.auth.userid);
-					this.startedAction = {};
+					this.startedAction = {} as Action;
 					this.goToCapturePage();
 				});
 			});
@@ -1798,7 +1798,7 @@ export class HomePage {
 	  		this.startedAction.time = time.getHours() * 60 + time.getMinutes();
 	  		this.startedAction.taken = false;
 	  		this.db.editAction(this.startedAction, this.auth.userid);
-	  		this.startedAction = {};
+	  		this.startedAction = {} as Action;
 	  		this.goToToDoPage();
     	}, 400);
   	}
