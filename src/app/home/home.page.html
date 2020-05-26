@@ -1179,15 +1179,15 @@
   <div class="height-90 width-90 margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-row class="width-100 height-45px text-align-center">
       <span class="margin-auto">
-      <button class="background-transparent icon-only-button" icon-only (click)="changeDay(-1)">
-        <ion-icon class="size-20px" name="arrow-back"></ion-icon>
-      </button>
-      <button class="background-transparent font-white" (click)="changeDate()">
-        <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
-      </button>
-      <button class="background-transparent icon-only-button" icon-only (click)="changeDay(1)">
-        <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
-      </button>
+        <button class="transparent no-padding" (click)="changeDay(-1)">
+          <img src="../../assets/icon/icon_arrow_left.png" height="17">
+        </button>
+        <button class="background-transparent font-white" (click)="changeDate()">
+          <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
+        </button>
+        <button class="transparent no-padding" (click)="changeDay(1)">
+          <img src="../../assets/icon/icon_arrow_right.png" height="17">
+        </button>
     </span>
     </ion-row>
     <ion-row class="width-100 height-85">
