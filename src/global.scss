@@ -84,6 +84,13 @@ ion-button {
 .icon-only-button {
   color: #FFFFFF;
   background-color: transparent !important;
+  padding: 0px;
+}
+
+.background-black {
+  --background: rgb(0,0,0) !important;
+  --background-hover: rgb(0,0,0) !important;
+  color: #FFFFFF !important;
 }
 
 .transparent {

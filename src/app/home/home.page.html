@@ -15,13 +15,16 @@
               <button *ngIf="startedAction.content" class="transparent" (click)="goToToDoPage()">
                 <img src="../../assets/icon/icon_startedAction.png" class="margin-auto-auto" height="17">
               </button>
+              <button *ngIf="viewpoint == 'CalendarPage' && isApp" class="transparent" (click)="addEvent()">
+                <img src="../../assets/icon/icon_add.png" height="17" class="margin-auto-auto">
+              </button>
             </ion-col>
           </ion-row>
         </ion-grid>
       </div>
       <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
         <button class="transparent" (click)="goToProcessPage()">
-          <img src="../../assets/icon/icon_return_arrow.png" height="17">
+          <img src="../../assets/icon/icon_arrow_left.png" height="17">
         </button>
       </div>
       <div class="header-container" *ngIf="!isApp">
@@ -1174,14 +1177,8 @@
   </div>
   <!-- Mobile CalendarPage -->
   <div class="height-90 width-90 margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
-    <ion-row class="width-100 height-45px">
-      <ion-buttons start>
-        <ion-button class="icon-only-button" icon-only (click)="addEvent()">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-row>
-    <ion-row class="width-100 height-45px">
+    <ion-row class="width-100 height-45px text-align-center">
+      <span class="margin-auto">
       <button class="background-transparent icon-only-button" icon-only (click)="changeDay(-1)">
         <ion-icon class="size-20px" name="arrow-back"></ion-icon>
       </button>
@@ -1191,6 +1188,7 @@
       <button class="background-transparent icon-only-button" icon-only (click)="changeDay(1)">
         <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
       </button>
+    </span>
     </ion-row>
     <ion-row class="width-100 height-85">
       <div class="width-100 padding-10 height-90">
