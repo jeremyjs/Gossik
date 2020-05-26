@@ -1756,6 +1756,7 @@ export class HomePage {
 
   	startAction(action) {
   		action.taken = true;
+  		this.startedAction = action;
 		this.db.editAction(action, this.auth.userid);
 		this.changePage('ActionPage');
   	}
