@@ -1,45 +1,49 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-button float-right icon-only (click)="cancel()">
-      <ion-icon name="close"></ion-icon>
-    </ion-button>
+  <ion-toolbar color="secondary no-padding">
+    <button float-right class="icon-only-button margin-right-20" (click)="cancel()">
+      <img src="../../assets/icon/icon_cancel.png" height="20">
+    </button>
     <ion-title>{{"Create Event" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
  
-<ion-content color="secondary">
-  <ion-list class="text-align-center">
-    <ion-item>
-      <ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Input event title' | translate }}" [(ngModel)]="event.title"></ion-input>
+<ion-content class="background-gray">
+  <ion-list class="text-align-center transparent">
+    <ion-item class="transparent">
+      <ion-input type="text" class="transparent font-white" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Input event title' | translate }}" [(ngModel)]="event.title"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="gotGoals">
-      <ion-label>{{"Project" | translate}}</ion-label>
-      <ion-select [(ngModel)]="goalid">
-        <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}" [selected]="goal.key == goalid">{{goal.name}}</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <ion-row *ngIf="gotGoals" class="transparent font-white">
+      <ion-col size="5" class="margin-auto">
+        <ion-label class="font-white">{{"Project" | translate}}</ion-label>
+      </ion-col>
+      <ion-col size="7">
+        <ion-select [(ngModel)]="goalid" class="no-hover">
+          <ion-select-option class="font-white" *ngFor="let goal of goalArray" value="{{goal.key}}" [selected]="goal.key == goalid">{{goal.name}}</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
  
-    <ion-item *ngIf="!deadline">
+    <ion-item *ngIf="!deadline" class="transparent font-white">
       <ion-label>{{"Start" | translate }}</ion-label>
       <ion-datetime displayFormat="DDD DD.MMM YYYY - HH:mm" dayShortNames="[{{'Sun' | translate}}, {{'Mon' | translate}}, {{'Tue' | translate}}, {{'Wed' | translate}}, {{'Thu' | translate}}, {{'Fri' | translate}}, {{'Sat' | translate}}]" pickerFormat="DD MMM YYYY - HH:mm" max="2100" [(ngModel)]="eventStartTimeISOString" [doneText]="translate.instant('Done')" (ionChange)="adaptEndDate()" [cancelText]="translate.instant('Cancel')"></ion-datetime>
     </ion-item>
  
-    <ion-item *ngIf="!deadline">
+    <ion-item *ngIf="!deadline" class="transparent font-white">
       <ion-label>{{"End" | translate }}</ion-label>
       <ion-datetime displayFormat="DDD DD.MMM YYYY - HH:mm" dayShortNames="[{{'Sun' | translate}}, {{'Mon' | translate}}, {{'Tue' | translate}}, {{'Wed' | translate}}, {{'Thu' | translate}}, {{'Fri' | translate}}, {{'Sat' | translate}}]" pickerFormat="DD MMM YYYY - HH:mm" max="2100" [(ngModel)]="eventEndTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')"></ion-datetime>
     </ion-item>
-    <ion-item *ngIf="deadline">
+    <ion-item *ngIf="deadline" class="transparent font-white">
       <button *ngIf="!edit" class="background-transparent" type="button" (click)="editDeadline()">{{"Deadline" | translate}}: {{deadlineString}}</button>
       <ionic-calendar-date-picker *ngIf="edit" [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
     </ion-item>
-    <ion-item *ngIf="errorMsg">
+    <ion-item *ngIf="errorMsg" class="transparent font-white">
       {{"The end time cannot be earlier than the start time." | translate}}
     </ion-item>
-    <ion-button class="darkbutton margin-auto" (click)="check()" *ngIf="this.navParams.get('selectedDay')">
+    <ion-button class="transparent font-white margin-auto" (click)="check()" *ngIf="this.navParams.get('selectedDay')">
       {{"Add Event" | translate }}
     </ion-button>
-    <ion-button class="darkbutton margin-auto" (click)="check()" *ngIf="this.navParams.get('calendarEvent')">
+    <ion-button class="transparent font-white margin-auto" (click)="check()" *ngIf="this.navParams.get('calendarEvent')">
       {{"Edit" | translate }}
     </ion-button>
   </ion-list>
