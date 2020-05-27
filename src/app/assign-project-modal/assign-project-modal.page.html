@@ -5,16 +5,10 @@
 </ion-header>
 
 <ion-content class="background-gray">
-	<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
-		<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal(goal)">
-			<span *ngIf="goal.key == chosenGoal.key">{{goal.name}}</span>
-			<span *ngIf="goal.key != chosenGoal.key" class="font-gray">{{goal.name}}</span>
+	<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
+		<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
+			<span>{{goal.name}}</span>
 		</button>
 	</ion-row>
-	<ion-card class="flex">
-		<button class="margin-auto transparent no-padding margin-auto" (click)="assign()">
-			<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
-	    </button>
-	</ion-card>
 
 </ion-content>

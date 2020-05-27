@@ -10,7 +10,6 @@ import { Goal } from '../../model/goal/goal.model';
 })
 export class AssignProjectModalPage implements OnInit {
 	goalArray = [];
-	chosenGoal = {} as Goal;
 
   constructor(
   	public navParams: NavParams,
@@ -24,26 +23,7 @@ export class AssignProjectModalPage implements OnInit {
   }
 
   chooseGoal(goal) {
-  	this.chosenGoal = goal;
-  }
-
-  assign() {
-  	if(this.chosenGoal.key){
-  		this.modalCtrl.dismiss(this.chosenGoal);
-  	} else {
-  		this.translate.get(["Please choose a project to assign.", "Ok"]).subscribe( alertMessage => {
-		  this.alertCtrl.create({
-		      message: alertMessage["Please choose a project to assign."],
-		      buttons: [
-		              {
-		                  text: alertMessage["Ok"]
-		                }
-		            ]
-		  }).then( alert => {
-		    alert.present();
-		  });
-		});
-  	}
+  	this.modalCtrl.dismiss(goal);
   }
 
 }
