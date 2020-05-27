@@ -1752,6 +1752,11 @@ export class HomePage {
 
   	skipAction() {
   		this.doableActionArray.splice(0, 1);
+  		if(this.doableActionArray.length == 0) {
+        	this.errorMsg = "There is no doable action for that time.";
+        } else {
+        	this.errorMsg = '';
+        }
   	}
 
   	startAction(action) {
