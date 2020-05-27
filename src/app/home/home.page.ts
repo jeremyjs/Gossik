@@ -759,6 +759,7 @@ export class HomePage {
   	}
 
   	assignContent(event) {
+  		console.log('woooo');
   		if(this.captureType == 'action') {
 	  		if(!this.captureTime) {
 	  			this.pageCtrl = 'time';

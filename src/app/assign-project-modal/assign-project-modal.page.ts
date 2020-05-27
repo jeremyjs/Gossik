@@ -54,7 +54,6 @@ export class AssignProjectModalPage implements OnInit {
   		}
   	}
     if(project !== '' && project !== null && project !== undefined) {
-    	console.log(project);
 		this.newGoal.userid = this.auth.userid;
 		this.newGoal.name = project;
 		this.newGoal.active = true;
@@ -76,18 +75,15 @@ export class AssignProjectModalPage implements OnInit {
 			this.newGoal.key = goal.key
 		});
 		this.goalArray.push(this.newGoal);
-		this.project = "";
-		this.errorMsg = "";
-	} else {
-		this.errorMsg = "You cannot create a goal without a name.";
 	}
+	this.newProject = '';
   }
 
   ionFocus(event){
 		event.target.firstChild.placeholder = '';
 		this.translate.get(["Define new Goal"]).subscribe( translation => {
-	  		if(this.newCapture.content == translation["Input new capture"]) {
-	  			this.newCapture.content = '';
+	  		if(this.newProject == translation["Define new goal"]) {
+	  			this.newProject = '';
 	  		}
 		});
 	}
