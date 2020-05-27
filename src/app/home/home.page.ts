@@ -694,7 +694,6 @@ export class HomePage {
   	goToProcessCapturePage(capture: Capture) {
   		this.showTutorial('processPostit');
   		this.capture = capture;
-  		this.captureContent = capture.content;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -718,7 +717,12 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-    	this.captureProject.name = undefined;
+    	this.captureProject = undefined;
+  		this.captureContent = capture.content;
+  		this.captureType = undefined;
+		this.capturePriority = undefined;
+		this.captureTime = undefined;
+		this.captureDeadline = undefined;
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -731,7 +735,7 @@ export class HomePage {
   	assignProject() {
   		this.modalCtrl.create({ 
 			component: AssignProjectModalPage,
-			componentProps: {goalArray: this.goalArray}
+			componentProps: {goalArray: this.goalArray, projectColors: this.projectColors}
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
