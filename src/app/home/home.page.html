@@ -974,7 +974,7 @@
   <!-- mobile ProjectsPage-->
   <div class="height-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
     <div *ngIf="pageCtrl == ''">
-      <ion-card class="width-90 height-150px margin-auto transparent">
+      <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
             <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}"></ion-input>
@@ -986,18 +986,22 @@
           </ion-col>
         </ion-row>
       </ion-card>
-      <ion-card class="width-90 margin-top-10 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-auto secondary border-radius-20px" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
+      <ion-card class="width-90 margin-top-10 overflow-y-hidden overflow-x-hidden text-align-center margin-auto transparent" no-lines *ngFor="let goal of goalArray" (click)="reviewGoal(goal)">
         <ion-grid>
-          <ion-row>
-            <ion-col size="9">
-              <h1 class="max-height-30px overflow-x-hidden width-90">{{goal.name}}</h1>
+          <ion-row class="height-45px">
+            <ion-col size="1.5" class="flex">
+              <ion-card class="margin-auto project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
             </ion-col>
-            <ion-col>
-              <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+            <ion-col size="10.5" class="text-align-left">
+              <h1 class="one-line max-height-30px margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white">{{goal.name}}</h1>
             </ion-col>
           </ion-row>
           <ion-row>
-            <p class="one-line border-top width-100 overflow-x-hidden" *ngFor="let action of actions[goal.key]">{{action.content}}</p>
+            <ion-col size="1.5">
+            </ion-col>
+            <ion-col size="10.5">
+              <p class="margin-0 one-line width-100 overflow-x-hidden font-gray" *ngFor="let action of actions[goal.key] | slice:0:4">- {{action.content}}</p>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card>
