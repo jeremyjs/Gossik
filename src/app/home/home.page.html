@@ -121,20 +121,20 @@
 	</div>
 
   <!-- SettingsPage -->
-  <div class="margin-top-10 width-90 padding-10 secondary border-radius-20px height-90" *ngIf="viewpoint == 'SettingsPage'">
-    <ion-button class="darkbutton width-auto" (click)="logout()">{{"Logout" | translate}}</ion-button>
-    <ion-button class="darkbutton width-auto" (click)="goToFeedbackPage()">
+  <div class="margin-top-10 width-90 padding-10 transparentheight-90" *ngIf="viewpoint == 'SettingsPage'">
+    <button class="transparent font-white width-auto display-block margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
+    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToFeedbackPage()">
       {{"Give Feedback" | translate }}
-    </ion-button>
-    <ion-button class="darkbutton width-auto" (click)="goToPrivacyPolicyPage()">
+    </button>
+    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToPrivacyPolicyPage()">
       {{"Privacy Policy" | translate }}
-    </ion-button>
-    <ion-button class="darkbutton width-auto" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
+    </button>
+    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
       {{"Show Feedback" | translate }}
-    </ion-button>
-    <ion-button class="darkbutton width-auto" (click)="goToSendPushPage()" *ngIf="isAdmin">
+    </button>
+    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
       {{"Send Push" | translate }}
-    </ion-button>
+    </button>
   </div>
 
   <!-- FeedbackPage -->
