@@ -442,7 +442,10 @@ export class HomePage {
 
   	// SettingsPage functions
   	logout() {
-    	this.auth.signOut().then( () => this.changePage('LoginPage'));
+  		this.db.logout();
+		this.auth.signOut();
+		this.changePage('LoginPage');
+
     }
 
     goToFeedbackPage() {

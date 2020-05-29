@@ -49,6 +49,11 @@ export class DatabaseService {
         return this.db.list('users').set(userid, this.userData); 
     }
 
+    logout() {
+        this.db.database.goOffline();
+
+    }
+
     addTutorial(userid) {
         this.db.object<any>('users/' + userid).valueChanges().pipe(take(1)).subscribe( user => {
             if(!user.hasOwnProperty('tutorial')) {
