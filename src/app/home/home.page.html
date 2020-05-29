@@ -163,9 +163,9 @@
   </div>
 
   <!-- FeedbackPage -->
-  <div class="margin-top-10 padding-10 secondary border-radius-20px text-align-center" *ngIf="viewpoint == 'FeedbackPage'">
-    <ion-textarea class="feedback background-white" rows="10" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}"></ion-textarea>
-    <ion-button class="darkbutton width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</ion-button>
+  <div class="margin-top-10 padding-10 transparent font-white text-align-center" *ngIf="viewpoint == 'FeedbackPage'">
+    <ion-textarea class="feedback transparent" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}"></ion-textarea>
+    <button class="transparent font-white width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
   </div>
 
   <!-- ShowFeedbackPage -->
