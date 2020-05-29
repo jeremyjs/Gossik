@@ -13,6 +13,8 @@ import { ActionDetailsModalPageRoutingModule } from './action-details-modal-rout
 
 import { ActionDetailsModalPage } from './action-details-modal.page';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { ActionDetailsModalPage } from './action-details-modal.page';
     IonicModule,
     ActionDetailsModalPageRoutingModule,
     TranslateModule.forChild(),
-    DatePickerModule
+    DatePickerModule,
+    NgCalendarModule
   ],
   declarations: [ActionDetailsModalPage]
 })

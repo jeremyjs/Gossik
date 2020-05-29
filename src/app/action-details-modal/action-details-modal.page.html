@@ -1,52 +1,74 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-button float-right icon-only (click)="cancel()">
-      <ion-icon name="close"></ion-icon>
-    </ion-button>
+  <ion-toolbar color="secondary">
+    <button float-right class="icon-only-button margin-right-20" (click)="cancel()">
+      <img src="../../assets/icon/icon_cancel.png" height="20">
+    </button>
     <ion-title>{{"Action Details" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content padding color="secondary">
-  <ion-list inset class="text-align-center">
+<ion-content class="background-gray">
+  <ion-list inset class="text-align-center transparent">
     <form (ngSubmit)="check()" [formGroup]="defineActionForm">
-      <ion-item no-lines>
-        <ion-input type="text" [(ngModel)]="action.content" formControlName="content"></ion-input>
+      <ion-item no-lines class="transparent no-scrollbar">
+        <ion-textarea class="font-white" autoGrow="true" [(ngModel)]="action.content" formControlName="content"></ion-textarea>
       </ion-item>
-      <ion-item>
+      <ion-item class="transparent font-white">
         <ion-label>{{"Priority (1: low, 10: high)" | translate }}:</ion-label>
         <ion-input class="width-30px" type="number" [(ngModel)]="action.priority" min="0" max="10" formControlName="priority"></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item class="transparent font-white">
           <ion-label block>{{"Estimated time in min" | translate }}:</ion-label>
           <ion-input type="number" min="0" max="1000" formControlName="time" [(ngModel)]="action.time"></ion-input>
       </ion-item>
-      <div *ngIf="action.deadline">
-        <div *ngIf="!edit">
-          <ion-item no-lines>
+      <div *ngIf="action.deadline" class="transparent font-white">
+        <div *ngIf="!edit" class="transparent">
+          <ion-item no-lines class="transparent font-white">
             {{"Deadline" | translate}}: {{deadlineString}}
-            <ion-button class="darkbutton" (click)="editDeadline()">{{"Edit" | translate }}</ion-button>
+            <button class="transparent font-white" (click)="editDeadline()">{{"Edit" | translate }}</button>
           </ion-item>
         </div>
-        <div *ngIf="edit">
-          <ion-item no-lines>
-            <ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
+        <div *ngIf="edit" class="transparent font-white">
+          <ion-item class="transparent font-white">
+            <calendar [eventSource]="eventSource"
+                      [currentDate]="currentDate"
+                      (onEventSelected)="onEventSelected($event)"
+                      (onTitleChanged)="onViewTitleChanged($event)"
+                      (onTimeSelected)="onTimeSelected($event)"
+                      step="5"
+                      class="calendar height-100 width-100 font-size-0-8rem"
+                      autoSelect="false"
+                      scrollToHour="8"
+                      startingDayWeek="1"
+                      [showEventDetail]="false">
+            </calendar> 
           </ion-item>
         </div>
       </div>
-      <div *ngIf="!action.deadline">
-        <ion-item no-lines>
-          <ion-button class="darkbutton" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</ion-button>
+      <div *ngIf="!action.deadline" class="transparent font-white">
+        <ion-item no-lines class="transparent">
+          <button class="transparent font-white" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
         </ion-item>
-        <div *ngIf="edit">
-          <ion-item no-lines>
-            <ionic-calendar-date-picker [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
+        <div *ngIf="edit" class="transparent">
+          <ion-item no-lines class="transparent">
+            <calendar [eventSource]="eventSource"
+                      [currentDate]="currentDate"
+                      (onEventSelected)="onEventSelected($event)"
+                      (onTitleChanged)="onViewTitleChanged($event)"
+                      (onTimeSelected)="onTimeSelected($event)"
+                      step="5"
+                      class="calendar height-100 width-100 font-size-0-8rem"
+                      autoSelect="false"
+                      scrollToHour="8"
+                      startingDayWeek="1"
+                      [showEventDetail]="false">
+            </calendar>
           </ion-item>
         </div>
       </div>
-      <ion-button class="darkbutton" type="submit">{{"Save" | translate }}</ion-button>
-      <ion-button class="button-left darkbutton" type="button" (click)="deleteAction(action)">{{"Delete" | translate }}</ion-button>
+      <button class="transparent font-white" type="submit">{{"Save" | translate }}</button>
+      <button class="button-left transparent font-white" type="button" (click)="deleteAction(action)">{{"Delete" | translate }}</button>
     </form>
   </ion-list>
 </ion-content>

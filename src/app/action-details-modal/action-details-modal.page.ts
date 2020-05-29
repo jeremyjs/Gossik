@@ -31,6 +31,9 @@ export class ActionDetailsModalPage implements OnInit {
 	formatOptions: any;
   pastCheck: boolean;
   deadlineChanged: boolean = false;
+  currentDate = new Date();
+  eventSource = [];
+  viewTitle: string;
 
   constructor(
   		  public modalCtrl: ModalController,
@@ -167,11 +170,17 @@ export class ActionDetailsModalPage implements OnInit {
     this.edit = true;
   }
 
-  deadlineSelected(event) {
-    let deadlineFixed = new Date (event).setHours(2);
-    this.action.deadline = new Date (deadlineFixed);
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
+
+  onTimeSelected(event) {
+    console.log('hi');
+    console.log(event);
+    this.action.deadline = event.selectedTime;
     this.deadlineChanged = true;
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+    console.log(this.deadlineString);
     this.edit = false;
   }
 

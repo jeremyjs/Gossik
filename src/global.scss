@@ -48,10 +48,6 @@ ion-content {
     overflow: auto !important;
 }
 
-ionic-calendar-date-picker {
-  background-color: rgb(0,0,0) !important;
-}
-
 input[type=number] {
     -moz-appearance:textfield !important;
 }
@@ -84,8 +80,8 @@ ion-button {
 }
 
 .transparent {
-  background: rgba(0,0,0,0);
-  --background: rgba(0,0,0,0);
+  background: rgba(0,0,0,0) !important;
+  --background: rgba(0,0,0,0) !important;
 }
 
 .display-inline-block {
@@ -226,7 +222,6 @@ ion-button {
 }
 
 ion-item {
-        border-bottom: 1px solid #150931;
         white-space: pre-line;
 }
 
@@ -257,6 +252,26 @@ ion-toolbar {
 
 .font-size-1rem {
   font-size: 1rem !important;
+}
+
+.font-size-0-8rem {
+  font-size: 0.8rem !important;
+}
+
+.text-muted {
+  padding: 0 !important;
+}
+
+.monthview-datetable {
+  padding: 0 !important;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  padding: 0 !important;
+}
+
+.table[_ngcontent-bhf-c3] > thead[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > th[_ngcontent-bhf-c3], .table[_ngcontent-bhf-c3] > tbody[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > th[_ngcontent-bhf-c3], .table[_ngcontent-bhf-c3] > tfoot[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > th[_ngcontent-bhf-c3], .table[_ngcontent-bhf-c3] > thead[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > td[_ngcontent-bhf-c3], .table[_ngcontent-bhf-c3] > tbody[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > td[_ngcontent-bhf-c3], .table[_ngcontent-bhf-c3] > tfoot[_ngcontent-bhf-c3] > tr[_ngcontent-bhf-c3] > td[_ngcontent-bhf-c3] {
+  padding: 0 !important;
 }
 
 .font-size-1-5rem {
@@ -833,7 +848,7 @@ p {
 }
 
 .font-gray {
-  color: #666666;
+  color: #666666 !important;
 }
 
 .font-black {
