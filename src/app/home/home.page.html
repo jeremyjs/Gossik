@@ -58,34 +58,35 @@
   <span class="font-white">{{errorMsg | translate}}</span>
 
   <!-- LoginPage -->
-	<div *ngIf="viewpoint == 'LoginPage'">
-		<ion-card class="secondary">
-			<div *ngIf="pageCtrl == ''">
+	<div *ngIf="viewpoint == 'LoginPage'" class="transparent">
+		<ion-card class="transparent">
+			<div *ngIf="pageCtrl == ''" class="transparent">
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
-					<ion-list inset>
-						<ion-item no-lines>
+					<ion-list inset class="transparent">
+						<ion-item no-lines class="transparent font-white">
 							<ion-input type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
 						</ion-item>
-						<ion-item no-lines>
+						<ion-item no-lines class="transparent font-white">
 							<ion-input type="password" placeholder="{{'Password' | translate }}" formControlName="password"></ion-input>
 						</ion-item>
 					</ion-list>
-					<div padding-horizontal>
+					<div padding-horizontal class="transparent font-white text-align-center">
 						<div class="form-error">{{loginError}}</div>
-						<ion-button expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</ion-button>			
+						<button class="transparent font-white margin-auto" expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>	
 					</div>
 				</form>
-				<ion-list>
-					<ion-button icon-left class="signInButton" (click)="goToSignUp()">
-						<ion-icon name="person-add"></ion-icon>
+				<ion-list class="transparent margin-top-45">
+					<button icon-left class="signInButton transparent font-white" (click)="goToSignUp()">
 						{{"Sign up" | translate }}
-					</ion-button>
-					<ion-button icon-left class="signInButton" (click)="goToForgotPassword()">
+					</button>
+          <br>
+					<button icon-left class="signInButton transparent font-white" (click)="goToForgotPassword()">
 						{{"Forgot password" | translate }}
-					</ion-button>
-          <ion-button class="signInButton" (click)="goToPrivacyPolicyPage()">
+					</button>
+          <br>
+          <button class="signInButton transparent font-white" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
-          </ion-button>
+          </button>
 				</ion-list>
 			</div>
 			<div *ngIf="pageCtrl == 'forgotPassword'">
