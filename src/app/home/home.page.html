@@ -169,16 +169,16 @@
   </div>
 
   <!-- ShowFeedbackPage -->
-  <div class="margin-top-10 padding-10 secondary border-radius-20px text-align-center" *ngIf="viewpoint == 'ShowFeedbackPage'">
-    <ion-item class="margin-bottom-10" *ngFor="let feedback of feedbackArray">{{feedback.feedback}}</ion-item>
+  <div class="margin-top-10 padding-10 transparent text-align-center" *ngIf="viewpoint == 'ShowFeedbackPage'">
+    <ion-item class="margin-bottom-10 transparent font-white border-bottom-1" *ngFor="let feedback of feedbackArray">{{feedback.feedback}}</ion-item>
   </div>
 
   <!-- SendPushPage -->
-  <div class="margin-top-10 padding-10 secondary border-radius-20px text-align-center" *ngIf="viewpoint == 'SendPushPage'">
-    <ion-textarea class="feedback background-white" rows="10" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}"></ion-textarea>
+  <div class="margin-top-10 padding-10 transparent text-align-center" *ngIf="viewpoint == 'SendPushPage'">
+    <ion-textarea class="feedback transparent font-white" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}"></ion-textarea>
     <br>
-    <ion-textarea class="feedback background-white" rows="10" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}"></ion-textarea>
-    <ion-button class="darkbutton width-auto margin-top-10" (click)="sendPush(manualPushEN, manualPushDE)">{{"Send push" | translate}}</ion-button>
+    <ion-textarea class="feedback transparent font-white" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}"></ion-textarea>
+    <button class="transparent font-white width-auto margin-top-10" (click)="sendPush(manualPushEN, manualPushDE)">{{"Send push" | translate}}</button>
   </div>
 
 	<!-- CapturePage -->
