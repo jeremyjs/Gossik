@@ -972,7 +972,7 @@
     </div>
   </div>
   <!-- mobile ProjectsPage-->
-  <div class="height-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
+  <div class="height-100 width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
     <div *ngIf="pageCtrl == ''">
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
@@ -1006,86 +1006,93 @@
         </ion-grid>
       </ion-card>
     </div>
-
-
-    <div class="height-100" *ngIf="pageCtrl == 'ProjectOverview'">
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
+    <div class="height-100 width-100" *ngIf="pageCtrl == 'ProjectOverview'">
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-grid>
-          <ion-row>
-            <ion-col size="9">
-              <h1>{{goal.name}}</h1>
-              <ion-button class="darkbutton" (click)="deleteGoal(goal)">
-                {{"Delete" | translate}}
-              </ion-button>
-              <ion-button class="darkbutton" (click)="editGoal(goal)">
-                {{"Edit" | translate}}
-              </ion-button>
+          <ion-row class="height-45px">
+            <ion-col size="1.5" class="flex">
+              <ion-card class="margin-auto project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
             </ion-col>
-            <ion-col>
-              <ion-card class="margin-top-0 margin-right-0 project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+            <ion-col size="10.5" class="text-align-left">
+              <h1 class="one-line max-height-30px margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white">{{goal.name}}</h1>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="font-white">
+              <button class="transparent font-white" (click)="deleteGoal(goal)">
+                {{"Delete" | translate}}
+              </button>
+            </ion-col>
+            <ion-col class="font-white">
+              <button class="transparent font-white" (click)="editGoal(goal)">
+                {{"Edit" | translate}}
+              </button>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
-        <ion-buttons start>
-          <h1 class="display-inline-block margin-right-10">{{"Actions" | translate }}</h1>
-          <ion-button class="darkbutton"  icon-only (click)="addAction(goal,'')">
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <button class="block width-100 no-padding" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
-          <p class="border-top">{{nextAction.content}}</p>
-        </button>
-      </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
-        <ion-buttons start>
-          <h1 class="display-inline-block margin-right-10">{{"Delegations" | translate }}</h1>
-          <ion-button class="darkbutton"  icon-only (click)="addDelegation(goal,'')">
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <button class="block width-100 no-padding" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
-          <p class="border-top">{{delegation.content}}</p>
-        </button>
-      </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
-        <ion-buttons start>
-          <h1 class="display-inline-block margin-right-10">{{"References" | translate }}</h1>
-          <ion-button class="darkbutton"  icon-only (click)="addReference(goal,'')">
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <button class="block width-100 no-padding" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
-          <p class="border-top">{{reference.content}}</p>
-        </button>
-      </ion-card>
-      <ion-card class="margin-0 height-100 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
-        <ion-row class="width-100 height-45px">
-          <ion-col class="height-100 text-align-center">
-            <button class="background-transparent" icon-only (click)="changeDay(-1)" *ngIf="isApp">
-              <ion-icon class="size-20px" name="arrow-back"></ion-icon>
-            </button>
-            <button class="background-transparent" (click)="changeDate()">
-              <h3 class="display-inline-block margin-0" *ngIf="isApp">{{ viewTitle }}</h3>
-            </button>
-            <button class="background-transparent" icon-only (click)="changeDay(1)" *ngIf="isApp">
-              <ion-icon class="size-20px" name="arrow-forward"></ion-icon>
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
+        <ion-row>
+          <ion-col size="9">
+            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"Actions" | translate }}</h1>
+          </ion-col>
+          <ion-col size="3" class="flex no-padding">
+            <button class="transparent no-padding margin-auto" (click)="addAction(goal,'')">
+              <img src="../../assets/icon/icon_add.png" height="15">
             </button>
           </ion-col>
         </ion-row>
+        <button class="block width-100 no-padding transparent" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
+          <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{nextAction.content}}</p>
+        </button>
+      </ion-card>
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
+        <ion-row>
+          <ion-col size="9">
+            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"Delegations" | translate }}</h1>
+          </ion-col>
+          <ion-col size="3" class="flex no-padding">
+            <button class="transparent no-padding float-right margin-auto"  icon-only (click)="addDelegation(goal,'')">
+              <img src="../../assets/icon/icon_add.png" height="15">
+            </button>
+          </ion-col>
+        </ion-row>
+        <button class="block width-100 no-padding transparent" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
+          <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{delegation.content}}</p>
+        </button>
+      </ion-card>
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
+        <ion-row>
+          <ion-col size="9">
+            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"References" | translate }}</h1>
+          </ion-col>
+          <ion-col size="3" class="flex no-padding">
+            <button class="transparent no-padding float-right margin-auto"  (click)="addReference(goal,'')">
+              <img src="../../assets/icon/icon_add.png" height="15">
+            </button>
+          </ion-col>
+        </ion-row>
+        <button class="block width-100 no-padding transparent" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
+          <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{reference.content}}</p>
+        </button>
+      </ion-card>
+      <ion-card class="margin-0 height-100 padding-10 margin-bottom-10 width-100 transparent">
+        <ion-row class="width-100 height-45px text-align-center">
+          <span class="margin-auto">
+            <button class="transparent no-padding" (click)="changeDay(-1)">
+              <img src="../../assets/icon/icon_arrow_left.png" height="17">
+            </button>
+            <button class="background-transparent font-white" (click)="changeDate()">
+              <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
+            </button>
+            <button class="transparent no-padding" (click)="changeDay(1)">
+              <img src="../../assets/icon/icon_arrow_right.png" height="17">
+            </button>
+          </span>
+        </ion-row>
         <ion-row class="width-100 height-80">
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <ng-template #template let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
           <ng-template #template let-displayEvent="displayEvent" >
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-          </ng-template>
-          <ng-template #template let-displayEvent="displayEvent" >
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+            <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
           </ng-template>
           <calendar [eventSource]="eventSource"
                     [calendarMode]="calendar.mode"
@@ -1094,7 +1101,7 @@
                     (onTitleChanged)="onViewTitleChanged($event)"
                     (onTimeSelected)="onTimeSelected($event)"
                     step="5"
-                    class="calendar height-100"
+                    class="calendar height-100 width-100"
                     autoSelect="false"
                     [weekviewNormalEventTemplate]="template"
                     [weekviewAllDayEventTemplate]="template"
@@ -1110,10 +1117,10 @@
           </calendar>
         </ion-row>
       </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <h1>{{"Team" | translate }}</h1>
       </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 secondary border-radius-20px">
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <h1>{{"Chat" | translate }}</h1>
       </ion-card>
     </div>
@@ -1192,7 +1199,7 @@
         <button class="transparent no-padding" (click)="changeDay(1)">
           <img src="../../assets/icon/icon_arrow_right.png" height="17">
         </button>
-    </span>
+      </span>
     </ion-row>
     <ion-row class="width-100 height-85">
       <div class="width-100 padding-10 height-90">
