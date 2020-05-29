@@ -31,6 +31,9 @@
         </div>
         <div *ngIf="edit" class="transparent font-white">
           <ion-item class="transparent font-white">
+            <ion-row>
+            {{viewTitle}}
+            </ion-row>
             <calendar [eventSource]="eventSource"
                       [currentDate]="currentDate"
                       (onEventSelected)="onEventSelected($event)"
@@ -51,20 +54,25 @@
           <button class="transparent font-white" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
         </ion-item>
         <div *ngIf="edit" class="transparent">
-          <ion-item no-lines class="transparent">
-            <calendar [eventSource]="eventSource"
-                      [currentDate]="currentDate"
-                      (onEventSelected)="onEventSelected($event)"
-                      (onTitleChanged)="onViewTitleChanged($event)"
-                      (onTimeSelected)="onTimeSelected($event)"
-                      step="5"
-                      class="calendar height-100 width-100 font-size-0-8rem"
-                      autoSelect="false"
-                      scrollToHour="8"
-                      startingDayWeek="1"
-                      [showEventDetail]="false">
-            </calendar>
-          </ion-item>
+          <ion-card no-lines class="transparent font-white">
+            <div class="transparent font-whie">
+            {{viewTitle}}
+            </div>
+            <div class="transparent font-white">
+              <calendar [eventSource]="eventSource"
+                        [currentDate]="currentDate"
+                        (onEventSelected)="onEventSelected($event)"
+                        (onTitleChanged)="onViewTitleChanged($event)"
+                        (onTimeSelected)="onTimeSelected($event)"
+                        step="5"
+                        class="calendar height-100 width-100 font-size-0-8rem"
+                        autoSelect="false"
+                        scrollToHour="8"
+                        startingDayWeek="1"
+                        [showEventDetail]="false">
+              </calendar>
+            </div>
+          </ion-card>
         </div>
       </div>
       <button class="transparent font-white" type="submit">{{"Save" | translate }}</button>
