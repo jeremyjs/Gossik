@@ -13,6 +13,8 @@ import { DelegationDetailsModalPageRoutingModule } from './delegation-details-mo
 
 import { DelegationDetailsModalPage } from './delegation-details-modal.page';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { DelegationDetailsModalPage } from './delegation-details-modal.page';
     IonicModule,
     DelegationDetailsModalPageRoutingModule,
     TranslateModule.forChild(),
-    DatePickerModule
+    DatePickerModule,
+    NgCalendarModule
   ],
   declarations: [DelegationDetailsModalPage]
 })

@@ -175,8 +175,6 @@ export class ActionDetailsModalPage implements OnInit {
   }
 
   onTimeSelected(event) {
-    console.log('hi');
-    console.log(event);
     this.action.deadline = event.selectedTime;
     this.deadlineChanged = true;
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);

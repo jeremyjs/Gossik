@@ -30,7 +30,7 @@
           </ion-item>
         </div>
         <div *ngIf="edit" class="transparent font-white">
-          <ion-item class="transparent font-white">
+          <ion-card class="transparent font-white">
             <ion-row>
             {{viewTitle}}
             </ion-row>
@@ -46,7 +46,7 @@
                       startingDayWeek="1"
                       [showEventDetail]="false">
             </calendar> 
-          </ion-item>
+          </ion-card>
         </div>
       </div>
       <div *ngIf="!action.deadline" class="transparent font-white">

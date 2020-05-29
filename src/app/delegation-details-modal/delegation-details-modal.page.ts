@@ -29,6 +29,9 @@ export class DelegationDetailsModalPage implements OnInit {
 	formatOptions: any;
   pastCheck: boolean;
   deadlineChanged: boolean = false;
+  currentDate = new Date();
+  eventSource = [];
+  viewTitle: string;
 
   constructor(
   		  public modalCtrl: ModalController,
@@ -162,9 +165,12 @@ export class DelegationDetailsModalPage implements OnInit {
     this.edit = true;
   }
 
-  deadlineSelected(event) {
-    let deadlineFixed = new Date (event).setHours(2);
-    this.delegation.deadline = new Date (deadlineFixed);
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
+
+  onTimeSelected(event) {
+    this.delegation.deadline = event.selectedTime;
     this.deadlineChanged = true;
     this.deadlineString = new Date (this.delegation.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
     this.edit = false;
