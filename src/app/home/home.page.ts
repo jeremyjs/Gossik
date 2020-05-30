@@ -354,10 +354,14 @@ export class HomePage {
   		this.menuCtrl.toggle();
   	}
 
-	changePage(viewpoint: string) {
+	changePage(viewpoint: string, pageCtrl?: string) {
   		this.content.scrollToTop();
   		this.errorMsg = '';
-  		this.pageCtrl = '';
+  		if(pageCtrl != undefined) {
+  			this.pageCtrl = pageCtrl;
+  		} else {
+  			this.pageCtrl = '';
+  		}
   		this.viewpoint = viewpoint;
   	}
 
@@ -694,7 +698,7 @@ export class HomePage {
 		this.changePage('ProcessPage');
   	}
 
-  	goToProcessCapturePage(capture: Capture) {
+  	goToProcessCapturePage(capture: Capture, project?: Goal, type?: string) {
   		this.showTutorial('processPostit');
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -720,13 +724,22 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-    	this.captureProject = undefined;
   		this.captureContent = capture.content;
-  		this.captureType = undefined;
 		this.capturePriority = undefined;
 		this.captureTime = undefined;
 		this.captureDeadline = undefined;
-    	this.changePage('ProcessCapturePage');
+    	if(project != undefined) {
+    		this.captureProject = project;
+    	} else {
+    		this.captureProject = undefined;
+    	}
+    	if(type != undefined) {
+    		this.captureType = type;
+    		this.changePage('ProcessCapturePage', 'content');
+    	} else {
+  			this.captureType = undefined;
+  			this.changePage('ProcessCapturePage');
+    	}
   	}
 
   	goToProcessTakenActionPage(takenAction: Action) {

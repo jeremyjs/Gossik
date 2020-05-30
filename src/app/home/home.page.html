@@ -457,7 +457,8 @@
               {{"Note" | translate }}
             </span>
             <div class="width-90 margin-left-50 margin-top-10 font-size-1rem">
-              <ion-textarea class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent"></ion-textarea>
+              <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+              <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
             </div>
         </ion-col>
       </ion-row>
@@ -475,7 +476,8 @@
             </span>
           </button>
             <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-              <ion-textarea class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionFocus)="changePageCtrl('content')" autocapitalize="on" [(ngModel)]="captureContent"></ion-textarea>
+              <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+              <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
             </div>
         </ion-col>
       </ion-row>
@@ -1062,7 +1064,7 @@
             <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"Actions" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding margin-auto" (click)="addAction(goal,'')">
+            <button class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', goal, 'action')">
               <img src="../../assets/icon/icon_add.png" height="15">
             </button>
           </ion-col>
@@ -1074,25 +1076,10 @@
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-row>
           <ion-col size="9">
-            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"Delegations" | translate }}</h1>
-          </ion-col>
-          <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding float-right margin-auto"  icon-only (click)="addDelegation(goal,'')">
-              <img src="../../assets/icon/icon_add.png" height="15">
-            </button>
-          </ion-col>
-        </ion-row>
-        <button class="block width-100 no-padding transparent" *ngFor="let delegation of delegationArray" (click)="reviewDelegation(delegation)">
-          <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{delegation.content}}</p>
-        </button>
-      </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
-        <ion-row>
-          <ion-col size="9">
             <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"References" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding float-right margin-auto"  (click)="addReference(goal,'')">
+            <button class="transparent no-padding float-right margin-auto"  (click)="goToProcessCapturePage('', goal, 'note')">
               <img src="../../assets/icon/icon_add.png" height="15">
             </button>
           </ion-col>
