@@ -9,14 +9,16 @@
                 <img src="../../assets/icon/icon_menu.png" height="17">
               </ion-menu-button>
             </ion-col>
-            <ion-col size="8">
+            <ion-col size="6">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button *ngIf="viewpoint == 'CalendarPage' && isApp" class="transparent" (click)="addEvent()">
+                <img src="../../assets/icon/icon_add.png" height="17" class="margin-auto-auto">
+              </button>
             </ion-col>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button *ngIf="startedAction.content" class="transparent" (click)="goToToDoPage()">
                 <img src="../../assets/icon/icon_startedAction.png" class="margin-auto-auto" height="17">
-              </button>
-              <button *ngIf="viewpoint == 'CalendarPage' && isApp" class="transparent" (click)="addEvent()">
-                <img src="../../assets/icon/icon_add.png" height="17" class="margin-auto-auto">
               </button>
             </ion-col>
           </ion-row>
