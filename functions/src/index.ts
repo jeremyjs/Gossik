@@ -58,10 +58,6 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
    console.log('running');
    admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-   			if(!user.val().signUpDate) {
-   				let dateNow = new Date();
-   				admin.database().ref('/users/' + user.key).update({'signUpDate': dateNow.toISOString()});
-   			}
    			let timeNowMiliseconds = new Date().getTime();
    			let timeNowSeconds = timeNowMiliseconds/1000;
    			let signUpDateTimeMiliseconds = new Date(user.val().signUpDate).getTime();

@@ -143,6 +143,7 @@ export class HomePage {
 	startedAction = {} as Action;
 	goalEmpty: boolean;
 	startedActionTimeISOString: any;
+	allDayLabel: any;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -700,7 +701,7 @@ export class HomePage {
 		this.changePage('ProcessPage');
   	}
 
-  	goToProcessCapturePage(capture: Capture, project?: Goal, type?: string) {
+  	goToProcessCapturePage(capture: any, project?: Goal, type?: string) {
   		this.showTutorial('processPostit');
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)

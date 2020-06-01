@@ -36,7 +36,6 @@
             </ion-row>
             <calendar [eventSource]="eventSource"
                       [currentDate]="currentDate"
-                      (onEventSelected)="onEventSelected($event)"
                       (onTitleChanged)="onViewTitleChanged($event)"
                       (onTimeSelected)="onTimeSelected($event)"
                       step="5"
@@ -61,7 +60,6 @@
             <div class="transparent font-white">
               <calendar [eventSource]="eventSource"
                         [currentDate]="currentDate"
-                        (onEventSelected)="onEventSelected($event)"
                         (onTitleChanged)="onViewTitleChanged($event)"
                         (onTimeSelected)="onTimeSelected($event)"
                         step="5"

@@ -222,6 +222,7 @@
           <ion-col size="9.6" class="no-padding">
           <ion-input class="border-left-white-2px transparent display-inline-block margin-0 width-90 font-size-1-5rem placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
           </ion-col>
+          <!--
           <ion-col size="1.2" class="flex text-align-center no-padding">
             <button class="transparent no-padding" (click)="addCapturePicture()">
               <img src="../../assets/icon/icon_camera.png" height="15">
@@ -232,6 +233,7 @@
               <img src="../../assets/icon/icon_microphone.png" height="20" class="margin-bottom-3">
             </button>
           </ion-col>
+        -->
         </ion-row>
         <ion-row class="width-50 margin-top-85 margin-right-auto margin-left-auto">
           <ion-col size="6" class="flex text-align-center">
@@ -361,7 +363,7 @@
   <!-- Mobile ProcessCapturePage -->
   <div *ngIf="viewpoint=='ProcessCapturePage' && isApp">
     <ion-grid class="padding-20 padding-top-0">
-      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px" *ngIf="capture != ''">{{capture.content}}
+      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
       </ion-card>
       <ion-row *ngIf="pageCtrl == ''">
         <ion-col size="1">
@@ -766,7 +768,7 @@
       </ion-row>
       <ion-row class="width-50 margin-top-45 margin-right-auto margin-left-auto">
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="stopAction(startedAction)">
+          <button class="transparent no-padding margin-auto" (click)="stopAction()">
             <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
           </button>
         </ion-col>
@@ -807,7 +809,7 @@
       </ion-row>
       <ion-row class="width-50 margin-top-45 margin-right-auto margin-left-auto">
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="goalNotFinished(startedAction.goalid)">
+          <button class="transparent no-padding margin-auto" (click)="goalNotFinished()">
             <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
           </button>
         </ion-col>
@@ -1109,7 +1111,7 @@
           </ng-template>
           <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel" [ngStyle]="{'background-color': '#000000'}">
           <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
-                <ion-row *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)" class="transparent height-auto">
+                <ion-row *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)" class="transparent height-auto">
                         <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white width-100">{{event.startTime|date: 'HH:mm'}}
                             -
                             {{event.endTime|date: 'HH:mm'}}
@@ -1238,7 +1240,7 @@
         </ng-template>
         <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel" [ngStyle]="{'background-color': '#000000'}">
           <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
-                <ion-row *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)" class="transparent height-auto">
+                <ion-row *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)" class="transparent height-auto">
                         <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white width-100">{{event.startTime|date: 'HH:mm'}}
                             -
                             {{event.endTime|date: 'HH:mm'}}
