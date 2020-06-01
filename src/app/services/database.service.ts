@@ -46,6 +46,9 @@ export class DatabaseService {
     createUser(userid, email) {
         this.userData.email = email;
         this.userData.tutorial = this.tutorial;
+        this.userData.signUpDate = new Date().toISOString();
+        console.log('created Account');
+        console.log(this.userData);
         return this.db.list('users').set(userid, this.userData); 
     }
 
