@@ -358,8 +358,8 @@
   </div>
   <!-- Mobile ProcessCapturePage -->
   <div *ngIf="viewpoint=='ProcessCapturePage' && isApp">
-    <ion-grid class="padding-20">
-      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px">{{capture.content}}
+    <ion-grid class="padding-20 padding-top-0">
+      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px" *ngIf="capture != ''">{{capture.content}}
       </ion-card>
       <ion-row *ngIf="pageCtrl == ''">
         <ion-col size="1">
