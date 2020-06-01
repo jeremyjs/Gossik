@@ -211,6 +211,8 @@ export class HomePage {
 			this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
 			if(this.takenActionListNotEmpty) {
 				this.startedAction = this.takenActionArray[0];
+			} else {
+				this.startedAction = {} as Action;
 			}
 		});
 	}
