@@ -1201,7 +1201,15 @@
     </ion-row>
   </div>
   <!-- Mobile CalendarPage -->
-  <div class="height-90 width-90 margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
+  <div class="height-90 width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
+    <ion-row class="width-100 text-align-right">
+      <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('day')">
+        {{"Day view" | translate}}
+      </button>
+      <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('month')">
+        {{"Month view" | translate}}
+      </button>
+    </ion-row>
     <ion-row class="width-100 height-45px text-align-center">
       <span class="margin-auto">
         <button class="transparent no-padding" (click)="changeDay(-1)">
@@ -1220,14 +1228,20 @@
         <ng-template #template let-displayEvent="displayEvent">
           <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
         </ng-template>
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+        <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel" [ngStyle]="{'background-color': '#000000'}">
+          <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
+                <ion-row *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)" class="transparent height-auto">
+                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white width-100">{{event.startTime|date: 'HH:mm'}}
+                            -
+                            {{event.endTime|date: 'HH:mm'}}
+                        </span>
+                    <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white">{{allDayLabel}}</span>
+                    <span class="event-detail font-size-12px font-white">  |  {{event.title}}</span>
+                </ion-row>
+                <ion-row *ngIf="selectedDate?.events.length==0" class="transparent">
+                    <div class="no-events-label font-size-12px font-white">{{noEventsLabel}}</div>
+                </ion-row>
+            </ion-grid>
         </ng-template>
         <calendar [eventSource]="eventSource"
                   [calendarMode]="calendar.mode"
@@ -1242,6 +1256,7 @@
                   [weekviewAllDayEventTemplate]="template"
                   [dayviewNormalEventTemplate]="template"
                   [dayviewAllDayEventTemplate]="template"
+                  [monthviewEventDetailTemplate]="template"
                   scrollToHour="8"
                   [locale]="translate.currentLang"
                   formatHourColumn="{{'formatHourColumn' | translate }}"

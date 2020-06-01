@@ -106,7 +106,7 @@ export class HomePage {
 	viewTitle: string;
 	selectedDay = new Date();
 	calendar = {
-		mode: 'week',
+		mode: 'month',
 		currentDate: new Date()
 	};
 	actions = {};
@@ -167,7 +167,7 @@ export class HomePage {
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
 		this.isApp = true;
 		if(this.isApp) {
-			this.calendar.mode = 'day'
+			this.calendar.mode = 'month'
 		} else {
 			this.calendar.mode = 'week';
 		}
@@ -1598,6 +1598,10 @@ export class HomePage {
 				});
 			});
 		});
+	}
+
+	changeCalendarMode(calendarMode) {
+		this.calendar.mode = calendarMode;
 	}
 
 	onViewTitleChanged(title) {

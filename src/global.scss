@@ -258,6 +258,10 @@ ion-toolbar {
   font-size: 0.8rem !important;
 }
 
+.font-size-12px {
+  font-size: 12px !important;
+}
+
 .text-muted {
   padding: 0 !important;
 }
@@ -335,6 +339,19 @@ ion-toolbar {
   max-height: 350px !important;
   overflow: scroll !important;
   scrollbar-width: none !important;
+}
+
+.monthview-primary-with-event, .monthview-secondary-with-event {
+  background-color: #666666 !important;
+}
+
+.monthview-current {
+  background-color: #038a0c !important;
+}
+
+.monthview-selected {
+  background-color: #FFFFFF !important;
+  color: #000000 !important
 }
 
 .calendar-hour-column, .weekview-header {
@@ -479,6 +496,10 @@ ion-input {
 
 .height-70px {
   height: 70px;
+}
+
+.height-auto {
+  height: auto !important;
 }
 
 .margin-bottom-1 {
