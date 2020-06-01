@@ -906,15 +906,6 @@
                       <ng-template #template let-displayEvent="displayEvent">
                         <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
                       </ng-template>
-                      <ng-template #template let-displayEvent="displayEvent">
-                        <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-                      </ng-template>
-                      <ng-template #template let-displayEvent="displayEvent" >
-                        <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-                      </ng-template>
-                      <ng-template #template let-displayEvent="displayEvent" >
-                        <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-                      </ng-template>
                       <calendar [eventSource]="eventSource"
                                 [calendarMode]="calendar.mode"
                                 [currentDate]="calendar.currentDate"
@@ -1089,6 +1080,14 @@
         </button>
       </ion-card>
       <ion-card class="margin-0 height-100 padding-10 margin-bottom-10 width-100 transparent">
+        <ion-row class="width-100 text-align-right">
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('day')">
+            {{"Day view" | translate}}
+          </button>
+          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('month')">
+            {{"Month view" | translate}}
+          </button>
+        </ion-row>
         <ion-row class="width-100 height-45px text-align-center">
           <span class="margin-auto">
             <button class="transparent no-padding" (click)="changeDay(-1)">
@@ -1128,7 +1127,7 @@
                   (onTitleChanged)="onViewTitleChanged($event)"
                   (onTimeSelected)="onTimeSelected($event)"
                   step="5"
-                  class="calendar height-100"
+                  class="calendar height-100 width-100"
                   autoSelect="false"
                   [weekviewNormalEventTemplate]="template"
                   [weekviewAllDayEventTemplate]="template"
@@ -1180,15 +1179,6 @@
     </ion-row>
     <ion-row class="width-100 height-85">
       <div class="width-100 padding-10 height-90">
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
-        <ng-template #template let-displayEvent="displayEvent">
-          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
         <ng-template #template let-displayEvent="displayEvent">
           <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
         </ng-template>
