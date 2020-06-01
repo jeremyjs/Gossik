@@ -289,8 +289,8 @@
     </div>
   </div>
   <!-- Mobile ProcessPage -->
-  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar">
-    <ion-grid>
+  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100">
+    <ion-grid class="height-100-minus-70px">
       <ion-row class="one-line padding-20 transparent width-100 height-30px" *ngFor="let capture of captureArray">
           <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="goToProcessCapturePage(capture)">
             <img src="../../assets/imgs/circle_white.png" height="7" class=" margin-auto">
