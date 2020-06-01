@@ -39,7 +39,7 @@
                       (onTitleChanged)="onViewTitleChanged($event)"
                       (onTimeSelected)="onTimeSelected($event)"
                       step="5"
-                      class="calendar height-100 width-100 font-size-0-8rem"
+                      class="calendar height-100 width-90 font-size-0-8rem"
                       autoSelect="false"
                       scrollToHour="8"
                       startingDayWeek="1"
@@ -48,22 +48,22 @@
           </ion-card>
         </div>
       </div>
-      <div *ngIf="!action.deadline" class="transparent font-white">
+      <div *ngIf="!action.deadline" class="transparent font-white width-100">
         <ion-item no-lines class="transparent">
           <button class="transparent font-white" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
         </ion-item>
-        <div *ngIf="edit" class="transparent">
-          <ion-card no-lines class="transparent font-white">
+        <div *ngIf="edit" class="transparent width-100">
+          <ion-card no-lines class="transparent font-white width-100">
             <div class="transparent font-whie">
             {{viewTitle}}
             </div>
-            <div class="transparent font-white">
+            <div class="transparent font-white width-100">
               <calendar [eventSource]="eventSource"
                         [currentDate]="currentDate"
                         (onTitleChanged)="onViewTitleChanged($event)"
                         (onTimeSelected)="onTimeSelected($event)"
                         step="5"
-                        class="calendar height-100 width-100 font-size-0-8rem"
+                        class="calendar height-100 width-90 font-size-0-8rem"
                         autoSelect="false"
                         scrollToHour="8"
                         startingDayWeek="1"
