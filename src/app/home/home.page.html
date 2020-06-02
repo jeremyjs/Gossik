@@ -236,14 +236,14 @@
         -->
         </ion-row>
         <ion-row class="width-50 margin-top-85 margin-right-auto margin-left-auto">
-          <ion-col size="6" class="flex text-align-center">
-            <button class="transparent no-padding margin-auto" (click)="cancelCapture()">
-              <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
+          <ion-col size="6" class="flex text-align-center no-padding">
+            <button class="transparent margin-auto-auto" (click)="cancelCapture()">
+              <img src="../../assets/icon/icon_cancel.png" class="margin-bottom-3 img-height-60px img-width-60px">
             </button>
           </ion-col>
           <ion-col size="6" class="flex text-align-center">
             <button class="transparent no-padding margin-auto" (click)="addCapture(newCapture)">
-              <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+              <img src="../../assets/icon/icon_confirm.png" class="margin-bottom-3 img-height-90px img-width-70px">
             </button>
           </ion-col>
         </ion-row>
@@ -1031,22 +1031,22 @@
     <div class="height-100 width-100" *ngIf="pageCtrl == 'ProjectOverview'">
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-grid>
-          <ion-row class="height-45px">
+          <ion-row>
             <ion-col size="1.5" class="flex">
               <ion-card class="margin-auto project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
             </ion-col>
             <ion-col size="10.5" class="text-align-left">
-              <h1 class="one-line max-height-30px margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white">{{goal.name}}</h1>
+              <h1 class="margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white font-size-50px">{{goal.name}}</h1>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="font-white">
-              <button class="transparent font-white" (click)="deleteGoal(goal)">
+              <button class="transparent font-white font-size-30px" (click)="deleteGoal(goal)">
                 {{"Delete" | translate}}
               </button>
             </ion-col>
             <ion-col class="font-white">
-              <button class="transparent font-white" (click)="editGoal(goal)">
+              <button class="transparent font-white font-size-30px" (click)="editGoal(goal)">
                 {{"Edit" | translate}}
               </button>
             </ion-col>
@@ -1056,52 +1056,52 @@
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-row>
           <ion-col size="9">
-            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"Actions" | translate }}</h1>
+            <h1 class="display-inline-block font-white margin-0 margin-right-10 margin-bottom-10 font-size-40px">{{"Actions" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
             <button class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', goal, 'action')">
-              <img src="../../assets/icon/icon_add.png" height="15">
+              <img src="../../assets/icon/icon_add.png" class="img-height-30px img-width-30px">
             </button>
           </ion-col>
         </ion-row>
-        <button class="block width-100 no-padding transparent" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
-          <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{nextAction.content}}</p>
+        <button class="block width-100 no-padding transparent margin-bottom-3" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
+          <p class="font-gray margin-0 margin-left-10 margin-bottom-3 font-size-30px">- {{nextAction.content}}</p>
         </button>
       </ion-card>
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-row>
           <ion-col size="9">
-            <h1 class="display-inline-block font-white margin-0 margin-right-10">{{"References" | translate }}</h1>
+            <h1 class="display-inline-block font-white margin-0 margin-right-10 font-size-40px">{{"References" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
             <button class="transparent no-padding float-right margin-auto"  (click)="goToProcessCapturePage('', goal, 'note')">
-              <img src="../../assets/icon/icon_add.png" height="15">
+              <img src="../../assets/icon/icon_add.png" class="img-width-30px img-height-30px">
             </button>
           </ion-col>
         </ion-row>
-        <button class="block width-100 no-padding transparent" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
+        <button class="block width-100 no-padding transparent font-size-30px margin-bottom-3" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
           <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{reference.content}}</p>
         </button>
       </ion-card>
       <ion-card class="margin-0 height-100 padding-10 margin-bottom-10 width-100 transparent">
-        <ion-row class="width-100 text-align-right">
-          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('day')">
+        <ion-row class="width-100 text-align-right margin-botto-3">
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto font-size-30px" (click)="changeCalendarMode('day')">
             {{"Day view" | translate}}
           </button>
-          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto" (click)="changeCalendarMode('month')">
+          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto font-size-30px" (click)="changeCalendarMode('month')">
             {{"Month view" | translate}}
           </button>
         </ion-row>
-        <ion-row class="width-100 height-45px text-align-center">
+        <ion-row class="width-100 text-align-center margin-bottom-10">
           <span class="margin-auto">
             <button class="transparent no-padding" (click)="changeDay(-1)">
-              <img src="../../assets/icon/icon_arrow_left.png" height="17">
+              <img src="../../assets/icon/icon_arrow_left.png" class="img-height-30px img-width-30px">
             </button>
             <button class="background-transparent font-white" (click)="changeDate()">
-              <h3 class="display-inline-block margin-0">{{ viewTitle }}</h3>
+              <h3 class="display-inline-block margin-0 font-size-40px">{{ viewTitle }}</h3>
             </button>
             <button class="transparent no-padding" (click)="changeDay(1)">
-              <img src="../../assets/icon/icon_arrow_right.png" height="17">
+              <img src="../../assets/icon/icon_arrow_right.png" class="img-height-30px img-width-30px">
             </button>
           </span>
         </ion-row>
@@ -1112,15 +1112,15 @@
           <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel" [ngStyle]="{'background-color': '#000000'}">
           <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
                 <ion-row *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)" class="transparent height-auto">
-                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white width-100">{{event.startTime|date: 'HH:mm'}}
+                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-30px font-white width-100">{{event.startTime|date: 'HH:mm'}}
                             -
                             {{event.endTime|date: 'HH:mm'}}
                         </span>
-                    <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn font-size-12px font-white">{{allDayLabel}}</span>
-                    <span class="event-detail font-size-12px font-white">  |  {{event.title}}</span>
+                    <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn font-size-30px font-white">{{allDayLabel}}</span>
+                    <span class="event-detail font-size-30px font-white">  |  {{event.title}}</span>
                 </ion-row>
                 <ion-row *ngIf="selectedDate?.events.length==0" class="transparent">
-                    <div class="no-events-label font-size-12px font-white">{{noEventsLabel}}</div>
+                    <div class="no-events-label font-size-30px font-white">{{noEventsLabel}}</div>
                 </ion-row>
             </ion-grid>
         </ng-template>
