@@ -14,6 +14,7 @@
   "A reference is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in a reference or the list of participants and so on. Now, click on WaitingFor.": "Information is a collection of relevant information for the project that do not need any action. Example: The contact details of the airbnb can be saved in as information or the list of participants and so on. Now, click on WaitingFor.",
   "Are you sure you want to delete this goal?": "Are you sure you want to delete this goal?",
   "Assign Project": "Assign Project",
+  "Assign project": "Assign project",
   "A waitingFor is an event for which you need to wait. This can be a specific date or an action from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents. Now click on Action.": "A waitingFor is an event for which you need to wait. This can be a specific date or a todo from an external person. Example: You need to wait for the 'Confirmation from boss to take days off' before you can plan your ski-trip or you need to wait for '7 days before Christmas' to start shopping your christmas presents. Now click on Todo.",
   "Back": "Back",
   "Calendar": "Calendar",
