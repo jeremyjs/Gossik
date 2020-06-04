@@ -727,7 +727,7 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-  		this.captureContent = capture.content;
+  		this.captureContent = undefined;
 		this.capturePriority = undefined;
 		this.captureTime = undefined;
 		this.captureDeadline = undefined;
@@ -767,18 +767,13 @@ export class HomePage {
   	assignAction() {
   		this.captureType = 'action';
   		if(!this.captureTime) {
-  			this.pageCtrl = 'time';
-  			this.captureTimeISOString = new Date();
-	  		this.captureTimeISOString.setHours(0,0,0);
-	  		this.captureTime = this.captureTimeISOString.getMinutes();
-	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
+  			this.pageCtrl = 'content';
   		} else {
   			this.pageCtrl = 'action';
   		}
   	}
 
   	assignContent(event) {
-  		console.log('woooo');
   		if(this.captureType == 'action') {
 	  		if(!this.captureTime) {
 	  			this.pageCtrl = 'time';
@@ -794,9 +789,22 @@ export class HomePage {
 	  	}
   	}
 
+  	setCaptureContent(capture) {
+  		this.captureContent = capture.content;
+  		if(this.captureType == 'action') {
+  			this.pageCtrl = 'time';
+  		} else {
+  			this.pageCtrl = 'done';
+  		}
+  	}
+
   	assignNote() {
   		this.captureType = 'note';
-  		this.pageCtrl = 'done';
+  		if(!this.captureContent) {
+  			this.pageCtrl = 'content';
+  		} else {
+  			this.pageCtrl = 'done'
+  		}
   	}
 
   	timeSet() {
