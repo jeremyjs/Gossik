@@ -770,7 +770,7 @@ export class HomePage {
   			this.pageCtrl = 'time';
   			this.captureTimeISOString = new Date();
 	  		this.captureTimeISOString.setHours(0,0,0);
-	  		this.captureTime = this.captureTimeISOString.getHours() * 60 + this.captureTimeISOString.getMinutes();
+	  		this.captureTime = this.captureTimeISOString.getMinutes();
 	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   		} else {
   			this.pageCtrl = 'action';
@@ -784,7 +784,7 @@ export class HomePage {
 	  			this.pageCtrl = 'time';
 	  			this.captureTimeISOString = new Date();
 		  		this.captureTimeISOString.setHours(0,0,0);
-		  		this.captureTime = this.captureTimeISOString.getHours() * 60 + this.captureTimeISOString.getMinutes();
+		  		this.captureTime = this.captureTimeISOString.getMinutes();
 		  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
 	  		} else {
 	  			this.pageCtrl = 'content';
@@ -801,7 +801,7 @@ export class HomePage {
 
   	timeSet() {
   		let time = new Date(this.captureTimeISOString);
-  		this.captureTime = time.getHours() * 60 + time.getMinutes();
+  		this.captureTime = time.getMinutes();
   		if(!this.capturePriority && this.captureTime != 0) {
   			this.pageCtrl = 'priority';
   		}
