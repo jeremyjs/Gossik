@@ -12,7 +12,7 @@
   <ion-list inset class="text-align-center transparent">
     <form (ngSubmit)="saveReference()" [formGroup]="defineReferenceForm">
       <ion-item no-lines class="transparent font-white">
-        <ion-textarea class="font-white" autoGrow="true" [(ngModel)]="reference.content" formControlName="content"></ion-textarea>
+        <ion-textarea class="font-white border-bottom-1" autoGrow="true" [(ngModel)]="reference.content" formControlName="content"></ion-textarea>
       </ion-item>
       <button class="transparent font-white" type="submit">{{"Save" | translate }}</button>
       <button class="button-left transparent font-white" type="button" (click)="deleteReference(reference)">{{"Delete" | translate }}</button>

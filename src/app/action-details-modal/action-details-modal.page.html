@@ -16,11 +16,11 @@
       </ion-item>
       <ion-item class="transparent font-white">
         <ion-label>{{"Priority (1: low, 10: high)" | translate }}:</ion-label>
-        <ion-input class="width-30px" type="number" [(ngModel)]="action.priority" min="0" max="10" formControlName="priority"></ion-input>
+        <ion-input class="width-30px border-bottom-1" type="number" [(ngModel)]="action.priority" min="0" max="10" formControlName="priority"></ion-input>
       </ion-item>
       <ion-item class="transparent font-white">
           <ion-label block>{{"Estimated time in min" | translate }}:</ion-label>
-          <ion-input type="number" min="0" max="1000" formControlName="time" [(ngModel)]="action.time"></ion-input>
+          <ion-input class="border-bottom-1" type="number" min="0" max="1000" formControlName="time" [(ngModel)]="action.time"></ion-input>
       </ion-item>
       <div *ngIf="action.deadline" class="transparent font-white">
         <div *ngIf="!edit" class="transparent">
