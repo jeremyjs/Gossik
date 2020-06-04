@@ -523,9 +523,9 @@ export class HomePage {
 	ionBlurCapture(event) {
 		this.translate.get(["Input new capture"]).subscribe( translation => {
 	  		if(!this.newCapture.content) {
-	  			this.newCapture.content = translation["Input new capture"];
+	  			event.target.firstChild.placeholder = translation["Input new capture"];
 	  		} else if(this.newCapture.content == '') {
-	  			this.newCapture.content = translation["Input new capture"];
+	  			event.target.firstChild.placeholder = translation["Input new capture"];
 	  		}
 		});
 	}
@@ -538,9 +538,9 @@ export class HomePage {
 			this.db.addCapture(capture, this.auth.userid);
 			this.newCapture = {} as Capture;
 			this.translate.get(["Input new capture"]).subscribe( translation => {
-		  		this.newCapture.content = translation["Input new capture"];
+		  		this.newCapture.content = '';
 			});
-	      	this.showTutorial('postitDone');
+	      	//this.showTutorial('postitDone');
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
@@ -603,7 +603,7 @@ export class HomePage {
 								        	this.db.finishTutorial(this.auth.userid, tutorialPart);
 								        	if(tutorialPart == 'welcome') {
 								        		this.capturePageStarted = false;
-								        		this.showTutorial('postit');
+								        		//this.showTutorial('postit');
 								        	}
 								        	if(tutorialPart == 'finishAction') {
 								        		this.capturePageStarted = false;
@@ -631,8 +631,8 @@ export class HomePage {
   	goToCapturePage() {
   		if(!this.capturePageStarted) {
 	  		this.capturePageStarted = true;
-	  		this.showTutorial('finishAction');
-	  		this.showTutorial('welcome');
+	  		//this.showTutorial('finishAction');
+	  		//this.showTutorial('welcome');
 	  	}
 	  	this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
@@ -702,7 +702,7 @@ export class HomePage {
   	}
 
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string) {
-  		this.showTutorial('processPostit');
+  		//this.showTutorial('processPostit');
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -888,7 +888,7 @@ export class HomePage {
   	}
 
   	addGoal(goalname) {
-  		this.showTutorial('createProject');
+  		//this.showTutorial('createProject');
   		this.goalList.pipe(take(1)).subscribe(
 	      goalArray => {
 	      	goalArray = goalArray.filter(goal => goal.active != false);
@@ -937,7 +937,7 @@ export class HomePage {
 	}
 
 	addAction(goal, capture) {
-		this.showTutorial('action');
+		//this.showTutorial('action');
 		this.modalCtrl.create({ 
 			component: DefineActionModalPage,
 			componentProps: {capture: capture, goal: goal.name}
@@ -945,9 +945,9 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				if(this.isApp) {
-					this.showTutorial('actionDefinedMobile');
+					//this.showTutorial('actionDefinedMobile');
 				} else {
-					this.showTutorial('actionDefinedDesktop');
+					//this.showTutorial('actionDefinedDesktop');
 				}
 				this.backButton.subscribe(()=>{ navigator['app'].exitApp(); });
 				if(data.data != 'cancel' && data.data.content) {
@@ -1002,7 +1002,7 @@ export class HomePage {
 	}
 
 	addDelegation(goal, capture) {
-		this.showTutorial('waitingFor');
+		//this.showTutorial('waitingFor');
 		this.modalCtrl.create({
 			component: DefineDelegationModalPage,
 			componentProps: {capture: capture, goal: goal.name}
@@ -1054,7 +1054,7 @@ export class HomePage {
 	}
 
 	addReference(goal, capture) {
-		this.showTutorial('reference');
+		//this.showTutorial('reference');
 	    let modal = this.modalCtrl.create({
 	    	component: DefineReferenceModalPage,
 	    	componentProps: {capture: capture, goal: goal.name}
@@ -1090,7 +1090,7 @@ export class HomePage {
 			});}));
 		this.nextActionList.subscribe( nextActionArray => {
 			nextActionArray = nextActionArray.filter(action => action.active != false);
-			this.showTutorial('finishProject');
+			//this.showTutorial('finishProject');
 			if(nextActionArray.length == 1) {
 				this.pageCtrl = 'actionFinished';
 			} else {
@@ -1118,7 +1118,7 @@ export class HomePage {
 						      	{
 							        text: alertMessage["Delete"],
 							        handler: () => {
-										this.showTutorial('goalFinished');
+										//this.showTutorial('goalFinished');
 										this.startedAction = {} as Action;
 							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToCapturePage());
 							        }
@@ -1132,7 +1132,7 @@ export class HomePage {
 	}
 
 	goalNotFinished() {
-		this.showTutorial('goalNotFinished');
+		//this.showTutorial('goalNotFinished');
 		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			this.translate.get("Action finished").subscribe( translation => {
 				let capture = {} as Capture;
@@ -1150,7 +1150,7 @@ export class HomePage {
 
 	// ProjectsPage functions
 	goToProjectsPage() {
-		this.showTutorial('projects');
+		//this.showTutorial('projects');
   		this.goal.name = '';
 	    this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -1196,7 +1196,7 @@ export class HomePage {
   	}
 	
 	reviewGoal(goal: Goal) {
-		this.showTutorial('projectOverview');
+		//this.showTutorial('projectOverview');
 		this.content.scrollToTop();
 		this.eventSource = [];
   		this.calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
@@ -1366,7 +1366,7 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
-  		this.showTutorial('calendar');
+  		//this.showTutorial('calendar');
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -1706,7 +1706,7 @@ export class HomePage {
 			this.timeEstimateISOString = new Date();
 		  	this.timeEstimateISOString.setHours(0,0,0);
 		  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
-			this.showTutorial('todo');
+			//this.showTutorial('todo');
 			this.doableActionArray = [];
 			this.goalKeyArray = [];
 	  		this.giveTimeForm = this.fb.group({
@@ -1771,7 +1771,7 @@ export class HomePage {
 	        if(this.doableActionArray.length == 0) {
 	        	this.errorMsg = "There is no doable action for that time.";
 	        } else {
-	        	this.showTutorial('todoTime');
+	        	//this.showTutorial('todoTime');
 	        	this.errorMsg = '';
 	        }
 	      }
@@ -1808,7 +1808,7 @@ export class HomePage {
 			});}));
 		this.nextActionList.subscribe( nextActionArray => {
 			nextActionArray = nextActionArray.filter(action => action.active != false);
-			this.showTutorial('finishProject');
+			//this.showTutorial('finishProject');
 			if(nextActionArray.length == 1) {
 				this.changePage('FinishGoalPage');
 			} else {
@@ -1848,7 +1848,7 @@ export class HomePage {
 								          	action.taken = true;
 										    this.db.editAction(action, this.auth.userid);
 										    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
-								        	this.showTutorial('todoDone');
+								        	//this.showTutorial('todoDone');
 								        }
 							      	},
 							      	{
