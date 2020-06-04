@@ -296,12 +296,16 @@
   <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100">
     <ion-grid class="height-100-minus-70px overflow-scroll">
       <ion-row class="transparent width-90 margin-auto margin-bottom-3" *ngFor="let capture of captureArray">
-          <button class="overflow-x-hidden transparent text-color-white text-align-left width-100" (click)="goToProcessCapturePage(capture)">
-            <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
-            <span class="margin-left-10 font-size-20px">
+        <ion-col size="1" class="no-padding flex no-padding">
+          <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
+        </ion-col>
+        <ion-col size="11" class="text-align-left">
+          <button class="overflow-x-hidden transparent text-color-white text-align-left" (click)="goToProcessCapturePage(capture)">
+            <span class="font-size-20px one-line">
               {{capture.content}}
             </span>
           </button>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-card class="width-100 height-70px margin-0 no-padding background-navigation-center">
@@ -455,8 +459,8 @@
           </span>
         </button>
         <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
         </div>
       </ion-row>
       <ion-row *ngIf="pageCtrl == 'time' && captureType == 'action'">
