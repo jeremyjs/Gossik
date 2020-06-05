@@ -60,7 +60,7 @@
   <span class="font-white">{{errorMsg | translate}}</span>
 
   <!-- LoginPage -->
-	<div *ngIf="viewpoint == 'LoginPage'" class="transparent">
+	<div *ngIf="viewpoint == 'LoginPage'" class="transparent height-100-minus-70px">
 		<ion-card class="transparent">
 			<div *ngIf="pageCtrl == ''" class="transparent">
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
@@ -148,7 +148,7 @@
 	</div>
 
   <!-- SettingsPage -->
-  <div class="margin-top-10 width-90 padding-10 transparentheight-90" *ngIf="viewpoint == 'SettingsPage'">
+  <div class="margin-top-10 width-90 padding-10 transparent height-100-minus-70px" *ngIf="viewpoint == 'SettingsPage'">
     <button class="transparent font-white width-auto display-block margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
     <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToFeedbackPage()">
       {{"Give Feedback" | translate }}
@@ -165,18 +165,18 @@
   </div>
 
   <!-- FeedbackPage -->
-  <div class="margin-top-10 padding-10 transparent font-white text-align-center" *ngIf="viewpoint == 'FeedbackPage'">
+  <div class="margin-top-10 padding-10 transparent font-white text-align-center height-100-minus-70px" *ngIf="viewpoint == 'FeedbackPage'">
     <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}"></ion-textarea>
     <button class="transparent font-white width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
   </div>
 
   <!-- ShowFeedbackPage -->
-  <div class="margin-top-10 padding-10 transparent text-align-center" *ngIf="viewpoint == 'ShowFeedbackPage'">
+  <div class="margin-top-10 padding-10 transparent text-align-center height-100-minus-70px" *ngIf="viewpoint == 'ShowFeedbackPage'">
     <ion-item class="margin-bottom-10 transparent font-white border-bottom-1" *ngFor="let feedback of feedbackArray">{{feedback.feedback}}</ion-item>
   </div>
 
   <!-- SendPushPage -->
-  <div class="margin-top-10 padding-10 transparent text-align-center" *ngIf="viewpoint == 'SendPushPage'">
+  <div class="margin-top-10 padding-10 transparent text-align-center height-100-minus-70px" *ngIf="viewpoint == 'SendPushPage'">
     <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}"></ion-textarea>
     <br>
     <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}"></ion-textarea>
@@ -216,7 +216,7 @@
     </div>
   </div>
   <!-- Mobile CapturePage -->
-  <div *ngIf="viewpoint == 'CapturePage' && isApp">
+  <div *ngIf="viewpoint == 'CapturePage' && isApp" class="height-100-minus-70px">
       <ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent min-height-150px">
         <ion-row class="width-90 margin-top-45 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
@@ -245,22 +245,6 @@
             <button class="transparent no-padding margin-auto" (click)="addCapture(newCapture)">
               <img src="../../assets/icon/icon_confirm.png" class="margin-bottom-3 img-height-90px img-width-70px">
             </button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
-      <ion-card class="width-100 height-70px absolute-bottom margin-0 no-padding background-navigation-left">
-        <ion-row class="width-100 height-100">
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-            </ion-button>
           </ion-col>
         </ion-row>
       </ion-card>
@@ -293,8 +277,8 @@
     </div>
   </div>
   <!-- Mobile ProcessPage -->
-  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100">
-    <ion-grid class="height-100-minus-70px overflow-scroll">
+  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-70px">
+    <ion-grid class="height-100 overflow-scroll">
       <ion-row class="transparent width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
@@ -311,22 +295,6 @@
     <button (click)="goToCapturePage()" class="position-absolute top-0 right-0 font-white background-black">
       <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
     </button>
-    <ion-card class="width-100 height-70px margin-0 no-padding background-navigation-center">
-      <ion-row class="width-100 height-100">
-        <ion-col class="no-padding">
-          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
-          </ion-button>
-        </ion-col>
-        <ion-col class="no-padding">
-          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
-          </ion-button>
-        </ion-col>
-        <ion-col class="no-padding">
-          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-card>
   </div>
 
   <!-- ProcessCapturePage -->
@@ -368,7 +336,7 @@
     </div>
   </div>
   <!-- Mobile ProcessCapturePage -->
-  <div *ngIf="viewpoint=='ProcessCapturePage' && isApp">
+  <div *ngIf="viewpoint=='ProcessCapturePage' && isApp" class="height-100-minus-70px">
     <ion-grid class="padding-20 padding-top-0">
       <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
       </ion-card>
@@ -645,7 +613,7 @@
     </div>
   </div>
   <!-- Mobile ToDoPage -->
-  <div class="height-100" *ngIf="viewpoint == 'ToDoPage' && isApp">
+  <div class="height-100-minus-70px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="height-100 width-90">
       <ion-row class="margin-top-10">
         <ion-col>
@@ -685,28 +653,12 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-card class="width-100 height-70px absolute-bottom margin-0 no-padding background-navigation-right">
-        <ion-row class="width-100 height-100">
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
   </div>
 
   <!-- ActionPage -->
   <!-- No Desktop ActionPage yet -->
   <!-- Mobile ActionPage -->
-  <div class="height-100" *ngIf="viewpoint == 'ActionPage' && isApp">
+  <div class="height-100-minus-70px" *ngIf="viewpoint == 'ActionPage' && isApp">
     <ion-grid class="height-100 width-90">
       <ion-row class="margin-top-45 margin-auto font-white font-size-1-5rem text-align-center">
         <span class="margin-auto">
@@ -731,28 +683,12 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-card class="width-100 height-70px absolute-bottom margin-0 no-padding background-navigation-right">
-        <ion-row class="width-100 height-100">
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
-            </ion-button>
-          </ion-col>
-          <ion-col class="no-padding">
-            <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
   </div>
 
   <!-- FinishGoalPage -->
   <!-- No Desktop FinishGoalPage yet -->
   <!-- Mobile FinishGoalPage -->
-  <div class="height-100" *ngIf="viewpoint == 'FinishGoalPage' && isApp">
+  <div class="height-100-minus-70px" *ngIf="viewpoint == 'FinishGoalPage' && isApp">
     <ion-grid class="height-100 width-90">
       <ion-row class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
@@ -777,7 +713,7 @@
   <!-- StopActionPage -->
   <!-- No Desktop StopActionPage yet -->
   <!-- Mobile StopActionPage -->
-  <div class="height-100" *ngIf="viewpoint == 'StopActionPage' && isApp">
+  <div class="height-100-minus-70px" *ngIf="viewpoint == 'StopActionPage' && isApp">
     <ion-grid class="height-100 width-90">
       <ion-row class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
@@ -946,8 +882,8 @@
     </div>
   </div>
   <!-- mobile ProjectsPage-->
-  <div class="height-100 width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
-    <div *ngIf="pageCtrl == ''">
+  <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
+    <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar">
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
@@ -1189,7 +1125,7 @@
     </ion-row>
   </div>
   <!-- Mobile CalendarPage -->
-  <div class="height-90 width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
+  <div class="height-100-minus-70px width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-row class="width-100 text-align-right">
       <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
         {{"Day view" | translate}}
@@ -1285,8 +1221,24 @@
         </calendar>
       </div>
     </ion-row>
-
   </div>
+
+  <ion-card class="width-100 height-70px margin-0 no-padding background-navigation-center">
+      <ion-row class="width-100 height-100">
+        <ion-col class="no-padding">
+          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToCapturePage()">
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-padding">
+          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-padding">
+          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
 
 
 </ion-content>
