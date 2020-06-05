@@ -710,6 +710,7 @@ export class HomePage {
 
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string) {
   		//this.showTutorial('processPostit');
+  		this.pageTitle = "Process thought";
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()

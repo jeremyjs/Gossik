@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar color="secondary">
-    <ion-title>{{"Assign Project" | translate}}</ion-title>
+  <ion-toolbar color="secondary width-100">
+    <ion-title class="no-padding">{{"Assign Project" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +8,7 @@
 	<ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
-          <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newProject" placeholder="{{'Define new goal'| translate}}"></ion-input>
+          <ion-input class="transparent display-inline-block margin-0 width-90 font-gray border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newProject" placeholder="{{'Define new goal'| translate}}"></ion-input>
           </ion-col>
           <ion-col size="1.2" class="flex text-align-center no-padding">
             <button class="transparent no-padding margin-auto" (click)="createProject(newProject)">
