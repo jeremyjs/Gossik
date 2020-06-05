@@ -29,6 +29,10 @@ ion-toolbar {
     --ion-text-color: var(--ion-color-white) !important;
 }
 
+.toolbar-title {
+  padding: auto !important;
+}
+
 
 ion-item {
    border-radius: 5px;

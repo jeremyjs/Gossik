@@ -144,6 +144,7 @@ export class HomePage {
 	goalEmpty: boolean;
 	startedActionTimeISOString: any;
 	allDayLabel: any;
+	pageTitle: string;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -444,6 +445,7 @@ export class HomePage {
 	}
 
 	goToSettingsPage() {
+		this.pageTitle = "Settings";
   		this.changePage('SettingsPage');
   	}
 
@@ -456,6 +458,7 @@ export class HomePage {
     }
 
     goToFeedbackPage() {
+    	this.pageTitle = "Feedback";
     	this.changePage('FeedbackPage');
     }
 
@@ -631,6 +634,7 @@ export class HomePage {
   	}
 
   	goToCapturePage() {
+  		this.pageTitle = "Create new thought";
   		if(!this.capturePageStarted) {
 	  		this.capturePageStarted = true;
 	  		//this.showTutorial('finishAction');
@@ -680,6 +684,7 @@ export class HomePage {
   	}
 
   	goToProcessPage() {
+  		this.pageTitle = "Unprocessed thoughts";
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -1161,6 +1166,7 @@ export class HomePage {
 	// ProjectsPage functions
 	goToProjectsPage() {
 		//this.showTutorial('projects');
+		this.pageTitle = "Project list";
   		this.goal.name = '';
 	    this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -1207,6 +1213,7 @@ export class HomePage {
 	
 	reviewGoal(goal: Goal) {
 		//this.showTutorial('projectOverview');
+		this.pageTitle = "Project overview";
 		this.content.scrollToTop();
 		this.eventSource = [];
   		this.calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
@@ -1713,8 +1720,10 @@ export class HomePage {
   	// ToDoPage functions
 	goToToDoPage() {
 		if(this.startedAction.key) {
+			this.pageTitle = "Started todo";
 			this.changePage('ActionPage');
 		} else {
+			this.pageTitle = "Do todos";
 			this.doableActionArray = [];
 			this.timeEstimateISOString = new Date();
 		  	this.timeEstimateISOString.setHours(0,0,0);
@@ -1804,6 +1813,7 @@ export class HomePage {
   		action.taken = true;
   		this.startedAction = action;
 		this.db.editAction(action, this.auth.userid);
+		this.pageTitle = "Started todo";
 		this.changePage('ActionPage');
   	}
 
