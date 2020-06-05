@@ -559,6 +559,7 @@ export class HomePage {
   		this.translate.get(["Input new capture"]).subscribe( translation => {
 	  		this.newCapture.content = translation["Input new capture"];
 		});
+		this.goToProcessPage();
   	}
 
   	deleteCapture(capture: Capture) {
