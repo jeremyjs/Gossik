@@ -977,13 +977,19 @@
         </ion-row>
         <ion-row class="width-100 text-align-center margin-bottom-10">
           <span class="margin-auto">
-            <button class="transparent no-padding" (click)="changeDay(-1)">
+            <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(-1)">
+              <img src="../../assets/icon/icon_arrow_left.png" class="img-height-30px img-width-30px">
+            </button>
+            <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(-31)">
               <img src="../../assets/icon/icon_arrow_left.png" class="img-height-30px img-width-30px">
             </button>
             <button class="background-transparent font-white" (click)="changeDate()">
               <h3 class="display-inline-block margin-0 font-size-30px">{{ viewTitle }}</h3>
             </button>
-            <button class="transparent no-padding" (click)="changeDay(1)">
+            <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(1)">
+              <img src="../../assets/icon/icon_arrow_right.png" class="img-height-30px img-width-30px">
+            </button>
+            <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(31)">
               <img src="../../assets/icon/icon_arrow_right.png" class="img-height-30px img-width-30px">
             </button>
           </span>
