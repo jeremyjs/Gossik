@@ -798,10 +798,14 @@ export class HomePage {
 
   	setCaptureContent(capture) {
   		this.captureContent = capture.content;
-  		if(this.captureType == 'action') {
+  		if(!this.captureTime) {
   			this.pageCtrl = 'time';
+  			this.captureTimeISOString = new Date();
+	  		this.captureTimeISOString.setHours(0,0,0);
+	  		this.captureTime = this.captureTimeISOString.getMinutes();
+	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
   		} else {
-  			this.pageCtrl = 'done';
+  			this.pageCtrl = 'content';
   		}
   	}
 
