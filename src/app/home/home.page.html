@@ -883,7 +883,7 @@
   </div>
   <!-- mobile ProjectsPage-->
   <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
-    <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar">
+    <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar overflow-scroll">
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
@@ -916,7 +916,7 @@
         </ion-grid>
       </ion-card>
     </div>
-    <div class="height-100 width-100" *ngIf="pageCtrl == 'ProjectOverview'">
+    <div class="height-100 width-100 no-scrollbar overflow-scroll" *ngIf="pageCtrl == 'ProjectOverview'">
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-grid>
           <ion-row>
