@@ -642,13 +642,13 @@
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="width-50 margin-top-45 margin-right-auto margin-left-auto">
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="skipAction()">
-            <img src="../../assets/icon/icon_cancel.png" height="20" class="margin-bottom-3">
+          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="skipAction()">
+            {{"Next" | translate}}
           </button>
         </ion-col>
         <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto" (click)="startAction(doableActionArray[0])">
-            <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
+          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="startAction(doableActionArray[0])">
+            {{"Go" | translate}}
           </button>
         </ion-col>
       </ion-row>
