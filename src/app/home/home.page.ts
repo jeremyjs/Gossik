@@ -540,6 +540,7 @@ export class HomePage {
 			this.translate.get(["Input new capture"]).subscribe( translation => {
 		  		this.newCapture.content = '';
 			});
+			this.goToProcessPage();
 	      	//this.showTutorial('postitDone');
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
