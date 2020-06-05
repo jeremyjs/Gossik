@@ -413,7 +413,7 @@
           <div class="width-90 margin-left-50 margin-top-10 font-size-1rem">
             <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
             <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-            <button class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
+            <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
           </div>
       </ion-row>
       <ion-row *ngIf="pageCtrl != 'content' && captureContent && captureType">
