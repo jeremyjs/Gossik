@@ -1432,6 +1432,7 @@ export class HomePage {
 				this.eventSource = events;
 			});
 		});
+		//this.onEventSelected(this.calendar.currentDate);
 		this.changePage('CalendarPage');
   	}
   	
@@ -1622,6 +1623,8 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
+		console.log('triggered');
+		console.log(event);
 		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
