@@ -739,6 +739,7 @@ export class HomePage {
 		this.capturePriority = undefined;
 		this.captureTime = undefined;
 		this.captureDeadline = undefined;
+		this.captureDeadlineText = undefined;
     	if(project != undefined) {
     		this.captureProject = project;
     	} else {
