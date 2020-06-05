@@ -1238,8 +1238,16 @@
           </button>
         </ion-col>
         <ion-col class="no-padding">
-          <ion-button fill="clear" class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-          </ion-button>
+          <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
+            <ion-row>
+            <img src="../../assets/icon/icon_organize.png" class="img-height-30px img-width-30px margin-auto margin-bottom-3">
+            </ion-row>
+            <ion-row class="font-white">
+              <span class="margin-auto">
+                {{"Do" | translate}}
+              </span>
+            </ion-row>
+          </button>
         </ion-col>
       </ion-row>
     </ion-card>
