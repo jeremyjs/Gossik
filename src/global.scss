@@ -445,7 +445,8 @@ ion-toolbar {
 }
 
 .alert-wrapper {
-  --background: rgb(0,0,0); 
+  --background: rgb(0,0,0);
+  --ion-text-color: #FFFFFF !important; 
 }
 
 .alert-button-group {
