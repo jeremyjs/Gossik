@@ -1470,7 +1470,9 @@ export class HomePage {
 	        	}
 	        }
 	    });
-  		this.selectedDay = new Date();
+	    if(!this.selectedDay) {
+  			this.selectedDay = new Date();
+	    }
 		let modal = this.modalCtrl.create({
 			component: CalendarEventModalPage,
 			componentProps: {selectedDay: this.selectedDay}
@@ -1638,6 +1640,7 @@ export class HomePage {
 	onTimeSelected(event) {
 		console.log('triggered');
 		console.log(event);
+		this.selectedDay = event.selectedTime;
 		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		  	.snapshotChanges()
