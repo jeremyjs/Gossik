@@ -845,6 +845,11 @@ export class HomePage {
 		});
   	}
 
+  	deleteDeadline() {
+  		this.captureDeadline = undefined;
+  		this.captureDeadlineText = undefined;
+  	}
+
   	processCapture() {
   		if(this.captureType == 'action') {
   			this.addActionFromCapture();

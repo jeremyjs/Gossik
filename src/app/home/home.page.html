@@ -515,9 +515,6 @@
           <span class="font-size-1rem">
             {{"Add deadline" | translate }}
           </span>
-          <div *ngIf="captureDeadlineText" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-            {{captureDeadlineText}}
-          </div>
         </button>
       </ion-row>
       <ion-row *ngIf="pageCtrl == 'done' && captureDeadline && captureType == 'action'">
@@ -525,8 +522,11 @@
           <span class="font-size-1rem">
             {{"Deadline" | translate }}
           </span>
-          <button class="display-inline-block transparent font-gray text-align-left width-100 margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
-              </button>
+          <button class="display-inline-block transparent font-gray text-align-left margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
+          </button>
+          <button class="transparent display-inline-block font-white margin-left-50" (click)="deleteDeadline()">
+            {{"Delete" | translate}}
+          </button>
         </button>
       </ion-row>
       <ion-row *ngIf="pageCtrl == 'done'" class="margin-top-45">
