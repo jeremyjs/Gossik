@@ -62,10 +62,10 @@
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
 					<ion-list inset class="transparent">
 						<ion-item no-lines class="transparent font-white">
-							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
 						</ion-item>
 						<ion-item no-lines class="transparent font-white">
-							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}" formControlName="password"></ion-input>
+							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." formControlName="password"></ion-input>
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
@@ -91,7 +91,7 @@
 				<form (ngSubmit)="resetPassword()" [formGroup]="forgotPasswordForm">
 					<ion-list inset class="transparent font-white">
 						<ion-item no-lines class="transparent font-white">
-							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
@@ -116,10 +116,10 @@
 				<form (ngSubmit)="signUp()" [formGroup]="signUpForm">
 					<ion-list inset class="transparent font-white">
 						<ion-item no-lines class="transparent font-white">
-							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" formControlName="email"></ion-input>
+							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
 						</ion-item>
 						<ion-item no-lines class="transparent font-white">
-							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}" formControlName="password"></ion-input>
+							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." formControlName="password"></ion-input>
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
@@ -162,7 +162,7 @@
 
   <!-- FeedbackPage -->
   <div class="margin-top-10 padding-10 transparent font-white text-align-center height-100-minus-70px" *ngIf="viewpoint == 'FeedbackPage'">
-    <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}"></ion-textarea>
+    <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}..."></ion-textarea>
     <button class="transparent font-white width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
   </div>
 
@@ -173,9 +173,9 @@
 
   <!-- SendPushPage -->
   <div class="margin-top-10 padding-10 transparent text-align-center height-100-minus-70px" *ngIf="viewpoint == 'SendPushPage'">
-    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}"></ion-textarea>
+    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}..."></ion-textarea>
     <br>
-    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}"></ion-textarea>
+    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}..."></ion-textarea>
     <button class="transparent font-white width-auto margin-top-10 border-bottom-1" (click)="sendPush(manualPushEN, manualPushDE)">{{"Send push" | translate}}</button>
   </div>
 
@@ -184,7 +184,7 @@
     <ion-row class="width-40 margin-auto margin-top-10 height-20">
       <ion-card class="margin-top-10 width-100 text-align-center height-40 overflow-scroll no-scrollbar margin-right-10 display-inline-block secondary border-radius-20px min-height-150px">
         <ion-item class="height-50 border-radius-20px">
-          <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}..."></ion-input>
         </ion-item>
         <ion-button class="darkbutton width-auto" (click)="addCapture(newCapture)">{{"Add" | translate}}</ion-button>
       </ion-card>
@@ -216,7 +216,7 @@
       <ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent min-height-150px">
         <ion-row class="width-90 margin-top-45 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
-          <ion-input class="border-bottom-1 transparent display-inline-block margin-0 width-90 font-size-30px placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" (keyup.enter)="addCapture(newCapture)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          <ion-input class="border-bottom-1 transparent display-inline-block margin-0 width-90 font-size-30px placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" (keyup.enter)="addCapture(newCapture)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}..."></ion-input>
           </ion-col>
           <!--
           <ion-col size="1.2" class="flex text-align-center no-padding">
@@ -307,7 +307,7 @@
             </ion-card>
             <ion-card class="text-align-center margin-top-10 overflow-scroll no-scrollbar width-100 margin-left-0 display-inline-block secondary border-radius-20px">
               <ion-item class="border-radius-20px">
-                <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+                <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}..."></ion-input>
               </ion-item>
               <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
             </ion-card>
@@ -345,7 +345,7 @@
             {{captureProject.name}}
           </div>
           <div *ngIf="!captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-            {{"Assign project" | translate}}
+            {{"Assign project" | translate}}...
           </div>
         </button>
       </ion-row>
@@ -411,8 +411,8 @@
             {{"Note" | translate }}
           </span>
           <div class="width-90 margin-left-50 margin-top-10 font-size-1rem">
-            <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-            <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+            <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
+            <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
             <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
           </div>
       </ion-row>
@@ -426,8 +426,8 @@
           </span>
         </button>
         <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
         </div>
       </ion-row>
       <ion-row *ngIf="pageCtrl == 'time' && captureType == 'action'">
@@ -573,7 +573,7 @@
           </ion-col>
           <ion-col size="8">
             <ion-item class="border-radius-20px">
-            <ion-select multiple [(ngModel)]="goalKeyArray" (ionChange)="chooseGoal($event)" placeholder="{{'All Projects' | translate}}">
+            <ion-select multiple [(ngModel)]="goalKeyArray" (ionChange)="chooseGoal($event)" placeholder="{{'All Projects' | translate}}...">
               <ion-label>{{"Project" | translate }}</ion-label>
               <ion-select-option *ngFor="let goal of goalArray" value="{{goal.key}}">{{goal.name}}</ion-select-option>
             </ion-select>
@@ -730,7 +730,7 @@
     <div *ngIf="pageCtrl == ''">
       <ion-card class="width-18 height-150px overflow-y-hidden overflow-x-hidden text-align-center margin-10 display-inline-block secondary border-radius-20px">
         <ion-item class="border-radius-20px">
-          <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}"></ion-input>
+          <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Project name' | translate}}..."></ion-input>
         </ion-item>
 
         <ion-button class="darkbutton margin-auto margin-bottom-10 margin-top-10" (click)="addGoal(goalname)">{{"Create" | translate }}</ion-button>
@@ -886,7 +886,7 @@
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
-            <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}"></ion-input>
+            <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}..."></ion-input>
           </ion-col>
           <ion-col size="1.2" class="flex text-align-center no-padding">
             <button class="transparent no-padding" (click)="addGoal(goalname)">
