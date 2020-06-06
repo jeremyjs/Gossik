@@ -620,7 +620,7 @@
           </button>
         </ion-col>
         <ion-col class="flex">
-          <ion-datetime class="font-gray no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="mm" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
+          <ion-datetime class="font-gray no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
           <span class="font-gray margin-auto-left-3">min</span>
         </ion-col>
         <ion-col>
@@ -716,8 +716,11 @@
           {{"Please update the remaining time for this action" | translate}}
         </span>
       </ion-row>
-      <ion-row class="margin-auto font-gray text-align-center">
-        <ion-datetime class="font-white margin-auto margin-top-45" displayFormat="Hհ mm" pickerFormat="HH:mm" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
+      <ion-row class="margin-auto font-gray text-align-center width-100">
+        <span class="font-white margin-top-45 margin-right-auto margin-left-auto flex">
+          <ion-datetime class="font-white no-padding display-inline-block" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
+          min
+        </span>
       </ion-row>
     </ion-grid>
   </div>

@@ -1866,7 +1866,7 @@ export class HomePage {
   	updateStartedActionTime() {
   		setTimeout(() => {
 	  		let time = new Date(this.startedActionTimeISOString);
-	  		this.startedAction.time = time.getHours() * 60 + time.getMinutes();
+	  		time.getMinutes();
 	  		this.startedAction.taken = false;
 	  		this.db.editAction(this.startedAction, this.auth.userid);
 	  		this.startedAction = {} as Action;
