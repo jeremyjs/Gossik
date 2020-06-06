@@ -216,7 +216,7 @@
       <ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent min-height-150px">
         <ion-row class="width-90 margin-top-45 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
-          <ion-input class="border-bottom-1 transparent display-inline-block margin-0 width-90 font-size-30px placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
+          <ion-input class="border-bottom-1 transparent display-inline-block margin-0 width-90 font-size-30px placeholder-white" type="text" (ionFocus)="ionFocus($event)" (ionBlur)="ionBlurCapture($event)" (keyup.enter)="addCapture(newCapture)" autocapitalize="on" [(ngModel)]="newCapture.content" placeholder="{{'Input new capture'| translate}}"></ion-input>
           </ion-col>
           <!--
           <ion-col size="1.2" class="flex text-align-center no-padding">
@@ -411,8 +411,8 @@
             {{"Note" | translate }}
           </span>
           <div class="width-90 margin-left-50 margin-top-10 font-size-1rem">
-            <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-            <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+            <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+            <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
             <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
           </div>
       </ion-row>
@@ -426,8 +426,8 @@
           </span>
         </button>
         <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
-          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}" (ionFocus)="ionFocus($event)"></ion-textarea>
         </div>
       </ion-row>
       <ion-row *ngIf="pageCtrl == 'time' && captureType == 'action'">
@@ -883,7 +883,7 @@
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
-            <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}"></ion-input>
+            <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}"></ion-input>
           </ion-col>
           <ion-col size="1.2" class="flex text-align-center no-padding">
             <button class="transparent no-padding" (click)="addGoal(goalname)">
