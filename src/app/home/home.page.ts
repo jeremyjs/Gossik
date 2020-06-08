@@ -866,8 +866,10 @@ export class HomePage {
 		}).then (modal => {
 			modal.present();
 			modal.onDidDismiss().then(data => {
-				this.captureDeadline = data.data;
-				this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+				if(data.data) {
+					this.captureDeadline = data.data;
+					this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+				}
 			});
 		});
   	}
