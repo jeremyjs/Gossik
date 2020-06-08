@@ -423,7 +423,7 @@
   </div>
   <!-- Mobile ProcessPage -->
   <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-70px">
-    <ion-grid class="height-100 overflow-scroll margin-top-85">
+    <ion-grid class="height-100 overflow-scroll padding-top-85">
       <ion-row class="transparent width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
@@ -442,7 +442,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <button (click)="goToCapturePage()" class="position-absolute top-10 right-10 font-white background-black">
+    <button (click)="goToCapturePage()" class="position-absolute top-10 right-10 font-white transparent">
       <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
     </button>
   </div>
