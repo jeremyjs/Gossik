@@ -18,7 +18,7 @@
         <ion-label class="font-white">{{"Project" | translate}}</ion-label>
       </ion-col>
       <ion-col size="9">
-        <ion-select [(ngModel)]="goalid" class="no-hover font-white">
+        <ion-select [(ngModel)]="goalid" class="no-hover font-white width-90">
           <ion-select-option class="font-white" *ngFor="let goal of goalArray" value="{{goal.key}}" [selected]="goal.key == goalid">{{goal.name}}</ion-select-option>
         </ion-select>
       </ion-col>
@@ -42,17 +42,14 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="deadline" class="transparent font-white">
-      <button *ngIf="!edit" class="background-transparent" type="button" (click)="editDeadline()">{{"Deadline" | translate}}: {{deadlineString}}</button>
+      <button *ngIf="!edit" class="transparent font-white" type="button" (click)="editDeadline()">{{"Deadline" | translate}}: {{deadlineString}}</button>
       <ionic-calendar-date-picker *ngIf="edit" [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
     </ion-row>
     <ion-row *ngIf="errorMsg" class="transparent font-white">
       {{"The end time cannot be earlier than the start time." | translate}}
     </ion-row>
     <ion-row>
-      <button class="transparent font-white margin-auto" (click)="check()" *ngIf="this.navParams.get('selectedDay')">
-        <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
-      </button>
-      <button class="transparent font-white margin-auto" (click)="check()" *ngIf="this.navParams.get('calendarEvent')">
+      <button class="transparent font-white margin-auto" (click)="check()">
         <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-bottom-3">
       </button>
     </ion-row>

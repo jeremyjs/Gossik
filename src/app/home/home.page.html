@@ -1,7 +1,151 @@
 <ion-header>
 	<ion-toolbar color="secondary">
     <div *ngIf="loggedin">
-  		<div *ngIf="isApp && viewpoint != 'ProcessCapturePage'">
+  		<div *ngIf="isApp && viewpoint == 'CapturePage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ProcessPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == ''">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ToDoPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ActionPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'FinishGoalPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'StopActionPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'CalendarPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ProjectsPage' && pageCtrl != 'ProjectOverview'">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
@@ -21,6 +165,11 @@
       </div>
       <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
         <button class="transparent" (click)="goToProcessPage()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="17">
+        </button>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'ProjectsPage' && pageCtrl == 'ProjectOverview'">
+        <button class="transparent" (click)="goToProjectsPage()">
           <img src="../../assets/icon/icon_arrow_left.png" height="17">
         </button>
       </div>
@@ -880,7 +1029,7 @@
       </ion-grid>
     </div>
   </div>
-  <!-- mobile ProjectsPage-->
+  <!-- Mobile ProjectsPage-->
   <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
     <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar overflow-scroll">
       <ion-card class="width-90 margin-auto transparent">
