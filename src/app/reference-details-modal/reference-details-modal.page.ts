@@ -18,7 +18,8 @@ import { AuthenticationService } from '../services/authentication.service';
 export class ReferenceDetailsModalPage implements OnInit {
 	
 	reference = {} as Reference;
-  	defineReferenceForm: FormGroup;
+  backUpReference: string;
+  defineReferenceForm: FormGroup;
 
   constructor(
   		public modalCtrl: ModalController,
@@ -29,6 +30,7 @@ export class ReferenceDetailsModalPage implements OnInit {
       	private auth: AuthenticationService
       	) {
   	this.reference = this.navParams.get('reference');
+    this.backUpReference = this.reference.content;
     this.defineReferenceForm = this.fb.group({
       content: ['', Validators.required]
       });
@@ -38,6 +40,7 @@ export class ReferenceDetailsModalPage implements OnInit {
   }
 
   cancel() {
+    this.reference.content = this.backUpReference;
     this.modalCtrl.dismiss();
   }
 
