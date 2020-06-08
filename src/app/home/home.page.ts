@@ -131,13 +131,20 @@ export class HomePage {
 	cals = [];
 	nativeEvents = [];
 	captureProject = {} as Goal;
+	showCaptureProject: boolean = true;
 	captureType: string;
+	showCaptureType: boolean = false;
 	captureDurationISOString: any;
 	captureDuration: number;
+	showCaptureDuration: boolean = false;
 	capturePriority: number;
+	showCapturePriority: boolean = false;
 	captureContent: string;
+	showCaptureContent: boolean = false;
 	captureDeadline: any;
+	showCaptureDeadline: boolean = false;
 	captureDeadlineText: string;
+	showCaptureDone: boolean = false;
 	timeEstimateISOString: any;
 	timeEstimate: number;
 	startedAction = {} as Action;
@@ -740,18 +747,26 @@ export class HomePage {
 		this.captureDuration = undefined;
 		this.captureDeadline = undefined;
 		this.captureDeadlineText = undefined;
+		this.showCaptureProject = true;
+		this.showCaptureType = false;
+		this.showCaptureContent = false;
+		this.showCaptureDuration = false;
+		this.showCapturePriority = false;
+		this.showCaptureDeadline = false;
+		this.showCaptureDone = false;
     	if(project != undefined) {
     		this.captureProject = project;
+    		this.showCaptureType = true;
     	} else {
     		this.captureProject = undefined;
     	}
     	if(type != undefined) {
     		this.captureType = type;
-    		this.changePage('ProcessCapturePage', 'content');
+    		this.showCaptureContent = true;
     	} else {
   			this.captureType = undefined;
-  			this.changePage('ProcessCapturePage');
     	}
+    	this.changePage('ProcessCapturePage');
   	}
 
   	goToProcessTakenActionPage(takenAction: Action) {
@@ -768,69 +783,81 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				this.captureProject = data.data;
-				this.pageCtrl = 'type';
+				this.showCaptureType = true;
 			});
 		});
   	}
 
   	assignAction() {
   		this.captureType = 'action';
-  		if(!this.captureDuration) {
-  			this.pageCtrl = 'content';
-  		} else {
-  			this.pageCtrl = 'action';
-  		}
-  	}
-
-  	assignContent(event) {
-  		if(this.captureType == 'action') {
-	  		if(!this.captureDuration) {
-	  			this.pageCtrl = 'time';
+  		this.showCaptureContent = true;
+  		if(this.captureContent) {
+  			if(!this.captureDuration) {
 	  			this.captureDurationISOString = new Date();
 		  		this.captureDurationISOString.setHours(0,0,0);
 		  		this.captureDuration = this.captureDurationISOString.getMinutes();
 		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-	  		} else {
-	  			this.pageCtrl = 'content';
 	  		}
+  			this.showCaptureDuration = true;
+  		}
+  		if(this.captureDuration) {
+  			this.showCapturePriority = true;
+  		}
+  		if(this.capturePriority) {
+  			this.showCaptureDeadline = true;
+  			this.showCaptureDone = true;
+  		}
+  	}
+
+  	assignContent(event) {
+  		console.log('triggered');
+  		console.log(event);
+  		if(this.captureType == 'action') {
+	  		if(!this.captureDuration) {
+	  			this.captureDurationISOString = new Date();
+		  		this.captureDurationISOString.setHours(0,0,0);
+		  		this.captureDuration = this.captureDurationISOString.getMinutes();
+		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
+	  		}
+	  		this.showCaptureDuration = true;
 	  	} else if(this.captureType == 'note') {
-	  		this.pageCtrl = 'done';
+	  		this.showCaptureDone = true;
 	  	}
   	}
 
   	setCaptureContent(capture) {
   		this.captureContent = capture.content;
-  		if(!this.captureDuration) {
-  			this.pageCtrl = 'time';
-  			this.captureDurationISOString = new Date();
-	  		this.captureDurationISOString.setHours(0,0,0);
-	  		this.captureDuration = this.captureDurationISOString.getMinutes();
-	  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-  		} else {
-  			this.pageCtrl = 'content';
-  		}
+  		if(this.captureType == 'action') {
+	  		if(!this.captureDuration) {
+	  			this.captureDurationISOString = new Date();
+		  		this.captureDurationISOString.setHours(0,0,0);
+		  		this.captureDuration = this.captureDurationISOString.getMinutes();
+		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
+	  		}
+	  		this.showCaptureDuration = true;
+	  	} else if(this.captureType == 'note') {
+	  		this.showCaptureDone = true;
+	  	}
   	}
 
   	assignNote() {
   		this.captureType = 'note';
-  		if(!this.captureContent) {
-  			this.pageCtrl = 'content';
-  		} else {
-  			this.pageCtrl = 'done'
-  		}
+  		this.showCaptureContent = true;
+  		this.showCaptureDuration = false;
+  		this.showCapturePriority = false;
+  		this.showCaptureDeadline = false
   	}
 
   	timeSet() {
   		let time = new Date(this.captureDurationISOString);
   		this.captureDuration = time.getMinutes();
-  		if(!this.capturePriority && this.captureDuration != 0) {
-  			this.pageCtrl = 'priority';
-  		}
+  		this.showCapturePriority = true;
   	}
 
   	assignPriority(priority) {
   		this.capturePriority = priority;
-  		this.pageCtrl = 'done';
+  		this.showCaptureDeadline = true;
+  		this.showCaptureDone = true;
   	}
 
   	assignDeadline() {

@@ -490,11 +490,11 @@
     <ion-grid class="padding-20 padding-top-0 height-100 overflow-scroll no-scrollbar">
       <ion-card class="text-align-center margin-5 font-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
       </ion-card>
-      <ion-row *ngIf="pageCtrl == ''">
+      <ion-row *ngIf="showCaptureProject">
+        <span class="font-size-1rem font-gray">
+          {{"Project" | translate }}
+        </span>
         <button class="no-padding transparent font-white text-align-left width-100" (click)="assignProject()">
-          <span class="font-size-1rem">
-            {{"Project" | translate }}
-          </span>
           <div *ngIf="captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
             {{captureProject.name}}
           </div>
@@ -503,18 +503,8 @@
           </div>
         </button>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != '' && captureProject.name">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('')">
-          <span class="font-size-1rem">
-            {{"Project" | translate }}
-          </span>
-          <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-            {{captureProject.name}}
-          </div>
-        </button>
-      </ion-row>
-      <ion-row *ngIf="pageCtrl == 'type'">
-        <span class="font-size-1rem font-white">
+      <ion-row *ngIf="showCaptureType">
+        <span class="font-size-1rem font-gray">
           {{"Type" | translate }}
         </span>
         <div class="width-100 margin-top-10 font-size-1rem">
@@ -534,156 +524,74 @@
           </ion-row>
         </div>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != 'type' && captureType">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('type')">
-          <span class="font-size-1rem font-gray">
-            {{"Type" | translate }}
-          </span>
-        </button>
-        <div class="width-100 margin-top-10 font-size-1rem">
-          <ion-row class="width-100">
-            <ion-col>
-              <button *ngIf="captureType == 'action'" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignAction()">{{"Action" | translate}}
-              </button>
-              <button *ngIf="captureType != 'action'" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignAction()">{{"Action" | translate}}
-              </button>
-            </ion-col>
-            <ion-col>
-              <button *ngIf="captureType == 'note'" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignNote()">{{"Note" | translate}}
-              </button>
-              <button *ngIf="captureType != 'note'" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignNote()">{{"Note" | translate}}
-              </button>
-            </ion-col>
-          </ion-row>
-        </div>
-      </ion-row>
-      <ion-row *ngIf="pageCtrl == 'content'">
-          <span *ngIf="captureType == 'action'" class="font-size-1rem font-white">
-            {{"Action" | translate }}
-          </span>
-          <span *ngIf="captureType == 'note'" class="font-size-1rem font-white">
-            {{"Note" | translate }}
-          </span>
-          <div class="width-90 margin-left-50 margin-top-10 font-size-1rem">
-            <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
-            <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left border-bottom-1" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
-            <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
-          </div>
-      </ion-row>
-      <ion-row *ngIf="pageCtrl != 'content' && captureContent && captureType">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('content')">
-          <span *ngIf="captureType == 'action'" class="font-size-1rem font-gray">
-            {{"Action" | translate }}
-          </span>
-          <span *ngIf="captureType == 'note'" class="font-size-1rem font-gray">
-            {{"Note" | translate }}
-          </span>
-        </button>
+      <ion-row *ngIf="showCaptureContent">
+        <span *ngIf="captureType == 'action'" class="font-size-1rem font-gray">
+          {{"Action" | translate }}
+        </span>
+        <span *ngIf="captureType == 'note'" class="font-size-1rem font-gray">
+          {{"Note" | translate }}
+        </span>
         <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
           <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
           <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
+          <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
         </div>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'time' && captureType == 'action'">
-        <span class="font-size-1rem font-white">
+      <ion-row *ngIf="showCaptureDuration">
+        <span class="font-size-1rem font-gray">
           {{"Duration" | translate }}
         </span>
         <div class="width-100 margin-top-10 margin-left-50 font-size-1rem">
           <ion-row class="width-100">
-            <!-- the 'h' in displayFormat is not a normal h because it would translate it to the hour format, therefore it's a greek letter that looks exactly like an 'h' -->
-            <ion-datetime class="font-white no-padding margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-white margin-auto-left-3">min</span>
-          </ion-row>
-        </div>
-      </ion-row>
-      <ion-row *ngIf="pageCtrl != 'time' && captureDuration  && captureType == 'action'">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('time')">
-          <span class="font-size-1rem font-gray">
-            {{"Duration" | translate }}
-          </span>
-        </button>
-        <div class="width-100 margin-top-10 margin-left-50 font-size-1rem">
-          <ion-row class="width-100">
-            <!-- the 'h' in displayFormat is not a normal h because it would translate it to the hour format, therefore it's a greek letter that looks exactly like an 'h' -->
             <ion-datetime class="font-gray" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-gray margin-auto-left-3">min</span>
           </ion-row>
         </div>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'priority'  && captureType == 'action'">
-        <span class="font-size-1rem font-white">
+      <ion-row *ngIf="showCapturePriority">
+        <span class="font-size-1rem font-gray">
           {{"Priority" | translate }}
         </span>
         <div class="width-100 margin-top-10 font-size-1rem">
           <ion-row class="width-100">
             <ion-col>
-              <button *ngIf="capturePriority == 0" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
+              <button *ngIf="capturePriority == 1" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"low" | translate}}
               </button>
-              <button *ngIf="capturePriority != 0" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
-              </button>
-            </ion-col>
-            <ion-col>
-              <button *ngIf="capturePriority == 1" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 1" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
+              <button *ngIf="capturePriority != 1" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(1)">{{"low" | translate}}
               </button>
             </ion-col>
             <ion-col>
-              <button *ngIf="capturePriority == 2" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+              <button *ngIf="capturePriority == 2" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(2)">{{"medium" | translate}}
               </button>
-              <button *ngIf="capturePriority != 2" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
+              <button *ngIf="capturePriority != 2" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(2)">{{"medium" | translate}}
+              </button>
+            </ion-col>
+            <ion-col>
+              <button *ngIf="capturePriority == 3" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignPriority(3)">{{"high" | translate}}
+              </button>
+              <button *ngIf="capturePriority != 3" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignPriority(3)">{{"high" | translate}}
               </button>
             </ion-col>
           </ion-row>
         </div>
       </ion-row>
-      <ion-row *ngIf="pageCtrl != 'priority' && capturePriority != undefined  && captureType == 'action'">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('priority')">
-          <span class="font-size-1rem font-gray">
-            {{"Priority" | translate }}
-          </span>
-        </button>
-        <div class="width-100 margin-top-10 font-size-1rem">
-          <ion-row class="width-100">
-            <ion-col>
-              <button *ngIf="capturePriority == 0" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 0" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(0)">{{"low" | translate}}
-              </button>
-            </ion-col>
-            <ion-col>
-              <button *ngIf="capturePriority == 1" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 1" class="display-inline-block transparent font-gray text-align-center width-100" (click)="assignPriority(1)">{{"medium" | translate}}
-              </button>
-            </ion-col>
-            <ion-col>
-              <button *ngIf="capturePriority == 2" class="display-inline-block transparent font-white text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 2" class="display-inline-block transparent font-gray text-align-left width-100" (click)="assignPriority(2)">{{"high" | translate}}
-              </button>
-            </ion-col>
-          </ion-row>
-        </div>
-      </ion-row>
-      <ion-row *ngIf="pageCtrl == 'done' && !captureDeadline  && captureType == 'action'  && captureType == 'action'">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="assignDeadline()">
+      <ion-row *ngIf="showCaptureDeadline && !captureDeadline">
+        <button class="no-padding transparent font-white text-align-left width-100" (click)="assignDeadline()">
           <span class="font-size-1rem">
             {{"Add deadline" | translate }}
           </span>
         </button>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'done' && captureDeadline && captureType == 'action'">
-        <button class="no-padding transparent font-gray text-align-left width-100" (click)="changePageCtrl('done')">
-          <span class="font-size-1rem">
-            {{"Deadline" | translate }}
-          </span>
-          <button class="display-inline-block transparent font-gray text-align-left margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
-          </button>
-          <button class="transparent display-inline-block font-white margin-left-50" (click)="deleteDeadline()">
-            {{"Delete" | translate}}
-          </button>
+      <ion-row *ngIf="showCaptureDeadline && captureDeadline">
+        <span class="font-size-1rem font-gray">
+          {{"Deadline" | translate }}
+        </span>
+        <button class="display-inline-block transparent font-white text-align-left margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
+        </button>
+        <button class="transparent display-inline-block font-white margin-left-50" (click)="deleteDeadline()">
+          {{"Delete" | translate}}
         </button>
       </ion-row>
-      <ion-row *ngIf="pageCtrl == 'done'" class="margin-top-45">
+      <ion-row *ngIf="showCaptureDone" class="margin-top-45">
         <button class="transparent font-gray margin-auto width-100" (click)="processCapture()">
           <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
         </button>
