@@ -152,6 +152,7 @@ export class HomePage {
 	startedActionTimeISOString: any;
 	allDayLabel: any;
 	pageTitle: string;
+	cameFromProjectOverviewPage: boolean;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -757,8 +758,10 @@ export class HomePage {
     	if(project != undefined) {
     		this.captureProject = project;
     		this.showCaptureType = true;
+    		this.cameFromProjectOverviewPage = true;
     	} else {
     		this.captureProject = undefined;
+    		this.cameFromProjectOverviewPage = false;
     	}
     	if(type != undefined) {
     		this.captureType = type;
@@ -885,7 +888,11 @@ export class HomePage {
   		} else if(this.captureType == 'note'){
   			this.addNoteFromCapture();
   		}
-  		this.goToProcessPage();
+  		if(this.cameFromProjectOverviewPage) {
+  			this.reviewGoal(this.captureProject);
+  		} else {
+  			this.goToProcessPage();
+  		}
   	}
 
   	addActionFromCapture() {
@@ -1254,6 +1261,7 @@ export class HomePage {
 	reviewGoal(goal: Goal) {
 		//this.showTutorial('projectOverview');
 		this.pageTitle = "Project overview";
+		this.viewpoint = "ProjectsPage";
 		this.content.scrollToTop();
 		this.eventSource = [];
   		this.calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
