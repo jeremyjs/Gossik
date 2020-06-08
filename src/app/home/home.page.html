@@ -428,11 +428,16 @@
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
         </ion-col>
-        <ion-col size="11" class="text-align-left">
-          <button class="transparent text-color-white text-align-left" (click)="goToProcessCapturePage(capture)">
+        <ion-col size="9" class="text-align-left overflow-x-hidden">
+          <button class="transparent font-white text-align-left" (click)="goToProcessCapturePage(capture)">
             <span class="font-size-20px">
               {{capture.content}}
             </span>
+          </button>
+        </ion-col>
+        <ion-col size="2">
+          <button class="transparent font-white" (click)="deleteCapture(capture)">
+            {{"Delete" | translate}}
           </button>
         </ion-col>
       </ion-row>
@@ -483,10 +488,10 @@
   <!-- Mobile ProcessCapturePage -->
   <div *ngIf="viewpoint=='ProcessCapturePage' && isApp" class="height-100-minus-70px">
     <ion-grid class="padding-20 padding-top-0 height-100 overflow-scroll no-scrollbar">
-      <ion-card class="text-align-center margin-5 text-color-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
+      <ion-card class="text-align-center margin-5 font-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
       </ion-card>
       <ion-row *ngIf="pageCtrl == ''">
-        <button class="no-padding transparent text-color-white text-align-left width-100" (click)="assignProject()">
+        <button class="no-padding transparent font-white text-align-left width-100" (click)="assignProject()">
           <span class="font-size-1rem">
             {{"Project" | translate }}
           </span>

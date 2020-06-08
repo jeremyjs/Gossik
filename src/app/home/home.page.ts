@@ -569,7 +569,7 @@ export class HomePage {
   		if(this.viewpoint == 'CapturePage') {
   			this.db.deleteCapture(capture, this.auth.userid);
   		} else {
-  			this.db.deleteCapture(capture, this.auth.userid).then( () => this.goToCapturePage())
+  			this.db.deleteCapture(capture, this.auth.userid).then( () => this.goToProcessPage())
   		}
   	}
 
