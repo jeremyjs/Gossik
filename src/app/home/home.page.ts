@@ -132,8 +132,8 @@ export class HomePage {
 	nativeEvents = [];
 	captureProject = {} as Goal;
 	captureType: string;
-	captureTimeISOString: any;
-	captureTime: number;
+	captureDurationISOString: any;
+	captureDuration: number;
 	capturePriority: number;
 	captureContent: string;
 	captureDeadline: any;
@@ -737,7 +737,7 @@ export class HomePage {
     	});
   		this.captureContent = undefined;
 		this.capturePriority = undefined;
-		this.captureTime = undefined;
+		this.captureDuration = undefined;
 		this.captureDeadline = undefined;
 		this.captureDeadlineText = undefined;
     	if(project != undefined) {
@@ -775,7 +775,7 @@ export class HomePage {
 
   	assignAction() {
   		this.captureType = 'action';
-  		if(!this.captureTime) {
+  		if(!this.captureDuration) {
   			this.pageCtrl = 'content';
   		} else {
   			this.pageCtrl = 'action';
@@ -784,12 +784,12 @@ export class HomePage {
 
   	assignContent(event) {
   		if(this.captureType == 'action') {
-	  		if(!this.captureTime) {
+	  		if(!this.captureDuration) {
 	  			this.pageCtrl = 'time';
-	  			this.captureTimeISOString = new Date();
-		  		this.captureTimeISOString.setHours(0,0,0);
-		  		this.captureTime = this.captureTimeISOString.getMinutes();
-		  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
+	  			this.captureDurationISOString = new Date();
+		  		this.captureDurationISOString.setHours(0,0,0);
+		  		this.captureDuration = this.captureDurationISOString.getMinutes();
+		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
 	  		} else {
 	  			this.pageCtrl = 'content';
 	  		}
@@ -800,12 +800,12 @@ export class HomePage {
 
   	setCaptureContent(capture) {
   		this.captureContent = capture.content;
-  		if(!this.captureTime) {
+  		if(!this.captureDuration) {
   			this.pageCtrl = 'time';
-  			this.captureTimeISOString = new Date();
-	  		this.captureTimeISOString.setHours(0,0,0);
-	  		this.captureTime = this.captureTimeISOString.getMinutes();
-	  		this.captureTimeISOString = this.captureTimeISOString.toISOString();
+  			this.captureDurationISOString = new Date();
+	  		this.captureDurationISOString.setHours(0,0,0);
+	  		this.captureDuration = this.captureDurationISOString.getMinutes();
+	  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
   		} else {
   			this.pageCtrl = 'content';
   		}
@@ -821,9 +821,9 @@ export class HomePage {
   	}
 
   	timeSet() {
-  		let time = new Date(this.captureTimeISOString);
-  		this.captureTime = time.getMinutes();
-  		if(!this.capturePriority && this.captureTime != 0) {
+  		let time = new Date(this.captureDurationISOString);
+  		this.captureDuration = time.getMinutes();
+  		if(!this.capturePriority && this.captureDuration != 0) {
   			this.pageCtrl = 'priority';
   		}
   	}
@@ -865,7 +865,7 @@ export class HomePage {
 		    goalid: this.captureProject.key,
 		    content: this.captureContent,
 		    priority: this.capturePriority,
-		    time: this.captureTime,
+		    time: this.captureDuration,
 		    taken: false,
 		    active: true
   		}
