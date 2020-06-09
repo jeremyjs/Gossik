@@ -1872,41 +1872,45 @@ export class HomePage {
   		this.showDoableActions();
   	}
 
-  	showDoableActions() {
+  	showDoableActions(event) {
   		console.log('triggered');
+  		console.log(event);
   		console.log(this.timeEstimateISOString);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getMinutes();
-		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
-		this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(take(1),
-				map(
-					changes => { 
-						return changes.map( c => {
-							let action: Action = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return action;
-			});}));
-	    this.actionList.subscribe(
-	      actionArray => {
-	      	this.doableActionArray = [];
-	        for(let action of actionArray) {
-	        	if(action.active != false) {
-					if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
-					this.doableActionArray.push(action);
+  		if(timeEstimate > 0) {
+  			console.log('gonna do smth.');
+			this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(take(1),
+					map(
+						changes => { 
+							return changes.map( c => {
+								let action: Action = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return action;
+				});}));
+		    this.actionList.subscribe(
+		      actionArray => {
+		      	this.doableActionArray = [];
+		        for(let action of actionArray) {
+		        	if(action.active != false) {
+						if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+						this.doableActionArray.push(action);
+						}
 					}
-				}
-	        }
-	        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-	        if(this.doableActionArray.length == 0) {
-	        	this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
-	        		this.presentToast(translation["There is no doable action for that time."]);
-	        	})
-	        }
-	      }
-	    );
+		        }
+		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+		        if(this.doableActionArray.length == 0) {
+		        	this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
+		        		this.presentToast(translation["There is no doable action for that time."]);
+		        	})
+		        }
+		      }
+		    );
+		}
   	}
 
   	skipAction() {

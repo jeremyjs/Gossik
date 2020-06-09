@@ -719,7 +719,7 @@
           </button>
         </ion-col>
         <ion-col class="flex">
-          <ion-datetime #toDoPageDurationDatetime class="font-white no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
+          <ion-datetime #toDoPageDurationDatetime class="font-white no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions($event)"></ion-datetime>
           <span class="font-white margin-auto-left-3" (click)="openDatetime('toDoPageDurationDatetime')">min</span>
         </ion-col>
         <ion-col>
