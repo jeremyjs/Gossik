@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -171,7 +171,8 @@ export class HomePage {
 		private router: Router,
 		private menuCtrl: MenuController,
 		private firebase: FirebaseX,
-		private nativeCalendar: NativeCalendarService
+		private nativeCalendar: NativeCalendarService,
+		public toastCtrl: ToastController
 		) {
 		this.isApp = !this.platform.is('desktop');
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
@@ -381,6 +382,14 @@ export class HomePage {
   		this.pageCtrl = pageCtrl;
   	}
 
+  	async presentToast(toastMessage) {
+    const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 3000
+    });
+    toast.present();
+  }
+
   	goToPrivacyPolicyPage() {
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
   	}
@@ -548,10 +557,11 @@ export class HomePage {
 			capture.active = true;
 			this.db.addCapture(capture, this.auth.userid);
 			this.newCapture = {} as Capture;
-			this.translate.get(["Input new capture"]).subscribe( translation => {
-		  		this.newCapture.content = '';
-			});
+		  	this.newCapture.content = '';
 			this.goToProcessPage();
+			this.translate.get(["Your thought has been saved and is ready to process"]).subscribe( translation => {
+		  		this.presentToast(translation["Your thought has been saved and is ready to process"]);
+			});
 	      	//this.showTutorial('postitDone');
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
@@ -813,8 +823,6 @@ export class HomePage {
   	}
 
   	assignContent(event) {
-  		console.log('triggered');
-  		console.log(event);
   		if(this.captureType == 'action') {
 	  		if(!this.captureDuration) {
 	  			this.captureDurationISOString = new Date();
@@ -885,8 +893,14 @@ export class HomePage {
   	processCapture() {
   		if(this.captureType == 'action') {
   			this.addActionFromCapture();
+  			this.translate.get(["Your todo has been saved and is ready to get done"]).subscribe( translation => {
+		  		this.presentToast(translation["Your todo has been saved and is ready to get done"]);
+			});
   		} else if(this.captureType == 'note'){
   			this.addNoteFromCapture();
+  			this.translate.get(["Your information has been saved and can be seen in the project's overview page"]).subscribe( translation => {
+		  		this.presentToast(translation["Your information has been saved and can be seen in the project's overview page"]);
+			});
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
