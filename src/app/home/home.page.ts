@@ -589,6 +589,9 @@ export class HomePage {
   		} else {
   			this.db.deleteCapture(capture, this.auth.userid).then( () => this.goToProcessPage())
   		}
+  		this.translate.get(["Thought deleted"]).subscribe( translation => {
+	  		this.presentToast(translation["Thought deleted"]);
+		});
   	}
 
   	showTutorial(tutorialPart) {
@@ -1553,7 +1556,10 @@ export class HomePage {
 					}
 					this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 						eventData.event_id = event_id;
-						this.db.addCalendarEvent(eventData, this.auth.userid)
+						this.db.addCalendarEvent(eventData, this.auth.userid);
+						this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
+					  		this.presentToast(translation["Your calendar event has been saved"]);
+						});
 						eventData.startTime = new Date(eventData.startTime);
 				        eventData.endTime = new Date(eventData.endTime);
 						let events = this.eventSource;
@@ -1694,8 +1700,6 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
-		console.log('triggered');
-		console.log(event);
 		this.selectedDay = event.selectedTime;
 		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
