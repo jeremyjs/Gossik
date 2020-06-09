@@ -8,21 +8,12 @@
   		<ion-content color="secondary">
   			<ion-list class="transparent">
   				<ion-menu-toggle auto-hide="true">
-    				<ion-item (click)="goToPage('capture')" class="transparent font-white border-bottom-1">{{"Captures" | translate}}</ion-item>
-				</ion-menu-toggle>
-  				<ion-menu-toggle auto-hide="true">
-    				<ion-item (click)="goToPage('todo')" class="transparent font-white border-bottom-1">{{"ToDo" | translate}}</ion-item>
-				</ion-menu-toggle>
-  				<ion-menu-toggle auto-hide="true">
     				<ion-item (click)="goToPage('projects')" class="transparent font-white border-bottom-1">{{"Projects" | translate}}</ion-item>
-				</ion-menu-toggle>
-  				<ion-menu-toggle auto-hide="true">
-    				<ion-item (click)="goToPage('calendar')" class="transparent font-white border-bottom-1">{{"Calendar" | translate}}</ion-item>
-				</ion-menu-toggle>
+				  </ion-menu-toggle>
   				<ion-menu-toggle auto-hide="true">
     				<ion-item (click)="goToPage('settings')" class="transparent font-white border-bottom-1">{{"Settings" | translate}}</ion-item>
-				</ion-menu-toggle>
-			</ion-list>
+				  </ion-menu-toggle>
+			 </ion-list>
   		</ion-content>
 	</ion-menu>
 	<ion-router-outlet id="content1" main></ion-router-outlet>

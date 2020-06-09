@@ -1803,6 +1803,36 @@ export class HomePage {
 	  		this.giveTimeForm = this.fb.group({
 	      		timeEstimate: ['', Validators.required]
 	    	});
+	    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(take(1),
+					map(
+						changes => { 
+							return changes.map( c => {
+								let action: Action = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return action;
+				});}));
+		    this.actionList.subscribe(
+		      actionArray => {
+		      	this.doableActionArray = [];
+		        for(let action of actionArray) {
+		        	if(action.active != false) {
+						if(!action.taken) {
+						this.doableActionArray.push(action);
+						}
+					}
+		        }
+		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+		        if(this.doableActionArray.length == 0) {
+		        	this.errorMsg = "There is no doable action for that time.";
+		        } else {
+		        	//this.showTutorial('todoTime');
+		        	this.errorMsg = '';
+		        }
+		      }
+		    );
 	    	this.changePage('ToDoPage');
 	    	if(this.timeAvailable) {
 	    		setTimeout(() => {

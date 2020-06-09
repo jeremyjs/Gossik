@@ -578,7 +578,10 @@
         </div>
       </ion-row>
       <ion-row *ngIf="showCaptureDeadline && !captureDeadline">
-        <button class="no-padding transparent font-white text-align-left width-100" (click)="assignDeadline()">
+        <span class="font-size-1rem font-gray">
+          {{"Deadline" | translate }}
+        </span>
+        <button class="transparent font-white margin-left-50 margin-top-10" (click)="assignDeadline()">
           <span class="font-size-1rem">
             {{"Add deadline" | translate }}
           </span>
@@ -588,9 +591,9 @@
         <span class="font-size-1rem font-gray">
           {{"Deadline" | translate }}
         </span>
-        <button class="display-inline-block transparent font-white text-align-left margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
+        <button class="transparent font-white margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
         </button>
-        <button class="transparent display-inline-block font-white margin-left-50" (click)="deleteDeadline()">
+        <button class="transparent font-white margin-left-50" (click)="deleteDeadline()">
           {{"Delete" | translate}}
         </button>
       </ion-row>
