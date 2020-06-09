@@ -1925,6 +1925,9 @@ export class HomePage {
 		this.db.editAction(action, this.auth.userid);
 		this.pageTitle = "Started todo";
 		this.changePage('ActionPage');
+		this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
+	  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
+		});
   	}
 
   	finishAction() {
