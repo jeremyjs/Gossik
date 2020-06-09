@@ -1214,7 +1214,7 @@ export class HomePage {
 							        handler: () => {
 										//this.showTutorial('goalFinished');
 										this.startedAction = {} as Action;
-							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToCapturePage());
+							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToToDoPage());
 							        }
 						      	}
 						    ]
@@ -1236,7 +1236,7 @@ export class HomePage {
 				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
 					this.db.addCapture(capture, this.auth.userid);
 					this.startedAction = {} as Action;
-					this.goToCapturePage();
+					this.goToToDoPage();
 				});
 			});
 		});
