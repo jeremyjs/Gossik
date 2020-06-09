@@ -44,6 +44,10 @@ p::first-letter, button::first-letter, ion-col::first-letter {
   text-transform: capitalize !important;
 }
 
+.show-full-highlight-0 {
+  --show-full-highlight: 0;
+}
+
 .sc-ion-modal-ios-h {
   --background: rgb(0,0,0) !important;
 }
