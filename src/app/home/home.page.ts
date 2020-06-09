@@ -47,7 +47,7 @@ export class HomePage {
 	@ViewChild('TimeAvailable', {  static: false })  timeAvailable: IonInput;
 	@ViewChild('processCapturePageDurationDatetime', { static: false }) processCapturePageDurationDatetime: IonDatetime;
 	@ViewChild('toDoPageDurationDatetime', { static: false }) toDoPageDurationDatetime: IonDatetime;
-	@ViewChild('stopActionPageDatetime', { statis: false }) stopActionPageDatetime: IonDatetime;
+	@ViewChild('stopActionPageDatetime', { static: false }) stopActionPageDatetime: IonDatetime;
 	loginForm: FormGroup;
 	loginError: string;
 	forgotPasswordForm: FormGroup;
@@ -1840,12 +1840,6 @@ export class HomePage {
 					}
 		        }
 		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-		        if(this.doableActionArray.length == 0) {
-		        	this.errorMsg = "There is no doable action for that time.";
-		        } else {
-		        	//this.showTutorial('todoTime');
-		        	this.errorMsg = '';
-		        }
 		        this.changePage('ToDoPage');
 		        if(this.timeAvailable) {
 		    		setTimeout(() => {
@@ -1879,6 +1873,8 @@ export class HomePage {
   	}
 
   	showDoableActions() {
+  		console.log('triggered');
+  		console.log(this.timeEstimateISOString);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getMinutes();
 		this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
@@ -1905,10 +1901,9 @@ export class HomePage {
 	        }
 	        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
 	        if(this.doableActionArray.length == 0) {
-	        	this.errorMsg = "There is no doable action for that time.";
-	        } else {
-	        	//this.showTutorial('todoTime');
-	        	this.errorMsg = '';
+	        	this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
+	        		this.presentToast(translation["There is no doable action for that time."]);
+	        	})
 	        }
 	      }
 	    );
