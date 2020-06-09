@@ -1873,7 +1873,7 @@ export class HomePage {
   		this.showDoableActions();
   	}
 
-  	showDoableActions(event) {
+  	showDoableActions() {
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getMinutes();
   		if(timeEstimate > 0) {
