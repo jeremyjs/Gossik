@@ -1520,6 +1520,7 @@ export class HomePage {
 			});
 		});
 		//this.onEventSelected(this.calendar.currentDate);
+		this.pageTitle = "Calendar";
 		this.changePage('CalendarPage');
   	}
   	
