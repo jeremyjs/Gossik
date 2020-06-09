@@ -145,6 +145,24 @@
           </ion-row>
         </ion-grid>
       </div>
+      <div *ngIf="isApp && viewpoint == 'SettingsPage'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <ion-menu-button autoHide="false">
+                <img src="../../assets/icon/icon_menu.png" height="17">
+              </ion-menu-button>
+            </ion-col>
+            <ion-col size="8">
+            </ion-col>
+            <ion-col size="2" class="flex text-align-center no-padding">
+              <button class="transparent" (click)="goToCalendarPage()">
+                <img src="../../assets/icon/icon_calendar.png" height="23" class="margin-auto-auto">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
       <div *ngIf="isApp && viewpoint == 'ProjectsPage' && pageCtrl != 'ProjectOverview'">
         <ion-grid>
           <ion-row>
