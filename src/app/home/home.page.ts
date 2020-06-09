@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -45,6 +45,9 @@ export class HomePage {
 
 	@ViewChild(IonContent, { read: IonContent, static: true }) content: IonContent;
 	@ViewChild('TimeAvailable', {  static: false })  timeAvailable: IonInput;
+	@ViewChild('processCapturePageDurationDatetime', { static: false }) processCapturePageDurationDatetime: IonDatetime;
+	@ViewChild('toDoPageDurationDatetime', { static: false }) toDoPageDurationDatetime: IonDatetime;
+	@ViewChild('stopActionPageDatetime', { statis: false }) stopActionPageDatetime: IonDatetime;
 	loginForm: FormGroup;
 	loginError: string;
 	forgotPasswordForm: FormGroup;
@@ -198,6 +201,16 @@ export class HomePage {
 				}
 			})
 		});
+	}
+
+	openDatetime(datetime) {
+		if(datetime == 'processCapturePageDurationDatetime') {
+			this.processCapturePageDurationDatetime.open();
+		} else if(datetime == 'toDoPageDurationDatetime') {
+			this.toDoPageDurationDatetime.open();
+		} else if(datetime == 'stopActionPageDatetime') {
+			this.stopActionPageDatetime.open();
+		}
 	}
 
 	getStartedAction() {

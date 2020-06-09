@@ -578,7 +578,7 @@
         </span>
         <div class="width-100 margin-top-10 margin-left-50">
           <ion-row class="width-100">
-            <ion-datetime class="font-gray" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-gray margin-auto-left-3">min</span>
+            <ion-datetime #processCapturePageDurationDatetime class="font-white" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-white margin-auto-left-3" (click)="openDatetime('processCapturePageDurationDatetime')">min</span>
           </ion-row>
         </div>
       </ion-row>
@@ -720,8 +720,8 @@
           </button>
         </ion-col>
         <ion-col class="flex">
-          <ion-datetime class="font-gray no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
-          <span class="font-gray margin-auto-left-3">min</span>
+          <ion-datetime #toDoPageDurationDatetime class="font-white no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
+          <span class="font-white margin-auto-left-3" (click)="openDatetime('toDoPageDurationDatetime')">min</span>
         </ion-col>
         <ion-col>
         </ion-col>
@@ -818,8 +818,8 @@
       </ion-row>
       <ion-row class="margin-auto font-gray text-align-center width-100">
         <span class="font-white margin-top-45 margin-right-auto margin-left-auto flex">
-          <ion-datetime class="font-white no-padding display-inline-block" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
-          min
+          <ion-datetime #stopActionPageDatetime class="font-white no-padding display-inline-block" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
+          <span class="font-white margin-auto-left-3" (click)="openDatetime('stopActionPageDatetime')">min</span>
         </span>
       </ion-row>
     </ion-grid>
