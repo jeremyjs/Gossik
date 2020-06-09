@@ -1873,13 +1873,9 @@ export class HomePage {
   	}
 
   	showDoableActions(event) {
-  		console.log('triggered');
-  		console.log(event);
-  		console.log(this.timeEstimateISOString);
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getMinutes();
   		if(timeEstimate > 0) {
-  			console.log('gonna do smth.');
 			this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
 			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 			  	.snapshotChanges()
@@ -1965,7 +1961,6 @@ export class HomePage {
   	updateStartedActionTime() {
   		let time = new Date(this.startedActionTimeISOString);
   		time.getMinutes();
-  		console.log(this.startedAction);
   		this.startedAction.taken = false;
   		this.db.editAction(this.startedAction, this.auth.userid);
   		this.startedAction = {} as Action;
