@@ -222,19 +222,19 @@
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
 						<div class="form-error">{{loginError}}</div>
-						<button class="transparent font-white margin-auto" expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>	
+						<button class="button-design margin-auto" expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>	
 					</div>
 				</form>
 				<ion-list class="transparent margin-top-45">
-					<button icon-left class="signInButton transparent font-white" (click)="goToSignUp()">
+					<button icon-left class="button-design margin-left-20" (click)="goToSignUp()">
 						{{"Sign up" | translate }}
 					</button>
           <br>
-					<button icon-left class="signInButton transparent font-white" (click)="goToForgotPassword()">
+					<button icon-left class="button-design margin-left-20" (click)="goToForgotPassword()">
 						{{"Forgot password" | translate }}
 					</button>
           <br>
-          <button class="signInButton transparent font-white" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
 				</ion-list>
@@ -247,19 +247,19 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="transparent font-white" expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
+						<button class="button-design" expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
 					</div>
 				</form>
         <ion-list class="transparent margin-top-45">
-          <button icon-left class="signInButton transparent font-white" (click)="goToSignUp()">
+          <button icon-left class="button-design margin-left-20" (click)="goToSignUp()">
             {{"Sign up" | translate }}
           </button>
           <br>
-          <button icon-left class="signInButton transparent font-white" (click)="goToLoginPage()">
+          <button icon-left class="button-design margin-left-20" (click)="goToLoginPage()">
             {{"Login" | translate }}
           </button>
           <br>
-          <button class="signInButton transparent font-white" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
         </ion-list>
@@ -275,19 +275,19 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="transparent font-white" expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
+						<button class="button-design" expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
 					</div>
 				</form>
         <ion-list class="transparent margin-top-45">
-          <button icon-left class="signInButton transparent font-white" (click)="goToLoginPage()">
+          <button icon-left class="button-design margin-left-20" (click)="goToLoginPage()">
             {{"Login" | translate }}
           </button>
           <br>
-          <button icon-left class="signInButton transparent font-white" (click)="goToForgotPassword()">
+          <button icon-left class="button-design margin-left-20" (click)="goToForgotPassword()">
             {{"Forgot password" | translate }}
           </button>
           <br>
-          <button class="signInButton transparent font-white" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
         </ion-list>
@@ -297,25 +297,43 @@
 
   <!-- SettingsPage -->
   <div class="margin-top-10 width-90 padding-10 transparent height-100-minus-70px" *ngIf="viewpoint == 'SettingsPage'">
-    <button class="transparent font-white width-auto display-block margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
-    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToFeedbackPage()">
-      {{"Give feedback" | translate }}
-    </button>
-    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToPrivacyPolicyPage()">
-      {{"Privacy Policy" | translate }}
-    </button>
-    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
-      {{"Show Feedback" | translate }}
-    </button>
-    <button class="transparent font-white width-auto display-block margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
-      {{"Send Push" | translate }}
-    </button>
+    <ion-grid>
+      <ion-row>
+        <button class="button-design margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-top-10" (click)="goToFeedbackPage()">
+          {{"Give feedback" | translate }}
+        </button>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-top-10" (click)="goToPrivacyPolicyPage()">
+          {{"Privacy Policy" | translate }}
+        </button>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
+          {{"Show Feedback" | translate }}
+        </button>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
+          {{"Send Push" | translate }}
+        </button>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <!-- FeedbackPage -->
   <div class="margin-top-10 padding-10 transparent font-white text-align-center height-100-minus-70px" *ngIf="viewpoint == 'FeedbackPage'">
-    <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}..."></ion-textarea>
-    <button class="transparent font-white width-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
+    <ion-grid>
+      <ion-row>
+        <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}..."></ion-textarea>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <!-- ShowFeedbackPage -->
@@ -325,10 +343,17 @@
 
   <!-- SendPushPage -->
   <div class="margin-top-10 padding-10 transparent text-align-center height-100-minus-70px" *ngIf="viewpoint == 'SendPushPage'">
-    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}..."></ion-textarea>
-    <br>
-    <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}..."></ion-textarea>
-    <button class="transparent font-white width-auto margin-top-10 border-bottom-1" (click)="sendPush(manualPushEN, manualPushDE)">{{"Send push" | translate}}</button>
+    <ion-grid>
+      <ion-row>
+        <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushEN" placeholder="{{'Input EN push'| translate}}..."></ion-textarea>
+      </ion-row>
+      <ion-row>
+        <ion-textarea class="feedback transparent font-white border-bottom-1" autoGrow="true" rows="3" cols="14" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="manualPushDE" placeholder="{{'Input DE push'| translate}}..."></ion-textarea>
+      </ion-row>
+      <ion-row>
+        <button class="button-design margin-auto margin-top-10" (click)="sendPush(manualPushEN, manualPushDE)">{{"Send push" | translate}}</button>
+      </ion-row>
+    </ion-grid>
   </div>
 
 	<!-- CapturePage -->
@@ -396,15 +421,6 @@
           </ion-col>
         </ion-row>
       </ion-card>
-    <!--
-    <div *ngIf="takenActionListNotEmpty || captureListNotEmpty" class="secondary border-radius-20px width-90 margin-top-10 padding-bottom-10">
-      <div *ngIf="takenActionListNotEmpty">
-        <h3 class="padding-left-20">{{"Taken actions ready for processing" | translate}}:</h3>
-        <button class="background-white width-100 text-align-left border-bottom-1 padding-left-20 padding-top-10" *ngFor="let takenAction of takenActionArray" (click)="goToProcessTakenActionPage(takenAction)">{{"You started with action" |translate}} "{{takenAction.content}}" {{", click here to process" | translate }}
-        </button>
-      </div>
-    </div>
-    -->
   </div>
 
   <!-- ProcessPage -->
@@ -439,7 +455,7 @@
           </button>
         </ion-col>
         <ion-col size="2.5">
-          <button class="transparent font-white" (click)="deleteCapture(capture)">
+          <button class="button-design" (click)="deleteCapture(capture)">
             {{"Delete" | translate}}
           </button>
         </ion-col>
@@ -494,23 +510,21 @@
       <ion-card class="text-align-center margin-5 font-white transparent width-100 height-30px" *ngIf="capture.content">{{capture.content}}
       </ion-card>
       <ion-row *ngIf="showCaptureProject">
-        <span class="font-size-1rem font-gray">
+        <span class="font-gray width-100">
           {{"Project" | translate }}
         </span>
-        <button class="no-padding transparent font-white text-align-left width-100" (click)="assignProject()">
-          <div *ngIf="captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-            {{captureProject.name}}
-          </div>
-          <div *ngIf="!captureProject" class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
-            {{"Assign project" | translate}}...
-          </div>
+        <button *ngIf="captureProject" class="transparent font-white no-padding transparent font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10" (click)="assignProject()">
+          {{captureProject.name}}
+        </button>
+        <button *ngIf="!captureProject" class="button-design margin-left-50 overflow-x-hidden margin-top-10" (click)="assignProject()">
+          {{"Assign project" | translate}}...
         </button>
       </ion-row>
       <ion-row *ngIf="showCaptureType">
-        <span class="font-size-1rem font-gray">
+        <span class="font-gray">
           {{"Type" | translate }}
         </span>
-        <div class="width-100 margin-top-10 font-size-1rem">
+        <div class="width-100 margin-top-10">
           <ion-row class="width-100">
             <ion-col>
               <button *ngIf="captureType == 'action'" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignAction()">{{"Action" | translate}}
@@ -528,33 +542,33 @@
         </div>
       </ion-row>
       <ion-row *ngIf="showCaptureContent">
-        <span *ngIf="captureType == 'action'" class="font-size-1rem font-gray">
+        <span *ngIf="captureType == 'action'" class="font-gray">
           {{"Action" | translate }}
         </span>
-        <span *ngIf="captureType == 'note'" class="font-size-1rem font-gray">
+        <span *ngIf="captureType == 'note'" class="font-gray">
           {{"Note" | translate }}
         </span>
-        <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-1rem">
+        <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10">
           <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
           <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" (keyup.enter)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
-          <button *ngIf="capture.content" class="transparent font-white" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
+          <button *ngIf="capture.content" class="button-design" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
         </div>
       </ion-row>
       <ion-row *ngIf="showCaptureDuration">
-        <span class="font-size-1rem font-gray">
+        <span class="font-gray">
           {{"Duration" | translate }}
         </span>
-        <div class="width-100 margin-top-10 margin-left-50 font-size-1rem">
+        <div class="width-100 margin-top-10 margin-left-50">
           <ion-row class="width-100">
             <ion-datetime class="font-gray" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-gray margin-auto-left-3">min</span>
           </ion-row>
         </div>
       </ion-row>
       <ion-row *ngIf="showCapturePriority">
-        <span class="font-size-1rem font-gray">
+        <span class="font-gray">
           {{"Priority" | translate }}
         </span>
-        <div class="width-100 margin-top-10 font-size-1rem">
+        <div class="width-100 margin-top-10">
           <ion-row class="width-100">
             <ion-col>
               <button *ngIf="capturePriority == 1" class="display-inline-block transparent font-white text-align-center width-100" (click)="assignPriority(1)">{{"low" | translate}}
@@ -578,22 +592,22 @@
         </div>
       </ion-row>
       <ion-row *ngIf="showCaptureDeadline && !captureDeadline">
-        <span class="font-size-1rem font-gray">
+        <span class="width-100 font-gray">
           {{"Deadline" | translate }}
         </span>
-        <button class="transparent font-white margin-left-50 margin-top-10" (click)="assignDeadline()">
-          <span class="font-size-1rem">
+        <button class="button-design margin-left-50 margin-top-10" (click)="assignDeadline()">
+          <span>
             {{"Add deadline" | translate }}
           </span>
         </button>
       </ion-row>
       <ion-row *ngIf="showCaptureDeadline && captureDeadline">
-        <span class="font-size-1rem font-gray">
+        <span class="font-gray">
           {{"Deadline" | translate }}
         </span>
         <button class="transparent font-white margin-left-50 margin-top-10" (click)="assignDeadline()">{{captureDeadlineText}}
         </button>
-        <button class="transparent font-white margin-left-50" (click)="deleteDeadline()">
+        <button class="button-design margin-left-50" (click)="deleteDeadline()">
           {{"Delete" | translate}}
         </button>
       </ion-row>
@@ -704,14 +718,14 @@
           {{goalDict[doableActionArray[0].goalid].name}}
         </span>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="width-50 margin-top-45 margin-right-auto margin-left-auto">
-        <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="skipAction()">
+      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
+        <ion-col class="flex text-align-center">
+          <button class="button-design margin-auto font-size-20px" (click)="skipAction()">
             {{"Next" | translate}}
           </button>
         </ion-col>
-        <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="startAction(doableActionArray[0])">
+        <ion-col class="flex text-align-center">
+          <button class="button-design margin-auto font-size-20px" (click)="startAction(doableActionArray[0])">
             {{"Go" | translate}}
           </button>
         </ion-col>
@@ -735,13 +749,13 @@
         </span>
       </ion-row>
       <ion-row class="margin-top-45 margin-right-auto margin-left-auto">
-        <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="stopAction()">
+        <ion-col class="flex text-align-center">
+          <button class="button-design margin-auto font-size-20px" (click)="stopAction()">
             {{"Cancel" | translate}}
           </button>
         </ion-col>
-        <ion-col size="6" class="flex text-align-center">
-          <button class="transparent no-padding margin-auto font-white font-size-20px" (click)="finishAction()">
+        <ion-col class="flex text-align-center">
+          <button class="button-design margin-auto font-size-20px" (click)="finishAction()">
             {{"Done" | translate}}
           </button>
         </ion-col>
@@ -996,12 +1010,12 @@
           </ion-row>
           <ion-row>
             <ion-col class="font-white">
-              <button class="transparent font-white font-size-30px" (click)="deleteGoal(goal)">
+              <button class="button-design font-size-30px" (click)="deleteGoal(goal)">
                 {{"Delete" | translate}}
               </button>
             </ion-col>
             <ion-col class="font-white">
-              <button class="transparent font-white font-size-30px" (click)="editGoal(goal)">
+              <button class="button-design font-size-30px" (click)="editGoal(goal)">
                 {{"Edit" | translate}}
               </button>
             </ion-col>
@@ -1040,10 +1054,10 @@
       </ion-card>
       <ion-card class="margin-0 height-100 padding-10 margin-bottom-10 width-100 transparent">
         <ion-row class="width-100 text-align-right margin-botto-3">
-          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto font-size-15px" (click)="changeCalendarMode('day')">
+          <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto font-size-15px" (click)="changeCalendarMode('day')">
             {{"Day view" | translate}}
           </button>
-          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto font-size-15px" (click)="changeCalendarMode('month')">
+          <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto font-size-15px" (click)="changeCalendarMode('month')">
             {{"Month view" | translate}}
           </button>
         </ion-row>
@@ -1201,10 +1215,10 @@
   <div class="height-100-minus-70px width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-row class="width-100 text-align-right">
       <ion-col size="10" class="text-align-center">
-        <button *ngIf="calendar.mode == 'month'" class="transparent no-padding font-white margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
+        <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
           {{"Day view" | translate}}
         </button>
-        <button *ngIf="calendar.mode == 'day'" class="transparent no-padding font-white margin-auto margin-bottom-10" (click)="changeCalendarMode('month')">
+        <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('month')">
           {{"Month view" | translate}}
         </button>
       </ion-col>

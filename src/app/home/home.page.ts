@@ -1831,14 +1831,14 @@ export class HomePage {
 		        	//this.showTutorial('todoTime');
 		        	this.errorMsg = '';
 		        }
+		        this.changePage('ToDoPage');
+		        if(this.timeAvailable) {
+		    		setTimeout(() => {
+			         this.timeAvailable.setFocus();
+			    	}, 400);
+		    	}
 		      }
 		    );
-	    	this.changePage('ToDoPage');
-	    	if(this.timeAvailable) {
-	    		setTimeout(() => {
-		         this.timeAvailable.setFocus();
-		    	}, 400);
-	    	}
 		}
 	}
 
@@ -1949,14 +1949,13 @@ export class HomePage {
   	}
 
   	updateStartedActionTime() {
-  		setTimeout(() => {
-	  		let time = new Date(this.startedActionTimeISOString);
-	  		time.getMinutes();
-	  		this.startedAction.taken = false;
-	  		this.db.editAction(this.startedAction, this.auth.userid);
-	  		this.startedAction = {} as Action;
-	  		this.goToToDoPage();
-    	}, 400);
+  		let time = new Date(this.startedActionTimeISOString);
+  		time.getMinutes();
+  		console.log(this.startedAction);
+  		this.startedAction.taken = false;
+  		this.db.editAction(this.startedAction, this.auth.userid);
+  		this.startedAction = {} as Action;
+  		this.goToToDoPage();
   	}
 
   	takeThisAction(action: Action) {

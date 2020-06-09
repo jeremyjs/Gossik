@@ -140,6 +140,10 @@ ion-button {
   --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
 }
 
+.background-color-gray {
+  background-color: rgba(102,102,102,0.2);
+}
+
 .picker-md, .picker-wrapper {
   --background: rgb(0,0,0) !important;
   color: rgb(102,102,102) !important;
@@ -249,7 +253,7 @@ ion-button {
 }
 
 
-.signInButton {
+.margin-left-20 {
     margin-left: 20px;
 }
 
@@ -259,6 +263,14 @@ ion-button {
   margin-top: 100px;
   background-color: var(--ion-color-secondary);
   color: #000000;
+}
+
+.button-design {
+  background-color: rgba(102,102,102,0.2);
+  padding: 5px;
+  border-radius: 20px;
+  border: 1px solid;
+  color: #FFFFFF;
 }
 
 ion-item {
@@ -605,6 +617,10 @@ ion-input {
   display: inline-box
 }
 
+.width-80 {
+  width: 80%;
+}
+
 .width-100 {
   width: 100%;
 }
@@ -783,6 +799,10 @@ p {
   padding-left: 20px;
 }
 
+.padding-5 {
+  padding: 5px;
+}
+
 .padding-10 {
   padding: 10px;
 }
@@ -801,6 +821,10 @@ p {
 
 .border-bottom-1 {
   border-bottom: 1px solid !important;
+}
+
+.border-1 {
+  border: 1px solid !important;
 }
 
 .padding-left-20 {
