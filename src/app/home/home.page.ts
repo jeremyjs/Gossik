@@ -422,7 +422,10 @@ export class HomePage {
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-						setTimeout(() => this.goToCapturePage());
+						setTimeout(() => {
+							console.log(this.auth.checkLoggedIn());
+							this.goToCapturePage();
+						});
 				},
 				error => this.loginError = error.message
 			);
@@ -470,7 +473,7 @@ export class HomePage {
   	logout() {
   		this.db.logout();
 		this.auth.signOut();
-		this.changePage('LoginPage');
+		this.goToLoginPage();
 
     }
 
