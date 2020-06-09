@@ -423,7 +423,6 @@ export class HomePage {
 			.then(
 				() => {
 						setTimeout(() => {
-							console.log(this.auth.checkLoggedIn());
 							this.goToCapturePage();
 						});
 				},
