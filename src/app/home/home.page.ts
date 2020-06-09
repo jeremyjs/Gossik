@@ -398,7 +398,7 @@ export class HomePage {
   	async presentToast(toastMessage) {
     const toast = await this.toastCtrl.create({
       message: toastMessage,
-      duration: 3000
+      duration: 5000
     });
     toast.present();
   }
