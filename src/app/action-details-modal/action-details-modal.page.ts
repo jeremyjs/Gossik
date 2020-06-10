@@ -175,6 +175,9 @@ export class ActionDetailsModalPage implements OnInit {
       this.db.editAction(this.action, this.auth.userid);
       this.action.key = actionkey;
     }
+    this.translate.get(["Todo edited"]).subscribe( translation => {
+      this.presentToast(translation["Todo edited"]);
+    });
     this.modalCtrl.dismiss();
   }
 

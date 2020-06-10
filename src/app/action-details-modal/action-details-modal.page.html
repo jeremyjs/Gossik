@@ -75,8 +75,16 @@
           </ion-card>
         </div>
       </div>
-      <button class="transparent font-white" type="submit">{{"Save" | translate }}</button>
-      <button class="button-left transparent font-white" type="button" (click)="deleteAction(action)">{{"Delete" | translate }}</button>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <button class="button-design" type="submit">{{"Save" | translate }}</button>
+          </ion-col>
+          <ion-col>
+            <button class="button-design" type="button" (click)="deleteAction(action)">{{"Delete" | translate }}</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </form>
   </ion-list>
 </ion-content>
