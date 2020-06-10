@@ -1734,8 +1734,6 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
-		console.log('trigger');
-		console.log(this.calendarLoaded);
 		if(this.calendarLoaded) {
 			this.calendarLoaded = false;
 			setTimeout(() => {
