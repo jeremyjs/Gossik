@@ -397,12 +397,12 @@ export class HomePage {
   	}
 
   	async presentToast(toastMessage) {
-    const toast = await this.toastCtrl.create({
-      message: toastMessage,
-      duration: 5000
-    });
-    toast.present();
-  }
+	    const toast = await this.toastCtrl.create({
+	      message: toastMessage,
+	      duration: 5000
+	    });
+	    toast.present();
+  	}
 
   	goToPrivacyPolicyPage() {
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
@@ -1240,6 +1240,9 @@ export class HomePage {
 					this.goToToDoPage();
 				});
 			});
+			this.translate.get(["Todo finished. A new thought has been created if you want to define a follow-up todo"]).subscribe( translation => {
+        		this.presentToast(translation["Todo finished. A new thought has been created if you want to define a follow-up todo"]);
+        	});
 		});
 	}
 
@@ -1456,6 +1459,9 @@ export class HomePage {
 				      	{
 					        text: alertMessage["Delete"],
 					        handler: () => {
+					        	this.translate.get(["Project deleted"]).subscribe( translation => {
+							      this.presentToast(translation["Project deleted"]);
+							    });
 					          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToProjectsPage());
 					        }
 				      	}
@@ -1697,6 +1703,9 @@ export class HomePage {
 							      	{
 								        text: alertMessage['Delete'],
 								        handler: () => {
+								        	this.translate.get(["Event deleted"]).subscribe( translation => {
+										      this.presentToast(translation["Event deleted"]);
+										    });
 								          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
 								          	this.nativeCalendar.deleteEvent(event.event_id);
 								          	let events = this.eventSource;

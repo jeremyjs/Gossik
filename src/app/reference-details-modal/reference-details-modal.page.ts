@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, ToastController } from '@ionic/angular';
 
 import { Reference } from '../../model/reference/reference.model';
 
@@ -22,21 +22,30 @@ export class ReferenceDetailsModalPage implements OnInit {
   defineReferenceForm: FormGroup;
 
   constructor(
-  		public modalCtrl: ModalController,
-	  	private navParams: NavParams,
-	  	private db: DatabaseService,
-	  	public translate: TranslateService,
-      	public fb: FormBuilder,
-      	private auth: AuthenticationService
-      	) {
-  	this.reference = this.navParams.get('reference');
-    this.backUpReference = this.reference.content;
-    this.defineReferenceForm = this.fb.group({
-      content: ['', Validators.required]
+		public modalCtrl: ModalController,
+  	private navParams: NavParams,
+  	private db: DatabaseService,
+  	public translate: TranslateService,
+    public fb: FormBuilder,
+    private auth: AuthenticationService,
+    public toastCtrl: ToastController
+  ) {
+    	this.reference = this.navParams.get('reference');
+      this.backUpReference = this.reference.content;
+      this.defineReferenceForm = this.fb.group({
+        content: ['', Validators.required]
       });
   }
 
   ngOnInit() {
+  }
+
+  async presentToast(toastMessage) {
+      const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 5000
+    });
+    toast.present();
   }
 
   cancel() {
@@ -46,6 +55,9 @@ export class ReferenceDetailsModalPage implements OnInit {
 
   deleteReference(reference: Reference) {
     	this.db.deleteReference(reference, this.auth.userid);
+      this.translate.get(["Information deleted"]).subscribe( translation => {
+      this.presentToast(translation["Information deleted"]);
+    });
     	this.modalCtrl.dismiss();
   }
 

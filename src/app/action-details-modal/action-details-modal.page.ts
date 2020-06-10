@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController, AlertController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController, ToastController } from '@ionic/angular';
 
 import { Action } from '../../model/action/action.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
@@ -42,7 +42,8 @@ export class ActionDetailsModalPage implements OnInit {
 	  	  public translate: TranslateService,
       	public fb: FormBuilder,
       	private auth: AuthenticationService,
-        public alertCtrl: AlertController
+        public alertCtrl: AlertController,
+        public toastCtrl: ToastController
       ) {
       this.action = this.navParams.get('action');
     this.deadline = !(!this.action.deadline);
@@ -86,12 +87,23 @@ export class ActionDetailsModalPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentToast(toastMessage) {
+      const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 5000
+    });
+    toast.present();
+  }
+
   cancel() {
     this.modalCtrl.dismiss();
   }
 
   deleteAction(action: Action) {
     this.db.deleteAction(action, this.auth.userid);
+    this.translate.get(["Todo deleted"]).subscribe( translation => {
+      this.presentToast(translation["Todo deleted"]);
+    });
     this.modalCtrl.dismiss();
   }
 
