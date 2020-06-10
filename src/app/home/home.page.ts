@@ -1725,7 +1725,13 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
+		console.log('trigger');
+		console.log(this.calendarLoaded);
 		if(this.calendarLoaded) {
+			this.calendarLoaded = false;
+			setTimeout(() => {
+				this.calendarLoaded = true;
+			}, 1000);
 			this.selectedDay = event.selectedTime;
 			this.goalArray = [];
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -1782,6 +1788,7 @@ export class HomePage {
 								setTimeout(() => {
 									this.eventSource = events;
 								});
+
 							});
 						}
 					});
@@ -1801,6 +1808,14 @@ export class HomePage {
 		let nextDay = new Date(this.calendar.currentDate);
 		nextDay.setDate(this.calendar.currentDate.getDate() +  direction);
 		this.calendar.currentDate = nextDay;
+		setTimeout( () => {
+			this.calendarLoaded = true;
+		}, 1000);
+	}
+
+	changeDateToday() {
+		this.calendarLoaded = false;
+		this.calendar.currentDate = new Date();
 		setTimeout( () => {
 			this.calendarLoaded = true;
 		}, 1000);
