@@ -842,17 +842,27 @@ export class HomePage {
   	}
 
   	assignContent(event) {
-  		if(this.captureType == 'action') {
-	  		if(!this.captureDuration) {
-	  			this.captureDurationISOString = new Date();
-		  		this.captureDurationISOString.setHours(0,0,0);
-		  		this.captureDuration = this.captureDurationISOString.getMinutes();
-		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-	  		}
-	  		this.showCaptureDuration = true;
-	  	} else if(this.captureType == 'note') {
-	  		this.showCaptureDone = true;
-	  	}
+  		if(this.captureContent) {
+  			if(this.captureType == 'action') {
+		  		if(!this.captureDuration) {
+		  			this.captureDurationISOString = new Date();
+			  		this.captureDurationISOString.setHours(0,0,0);
+			  		this.captureDuration = this.captureDurationISOString.getMinutes();
+			  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
+		  		}
+		  		this.showCaptureDuration = true;
+		  	} else if(this.captureType == 'note') {
+		  		this.showCaptureDone = true;
+		  	}
+  		} else {
+  			this.translate.get(["Define action","Define reference"]).subscribe( translation => {
+	  			if(this.captureType == 'action') {
+	  				event.target.firstChild.placeholder = translation["Define action"] + "...";
+	  			} else if(this.captureType == 'note') {
+	  				event.target.firstChild.placeholder = translation["Define reference"] + "...";
+	  			}
+	  		});
+  		}
   	}
 
   	setCaptureContent(capture) {
