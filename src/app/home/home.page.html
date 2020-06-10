@@ -235,8 +235,8 @@
 			<div *ngIf="pageCtrl == ''" class="transparent">
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
 					<ion-list inset class="transparent">
-						<ion-item no-lines class="transparent font-white show-full-highlight-0">
-							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
+						<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
+							<ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
 						</ion-item>
 						<ion-item no-lines class="transparent font-white show-full-highlight-0">
 							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." formControlName="password"></ion-input>
@@ -289,7 +289,7 @@
 			<div *ngIf="pageCtrl == 'signUp'" class="transparent font-white">
 				<form (ngSubmit)="signUp()" [formGroup]="signUpForm">
 					<ion-list inset class="transparent font-white">
-						<ion-item no-lines class="transparent font-white show-full-highlight-0">
+						<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
 							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
 						</ion-item>
 						<ion-item no-lines class="transparent font-white show-full-highlight-0">

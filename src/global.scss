@@ -839,6 +839,10 @@ p {
   border-top: 1px solid rgb(102,102,102);
 }
 
+.border-width-0 {
+  --border-width: 0 !important;
+}
+
 .border-1 {
   border: 1px solid !important;
 }
