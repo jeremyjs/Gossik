@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController, AlertController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController, ToastController } from '@ionic/angular';
 
 import { Goal } from '../../model/goal/goal.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
@@ -46,8 +46,9 @@ export class CalendarEventModalPage implements OnInit {
 	  	public translate: TranslateService,
       	public fb: FormBuilder,
       	private auth: AuthenticationService,
-      	public alertCtrl: AlertController
-      	) {
+      	public alertCtrl: AlertController,
+      	public toastCtrl: ToastController
+   ) {
   	if(this.navParams.get('selectedDay')) {
 	  	let preselectedDate = moment(this.navParams.get('selectedDay')).format();
 	    this.eventStartTimeISOString = preselectedDate;
@@ -121,6 +122,14 @@ export class CalendarEventModalPage implements OnInit {
 	this.pastCheck = false;
   }
 
+  async presentToast(toastMessage) {
+      const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 5000
+    });
+    toast.present();
+  }
+
   ngOnInit() {
   }
   	ionFocus(event){
@@ -162,6 +171,9 @@ export class CalendarEventModalPage implements OnInit {
 		this.event.startTime = this.eventStartTimeISOString;
 		this.event.endTime = this.eventEndTimeISOString;
 		this.event.goalid = this.goalid;
+		this.translate.get(["Event edited"]).subscribe( translation => {
+	        this.presentToast(translation["Event edited"]);
+	    });
 		this.modalCtrl.dismiss(this.event);
 	}
 
