@@ -11,7 +11,7 @@
 <ion-content class="background-gray">
   <ion-list inset class="text-align-center transparent">
     <form (ngSubmit)="saveGoal()" [formGroup]="editGoalForm">
-      <ion-item class="transparent">
+      <ion-item class="transparent show-full-highlight-0">
         <ion-input class="border-bottom-1" type="text" [(ngModel)]="goal.name" formControlName="name" class="font-white"></ion-input>
       </ion-item>
       <button class="button-design" type="submit">{{"Save" | translate }}</button>

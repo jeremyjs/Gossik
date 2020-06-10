@@ -11,7 +11,7 @@
 <ion-content class="background-gray">
   <ion-list inset class="text-align-center transparent">
     <form (ngSubmit)="saveReference()" [formGroup]="defineReferenceForm">
-      <ion-item no-lines class="transparent font-white">
+      <ion-item no-lines class="transparent font-white show-full-highlight-0">
         <ion-textarea class="font-white border-bottom-1" autoGrow="true" [(ngModel)]="reference.content" formControlName="content"></ion-textarea>
       </ion-item>
       <ion-grid>
