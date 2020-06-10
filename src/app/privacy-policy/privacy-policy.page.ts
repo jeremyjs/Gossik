@@ -18,7 +18,7 @@ export class PrivacyPolicyPage implements OnInit {
   }
 
   goBack() {
-  	this.router.navigate(['home/'], { replaceUrl: true });
+  	this.router.navigate(['home/settings'], { replaceUrl: true });
   }
 
 }
