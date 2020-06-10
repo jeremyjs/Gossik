@@ -183,15 +183,15 @@
       </div>
       <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
         <button *ngIf="!cameFromProjectOverviewPage" class="transparent" (click)="goToProcessPage()">
-          <img src="../../assets/icon/icon_arrow_left.png" height="17">
+          <img src="../../assets/icon/icon_arrow_left.png" height="25">
         </button>
         <button *ngIf="cameFromProjectOverviewPage" class="transparent" (click)="reviewGoal(captureProject)">
-          <img src="../../assets/icon/icon_arrow_left.png" height="17">
+          <img src="../../assets/icon/icon_arrow_left.png" height="25">
         </button>
       </div>
       <div *ngIf="isApp && viewpoint == 'ProjectsPage' && pageCtrl == 'ProjectOverview'">
         <button class="transparent" (click)="goToProjectsPage()">
-          <img src="../../assets/icon/icon_arrow_left.png" height="17">
+          <img src="../../assets/icon/icon_arrow_left.png" height="25">
         </button>
       </div>
       <div class="header-container" *ngIf="!isApp">
