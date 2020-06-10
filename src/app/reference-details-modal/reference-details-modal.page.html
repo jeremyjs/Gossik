@@ -14,8 +14,16 @@
       <ion-item no-lines class="transparent font-white">
         <ion-textarea class="font-white border-bottom-1" autoGrow="true" [(ngModel)]="reference.content" formControlName="content"></ion-textarea>
       </ion-item>
-      <button class="transparent font-white" type="submit">{{"Save" | translate }}</button>
-      <button class="button-left transparent font-white" type="button" (click)="deleteReference(reference)">{{"Delete" | translate }}</button>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+          <button class="button-design" type="submit">{{"Save" | translate }}</button>
+          </ion-col>
+          <ion-col>
+            <button class="button-design" type="button" (click)="deleteReference(reference)">{{"Delete" | translate }}</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </form>
   </ion-list>
 </ion-content>

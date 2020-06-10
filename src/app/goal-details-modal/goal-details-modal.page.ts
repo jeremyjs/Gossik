@@ -42,6 +42,14 @@ export class GoalDetailsModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  async presentToast(toastMessage) {
+      const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 5000
+    });
+    toast.present();
+  }
+
   saveGoal() {
     this.goal.name = this.editGoalForm.value.name;
     let goalkey = this.goal.key;
