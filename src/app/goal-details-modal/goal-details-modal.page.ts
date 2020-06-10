@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, ToastController } from '@ionic/angular';
 
 import { Goal } from '../../model/goal/goal.model';
 
@@ -25,13 +25,14 @@ export class GoalDetailsModalPage implements OnInit {
 	  	private navParams: NavParams,
 	  	private db: DatabaseService,
 	  	public translate: TranslateService,
-      	public fb: FormBuilder,
-      	private auth: AuthenticationService
-      	) {
+      public fb: FormBuilder,
+      private auth: AuthenticationService,
+      public toastCtrl: ToastController
+  ) {
   	this.goal = this.navParams.get('goal');
     this.editGoalForm = this.fb.group({
-      name: ['', Validators.required]
-      });
+    name: ['', Validators.required]
+    });
   }
 
   ngOnInit() {
@@ -46,6 +47,9 @@ export class GoalDetailsModalPage implements OnInit {
     let goalkey = this.goal.key;
     this.db.editGoal(this.goal, this.auth.userid);
     this.goal.key = goalkey;
+    this.translate.get(["Project edited"]).subscribe( translation => {
+        this.presentToast(translation["Project edited"]);
+    });
     this.modalCtrl.dismiss();
   }
 
