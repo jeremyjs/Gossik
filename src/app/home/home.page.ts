@@ -1410,7 +1410,11 @@ export class HomePage {
 			componentProps: {action: action}
 		}).then( modal => {
 			modal.present();
-			modal.onDidDismiss();
+			modal.onDidDismiss().then( data => {
+				if(data.data == 'start') {
+					this.startAction(action);
+				}
+			});
 		});
   	}
 

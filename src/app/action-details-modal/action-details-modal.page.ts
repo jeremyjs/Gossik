@@ -45,7 +45,7 @@ export class ActionDetailsModalPage implements OnInit {
         public alertCtrl: AlertController,
         public toastCtrl: ToastController
       ) {
-      this.action = this.navParams.get('action');
+    this.action = this.navParams.get('action');
     this.deadline = !(!this.action.deadline);
     this.defineActionForm = this.fb.group({
     content: ['', Validators.required],
@@ -99,12 +99,16 @@ export class ActionDetailsModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  deleteAction(action: Action) {
-    this.db.deleteAction(action, this.auth.userid);
+  deleteAction() {
+    this.db.deleteAction(this.action, this.auth.userid);
     this.translate.get(["Todo deleted"]).subscribe( translation => {
       this.presentToast(translation["Todo deleted"]);
     });
     this.modalCtrl.dismiss();
+  }
+
+  startAction() {
+    this.modalCtrl.dismiss('start');
   }
 
   check() {
