@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="secondary width-100">
-    <ion-title class="no-padding">{{"Assign Project" | translate}}</ion-title>
+    <ion-title class="no-padding text-align-center">{{"Assign Project" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="background-gray">
-	<ion-card class="width-100 margin-0 text-align-center overflow-scroll no-scrollbar display-inline-block transparent">
+	<div class="width-100 margin-0 text-align-center display-inline-block transparent border-bottom-1">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
           <ion-input class="transparent display-inline-block margin-0 width-90 font-gray border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="newProject" placeholder="{{'Define new goal'| translate}}..."></ion-input>
@@ -16,12 +16,14 @@
             </button>
           </ion-col>
 		</ion-row>
-	</ion-card>
+	</div>
 
-	<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
-		<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
-			<span>{{goal.name}}</span>
-		</button>
-	</ion-row>
+	<div class="margin-top-20">
+		<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
+			<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
+				<span>{{goal.name}}</span>
+			</button>
+		</ion-row>
+	</div>
 
 </ion-content>
