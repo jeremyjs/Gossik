@@ -156,6 +156,7 @@ export class HomePage {
 	allDayLabel: any;
 	pageTitle: string;
 	cameFromProjectOverviewPage: boolean;
+	calendarLoaded: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1325,7 +1326,11 @@ export class HomePage {
 				this.eventSource = events;
 			});
 		});
+		this.calendarLoaded = false;
 	    this.pageCtrl = 'ProjectOverview';
+	    setTimeout( () => {
+			this.calendarLoaded = true;
+		}, 1000);
 	    this.goal = goal;
 	    this.referenceList = this.db.getReferenceListFromGoal(goal.key, this.auth.userid)
 		  	.snapshotChanges()
@@ -1463,6 +1468,7 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
+  		this.calendarLoaded = false;
   		//this.showTutorial('calendar');
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
@@ -1518,10 +1524,13 @@ export class HomePage {
 			setTimeout(() => {
 				this.eventSource = events;
 			});
+			this.pageTitle = "Calendar";
+			this.changePage('CalendarPage');
+			setTimeout( () => {
+				this.calendarLoaded = true;
+			}, 1000);
 		});
 		//this.onEventSelected(this.calendar.currentDate);
-		this.pageTitle = "Calendar";
-		this.changePage('CalendarPage');
   	}
   	
   	addEvent(){
@@ -1716,66 +1725,68 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
-		this.selectedDay = event.selectedTime;
-		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let goal: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return goal;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
-		if(event.events == undefined || event.events.length == 0) {
-			this.selectedDay = new Date(event.selectedTime);
-			let modal = this.modalCtrl.create({
-				component: CalendarEventModalPage,
-				componentProps: {selectedDay: this.selectedDay}
-			}).then (modal => {
-				modal.present();
-				modal.onDidDismiss().then(data => {
-					if(data.data){
-						let eventData: CalendarEvent = data.data;
-						eventData.userid = this.auth.userid;
-						eventData.allDay = false;
-						eventData.active = true;
-						if(!data.data.goalid) {
-							eventData.color = "#C0C0C0";
-							eventData.goalid = '';
-						} else {
-						    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
-						    if(goal) {
-						    	eventData.color = goal.color;
-							} else {
+		if(this.calendarLoaded) {
+			this.selectedDay = event.selectedTime;
+			this.goalArray = [];
+	  		this.goalList = this.db.getGoalList(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(
+					map(
+						changes => { 
+							return changes.map( c => {
+								let goal: Goal = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return goal;
+				});}));
+		    this.goalList.subscribe(
+		      goalArray => {
+		        for(let goal of goalArray) {
+		        	if(goal.active != false) {
+		        		this.goalArray.push(goal);
+		        	}
+		        }
+		    });
+			if(event.events == undefined || event.events.length == 0) {
+				this.selectedDay = new Date(event.selectedTime);
+				let modal = this.modalCtrl.create({
+					component: CalendarEventModalPage,
+					componentProps: {selectedDay: this.selectedDay}
+				}).then (modal => {
+					modal.present();
+					modal.onDidDismiss().then(data => {
+						if(data.data){
+							let eventData: CalendarEvent = data.data;
+							eventData.userid = this.auth.userid;
+							eventData.allDay = false;
+							eventData.active = true;
+							if(!data.data.goalid) {
 								eventData.color = "#C0C0C0";
+								eventData.goalid = '';
+							} else {
+							    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
+							    if(goal) {
+							    	eventData.color = goal.color;
+								} else {
+									eventData.color = "#C0C0C0";
+								}
 							}
-						}
-						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-							eventData.event_id = event_id;
-							this.db.addCalendarEvent(eventData, this.auth.userid)
-							eventData.startTime = new Date(eventData.startTime);
-					        eventData.endTime = new Date(eventData.endTime);
-							let events = this.eventSource;
-							events.push(eventData);
-							this.eventSource = [];
-							setTimeout(() => {
-								this.eventSource = events;
+							this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+								eventData.event_id = event_id;
+								this.db.addCalendarEvent(eventData, this.auth.userid)
+								eventData.startTime = new Date(eventData.startTime);
+						        eventData.endTime = new Date(eventData.endTime);
+								let events = this.eventSource;
+								events.push(eventData);
+								this.eventSource = [];
+								setTimeout(() => {
+									this.eventSource = events;
+								});
 							});
-						});
-					}
+						}
+					});
 				});
-			});
+			}
 		}
 	}
 
@@ -1786,9 +1797,13 @@ export class HomePage {
 	}
 
 	changeDay(direction: number) {
+		this.calendarLoaded = false;
 		let nextDay = new Date(this.calendar.currentDate);
 		nextDay.setDate(this.calendar.currentDate.getDate() +  direction);
 		this.calendar.currentDate = nextDay;
+		setTimeout( () => {
+			this.calendarLoaded = true;
+		}, 1000);
 	}
 
 	changeDate() {
@@ -1797,7 +1812,11 @@ export class HomePage {
 			}).then (modal => {
 				modal.present();
 				modal.onDidDismiss().then(data => {
+					this.calendarLoaded = false;
 					this.calendar.currentDate = data.data;
+					setTimeout( () => {
+						this.calendarLoaded = true;
+					}, 1000);
 				});
 			});
 	}
