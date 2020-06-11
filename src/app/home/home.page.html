@@ -582,7 +582,7 @@
         </span>
         <div class="width-100 margin-top-10 margin-left-50">
           <ion-row class="width-100">
-            <ion-datetime #processCapturePageDurationDatetime class="font-white" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-white margin-auto-left-3" (click)="openDatetime('processCapturePageDurationDatetime')">min</span>
+            <ion-datetime #processCapturePageDurationDatetime class="font-white" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-white margin-auto-left-3" (click)="openDatetime('processCapturePageDurationDatetime')">{{"min" | translate }}</span>
           </ion-row>
         </div>
       </ion-row>
@@ -747,14 +747,14 @@
         </ion-col>
         <ion-col class="flex">
           <ion-datetime #toDoPageDurationDatetime class="font-white no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
-          <span class="font-white margin-auto-left-3" (click)="openDatetime('toDoPageDurationDatetime')">min</span>
+          <span class="font-white margin-auto-left-3" (click)="openDatetime('toDoPageDurationDatetime')">{{"min" | translate }}</span>
         </ion-col>
         <ion-col>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-gray font-size-1-5rem text-align-center">
         <span class="margin-auto">
-          {{doableActionArray[0].time}}min
+          {{doableActionArray[0].time}}{{"min" | translate }}
         </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-white font-size-1-5rem text-align-center">
@@ -850,7 +850,7 @@
       <ion-row class="margin-auto font-gray text-align-center width-100">
         <span class="font-white margin-top-45 margin-right-auto margin-left-auto flex">
           <ion-datetime #stopActionPageDatetime class="font-white no-padding display-inline-block" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
-          <span class="font-white margin-auto-left-3" (click)="openDatetime('stopActionPageDatetime')">min</span>
+          <span class="font-white margin-auto-left-3" (click)="openDatetime('stopActionPageDatetime')">{{"min" | translate }}</span>
         </span>
       </ion-row>
     </ion-grid>
