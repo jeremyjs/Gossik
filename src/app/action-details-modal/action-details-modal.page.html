@@ -26,7 +26,7 @@
         <div *ngIf="!edit" class="transparent">
           <ion-item no-lines class="transparent font-white">
             {{"Deadline" | translate}}: {{deadlineString}}
-            <button class="transparent font-white" (click)="editDeadline()">{{"Edit" | translate }}</button>
+            <button class="button-design" (click)="editDeadline()">{{"Edit" | translate }}</button>
           </ion-item>
         </div>
         <div *ngIf="edit" class="transparent font-white">
@@ -51,7 +51,7 @@
       </div>
       <div *ngIf="!action.deadline" class="transparent font-white width-100">
         <ion-item no-lines class="transparent">
-          <button class="transparent font-white" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
+          <button class="button-design" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
         </ion-item>
         <div *ngIf="edit" class="transparent width-100">
           <ion-card no-lines class="transparent font-white width-100">
