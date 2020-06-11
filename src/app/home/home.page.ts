@@ -156,6 +156,7 @@ export class HomePage {
 	allDayLabel: any;
 	pageTitle: string;
 	cameFromProjectOverviewPage: boolean;
+	cameFromGoalNotFinishedPage: boolean;
 	calendarLoaded: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -745,7 +746,7 @@ export class HomePage {
 		this.changePage('ProcessPage');
   	}
 
-  	goToProcessCapturePage(capture: any, project?: Goal, type?: string) {
+  	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
   		//this.showTutorial('processPostit');
   		this.pageTitle = "Process thought";
   		this.capture = capture;
@@ -798,6 +799,12 @@ export class HomePage {
     	} else {
   			this.captureType = undefined;
     	}
+    	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
+    	this.cameFromGoalNotFinishedPage = (origin == 'GoalNotFinishedPage');
+    	console.log('cameFromProjectOverviewPage');
+    	console.log(this.cameFromProjectOverviewPage);
+    	console.log('cameFromGoalNotFinishedPage');
+    	console.log(this.cameFromGoalNotFinishedPage);
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -933,12 +940,17 @@ export class HomePage {
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
+  		} else if (this.cameFromGoalNotFinishedPage) {
+  			this.db.deleteAction(this.startedAction, this.auth.userid);
+  			this.startedAction = {} as Action;
+  			this.goToToDoPage();
   		} else {
   			this.goToProcessPage();
   		}
   	}
 
   	addActionFromCapture() {
+  		console.log(this.captureProject);
   		let action: Action = {
 		    userid: this.auth.userid,
 		    goalid: this.captureProject.key,
@@ -1237,6 +1249,10 @@ export class HomePage {
 	}
 
 	goalNotFinished() {
+		this.viewpoint = 'GoalNotFinishedPage';
+	}
+
+	defineFollowUpTodoLater() {
 		//this.showTutorial('goalNotFinished');
 		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			this.translate.get("Action finished").subscribe( translation => {
@@ -1254,6 +1270,22 @@ export class HomePage {
         		this.presentToast(translation["Todo finished. A new thought has been created if you want to define a follow-up todo"]);
         	});
 		});
+	}
+
+	defineFollowUpTodoNow() {
+		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
+			let capture = {} as Capture;
+			data.key = this.startedAction.goalid;
+			capture.content = this.startedAction.content;
+			this.goToProcessCapturePage(capture, data, 'action', 'GoalNotFinishedPage');
+		});
+	}
+
+	noFollowUpTodoRequired() {
+		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+			this.startedAction = {} as Action;
+			this.goToToDoPage();
+		})
 	}
 
 	// ProjectsPage functions

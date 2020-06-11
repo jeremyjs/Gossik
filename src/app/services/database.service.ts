@@ -248,6 +248,8 @@ export class DatabaseService {
     }
 
     addAction(action: Action, capture: Capture, userid) {
+        console.log(action);
+        console.log(capture);
         if(capture.key) {
             this.deleteCapture(capture, userid);
         }

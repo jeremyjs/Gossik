@@ -664,6 +664,27 @@
     </div>
   </div>
 
+  <!-- GoalNotFinishedPage -->
+  <!-- Mobile GoalNotFinishedPage -->
+  <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'GoalNotFinishedPage' && isApp">
+    <ion-grid>
+      <ion-row>
+        <button class="button-design" (click)="defineFollowUpTodoNow()">
+          {{"Define follow-up todo now"}}
+        </button>
+      </ion-row>
+      <ion-row>
+        <button class="button-design" (click)="defineFollowUpTodoLater()">
+          {{"Define follow-up todo later"}}
+        </button>
+      </ion-row><ion-row>
+        <button class="button-design" (click)="noFollowUpTodoRequired()">
+          {{"No follow-up todo required"}}
+        </button>
+      </ion-row>
+    </ion-grid>
+  </div>
+
   <!-- ToDoPage -->
   <div class="height-100" *ngIf="viewpoint == 'ToDoPage' && !isApp">
     <div class="height-100" *ngIf="pageCtrl == ''">
@@ -1051,7 +1072,7 @@
             <h1 class="display-inline-block font-white margin-0 margin-right-10 font-size-30px">{{"Actions" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', goal, 'action')">
+            <button class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', goal, 'action', 'ProjectOverviewPage')">
               <img src="../../assets/icon/icon_add.png" class="img-height-30px img-width-30px">
             </button>
           </ion-col>
@@ -1066,7 +1087,7 @@
             <h1 class="display-inline-block font-white margin-0 margin-right-10 font-size-30px">{{"References" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding float-right margin-auto"  (click)="goToProcessCapturePage('', goal, 'note')">
+            <button class="transparent no-padding float-right margin-auto"  (click)="goToProcessCapturePage('', goal, 'note', 'ProjectOverviewPage')">
               <img src="../../assets/icon/icon_add.png" class="img-width-30px img-height-30px">
             </button>
           </ion-col>
