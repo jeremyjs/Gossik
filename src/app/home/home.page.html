@@ -752,7 +752,12 @@
         <ion-col>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-white font-size-1-5rem text-align-center">
+      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-gray font-size-1-5rem text-align-center">
+        <span class="margin-auto">
+          {{doableActionArray[0].time}}min
+        </span>
+      </ion-row>
+      <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-white font-size-1-5rem text-align-center">
         <span class="margin-auto">
           {{doableActionArray[0].content}}
         </span>
