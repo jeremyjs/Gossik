@@ -581,6 +581,15 @@ ion-input {
   margin-right: auto;
 }
 
+.margin-vertical-center {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.margin-right-3 {
+  margin-right: 3px;
+}
+
 .margin-auto-left-3 {
   margin-left: 3px;
   margin-top: auto;
@@ -684,6 +693,10 @@ ion-input {
 
 .height-15 {
   height: 15%;
+}
+
+.height-15px {
+  height: 15px;
 }
 
 .height-85 {
@@ -944,6 +957,10 @@ p {
   width: 20px;
   height: 20px;
   border-radius: 10px;
+}
+
+.width-15px {
+  width: 15px;
 }
 
 .width-90 {

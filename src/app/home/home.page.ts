@@ -823,8 +823,17 @@ export class HomePage {
 		});
   	}
 
+  	assignType() {
+  		console.log('triggered');
+  		console.log(this.captureType);
+  		if(this.captureType == 'action') {
+  			this.assignAction();
+  		} else if(this.captureType == 'note') {
+  			this.assignNote();
+  		}
+  	}
+
   	assignAction() {
-  		this.captureType = 'action';
   		this.showCaptureContent = true;
   		if(this.captureContent) {
   			if(!this.captureDuration) {
@@ -884,7 +893,6 @@ export class HomePage {
   	}
 
   	assignNote() {
-  		this.captureType = 'note';
   		this.showCaptureContent = true;
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
