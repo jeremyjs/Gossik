@@ -668,18 +668,19 @@
   <!-- Mobile GoalNotFinishedPage -->
   <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'GoalNotFinishedPage' && isApp">
     <ion-grid>
-      <ion-row>
+      <ion-row class="margin-top-45">
         <button class="button-design" (click)="defineFollowUpTodoNow()">
-          {{"Define follow-up todo now"}}
+          {{"Define follow-up todo now" | translate}}
         </button>
       </ion-row>
-      <ion-row>
+      <ion-row class="margin-top-10">
         <button class="button-design" (click)="defineFollowUpTodoLater()">
-          {{"Define follow-up todo later"}}
+          {{"Define follow-up todo later" | translate}}
         </button>
-      </ion-row><ion-row>
+      </ion-row>
+      <ion-row class="margin-top-10">
         <button class="button-design" (click)="noFollowUpTodoRequired()">
-          {{"No follow-up todo required"}}
+          {{"No follow-up todo required" | translate}}
         </button>
       </ion-row>
     </ion-grid>

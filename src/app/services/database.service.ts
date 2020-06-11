@@ -47,8 +47,6 @@ export class DatabaseService {
         this.userData.email = email;
         this.userData.tutorial = this.tutorial;
         this.userData.signUpDate = new Date().toISOString();
-        console.log('created Account');
-        console.log(this.userData);
         return this.db.list('users').set(userid, this.userData); 
     }
 
@@ -248,8 +246,6 @@ export class DatabaseService {
     }
 
     addAction(action: Action, capture: Capture, userid) {
-        console.log(action);
-        console.log(capture);
         if(capture.key) {
             this.deleteCapture(capture, userid);
         }

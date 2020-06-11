@@ -801,10 +801,6 @@ export class HomePage {
     	}
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromGoalNotFinishedPage = (origin == 'GoalNotFinishedPage');
-    	console.log('cameFromProjectOverviewPage');
-    	console.log(this.cameFromProjectOverviewPage);
-    	console.log('cameFromGoalNotFinishedPage');
-    	console.log(this.cameFromGoalNotFinishedPage);
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -950,7 +946,6 @@ export class HomePage {
   	}
 
   	addActionFromCapture() {
-  		console.log(this.captureProject);
   		let action: Action = {
 		    userid: this.auth.userid,
 		    goalid: this.captureProject.key,
