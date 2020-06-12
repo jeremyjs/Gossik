@@ -825,6 +825,7 @@ export class HomePage {
 			modal.onDidDismiss().then( data => {
 				this.captureProject = data.data;
 				this.showCaptureType = true;
+				this.captureCheckIfDone();
 			});
 		});
   	}
@@ -835,6 +836,7 @@ export class HomePage {
   		} else if(this.captureType == 'note') {
   			this.assignNote();
   		}
+  		this.captureCheckIfDone();
   	}
 
   	assignAction() {
@@ -852,13 +854,8 @@ export class HomePage {
   		}
   		if(this.capturePriority && this.captureDuration) {
   			this.showCaptureDeadline = true;
-  			this.showCaptureDone = true;
   		}
-  		if(!this.capturePriority || !this.captureDuration) {
-  			this.showCaptureDone = false;
-  		} else {
-  			this.showCaptureDone = true;
-  		}
+  		this.captureCheckIfDone();
   	}
 
   	assignContent(event) {
@@ -871,8 +868,6 @@ export class HomePage {
 			  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
 		  		}
 		  		this.showCaptureDuration = true;
-		  	} else if(this.captureType == 'note') {
-		  		this.showCaptureDone = true;
 		  	}
   		} else {
   			this.translate.get(["Define action","Define reference"]).subscribe( translation => {
@@ -882,8 +877,8 @@ export class HomePage {
 	  				event.target.firstChild.placeholder = translation["Define reference"] + "...";
 	  			}
 	  		});
-	  		this.showCaptureDone = false;
   		}
+  		this.captureCheckIfDone();
   	}
 
   	setCaptureContent(capture) {
@@ -896,32 +891,28 @@ export class HomePage {
 		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
 	  		}
 	  		this.showCaptureDuration = true;
-	  	} else if(this.captureType == 'note') {
-	  		this.showCaptureDone = true;
 	  	}
+	  	this.captureCheckIfDone();
   	}
 
   	assignNote() {
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
   		this.showCaptureDeadline = false;
-  		if(this.captureContent) {
-  			this.showCaptureDone = true;
-  		}
+  		this.captureCheckIfDone();
   	}
 
   	timeSet() {
   		let time = new Date(this.captureDurationISOString);
   		this.captureDuration = time.getMinutes();
   		this.showCapturePriority = true;
+  		this.captureCheckIfDone();
   	}
 
   	assignPriority(priority) {
   		this.capturePriority = priority;
   		this.showCaptureDeadline = true;
-  		if(this.captureContent && this.captureProject && this.captureType && this.captureDuration && this.capturePriority) {
-  			this.showCaptureDone = true;
-  		}
+  		this.captureCheckIfDone();
   	}
 
   	assignDeadline() {
@@ -934,6 +925,7 @@ export class HomePage {
 					this.captureDeadline = data.data;
 					this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
 				}
+				this.captureCheckIfDone();
 			});
 		});
   	}
@@ -941,6 +933,23 @@ export class HomePage {
   	deleteDeadline() {
   		this.captureDeadline = undefined;
   		this.captureDeadlineText = undefined;
+  		this.captureCheckIfDone();
+  	}
+
+  	captureCheckIfDone() {
+  		if(this.captureType == 'action') {
+  			if(this.captureContent && this.captureProject && this.captureDuration && this.capturePriority) {
+	  			this.showCaptureDone = true;
+	  		} else {
+	  			this.showCaptureDone = false
+	  		}
+  		} else if (this.captureType == 'note') {
+  			if(this.captureContent && this.captureProject) {
+	  			this.showCaptureDone = true;
+	  		} else {
+	  			this.showCaptureDone = false
+	  		}
+  		}
   	}
 
   	processCapture() {
