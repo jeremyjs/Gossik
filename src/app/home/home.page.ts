@@ -157,6 +157,7 @@ export class HomePage {
 	pageTitle: string;
 	cameFromProjectOverviewPage: boolean;
 	cameFromGoalNotFinishedPage: boolean;
+	cameFromProcessPage: boolean;
 	calendarLoaded: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

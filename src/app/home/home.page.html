@@ -5,9 +5,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -23,9 +23,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -41,9 +41,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -59,9 +59,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -77,9 +77,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -95,9 +95,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -113,9 +113,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -131,9 +131,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -149,9 +149,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -167,9 +167,9 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <ion-menu-button autoHide="false">
-                <img src="../../assets/icon/icon_menu.png" height="17">
-              </ion-menu-button>
+              <button (click)="goToSettingsPage()" class="transparent">
+                <img src="../../assets/icon/icon_settings.png" height="23">
+              </button>
             </ion-col>
             <ion-col size="8">
             </ion-col>
@@ -1386,6 +1386,18 @@
           <ion-row class="font-white">
             <span class="margin-auto">
               {{"Organize" | translate}}
+            </span>
+          </ion-row>
+        </button>
+      </ion-col>
+      <ion-col class="no-padding">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProjectsPage()">
+          <ion-row>
+          <img src="../../assets/icon/icon_projects.png" class="img-height-30px img-width-30px margin-auto margin-bottom-3">
+          </ion-row>
+          <ion-row class="font-white">
+            <span class="margin-auto">
+              {{"Projects" | translate}}
             </span>
           </ion-row>
         </button>

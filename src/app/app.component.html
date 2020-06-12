@@ -1,5 +1,6 @@
 <ion-app>
-	<ion-menu contentId="content1" side="start" type="overlay">
+<!--
+  <ion-menu contentId="content1" side="start" type="overlay">
   		<ion-header>
     		<ion-toolbar color="secondary" class="text-align-center">
       			<ion-title>Menu</ion-title>
@@ -8,14 +9,12 @@
   		<ion-content color="secondary">
   			<ion-list class="transparent">
   				<ion-menu-toggle auto-hide="true">
-    				<ion-item (click)="goToPage('projects')" class="transparent font-white border-bottom-1">{{"Projects" | translate}}</ion-item>
-				  </ion-menu-toggle>
-  				<ion-menu-toggle auto-hide="true">
     				<ion-item (click)="goToPage('settings')" class="transparent font-white border-bottom-1">{{"Settings" | translate}}</ion-item>
 				  </ion-menu-toggle>
 			 </ion-list>
   		</ion-content>
 	</ion-menu>
+-->
 	<ion-router-outlet id="content1" main></ion-router-outlet>
   	<ion-router-outlet></ion-router-outlet>
 </ion-app>
