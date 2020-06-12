@@ -27,7 +27,6 @@ export class ActionDetailsModalPage implements OnInit {
 	defineActionForm: FormGroup;
 	monthLabels = [];
 	dayLabels = [];
-	edit: boolean = false;
 	deadlineString: string;
 	formatOptions: any;
   pastCheck: boolean;
@@ -52,33 +51,6 @@ export class ActionDetailsModalPage implements OnInit {
     content: ['', Validators.required],
     priority: ['', Validators.required],
     time: ['', Validators.required]
-    });
-    this.translate.get(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).subscribe( monthLabels => {
-      this.monthLabels = [
-      monthLabels['Jan'],
-      monthLabels['Feb'],
-      monthLabels['Mar'],
-      monthLabels['Apr'],
-      monthLabels['May'],
-      monthLabels['Jun'],
-      monthLabels['Jul'],
-      monthLabels['Aug'],
-      monthLabels['Sep'],
-      monthLabels['Oct'],
-      monthLabels['Nov'],
-      monthLabels['Dec']
-      ];
-    });
-    this.translate.get(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).subscribe( dayLabels => {
-      this.dayLabels = [
-      dayLabels['Sun'],
-      dayLabels['Mon'],
-      dayLabels['Tue'],
-      dayLabels['Wed'],
-      dayLabels['Thu'],
-      dayLabels['Fri'],
-      dayLabels['Sat']
-      ];
     });
     this.formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
