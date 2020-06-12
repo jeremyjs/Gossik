@@ -836,6 +836,13 @@ export class HomePage {
   		} else if(this.captureType == 'note') {
   			this.assignNote();
   		}
+  		if(this.captureType == 'action') {
+    		this.pageTitle = "Define action";
+    	} else if(this.captureType == 'note') {
+    		this.pageTitle = "Define reference";
+    	} else if(this.cameFromProcessPage){
+    		this.pageTitle = "Process thought";
+    	}
   		this.captureCheckIfDone();
   	}
 
