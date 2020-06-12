@@ -344,7 +344,7 @@ export class HomePage {
 									this.goToSettingsPage();
 								}
 							} else {
-								this.goToCapturePage();
+								this.goToToDoPage();
 							}
 						}
 					});
@@ -362,7 +362,7 @@ export class HomePage {
 							this.goToSettingsPage();
 						}
 					} else {
-						this.goToCapturePage();
+						this.goToToDoPage();
 					}
 				  } else {
 				  	this.loggedin = false;
