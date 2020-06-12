@@ -882,6 +882,7 @@ export class HomePage {
 	  				event.target.firstChild.placeholder = translation["Define reference"] + "...";
 	  			}
 	  		});
+	  		this.showCaptureDone = false;
   		}
   	}
 
@@ -918,7 +919,9 @@ export class HomePage {
   	assignPriority(priority) {
   		this.capturePriority = priority;
   		this.showCaptureDeadline = true;
-  		this.showCaptureDone = true;
+  		if(this.captureContent && this.captureProject && this.captureType && this.captureDuration && this.capturePriority) {
+  			this.showCaptureDone = true;
+  		}
   	}
 
   	assignDeadline() {
