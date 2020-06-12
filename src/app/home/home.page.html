@@ -530,7 +530,10 @@
   <div *ngIf="viewpoint=='ProcessCapturePage' && isApp" class="height-100-minus-70px">
     <ion-grid class="padding-20 padding-top-0 height-100 overflow-scroll no-scrollbar">
       <ion-card class="text-align-center margin-5 font-white transparent width-100 font-size-20px">
-          <ion-textarea class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'action' && cameFromProjectOverviewPage" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{ 'Define action' | translate }}..." (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="captureType == 'note' && cameFromProjectOverviewPage" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{ 'Define reference' | translate }}..." (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="cameFromProcessPage" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" (ionFocus)="ionFocus($event)"></ion-textarea>
+          <ion-textarea *ngIf="cameFromGoalNotFinishedPage" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{ 'Define action' | translate }}..." (ionFocus)="ionFocus($event)"></ion-textarea>
       </ion-card>
       <ion-row *ngIf="showCaptureProject">
         <span class="font-gray width-100 font-size-20px">

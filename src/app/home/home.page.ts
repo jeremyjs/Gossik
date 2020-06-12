@@ -870,11 +870,13 @@ export class HomePage {
 		  		this.showCaptureDuration = true;
 		  	}
   		} else {
-  			this.translate.get(["Define action","Define reference"]).subscribe( translation => {
+  			this.translate.get(["Define action","Define reference", "Define action or reference"]).subscribe( translation => {
 	  			if(this.captureType == 'action') {
 	  				event.target.firstChild.placeholder = translation["Define action"] + "...";
 	  			} else if(this.captureType == 'note') {
 	  				event.target.firstChild.placeholder = translation["Define reference"] + "...";
+	  			} else {
+	  				event.target.firstChild.placeholder = translation["Define action or reference"] + "...";
 	  			}
 	  		});
   		}
