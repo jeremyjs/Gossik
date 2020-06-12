@@ -133,6 +133,7 @@ export class HomePage {
 	manualPushDE: string;
 	cals = [];
 	nativeEvents = [];
+	capturePlaceholder: string;
 	captureProject = {} as Goal;
 	showCaptureProject: boolean = true;
 	captureType: string;
@@ -802,10 +803,16 @@ export class HomePage {
     	this.cameFromProcessPage = (origin == 'ProcessPage');
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
+    		this.capturePlaceholder = "Define action";
     	} else if(this.cameFromProjectOverviewPage && this.captureType == 'note') {
     		this.pageTitle = "Define reference";
+    		this.capturePlaceholder = "Define reference";
     	} else if(this.cameFromProcessPage){
     		this.pageTitle = "Process thought";
+    		this.capturePlaceholder = "Define action or reference";
+    	} else if (this.cameFromGoalNotFinishedPage) {
+    		this.pageTitle = "Define action";
+    		this.capturePlaceholder = "Define action";
     	}
     	this.changePage('ProcessCapturePage');
   	}
@@ -838,10 +845,13 @@ export class HomePage {
   		}
   		if(this.captureType == 'action') {
     		this.pageTitle = "Define action";
+    		this.capturePlaceholder = "Define action";
     	} else if(this.captureType == 'note') {
     		this.pageTitle = "Define reference";
+    		this.capturePlaceholder = "Define reference";
     	} else if(this.cameFromProcessPage){
     		this.pageTitle = "Process thought";
+    		this.capturePlaceholder = "Define action or reference";
     	}
   		this.captureCheckIfDone();
   	}
