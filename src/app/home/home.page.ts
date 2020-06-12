@@ -748,7 +748,6 @@ export class HomePage {
 
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
   		//this.showTutorial('processPostit');
-  		this.pageTitle = "Process thought";
   		this.capture = capture;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -801,6 +800,14 @@ export class HomePage {
     	}
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromGoalNotFinishedPage = (origin == 'GoalNotFinishedPage');
+    	this.cameFromProcessPage = (origin == 'ProcessPage');
+    	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
+    		this.pageTitle = "Define action";
+    	} else if(this.cameFromProjectOverviewPage && this.captureType == 'note') {
+    		this.pageTitle = "Define reference";
+    	} else if(this.cameFromProcessPage){
+    		this.pageTitle = "Process thought";
+    	}
     	this.changePage('ProcessCapturePage');
   	}
 
@@ -824,8 +831,6 @@ export class HomePage {
   	}
 
   	assignType() {
-  		console.log('triggered');
-  		console.log(this.captureType);
   		if(this.captureType == 'action') {
   			this.assignAction();
   		} else if(this.captureType == 'note') {
