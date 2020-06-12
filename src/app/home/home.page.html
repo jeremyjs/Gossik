@@ -529,7 +529,8 @@
   <!-- Mobile ProcessCapturePage -->
   <div *ngIf="viewpoint=='ProcessCapturePage' && isApp" class="height-100-minus-70px">
     <ion-grid class="padding-20 padding-top-0 height-100 overflow-scroll no-scrollbar">
-      <ion-card class="text-align-center margin-5 font-white transparent width-100 font-size-20px" *ngIf="capture.content">{{capture.content}}
+      <ion-card class="text-align-center margin-5 font-white transparent width-100 font-size-20px">
+          <ion-textarea class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" (ionFocus)="ionFocus($event)"></ion-textarea>
       </ion-card>
       <ion-row *ngIf="showCaptureProject">
         <span class="font-gray width-100 font-size-20px">
@@ -556,19 +557,6 @@
             {{"Note" | translate }}
           </ion-row>
         </ion-radio-group>
-      </ion-row>
-      <ion-row *ngIf="showCaptureContent">
-        <span *ngIf="captureType == 'action'" class="font-gray font-size-20px">
-          {{"Action" | translate }}
-        </span>
-        <span *ngIf="captureType == 'note'" class="font-gray font-size-20px">
-          {{"Note" | translate }}
-        </span>
-        <div class="width-100 margin-left-50 overflow-x-hidden margin-top-10 font-size-20px">
-          <ion-textarea *ngIf="captureType == 'action'" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define action' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
-          <ion-textarea *ngIf="captureType == 'note'" class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{'Define reference' | translate}}..." (ionFocus)="ionFocus($event)"></ion-textarea>
-          <button *ngIf="capture.content" class="button-design" (click)="setCaptureContent(capture)">{{"Paste capture" | translate}}</button>
-        </div>
       </ion-row>
       <ion-row *ngIf="showCaptureDuration">
         <span class="font-gray font-size-20px">

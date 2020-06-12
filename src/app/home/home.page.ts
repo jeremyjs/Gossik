@@ -750,6 +750,7 @@ export class HomePage {
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
   		//this.showTutorial('processPostit');
   		this.capture = capture;
+  		this.captureContent = capture.content;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -773,14 +774,12 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
-  		this.captureContent = undefined;
 		this.capturePriority = undefined;
 		this.captureDuration = undefined;
 		this.captureDeadline = undefined;
 		this.captureDeadlineText = undefined;
 		this.showCaptureProject = true;
 		this.showCaptureType = false;
-		this.showCaptureContent = false;
 		this.showCaptureDuration = false;
 		this.showCapturePriority = false;
 		this.showCaptureDeadline = false;
@@ -795,7 +794,6 @@ export class HomePage {
     	}
     	if(type != undefined) {
     		this.captureType = type;
-    		this.showCaptureContent = true;
     	} else {
   			this.captureType = undefined;
     	}
@@ -840,7 +838,6 @@ export class HomePage {
   	}
 
   	assignAction() {
-  		this.showCaptureContent = true;
   		if(this.captureContent) {
   			if(!this.captureDuration) {
 	  			this.captureDurationISOString = new Date();
@@ -853,8 +850,13 @@ export class HomePage {
   		if(this.captureDuration) {
   			this.showCapturePriority = true;
   		}
-  		if(this.capturePriority) {
+  		if(this.capturePriority && this.captureDuration) {
   			this.showCaptureDeadline = true;
+  			this.showCaptureDone = true;
+  		}
+  		if(!this.capturePriority || !this.captureDuration) {
+  			this.showCaptureDone = false;
+  		} else {
   			this.showCaptureDone = true;
   		}
   	}
@@ -899,10 +901,12 @@ export class HomePage {
   	}
 
   	assignNote() {
-  		this.showCaptureContent = true;
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
-  		this.showCaptureDeadline = false
+  		this.showCaptureDeadline = false;
+  		if(this.captureContent) {
+  			this.showCaptureDone = true;
+  		}
   	}
 
   	timeSet() {
