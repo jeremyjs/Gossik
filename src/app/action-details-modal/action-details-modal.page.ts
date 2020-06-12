@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../services/database.service';
 import { AuthenticationService } from '../services/authentication.service';
 
+import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 
 import { take } from 'rxjs/operators';
 
@@ -200,5 +201,20 @@ export class ActionDetailsModalPage implements OnInit {
     console.log(this.deadlineString);
     this.edit = false;
   }
+
+  assignDeadline() {
+    let modal = this.modalCtrl.create({
+      component: ChangeWeekModalPage
+      }).then (modal => {
+        modal.present();
+        modal.onDidDismiss().then(data => {
+          if(data.data) {
+            this.action.deadline = data.data;
+            this.deadlineChanged = true;
+            this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+          }
+        });
+      });
+    }
 
 }

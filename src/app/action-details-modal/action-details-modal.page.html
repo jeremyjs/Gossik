@@ -23,57 +23,15 @@
           <ion-input class="border-bottom-1" type="number" min="0" max="1000" formControlName="time" [(ngModel)]="action.time"></ion-input>
       </ion-item>
       <div *ngIf="action.deadline" class="transparent font-white">
-        <div *ngIf="!edit" class="transparent">
-          <ion-item no-lines class="transparent font-white">
-            {{"Deadline" | translate}}: {{deadlineString}}
-            <button class="button-design" (click)="editDeadline()">{{"Edit" | translate }}</button>
-          </ion-item>
-        </div>
-        <div *ngIf="edit" class="transparent font-white">
-          <ion-card class="transparent font-white">
-            <ion-row>
-            {{viewTitle}}
-            </ion-row>
-            <calendar [eventSource]="eventSource"
-                      [currentDate]="currentDate"
-                      (onTitleChanged)="onViewTitleChanged($event)"
-                      (onTimeSelected)="onTimeSelected($event)"
-                      step="5"
-                      class="calendar height-100 width-90 font-size-0-8rem"
-                      autoSelect="false"
-                      scrollToHour="8"
-                      startingDayWeek="1"
-                      startingDayMonth="1"
-                      [showEventDetail]="false">
-            </calendar> 
-          </ion-card>
-        </div>
+        <ion-item no-lines class="transparent font-white">
+          {{"Deadline" | translate}}: {{deadlineString}}
+          <button class="button-design" type="button" (click)="assignDeadline()">{{"Edit" | translate }}</button>
+        </ion-item>
       </div>
       <div *ngIf="!action.deadline" class="transparent font-white width-100">
         <ion-item no-lines class="transparent">
-          <button class="button-design" type="button" (click)="editDeadline()">{{"Add deadline" | translate }}</button>
+          <button class="button-design" type="button" (click)="assignDeadline()">{{"Add deadline" | translate }}</button>
         </ion-item>
-        <div *ngIf="edit" class="transparent width-100">
-          <ion-card no-lines class="transparent font-white width-100">
-            <div class="transparent font-whie">
-            {{viewTitle}}
-            </div>
-            <div class="transparent font-white width-100">
-              <calendar [eventSource]="eventSource"
-                        [currentDate]="currentDate"
-                        (onTitleChanged)="onViewTitleChanged($event)"
-                        (onTimeSelected)="onTimeSelected($event)"
-                        step="5"
-                        class="calendar height-100 width-90 font-size-0-8rem"
-                        autoSelect="false"
-                        scrollToHour="8"
-                        startingDayWeek="1"
-                        startingDayMonth="1"
-                        [showEventDetail]="false">
-              </calendar>
-            </div>
-          </ion-card>
-        </div>
       </div>
       <ion-grid>
         <ion-row>
