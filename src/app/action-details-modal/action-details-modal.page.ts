@@ -186,22 +186,6 @@ export class ActionDetailsModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  editDeadline() {
-    this.edit = true;
-  }
-
-  onViewTitleChanged(title) {
-    this.viewTitle = title;
-  }
-
-  onTimeSelected(event) {
-    this.action.deadline = event.selectedTime;
-    this.deadlineChanged = true;
-    this.deadlineString = new Date (this.action.deadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
-    console.log(this.deadlineString);
-    this.edit = false;
-  }
-
   assignDeadline() {
     let modal = this.modalCtrl.create({
       component: ChangeWeekModalPage

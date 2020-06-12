@@ -11,6 +11,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../services/database.service';
 import { AuthenticationService } from '../services/authentication.service';
 
+import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
+
+
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
@@ -195,5 +198,23 @@ export class CalendarEventModalPage implements OnInit {
 	    this.deadlineString = new Date (deadlineStartFixed).toLocaleDateString(this.translate.currentLang, this.formatOptions);
 	    this.edit = false;
 	}
+
+	assignDeadline() {
+    let modal = this.modalCtrl.create({
+      component: ChangeWeekModalPage
+      }).then (modal => {
+        modal.present();
+        modal.onDidDismiss().then(data => {
+          if(data.data) {
+            let deadlineStartFixed = new Date (data.data).setHours(2);
+		    this.eventStartTimeISOString = new Date (deadlineStartFixed).toISOString();
+		    let deadlineEndFixed = new Date (data.data).setHours(5);
+		    this.eventEndTimeISOString = new Date (deadlineEndFixed).toISOString();
+		    this.deadlineString = new Date (deadlineStartFixed).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+	    
+          }
+        });
+      });
+    }
 
 }

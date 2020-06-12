@@ -42,8 +42,7 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="deadline" class="transparent font-white">
-      <button *ngIf="!edit" class="transparent font-white" type="button" (click)="editDeadline()">{{"Deadline" | translate}}: {{deadlineString}}</button>
-      <ionic-calendar-date-picker *ngIf="edit" [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="deadlineSelected($event)"></ionic-calendar-date-picker> 
+      <button class="transparent font-white" type="button" (click)="assignDeadline()">{{"Deadline" | translate}}: {{deadlineString}}</button>
     </ion-row>
     <ion-row *ngIf="errorMsg" class="transparent font-white">
       {{"The end time cannot be earlier than the start time." | translate}}
