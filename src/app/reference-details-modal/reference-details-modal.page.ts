@@ -66,6 +66,9 @@ export class ReferenceDetailsModalPage implements OnInit {
     let referencekey = this.reference.key;
     this.db.editReference(this.reference, this.auth.userid);
     this.reference.key = referencekey;
+    this.translate.get(["Information edited"]).subscribe( translation => {
+      this.presentToast(translation["Information edited"]);
+    });
     this.modalCtrl.dismiss();
   }
 

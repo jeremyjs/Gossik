@@ -1935,52 +1935,77 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
-		if(this.startedAction.key) {
-			this.pageTitle = "Started todo";
-			this.changePage('ActionPage');
-		} else {
-			this.pageTitle = "Do todos";
-			this.doableActionArray = [];
-			this.timeEstimateISOString = new Date();
-		  	this.timeEstimateISOString.setHours(0,0,0);
-		  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
-			//this.showTutorial('todo');
-			this.doableActionArray = [];
-			this.goalKeyArray = [];
-	  		this.giveTimeForm = this.fb.group({
-	      		timeEstimate: ['', Validators.required]
-	    	});
-	    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(take(1),
-					map(
-						changes => { 
-							return changes.map( c => {
-								let action: Action = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return action;
+		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let action: Action = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return action;
 				});}));
-		    this.actionList.subscribe(
-		      actionArray => {
-		      	this.doableActionArray = [];
-		        for(let action of actionArray) {
-		        	if(action.active != false) {
-						if(!action.taken) {
-						this.doableActionArray.push(action);
+		this.takenActionList.subscribe( takenActionArray => {
+			this.takenActionArray = [];
+			for(let action of takenActionArray) {
+				if(action.active != false){
+					this.takenActionArray.push(action);
+				}
+			}
+			this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+			if(this.takenActionListNotEmpty) {
+				this.startedAction = this.takenActionArray[0];
+			} else {
+				this.startedAction = {} as Action;
+			}
+			if(this.startedAction.key) {
+				this.pageTitle = "Finish started todo";
+				this.changePage('ActionPage');
+			} else {
+				this.pageTitle = "Do todos";
+				this.doableActionArray = [];
+				this.timeEstimateISOString = new Date();
+			  	this.timeEstimateISOString.setHours(0,0,0);
+			  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+				//this.showTutorial('todo');
+				this.doableActionArray = [];
+				this.goalKeyArray = [];
+		  		this.giveTimeForm = this.fb.group({
+		      		timeEstimate: ['', Validators.required]
+		    	});
+		    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+				  	.snapshotChanges()
+				  	.pipe(take(1),
+						map(
+							changes => { 
+								return changes.map( c => {
+									let action: Action = { 
+										key: c.payload.key, ...c.payload.val()
+										};
+									return action;
+					});}));
+			    this.actionList.subscribe(
+			      actionArray => {
+			      	this.doableActionArray = [];
+			        for(let action of actionArray) {
+			        	if(action.active != false) {
+							if(!action.taken) {
+							this.doableActionArray.push(action);
+							}
 						}
-					}
-		        }
-		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-		        this.changePage('ToDoPage');
-		        if(this.timeAvailable) {
-		    		setTimeout(() => {
-			         this.timeAvailable.setFocus();
-			    	}, 400);
-		    	}
-		      }
-		    );
-		}
+			        }
+			        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+			        this.changePage('ToDoPage');
+			        if(this.timeAvailable) {
+			    		setTimeout(() => {
+				         this.timeAvailable.setFocus();
+				    	}, 400);
+			    	}
+			      }
+			    );
+			}
+		});
 	}
 
 	filterToDos() {
