@@ -148,6 +148,7 @@
   "Team": "Team",
   "Thank you very much for your feedback. We'll do our best to improve Gossik for you.": "Thank you very much for your feedback. We'll do our best to improve Gossik for you.",
   "The end time cannot be earlier than the start time.": "The end time cannot be earlier than the start time.",
+  "There is no action for that filter.": "There is no action for that filter.",
   "There is no doable action for that time.": "There is no doable todo for that time.",
   "The selected date lies in the past. Please check if that is wanted.": "The selected date lies in the past. Please check if that is wanted.",
   "This is the project overview. You can have a look at all the actions, waitingFors and references. Also, you can see you calendar with only events and deadlines for this project. Later on we will add team functionality with a team chat, you can ignore the Team and Chat boxes for now.": "This is the project overview. You can have a look at all the todos, waitingFors and information. Also, you can see you calendar with only events and deadlines for this project. Later on we will add team functionality with a team chat, you can ignore the Team and Chat boxes for now.",
