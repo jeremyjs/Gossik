@@ -303,6 +303,25 @@ export class HomePage {
 		});
 	}
 
+	changePageViaMenu() {
+		let page = this.activatedRoute.snapshot.paramMap.get('page');
+		if(page) {
+			if(page == 'capture') {
+				this.goToCapturePage();
+			} else if(page == 'todo') {
+				this.goToToDoPage();
+			} else if(page == 'projects') {
+				this.goToProjectsPage();
+			} else if(page == 'calendar') {
+				this.goToCalendarPage();
+			} else if(page == 'settings') {
+				this.goToSettingsPage();
+			}
+		} else {
+			this.goToToDoPage();
+		}
+	}
+
 	ngOnInit() {
   		this.auth.afAuth.authState
 			.subscribe(
@@ -331,40 +350,10 @@ export class HomePage {
 				  	this.loggedin = true;
 				  	this.router.events.subscribe(res => {
 						if (res instanceof NavigationEnd) {
-							let page = this.activatedRoute.snapshot.paramMap.get('page');
-							if(page) {
-								if(page == 'capture') {
-									this.goToCapturePage();
-								} else if(page == 'todo') {
-									this.goToToDoPage();
-								} else if(page == 'projects') {
-									this.goToProjectsPage();
-								} else if(page == 'calendar') {
-									this.goToCalendarPage();
-								} else if(page == 'settings') {
-									this.goToSettingsPage();
-								}
-							} else {
-								this.goToToDoPage();
-							}
+							this.changePageViaMenu();
 						}
 					});
-				  	let page = this.activatedRoute.snapshot.paramMap.get('page');
-					if(page) {
-						if(page == 'capture') {
-							this.goToCapturePage();
-						} else if(page == 'todo') {
-							this.goToToDoPage();
-						} else if(page == 'projects') {
-							this.goToProjectsPage();
-						} else if(page == 'calendar') {
-							this.goToCalendarPage();
-						} else if(page == 'settings') {
-							this.goToSettingsPage();
-						}
-					} else {
-						this.goToToDoPage();
-					}
+				  	this.changePageViaMenu();
 				  } else {
 				  	this.loggedin = false;
 				    this.goToLoginPage();
