@@ -2022,6 +2022,7 @@ export class HomePage {
   	}
 
   	showDoableActions() {
+  		this.skippedAllToDos = false;
   		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
   		let timeEstimate = this.timeEstimateISOString.getMinutes();
   		if(timeEstimate > 0) {
@@ -2098,11 +2099,6 @@ export class HomePage {
         } else {
   			this.skippedAllToDos = false;
         }
-  	}
-
-  	refreshToDos() {
-  		this.skippedAllToDos = false;
-  		this.showDoableActions();
   	}
 
   	startAction(action) {
