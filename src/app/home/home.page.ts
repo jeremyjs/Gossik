@@ -160,6 +160,7 @@ export class HomePage {
 	cameFromGoalNotFinishedPage: boolean;
 	cameFromProcessPage: boolean;
 	calendarLoaded: boolean = false;
+	skippedAllToDos: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -913,8 +914,10 @@ export class HomePage {
   	timeSet() {
   		let time = new Date(this.captureDurationISOString);
   		this.captureDuration = time.getMinutes();
-  		this.showCapturePriority = true;
-  		this.captureCheckIfDone();
+  		if(this.captureDuration > 0) {
+			this.showCapturePriority = true;
+	  		this.captureCheckIfDone();
+  		}
   	}
 
   	assignPriority(priority) {
@@ -2088,10 +2091,18 @@ export class HomePage {
   	skipAction() {
   		this.doableActionArray.splice(0, 1);
   		if(this.doableActionArray.length == 0) {
-        	this.errorMsg = "There is no doable action for that time.";
+  			this.skippedAllToDos = true;
+  			this.translate.get(["You skipped all doable todos."]).subscribe( translation => {
+		  		this.presentToast(translation["You skipped all doable todos."]);
+			});
         } else {
-        	this.errorMsg = '';
+  			this.skippedAllToDos = false;
         }
+  	}
+
+  	refreshToDos() {
+  		this.skippedAllToDos = false;
+  		this.showDoableActions();
   	}
 
   	startAction(action) {

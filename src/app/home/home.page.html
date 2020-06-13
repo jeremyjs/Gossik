@@ -759,6 +759,11 @@
           </button>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="skippedAllToDos" class="margin-top-45">
+        <button class="button-design margin-auto" (click)="refreshToDos()">
+          {{"Refresh ToDos" | translate}}
+        </button>
+      </ion-row>
     </ion-grid>
   </div>
 
