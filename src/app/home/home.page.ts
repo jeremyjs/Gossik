@@ -1260,32 +1260,6 @@ export class HomePage {
 		this.pageCtrl = 'actionAborted';
 	}
 
-	goalFinished() {
-		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( goal => {
-			goal.key = this.startedAction.goalid;
-			this.translate.get(["Are you sure you want to delete this goal?", "No", "Delete"]).subscribe( alertMessage => {
-		  		this.alertCtrl.create({
-					message: alertMessage["Are you sure you want to delete this goal?"],
-					buttons: [
-						    	{
-							        text: alertMessage["No"]
-						      	},
-						      	{
-							        text: alertMessage["Delete"],
-							        handler: () => {
-										//this.showTutorial('goalFinished');
-										this.startedAction = {} as Action;
-							          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToToDoPage());
-							        }
-						      	}
-						    ]
-				}).then( alert => {
-					alert.present();
-				});
-			});
-		});
-	}
-
 	goalNotFinished() {
 		this.viewpoint = 'GoalNotFinishedPage';
 	}
@@ -2115,26 +2089,7 @@ export class HomePage {
   	}
 
   	finishAction() {
-  		this.nextActionList = this.db.getNextActionListFromGoal(this.startedAction.goalid, this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(take(1),
-				map(
-					changes => { 
-						return changes.map( c => {
-							let action: Action = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return action;
-			});}));
-		this.nextActionList.subscribe( nextActionArray => {
-			nextActionArray = nextActionArray.filter(action => action.active != false);
-			//this.showTutorial('finishProject');
-			if(nextActionArray.length == 1) {
-				this.changePage('FinishGoalPage');
-			} else {
-				this.goalNotFinished();
-			}
-		});
+  		this.goalNotFinished();
   	}
 
   	stopAction() {
