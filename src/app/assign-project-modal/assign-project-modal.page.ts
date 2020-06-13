@@ -35,6 +35,10 @@ export class AssignProjectModalPage implements OnInit {
   	this.modalCtrl.dismiss(goal);
   }
 
+  cancel() {
+  	this.modalCtrl.dismiss();
+  }
+
   createProject(project) {
   	for(let goal of this.goalArray) {
   		if (goal.name == project) {

@@ -820,9 +820,11 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
-				this.captureProject = data.data;
-				this.showCaptureType = true;
-				this.captureCheckIfDone();
+				if(data.data) {
+					this.captureProject = data.data;
+					this.showCaptureType = true;
+					this.captureCheckIfDone();
+				}
 			});
 		});
   	}
