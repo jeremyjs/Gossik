@@ -714,7 +714,7 @@ export class HomePage {
   	}
 
   	goToProcessPage() {
-  		this.pageTitle = "Unprocessed thoughts";
+  		this.pageTitle = "Thoughts ready to process";
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
