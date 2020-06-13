@@ -5,6 +5,18 @@
 </ion-header>
 
 <ion-content class="background-gray">
+	<ion-row class="font-white margin-left-30 margin-bottom-10">
+		<ion-col>
+			<button class="button-design" (click)="selectAll()">
+				{{"Select all" | translate}}
+			</button>
+		</ion-col>
+		<ion-col class="font-white margin-left-30 margin-bottom-10">
+			<button class="button-design" (click)="clearAll()">
+				{{"Clear all" | translate}}
+			</button>
+		</ion-col>
+	</ion-row>
 	<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
 		<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal(goal)">
 			<span *ngIf="chosenGoalArray.indexOf(goal.key) != -1">{{goal.name}}</span>

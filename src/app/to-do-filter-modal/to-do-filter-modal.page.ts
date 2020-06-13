@@ -24,6 +24,14 @@ export class ToDoFilterModalPage implements OnInit {
   	this.chosenGoalArray = this.navParams.get('goalKeyArray');
   }
 
+  selectAll() {
+    this.chosenGoalArray = this.goalArray.map(goal => goal.key);
+  }
+
+  clearAll() {
+    this.chosenGoalArray = [];
+  }
+
   chooseGoal(goal) {
   	if(this.chosenGoalArray.indexOf(goal.key) == -1) {
   		this.chosenGoalArray.push(goal.key)
