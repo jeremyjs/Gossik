@@ -1894,6 +1894,10 @@ export class HomePage {
 							      	{
 								        text: alertMessage['Delete'],
 								        handler: () => {
+								        	this.calendarLoaded = false;
+								        	setTimeout( () => {
+								        		this.calendarLoaded = true;
+								        	}, 1000);
 								        	this.translate.get(["Event deleted"]).subscribe( translation => {
 										      this.presentToast(translation["Event deleted"]);
 										    });
