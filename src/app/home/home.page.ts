@@ -330,7 +330,7 @@ export class HomePage {
 				  if (user) {
 					this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
 					this.db.addTutorial(this.auth.userid);
-				  	if(this.isApp) {
+				  	if(this.isApp && this.platform.is('cordova')) {
 				  		this.firebase.hasPermission().then( hasPermission => {
 				  			if(hasPermission) {
 				  				this.initPushNotifications();
@@ -345,7 +345,13 @@ export class HomePage {
 					}
 					this.getStartedAction();
 					this.getGoals();
-					this.nativeCalendar.updateDatabase();
+					if(this.platform.is('cordova')) {
+						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+							if(hasReadWritePermission) {
+								this.nativeCalendar.updateDatabase();
+							}
+						});
+					}
 					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 				  	this.db.trackLogin(this.auth.userid);
 				  	this.loggedin = true;
@@ -364,10 +370,6 @@ export class HomePage {
 				  this.goToLoginPage();
 				}
 			);
-  	}
-
-  	showCals() {
-  		this.cals = this.nativeCalendar.readCalendars();
   	}
 
   	menuOpen() {
@@ -1012,8 +1014,40 @@ export class HomePage {
 				active: true,
 				color: this.captureProject.color
 			}
-			this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-				eventData.event_id = event_id;
+			if(this.platform.is('cordova')) {
+				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+					if(hasReadWritePermission) {
+						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+							eventData.event_id = event_id;
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+				            	action.deadlineid = event.key;
+				            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+				            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+				            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+				            				calendarEvent.key = event.key;
+				            				calendarEvent.actionid = actionAddedkey.key;
+				            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+				            			});
+				            		});
+				            	});
+				            });
+						});
+					} else {
+						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+			            	action.deadlineid = event.key;
+			            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+			            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+			            				calendarEvent.key = event.key;
+			            				calendarEvent.actionid = actionAddedkey.key;
+			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+			            			});
+			            		});
+			            	});
+			            });
+					}
+				});
+			} else {
 				this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 	            	action.deadlineid = event.key;
 	            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
@@ -1026,7 +1060,7 @@ export class HomePage {
 	            		});
 	            	});
 	            });
-			});
+			}
         } else {
 			this.db.addAction(action, this.capture, this.auth.userid);
 		}
@@ -1133,8 +1167,40 @@ export class HomePage {
 							active: true,
 							color: goal.color
 						}
-						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-							eventData.event_id = event_id;
+						if(this.platform.is('cordova')) {
+							this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+								if(hasReadWritePermission) {
+									this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+										eventData.event_id = event_id;
+										this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+							            	action.deadlineid = event.key;
+							            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
+							            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+							            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+							            				calendarEvent.key = event.key;
+							            				calendarEvent.actionid = actionAddedkey.key;
+							            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+							            			});
+							            		});
+							            	});
+							            });
+									});
+								} else {
+									this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+						            	action.deadlineid = event.key;
+						            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
+						            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+						            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+						            				calendarEvent.key = event.key;
+						            				calendarEvent.actionid = actionAddedkey.key;
+						            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+						            			});
+						            		});
+						            	});
+						            });
+								}
+							});
+						} else {
 							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 				            	action.deadlineid = event.key;
 				            	this.db.addAction(action, capture, this.auth.userid).then( actionAddedkey => {
@@ -1147,7 +1213,7 @@ export class HomePage {
 				            		});
 				            	});
 				            });
-						});
+						}
 			        } else {
 						this.db.addAction(action, capture, this.auth.userid);
 					}
@@ -1185,8 +1251,40 @@ export class HomePage {
 							active: true,
 							color: goal.color
 						}
-						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-							eventData.event_id = event_id;
+						if(this.platform.is('cordova')) {
+							this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+								if(hasReadWritePermission) {
+									this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+										eventData.event_id = event_id;
+										this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+							            	delegation.deadlineid = event.key;
+							            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
+							            		this.db.getDelegationFromDelegationid(delegationAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( delegationAdded => {
+							            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+							            				calendarEvent.key = event.key;
+							            				calendarEvent.delegationid = delegationAddedkey.key;
+							            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+							            			});
+							            		});
+							            	});
+							            });
+							        });
+								} else {
+									this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+						            	delegation.deadlineid = event.key;
+						            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
+						            		this.db.getDelegationFromDelegationid(delegationAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( delegationAdded => {
+						            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+						            				calendarEvent.key = event.key;
+						            				calendarEvent.delegationid = delegationAddedkey.key;
+						            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+						            			});
+						            		});
+						            	});
+						            });
+								}
+							});
+						} else {
 							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 				            	delegation.deadlineid = event.key;
 				            	this.db.addDelegation(delegation, capture, this.auth.userid).then( delegationAddedkey => {
@@ -1199,7 +1297,7 @@ export class HomePage {
 				            		});
 				            	});
 				            });
-				        });
+						}
 					} else {
 						this.db.addDelegation(delegation, capture, this.auth.userid);
 					}
@@ -1643,8 +1741,40 @@ export class HomePage {
 							eventData.color = "#C0C0C0";
 						}
 					}
-					this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-						eventData.event_id = event_id;
+					if(this.platform.is('cordova')) {
+						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+							if(hasReadWritePermission) {
+								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+									eventData.event_id = event_id;
+									this.db.addCalendarEvent(eventData, this.auth.userid);
+									this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
+								  		this.presentToast(translation["Your calendar event has been saved"]);
+									});
+									eventData.startTime = new Date(eventData.startTime);
+							        eventData.endTime = new Date(eventData.endTime);
+									let events = this.eventSource;
+									events.push(eventData);
+									this.eventSource = [];
+									setTimeout(() => {
+										this.eventSource = events;
+									});
+								});
+							} else {
+								this.db.addCalendarEvent(eventData, this.auth.userid);
+								this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
+							  		this.presentToast(translation["Your calendar event has been saved"]);
+								});
+								eventData.startTime = new Date(eventData.startTime);
+						        eventData.endTime = new Date(eventData.endTime);
+								let events = this.eventSource;
+								events.push(eventData);
+								this.eventSource = [];
+								setTimeout(() => {
+									this.eventSource = events;
+								});
+							}
+						});
+					} else {
 						this.db.addCalendarEvent(eventData, this.auth.userid);
 						this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
 					  		this.presentToast(translation["Your calendar event has been saved"]);
@@ -1657,7 +1787,7 @@ export class HomePage {
 						setTimeout(() => {
 							this.eventSource = events;
 						});
-					});
+					}
 				}
 			});
 		});
@@ -1765,7 +1895,13 @@ export class HomePage {
 										      this.presentToast(translation["Event deleted"]);
 										    });
 								          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
-								          	this.nativeCalendar.deleteEvent(event.event_id);
+								          	if(event.event_id && this.platform.is('cordova')) {
+								          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+								          			if(hasReadWritePermission) {
+								          				this.nativeCalendar.deleteEvent(event.event_id);
+								          			}
+								          		});
+								          	}
 								          	let events = this.eventSource;
 								          	let index = events.indexOf(event);
 											events.splice(index,1);
@@ -1842,8 +1978,34 @@ export class HomePage {
 									eventData.color = "#C0C0C0";
 								}
 							}
-							this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-								eventData.event_id = event_id;
+							if(this.platform.is('cordova')) {
+								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+									if(hasReadWritePermission) {
+										this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+											eventData.event_id = event_id;
+											this.db.addCalendarEvent(eventData, this.auth.userid)
+											eventData.startTime = new Date(eventData.startTime);
+									        eventData.endTime = new Date(eventData.endTime);
+											let events = this.eventSource;
+											events.push(eventData);
+											this.eventSource = [];
+											setTimeout(() => {
+												this.eventSource = events;
+											});
+										});
+									} else {
+										this.db.addCalendarEvent(eventData, this.auth.userid)
+										eventData.startTime = new Date(eventData.startTime);
+								        eventData.endTime = new Date(eventData.endTime);
+										let events = this.eventSource;
+										events.push(eventData);
+										this.eventSource = [];
+										setTimeout(() => {
+											this.eventSource = events;
+										});
+									}
+								});
+							} else {
 								this.db.addCalendarEvent(eventData, this.auth.userid)
 								eventData.startTime = new Date(eventData.startTime);
 						        eventData.endTime = new Date(eventData.endTime);
@@ -1853,8 +2015,7 @@ export class HomePage {
 								setTimeout(() => {
 									this.eventSource = events;
 								});
-
-							});
+							}
 						}
 					});
 				});

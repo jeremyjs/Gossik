@@ -17,14 +17,16 @@ export class NativeCalendarService {
 
   constructor(
   	private calendar: Calendar,
-  	private plt: Platform,
+  	private platform: Platform,
   	private db: DatabaseService,
   	private auth: AuthenticationService
   	) {
-	  	this.plt.ready().then( () => {
-	  		this.calendar.listCalendars().then( data => {
-	  			this.calendars = data;
-	  		});
+	  	this.platform.ready().then( () => {
+	  		if(platform.is('cordova')) {
+	  			this.calendar.listCalendars().then( data => {
+		  			this.calendars = data;
+		  		});
+	  		}
 	  	});
   	}
 
@@ -85,12 +87,12 @@ export class NativeCalendarService {
 
   async loadEventsFromNativeCalendar() {
   	let events = [];
-  	if(this.plt.is('ios')) {
+  	if(this.platform.is('ios')) {
   		for(let calendar of this.calendars) {
   			let nativeEvents = await this.calendar.findAllEventsInNamedCalendar(calendar.name);
   			events.push(...nativeEvents);
   		}
-  	} else if(this.plt.is('android')) {
+  	} else if(this.platform.is('android')) {
   		let start = new Date();
   		let end = new Date();
   		start.setDate(start.getDate() - 7);
@@ -138,5 +140,9 @@ export class NativeCalendarService {
   	let startTime = new Date(eventStartTime);
   	let endTime = new Date(eventEndTime);
   	return this.calendar.createEvent(eventTitle, eventLocation, undefined, startTime, endTime);
+  }
+
+  hasReadWritePermission() {
+  	return this.calendar.hasReadWritePermission();
   }
 }

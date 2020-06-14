@@ -638,7 +638,9 @@
     <div *ngIf="pageCtrl == 'actionFinished'">
       {{"Congrats! Is your project now accomplished and can be deleted?" | translate }}
       <div class="buttons-flex-container">
+        <!-- Had to comment this one because deleted 'goalFinished' function
         <ion-button class="darkbutton button-left" (click)="goalFinished()">{{"Accomplished" | translate }}</ion-button>
+        -->
         <ion-button class="darkbutton button-right" (click)="goalNotFinished()">{{"Not yet" | translate }}</ion-button>
       </div>
     </div>

@@ -146,9 +146,6 @@ export class CalendarEventModalPage implements OnInit {
 		this.event.startTime = this.eventStartTimeISOString;
 		this.event.endTime = this.eventEndTimeISOString;
 		this.event.goalid = this.goalid;
-		this.translate.get(["Event edited"]).subscribe( translation => {
-	        this.presentToast(translation["Event edited"]);
-	    });
 		this.modalCtrl.dismiss(this.event);
 	}
 
