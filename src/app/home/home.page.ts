@@ -203,16 +203,6 @@ export class HomePage {
 		});
 	}
 
-	openDatetime(datetime) {
-		if(datetime == 'processCapturePageDurationDatetime') {
-			this.processCapturePageDurationDatetime.open();
-		} else if(datetime == 'toDoPageDurationDatetime') {
-			this.toDoPageDurationDatetime.open();
-		} else if(datetime == 'stopActionPageDatetime') {
-			this.stopActionPageDatetime.open();
-		}
-	}
-
 	getStartedAction() {
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 		.snapshotChanges()
@@ -320,51 +310,51 @@ export class HomePage {
 
 	ngOnInit() {
   		this.auth.afAuth.authState
-			.subscribe(
-				user => {
-				  if (user) {
-					this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
-					this.db.addTutorial(this.auth.userid);
-				  	if(this.isApp && this.platform.is('cordova')) {
-				  		this.firebase.hasPermission().then( hasPermission => {
-				  			if(hasPermission) {
-				  				this.initPushNotifications();
-					  		} else {
-					  			this.firebase.grantPermission().then( hasPermission => {
-					  				if(hasPermission) {
-					  					this.initPushNotifications();
-					  				}
-					  			})
-					  		}
-				  		})
-					}
-					this.getStartedAction();
-					this.getGoals();
-					if(this.platform.is('cordova')) {
-						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-							if(hasReadWritePermission) {
-								this.nativeCalendar.updateDatabase();
-							}
-						});
-					}
-					this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
-				  	this.db.trackLogin(this.auth.userid);
-				  	this.loggedin = true;
-				  	this.router.events.subscribe(res => {
-						if (res instanceof NavigationEnd) {
-							this.changePageViaMenu();
+		.subscribe(
+			user => {
+			  if (user) {
+				this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
+				this.db.addTutorial(this.auth.userid);
+			  	if(this.isApp && this.platform.is('cordova')) {
+			  		this.firebase.hasPermission().then( hasPermission => {
+			  			if(hasPermission) {
+			  				this.initPushNotifications();
+				  		} else {
+				  			this.firebase.grantPermission().then( hasPermission => {
+				  				if(hasPermission) {
+				  					this.initPushNotifications();
+				  				}
+				  			})
+				  		}
+			  		})
+				}
+				this.getStartedAction();
+				this.getGoals();
+				if(this.platform.is('cordova')) {
+					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+						if(hasReadWritePermission) {
+							this.nativeCalendar.updateDatabase();
 						}
 					});
-				  	this.changePageViaMenu();
-				  } else {
-				  	this.loggedin = false;
-				    this.goToLoginPage();
-				  }
-				},
-				() => {
-				  this.goToLoginPage();
 				}
-			);
+				this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
+			  	this.db.trackLogin(this.auth.userid);
+			  	this.loggedin = true;
+			  	this.router.events.subscribe(res => {
+					if (res instanceof NavigationEnd) {
+						this.changePageViaMenu();
+					}
+				});
+			  	this.changePageViaMenu();
+			  } else {
+			  	this.loggedin = false;
+			    this.goToLoginPage();
+			  }
+			},
+			() => {
+			  this.goToLoginPage();
+			}
+		);
   	}
 
   	menuOpen() {
@@ -423,10 +413,11 @@ export class HomePage {
 			email: data.email,
 			password: data.password
 		};
+		this.db.login();
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-						setTimeout(() => {
+						this.auth.afAuth.authState.subscribe( user => {
 							this.goToToDoPage();
 						});
 				},

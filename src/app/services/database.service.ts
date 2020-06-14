@@ -55,6 +55,10 @@ export class DatabaseService {
 
     }
 
+    login() {
+        this.db.database.goOnline();
+    }
+
     addTutorial(userid) {
         this.db.object<any>('users/' + userid).valueChanges().pipe(take(1)).subscribe( user => {
             if(!user.hasOwnProperty('tutorial')) {
