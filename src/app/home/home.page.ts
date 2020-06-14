@@ -45,9 +45,6 @@ export class HomePage {
 
 	@ViewChild(IonContent, { read: IonContent, static: true }) content: IonContent;
 	@ViewChild('TimeAvailable', {  static: false })  timeAvailable: IonInput;
-	@ViewChild('processCapturePageDurationDatetime', { static: false }) processCapturePageDurationDatetime: IonDatetime;
-	@ViewChild('toDoPageDurationDatetime', { static: false }) toDoPageDurationDatetime: IonDatetime;
-	@ViewChild('stopActionPageDatetime', { static: false }) stopActionPageDatetime: IonDatetime;
 	loginForm: FormGroup;
 	loginError: string;
 	forgotPasswordForm: FormGroup;
@@ -150,7 +147,6 @@ export class HomePage {
 	showCaptureDone: boolean = false;
 	startedAction = {} as Action;
 	goalEmpty: boolean;
-	startedActionTimeISOString: any;
 	allDayLabel: any;
 	pageTitle: string;
 	cameFromProjectOverviewPage: boolean;
