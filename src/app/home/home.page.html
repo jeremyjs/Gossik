@@ -740,10 +740,6 @@
           </button>
         </ion-col>
         <ion-col class="flex">
-          <ion-datetime #toDoPageDurationDatetime class="font-white no-padding margin-auto margin-left-10 margin-right-0" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="timeEstimateISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="showDoableActions()"></ion-datetime>
-          <span class="font-white margin-auto-left-3" (click)="openDatetime('toDoPageDurationDatetime')">{{"min" | translate }}</span>
-        </ion-col>
-        <ion-col class="flex">
           <span class="font-white margin-auto-left-3" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
         </ion-col>
         <ion-col>

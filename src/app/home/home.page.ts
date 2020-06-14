@@ -149,8 +149,6 @@ export class HomePage {
 	showCaptureDeadline: boolean = false;
 	captureDeadlineText: string;
 	showCaptureDone: boolean = false;
-	timeEstimateISOString: any;
-	timeEstimate: number;
 	startedAction = {} as Action;
 	goalEmpty: boolean;
 	startedActionTimeISOString: any;
@@ -2103,15 +2101,10 @@ export class HomePage {
 			} else {
 				this.pageTitle = "Do todos";
 				this.doableActionArray = [];
-				this.timeEstimateISOString = new Date();
-			  	this.timeEstimateISOString.setHours(0,0,0);
-			  	this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+				this.duration = 0;
 				//this.showTutorial('todo');
 				this.doableActionArray = [];
 				this.goalKeyArray = [];
-		  		this.giveTimeForm = this.fb.group({
-		      		timeEstimate: ['', Validators.required]
-		    	});
 		    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 				  	.snapshotChanges()
 				  	.pipe(take(1),
@@ -2169,12 +2162,12 @@ export class HomePage {
 
   	async openPicker(pickerName) {
   		let columnNames = [];
-  		let columnOptions = [];
+  		let columnOptions = [[]];
   		if(pickerName == 'ToDoPageDuration') {
   			columnNames = ['duration'];
-  			columnOptions = [
-  				[0,1,2,3,4,5]
-  			];
+  			for(let i = 0; i <= 400; i++) {
+  				columnOptions[0].push(i)
+  			}
   		}
   			const picker = await this.pickerCtrl.create({
 		        columns: this.getColumns(columnNames, columnOptions),
@@ -2186,8 +2179,8 @@ export class HomePage {
 		          {
 		            text: 'Confirm',
 		            handler: (value) => {
-		              console.log('Got Value');
-		              console.log(value);
+		              this.duration = value.duration.value;
+		              this.showDoableActions();
 		            }
 		          }
 		        ]
@@ -2221,10 +2214,7 @@ export class HomePage {
 
   	showDoableActions() {
   		this.skippedAllToDos = false;
-  		this.timeEstimateISOString = new Date(this.timeEstimateISOString);
-  		let timeEstimate = this.timeEstimateISOString.getMinutes();
-  		if(timeEstimate > 0) {
-			this.timeEstimateISOString = this.timeEstimateISOString.toISOString();
+  		if(this.duration > 0) {
 			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 			  	.snapshotChanges()
 			  	.pipe(take(1),
@@ -2241,7 +2231,7 @@ export class HomePage {
 		      	this.doableActionArray = [];
 		        for(let action of actionArray) {
 		        	if(action.active != false) {
-						if(action.time/1 <= timeEstimate/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+						if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
 						this.doableActionArray.push(action);
 						}
 					}
@@ -2254,7 +2244,7 @@ export class HomePage {
 		        }
 		      }
 		    );
-		} else if(timeEstimate == 0) {
+		} else if(this.duration == 0) {
 			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 			  	.snapshotChanges()
 			  	.pipe(take(1),
