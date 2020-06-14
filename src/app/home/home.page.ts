@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime, PickerController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -161,6 +161,7 @@ export class HomePage {
 	cameFromProcessPage: boolean;
 	calendarLoaded: boolean = false;
 	skippedAllToDos: boolean = false;
+	duration: number;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -180,7 +181,8 @@ export class HomePage {
 		private menuCtrl: MenuController,
 		private firebase: FirebaseX,
 		private nativeCalendar: NativeCalendarService,
-		public toastCtrl: ToastController
+		public toastCtrl: ToastController,
+		public pickerCtrl: PickerController
 		) {
 		this.isApp = !this.platform.is('desktop');
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
@@ -2164,6 +2166,58 @@ export class HomePage {
   		}
   		this.showDoableActions();
   	}
+
+  	async openPicker(pickerName) {
+  		let columnNames = [];
+  		let columnOptions = [];
+  		if(pickerName == 'ToDoPageDuration') {
+  			columnNames = ['duration'];
+  			columnOptions = [
+  				[0,1,2,3,4,5]
+  			];
+  		}
+  			const picker = await this.pickerCtrl.create({
+		        columns: this.getColumns(columnNames, columnOptions),
+		        buttons: [
+		          {
+		            text: 'Cancel',
+		            role: 'cancel'
+		          },
+		          {
+		            text: 'Confirm',
+		            handler: (value) => {
+		              console.log('Got Value');
+		              console.log(value);
+		            }
+		          }
+		        ]
+		      });
+
+      await picker.present();
+  		
+    }
+
+    getColumns(columnNames, columnOptions) {
+      let columns = [];
+      for (let i = 0; i < columnNames.length; i++) {
+        columns.push({
+          name: columnNames[i],
+          options: this.getColumnOptions(columnOptions[i])
+        });
+      }
+      return columns;
+    }
+
+    getColumnOptions(columnOptions) {
+      let options = [];
+      for (let i = 0; i < columnOptions.length; i++) {
+        options.push({
+          text: i,
+          value: i
+        })
+      }
+      return options;
+    }
 
   	showDoableActions() {
   		this.skippedAllToDos = false;
