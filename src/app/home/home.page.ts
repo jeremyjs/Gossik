@@ -432,7 +432,7 @@ export class HomePage {
 			.then(
 				() => {
 						setTimeout(() => {
-							this.goToCapturePage();
+							this.goToToDoPage();
 						});
 				},
 				error => this.loginError = error.message
