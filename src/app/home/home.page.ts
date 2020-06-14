@@ -2160,34 +2160,37 @@ export class HomePage {
   		this.showDoableActions();
   	}
 
-  	async openPicker(pickerName) {
-  		let columnNames = [];
-  		let columnOptions = [[]];
-  		if(pickerName == 'ToDoPageDuration') {
-  			columnNames = ['duration'];
-  			for(let i = 0; i <= 400; i++) {
-  				columnOptions[0].push(i)
-  			}
-  		}
-  			const picker = await this.pickerCtrl.create({
+  	openPicker(pickerName) {
+  		this.translate.get(["Done", "Cancel"]).subscribe( translation => {
+    		let columnNames = [];
+	  		let columnOptions = [[]];
+	  		if(pickerName == 'ToDoPageDuration') {
+	  			columnNames = ['duration'];
+	  			for(let i = 0; i <= 400; i++) {
+	  				columnOptions[0].push(i)
+	  			}
+	  		}
+			this.pickerCtrl.create({
 		        columns: this.getColumns(columnNames, columnOptions),
 		        buttons: [
 		          {
-		            text: 'Cancel',
+		            text: translation["Cancel"],
 		            role: 'cancel'
 		          },
 		          {
-		            text: 'Confirm',
+		            text: translation["Done"],
 		            handler: (value) => {
-		              this.duration = value.duration.value;
-		              this.showDoableActions();
+		            	if(pickerName == 'ToDoPageDuration') {
+		              		this.duration = value.duration.value;
+		              		this.showDoableActions();
+		              	}
 		            }
 		          }
 		        ]
-		      });
-
-      await picker.present();
-  		
+		    }).then( picker => {
+		    	picker.present();
+		    });	
+	    })
     }
 
     getColumns(columnNames, columnOptions) {
