@@ -177,14 +177,9 @@ export class HomePage {
 		public toastCtrl: ToastController,
 		public pickerCtrl: PickerController
 		) {
-		this.isApp = !this.platform.is('desktop');
+		this.isApp = this.platform.is('cordova');
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
 		this.isApp = true;
-		if(this.isApp) {
-			this.calendar.mode = 'month'
-		} else {
-			this.calendar.mode = 'week';
-		}
 		this.backButton = this.platform.backButton;
 		this.backButton.subscribe(()=>{
 			this.alertCtrl.getTop().then ( alert => {
@@ -336,6 +331,11 @@ export class HomePage {
 							this.nativeCalendar.updateDatabase();
 						}
 					});
+				}
+				if(this.isApp) {
+					this.calendar.mode = 'month'
+				} else {
+					this.calendar.mode = 'week';
 				}
 				this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
 			  	this.db.trackLogin(this.auth.userid);
