@@ -138,7 +138,6 @@ export class HomePage {
 	showCaptureProject: boolean = true;
 	captureType: string;
 	showCaptureType: boolean = false;
-	captureDurationISOString: any;
 	captureDuration: number;
 	showCaptureDuration: boolean = false;
 	capturePriority: number;
@@ -767,6 +766,7 @@ export class HomePage {
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
+    	this.duration = 0;
 		this.capturePriority = undefined;
 		this.captureDuration = undefined;
 		this.captureDeadline = undefined;
@@ -855,18 +855,12 @@ export class HomePage {
 
   	assignAction() {
   		if(this.captureContent) {
-  			if(!this.captureDuration) {
-	  			this.captureDurationISOString = new Date();
-		  		this.captureDurationISOString.setHours(0,0,0);
-		  		this.captureDuration = this.captureDurationISOString.getMinutes();
-		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-	  		}
   			this.showCaptureDuration = true;
   		}
-  		if(this.captureDuration) {
+  		if(this.captureContent && this.captureDuration) {
   			this.showCapturePriority = true;
   		}
-  		if(this.capturePriority && this.captureDuration) {
+  		if(this.captureContent && this.capturePriority && this.captureDuration) {
   			this.showCaptureDeadline = true;
   		}
   		this.captureCheckIfDone();
@@ -875,12 +869,6 @@ export class HomePage {
   	assignContent(event) {
   		if(this.captureContent) {
   			if(this.captureType == 'action') {
-		  		if(!this.captureDuration) {
-		  			this.captureDurationISOString = new Date();
-			  		this.captureDurationISOString.setHours(0,0,0);
-			  		this.captureDuration = this.captureDurationISOString.getMinutes();
-			  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-		  		}
 		  		this.showCaptureDuration = true;
 		  	}
   		} else {
@@ -900,12 +888,6 @@ export class HomePage {
   	setCaptureContent(capture) {
   		this.captureContent = capture.content;
   		if(this.captureType == 'action') {
-	  		if(!this.captureDuration) {
-	  			this.captureDurationISOString = new Date();
-		  		this.captureDurationISOString.setHours(0,0,0);
-		  		this.captureDuration = this.captureDurationISOString.getMinutes();
-		  		this.captureDurationISOString = this.captureDurationISOString.toISOString();
-	  		}
 	  		this.showCaptureDuration = true;
 	  	}
 	  	this.captureCheckIfDone();
@@ -919,8 +901,7 @@ export class HomePage {
   	}
 
   	timeSet() {
-  		let time = new Date(this.captureDurationISOString);
-  		this.captureDuration = time.getMinutes();
+  		this.captureDuration = this.duration;
   		if(this.captureDuration > 0) {
 			this.showCapturePriority = true;
 	  		this.captureCheckIfDone();
@@ -2071,6 +2052,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.duration = 0;
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -2164,14 +2146,18 @@ export class HomePage {
   		this.translate.get(["Done", "Cancel"]).subscribe( translation => {
     		let columnNames = [];
 	  		let columnOptions = [[]];
-	  		if(pickerName == 'ToDoPageDuration') {
+	  		let selectedIndices = [0]
+	  		if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration' || pickerName == 'StopActionPageDuration') {
 	  			columnNames = ['duration'];
+	  			if(this.duration) {
+	  				selectedIndices[0] = this.duration;
+	  			}
 	  			for(let i = 0; i <= 400; i++) {
 	  				columnOptions[0].push(i)
 	  			}
 	  		}
 			this.pickerCtrl.create({
-		        columns: this.getColumns(columnNames, columnOptions),
+		        columns: this.getColumns(columnNames, columnOptions, selectedIndices),
 		        buttons: [
 		          {
 		            text: translation["Cancel"],
@@ -2183,6 +2169,12 @@ export class HomePage {
 		            	if(pickerName == 'ToDoPageDuration') {
 		              		this.duration = value.duration.value;
 		              		this.showDoableActions();
+		              	} else if(pickerName == 'ProcessCapturePageDuration') {
+		              		this.duration = value.duration.value;
+		              		this.timeSet();
+		              	} else if(pickerName == 'StopActionPageDuration') {
+		              		this.duration = value.duration.value;
+		              		this.updateStartedActionTime();
 		              	}
 		            }
 		          }
@@ -2193,11 +2185,12 @@ export class HomePage {
 	    })
     }
 
-    getColumns(columnNames, columnOptions) {
+    getColumns(columnNames, columnOptions, selectedIndices) {
       let columns = [];
       for (let i = 0; i < columnNames.length; i++) {
         columns.push({
           name: columnNames[i],
+          selectedIndex: selectedIndices[i],
           options: this.getColumnOptions(columnOptions[i])
         });
       }
@@ -2308,20 +2301,14 @@ export class HomePage {
   	}
 
   	stopAction() {
-  		let minutes = this.startedAction.time % 60;
-  		let hours = (this.startedAction.time - minutes) / 60;
-  		this.startedActionTimeISOString = new Date();
-  		this.startedActionTimeISOString.setHours(hours, minutes);
-  		this.startedActionTimeISOString = this.startedActionTimeISOString.toISOString();
+  		this.duration = this.startedAction.time;
   		this.changePage('StopActionPage');
   	}
 
   	updateStartedActionTime() {
-  		let time = new Date(this.startedActionTimeISOString);
-  		time.getMinutes();
+  		this.startedAction.time = this.duration;
   		this.startedAction.taken = false;
   		this.db.editAction(this.startedAction, this.auth.userid);
-  		this.startedAction = {} as Action;
   		this.goToToDoPage();
   	}
 

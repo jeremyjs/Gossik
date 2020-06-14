@@ -576,7 +576,7 @@
         </span>
         <div class="width-100 margin-top-10 margin-left-50">
           <ion-row class="width-100">
-            <ion-datetime #processCapturePageDurationDatetime class="font-white font-size-20px" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="captureDurationISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="timeSet()"></ion-datetime><span class="font-white margin-auto-left-3 font-size-20px" (click)="openDatetime('processCapturePageDurationDatetime')">{{"min" | translate }}</span>
+            <span class="font-white margin-auto-left-3" (click)="openPicker('ProcessCapturePageDuration')">{{duration}}{{"min" | translate }}</span>
           </ion-row>
         </div>
       </ion-row>
@@ -822,8 +822,7 @@
       </ion-row>
       <ion-row class="margin-auto font-gray text-align-center width-100">
         <span class="font-white margin-top-45 margin-right-auto margin-left-auto flex">
-          <ion-datetime #stopActionPageDatetime class="font-white no-padding display-inline-block" displayFormat="m" pickerFormat="m" max="2100" [(ngModel)]="startedActionTimeISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionBlur)="updateStartedActionTime()"></ion-datetime>
-          <span class="font-white margin-auto-left-3" (click)="openDatetime('stopActionPageDatetime')">{{"min" | translate }}</span>
+          <span class="font-white margin-auto-left-3" (click)="openPicker('StopActionPageDuration')">{{duration}}{{"min" | translate }}</span>
         </span>
       </ion-row>
     </ion-grid>
