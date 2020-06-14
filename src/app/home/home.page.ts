@@ -831,7 +831,10 @@ export class HomePage {
 		});
   	}
 
-  	assignType() {
+  	assignType(type?: string) {
+  		if(type) {
+  			this.captureType = type;
+  		}
   		if(this.captureType == 'action') {
   			this.assignAction();
   		} else if(this.captureType == 'note') {

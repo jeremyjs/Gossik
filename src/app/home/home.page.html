@@ -547,14 +547,26 @@
         <span class="font-gray width-100 font-size-20px">
           {{"Type" | translate }}
         </span>
-        <ion-radio-group class="font-gray font-size-20px" [(ngModel)]="captureType" (ionChange)="assignType()">
+        <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="captureType" (ionChange)="assignType()">
           <ion-row class="margin-left-50 margin-top-10">
-            <ion-radio value="action" class="height-15px width-15px margin-vertical-center margin-right-3"></ion-radio>
-            {{"Action" | translate }}
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="action" class="height-15px width-15px margin-auto"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('action')">
+                {{"Action" | translate }}
+              </button>
+            </ion-col>
           </ion-row>
-          <ion-row class="margin-left-50 ">
-            <ion-radio value="note" class="height-15px width-15px margin-vertical-center margin-right-3"></ion-radio>
-            {{"Note" | translate }}
+          <ion-row class="margin-left-50">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="note" class="height-15px width-15px margin-auto"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('note')">
+                {{"Note" | translate }}
+              </button>
+            </ion-col>
           </ion-row>
         </ion-radio-group>
       </ion-row>
