@@ -1485,7 +1485,7 @@ export class HomePage {
 	    this.pageCtrl = 'ProjectOverview';
 	    setTimeout( () => {
 			this.calendarLoaded = true;
-		}, 2000);
+		}, 3000);
 	    this.goal = goal;
 	    this.referenceList = this.db.getReferenceListFromGoal(goal.key, this.auth.userid)
 		  	.snapshotChanges()
