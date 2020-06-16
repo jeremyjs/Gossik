@@ -591,37 +591,39 @@ export class HomePage {
   	}
 
   	showTutorial(tutorialPart) {
-  		let messages = {
-  			"fivetodos": "Hi and welcome! I am Gossik and I will try my best to help you get your things done and make your dreams come true. In the next days I will show you step by step how I work and we can get to know us."
-        }
   		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
 			if(tutorial[tutorialPart]) {
-				this.translate.get([messages[tutorialPart], "OK"]).subscribe( alertMessage => {
+				let text = [];
+				text["fivetodos"] = [tutorialPart, "Start introduction", "Later"];
+				console.log(text["fivetodos"]);
+				this.translate.get(text[tutorialPart]).subscribe( alertMessage => {
+			  		console.log(alertMessage);
+			  		let buttons = [];
+			  		buttons["fivetodos"] = [
+				      	{
+					        text: alertMessage["Start introduction"],
+					        handler: () => {
+					        	this.startFivetodos()
+					        }
+				      	}, 
+				      	{
+				      		text: alertMessage["Later"]
+				      	}
+				    ];
+				    console.log(buttons);
 			  		this.alertCtrl.create({
-						message: alertMessage[messages[tutorialPart]],
-						buttons: [
-							      	{
-								        text: alertMessage["OK"],
-								        handler: () => {
-								        	this.db.finishTutorial(this.auth.userid, tutorialPart);
-								        	if(tutorialPart == 'welcome') {
-								        		this.capturePageStarted = false;
-								        	}
-								        	if(tutorialPart == 'finishAction') {
-								        		this.capturePageStarted = false;
-								        	}
-								        	if(tutorialPart == 'reference' || tutorialPart == 'waitingFor') {
-								        		this.modalCtrl.getTop().then( modal => modal.dismiss());
-								        	}
-								        }
-							      	}
-							    ]
+						message: alertMessage[tutorialPart],
+						buttons: buttons[tutorialPart]
 					}).then( alert => {
 						alert.present();
 					});
 				});
 			}
 		});
+  	}
+
+  	startFivetodos() {
+
   	}
 
   	goToCapturePage() {
