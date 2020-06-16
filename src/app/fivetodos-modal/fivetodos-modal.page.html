@@ -14,6 +14,15 @@
 </ion-header>
 
 
-<ion-content class="background-gray">
-
+<ion-content class="background-gray font-white">
+	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[0].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[1].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[2].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[3].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[4].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-row *ngIf="showDone" class="margin-top-45">
+	    <button class="transparent font-white margin-auto width-100" (click)="defineTodos()">
+	    	<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
+	    </button>
+	</ion-row>
 </ion-content>

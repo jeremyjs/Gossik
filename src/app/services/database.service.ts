@@ -8,6 +8,8 @@ import { Reference } from '../../model/reference/reference.model';
 import { Delegation } from '../../model/delegation/delegation.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import { map, take } from 'rxjs/operators';
 
 @Injectable({
@@ -16,23 +18,44 @@ import { map, take } from 'rxjs/operators';
 export class DatabaseService {
 
   	userData = {} as User;
-    tutorial = {
-            '5todos': true,
+ 
+    constructor(
+    	private db: AngularFireDatabase,
+        public translate: TranslateService
+	) { }
+    
+    createUser(userid, email) {
+        this.userData.email = email;
+        this.userData.tutorial = {
+            'fivetodos': true,
             'thoughtprocessing': true,
             'projects': true,
             'informations': true,
             'calendar': true
         };
- 
-    constructor(
-    	private db: AngularFireDatabase
-	) { }
-    
-    createUser(userid, email) {
-        this.userData.email = email;
-        this.userData.tutorial = this.tutorial;
-        this.userData.signUpDate = new Date().toISOString();
-        return this.db.list('users').set(userid, this.userData); 
+        this.translate.get(["Tutorial", "Define 5 todos"]).subscribe( translation => {
+            this.userData.goals = {
+                tutorial: {
+                    userid: userid,
+                    name: translation["Tutorial"],
+                    color: '#F38787',
+                    active?: true
+                }
+            };
+            this.userData.nextActions = {
+                tutorial: {
+                    userid: userid,
+                    goalid: 'tutorial',
+                    content: translation["Define 5 todos"],
+                    priority: 3,
+                    time: 5,
+                    taken: false,
+                    active: true
+                }
+            };
+            this.userData.signUpDate = new Date().toISOString();
+            return this.db.list('users').set(userid, this.userData);
+        }); 
     }
 
     logout() {
