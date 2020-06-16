@@ -57,29 +57,9 @@ export class DatabaseService {
     }
 
     finishTutorial(userid, tutorialPart) {
-        let tutorials = {
-            "welcome": { welcome: false },
-            "postit": { postit: false },
-            "postitDone": { postitDone: false },
-            "processPostit": { processPostit: false },
-            "createProject": { createProject: false },
-            "action": { action: false },
-            "actionDefinedDesktop": { actionDefinedDesktop: false },
-            "actionDefinedMobile": { actionDefinedMobile: false },
-            "waitingFor": { waitingFor: false },
-            "reference": { reference: false },
-            "calendar": { calendar: false },
-            "projects": { projects: false },
-            "todo": { todo: false },
-            "todoTime": { todoTime: false },
-            "todoDone": { todoDone: false },
-            "goalFinished": { goalFinished: false },
-            "goalNotFinished": { goalNotFinished: false },
-            "projectOverview": { projectOverview: false },
-            "finishAction": { finishAction: false },
-            "finishProject": { finishProject: false }
-        }
-        return this.db.list('users/' + userid).update('tutorial', tutorials[tutorialPart]);
+        let tutorial = {}
+        tutorial[tutorialPart] = false;
+        return this.db.list('users/' + userid).update('tutorial', tutorial);
     }
 
     sendFeedback(feedback, time, userid) {
