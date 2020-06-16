@@ -592,7 +592,7 @@ export class HomePage {
 
   	showTutorial(tutorialPart) {
   		let messages = {
-  			"key": "Message in English"
+  			"5todos": "Hi and welcome! I am Gossik and I will try my best to help you get your things done and make your dreams come true. In the next days I will show you step by step how I work and we can get to know us."
         }
   		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
 			if(tutorial[tutorialPart]) {
@@ -1995,6 +1995,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.showTutorial('5todos');
 		this.duration = 0;
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 		.snapshotChanges()
