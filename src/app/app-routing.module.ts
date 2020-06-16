@@ -57,6 +57,10 @@ const routes: Routes = [
     path: 'to-do-filter-modal',
     loadChildren: () => import('./to-do-filter-modal/to-do-filter-modal.module').then( m => m.ToDoFilterModalPageModule)
   },
+  {
+    path: 'fivetodos-modal',
+    loadChildren: () => import('./fivetodos-modal/fivetodos-modal.module').then( m => m.FivetodosModalPageModule)
+  },
 ];
 
 @NgModule({

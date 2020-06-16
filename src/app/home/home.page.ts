@@ -31,6 +31,8 @@ import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-m
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
 import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
+import  { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
+
 
 import * as moment from 'moment';
 
@@ -595,9 +597,7 @@ export class HomePage {
 			if(tutorial[tutorialPart]) {
 				let text = [];
 				text["fivetodos"] = [tutorialPart, "Start introduction", "Later"];
-				console.log(text["fivetodos"]);
 				this.translate.get(text[tutorialPart]).subscribe( alertMessage => {
-			  		console.log(alertMessage);
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
 				      	{
@@ -607,10 +607,9 @@ export class HomePage {
 					        }
 				      	}, 
 				      	{
-				      		text: alertMessage["Later"]
+				      		text: alertMessage["Later"],
 				      	}
 				    ];
-				    console.log(buttons);
 			  		this.alertCtrl.create({
 						message: alertMessage[tutorialPart],
 						buttons: buttons[tutorialPart]
@@ -623,7 +622,16 @@ export class HomePage {
   	}
 
   	startFivetodos() {
-
+  		this.modalCtrl.create({ 
+			component: FivetodosModalPage
+		}).then( modal => {
+			modal.present();
+			modal.onDidDismiss().then( data => {
+				if(data.data) {
+					console.log(data.data);
+				}
+			});
+		});
   	}
 
   	goToCapturePage() {
