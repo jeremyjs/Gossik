@@ -3,4 +3,6 @@ export interface User {
     email: string;
     tutorial: any;
     signUpDate: string;
+    goals?: any;
+    nextActions?: any;
 }

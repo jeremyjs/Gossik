@@ -39,7 +39,7 @@ export class DatabaseService {
                     userid: userid,
                     name: translation["Tutorial"],
                     color: '#F38787',
-                    active?: true
+                    active: true
                 }
             };
             this.userData.nextActions = {
@@ -67,6 +67,7 @@ export class DatabaseService {
         this.db.database.goOnline();
     }
 
+    /*
     addTutorial(userid) {
         this.db.object<any>('users/' + userid).valueChanges().pipe(take(1)).subscribe( user => {
             if(!user.hasOwnProperty('tutorial')) {
@@ -74,6 +75,7 @@ export class DatabaseService {
             }
         });
     }
+    */
 
     getTutorialList(userid) {
         return this.db.object('users/' + userid + '/tutorial');

@@ -311,7 +311,6 @@ export class HomePage {
 			user => {
 			  if (user) {
 				this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
-				this.db.addTutorial(this.auth.userid);
 			  	if(this.isApp && this.platform.is('cordova')) {
 			  		this.firebase.hasPermission().then( hasPermission => {
 			  			if(hasPermission) {
