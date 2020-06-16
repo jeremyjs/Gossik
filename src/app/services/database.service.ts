@@ -17,26 +17,11 @@ export class DatabaseService {
 
   	userData = {} as User;
     tutorial = {
-            'welcome': true,
-            'postit': true,
-            'postitDone': true,
-            'processPostit': true,
-            'createProject': true,
-            'action': true,
-            'actionDefinedDesktop': true,
-            'actionDefinedMobile': true,
-            'waitingFor': true,
-            'reference': true,
-            'calendar': true,
+            '5todos': true,
+            'thoughtprocessing': true,
             'projects': true,
-            'todo': true,
-            'todoTime': true,
-            'todoDone': true,
-            'goalFinished': true,
-            'goalNotFinished': true,
-            'projectOverview': true,
-            'finishAction': true,
-            'finishProject': true
+            'informations': true,
+            'calendar': true
         };
  
     constructor(
