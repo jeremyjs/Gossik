@@ -25,14 +25,17 @@ export class DatabaseService {
 	) { }
     
     createUser(userid, email) {
-        this.userData.email = email;
-        this.userData.tutorial = {
-            'fivetodos': true,
-            'thoughtprocessing': true,
-            'projects': true,
-            'informations': true,
-            'calendar': true
-        };
+        this.userData.profile = {
+            email: email,
+            tutorial: {
+                'fivetodos': true,
+                'thoughtprocessing': true,
+                'projects': true,
+                'informations': true,
+                'calendar': true
+            }
+        }
+        this.userData.profile["signUpDate"] = new Date().toISOString();
         this.translate.get(["Tutorial", "Define 5 todos"]).subscribe( translation => {
             this.userData.goals = {
                 tutorial: {
@@ -53,8 +56,6 @@ export class DatabaseService {
                     active: true
                 }
             };
-            this.userData.signUpDate = new Date().toISOString();
-            console.log(this.userData);
             return this.db.list('users').set(userid, this.userData);
         }); 
     }
@@ -82,10 +83,14 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/tutorial');
     }
 
+    getUserProfile(userid) {
+        return this.db.object('users/' + userid + '/profile');
+    }
+
     finishTutorial(userid, tutorialPart) {
         let tutorial = {}
         tutorial[tutorialPart] = false;
-        return this.db.list('users/' + userid).update('tutorial', tutorial);
+        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 
     sendFeedback(feedback, time, userid) {
@@ -111,12 +116,12 @@ export class DatabaseService {
     }
 
     changeLanguage(userid, language) {
-        return this.db.list('users').update(userid, {language: language});
+        return this.db.list('users/' + userid).update('profile', {language: language});
     }
 
     trackLogin(userid) {
         let now = new Date().toISOString();
-        return this.db.list('users').update(userid, {lastLogin: now});
+        return this.db.list('users/' + userid).update('profile', {lastLogin: now});
     }
 
     saveDeviceToken(userid, token) {

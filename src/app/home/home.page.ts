@@ -157,6 +157,7 @@ export class HomePage {
 	calendarLoaded: boolean = false;
 	skippedAllToDos: boolean = false;
 	duration: number;
+	userProfile: any;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -326,6 +327,9 @@ export class HomePage {
 				}
 				this.getStartedAction();
 				this.getGoals();
+				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
+					this.userProfile = userProfile;
+				});
 				if(this.platform.is('cordova')) {
 					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 						if(hasReadWritePermission) {
@@ -592,31 +596,33 @@ export class HomePage {
   	}
 
   	showTutorial(tutorialPart) {
-  		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
-			if(tutorial[tutorialPart]) {
-				let text = [];
-				text["fivetodos"] = [tutorialPart, "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
-				this.translate.get(text[tutorialPart]).subscribe( translation => {
-			  		let buttons = [];
-			  		buttons["fivetodos"] = [
-				      	{
-					        text: translation["Start introduction"],
-					        handler: () => {
-					        	this.presentToast(translation["Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"]);
-					        }
-				      	}, 
-				      	{
-				      		text: translation["Later"],
-				      	}
-				    ];
-			  		this.alertCtrl.create({
-						message: translation[tutorialPart],
-						buttons: buttons[tutorialPart]
-					}).then( alert => {
-						alert.present();
-					});
+  		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
+			this.userProfile = userProfile;
+			if(this.userProfile.tutorial[tutorialPart]) {
+			let text = [];
+			text["fivetodos"] = [tutorialPart, "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+			this.translate.get(text[tutorialPart]).subscribe( translation => {
+		  		let buttons = [];
+		  		buttons["fivetodos"] = [
+			      	{
+				        text: translation["Start introduction"],
+				        handler: () => {
+				        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+				        	this.presentToast(translation["Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"]);
+				        }
+			      	}, 
+			      	{
+			      		text: translation["Later"],
+			      	}
+			    ];
+		  		this.alertCtrl.create({
+					message: translation[tutorialPart],
+					buttons: buttons[tutorialPart]
+				}).then( alert => {
+					alert.present();
 				});
-			}
+			});
+		}
 		});
   	}
 
@@ -2238,14 +2244,24 @@ export class HomePage {
   	}
 
   	startAction(action) {
-  		action.taken = true;
-  		this.startedAction = action;
-		this.db.editAction(action, this.auth.userid);
-		this.pageTitle = "Started todo";
-		this.changePage('ActionPage');
-		this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
-	  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
-		});
+  		if(action.key == 'tutorial') {
+  			if(!this.userProfile.tutorial.fivetodos) {
+  				this.startFivetodos();
+  			} else {
+  				this.translate.get(["This todo is part of the tutorial, please start the tutorial first by reloading the 'Do' page."]).subscribe( translation => {
+  					this.presentToast(translation["This todo is part of the tutorial, please start the tutorial first by reloading the 'Do' page."]);
+  				})
+  			}
+  		} else {
+  			action.taken = true;
+	  		this.startedAction = action;
+			this.db.editAction(action, this.auth.userid);
+			this.pageTitle = "Started todo";
+			this.changePage('ActionPage');
+			this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
+		  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
+			});
+  		}
   	}
 
   	finishAction() {
