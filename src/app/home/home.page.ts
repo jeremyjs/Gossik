@@ -595,22 +595,22 @@ export class HomePage {
   		this.db.getTutorialList(this.auth.userid).valueChanges().pipe(take(1)).subscribe( tutorial => {
 			if(tutorial[tutorialPart]) {
 				let text = [];
-				text["fivetodos"] = [tutorialPart, "Start introduction", "Later"];
-				this.translate.get(text[tutorialPart]).subscribe( alertMessage => {
+				text["fivetodos"] = [tutorialPart, "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
 				      	{
-					        text: alertMessage["Start introduction"],
+					        text: translation["Start introduction"],
 					        handler: () => {
-					        	this.startFivetodos()
+					        	this.presentToast(translation["Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"]);
 					        }
 				      	}, 
 				      	{
-				      		text: alertMessage["Later"],
+				      		text: translation["Later"],
 				      	}
 				    ];
 			  		this.alertCtrl.create({
-						message: alertMessage[tutorialPart],
+						message: translation[tutorialPart],
 						buttons: buttons[tutorialPart]
 					}).then( alert => {
 						alert.present();

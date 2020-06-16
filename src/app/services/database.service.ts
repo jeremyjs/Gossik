@@ -54,6 +54,7 @@ export class DatabaseService {
                 }
             };
             this.userData.signUpDate = new Date().toISOString();
+            console.log(this.userData);
             return this.db.list('users').set(userid, this.userData);
         }); 
     }
