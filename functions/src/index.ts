@@ -106,6 +106,8 @@ exports.AnimateThoughtsPush = functions.pubsub.schedule('*/5 * * * *').onRun((co
 exports.checkInactivePush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
+   			let timeNowMiliseconds = new Date().getTime();
+   			let timeNowSeconds = timeNowMiliseconds/1000;
 			let lastLoginTimeMiliseconds = new Date(user.val().profile.lastLogin).getTime();
    			let lastLoginTimeSeconds = lastLoginTimeMiliseconds/1000;
    			if(timeNowSeconds - lastLoginTimeSeconds >= 172800 && timeNowSeconds - lastLoginTimeSeconds < 173100) {
@@ -233,13 +235,39 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
-exports.checkInactive Push = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+/*
+exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-
+			let profile = { 
+				profile: {
+					language: 'en',
+	   				email: user.val().email,
+	   				lastLogin: new Date().toISOString(),
+	   				signUpDate: new Date().toISOString(),
+	   				tutorial: {
+		                'fivetodos': true,
+		                'thoughtprocessing': true,
+		                'projects': true,
+		                'informations': true,
+		                'calendar': true
+		            }
+				}
+   			};
+   			if(user.val().language) {
+   				profile.profile.language = user.val().language;
+   			}
+   			if(user.val().lastLogin) {
+   				profile.profile.lastLogin = user.val().lastLogin;
+   			}
+   			if(user.val().signUpDate) {
+   				profile.profile.signUpDate = user.val().signUpDate;
+   			}
+   			user.ref.update(profile);
    		})
    });
    return null;
      }
 );
+*/
 
