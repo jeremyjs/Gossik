@@ -11,10 +11,9 @@ admin.initializeApp();
 
 exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((newPush, context) => {
 	let push = newPush.val();
-	console.log(push);
 	admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-   			if(user.val().language == 'de') {
+   			if(user.val().profile.language == 'de') {
    				let payload = {
 		            notification: {
 		                title: 'Tipp des Tages',
@@ -54,13 +53,12 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
    	return null;
 });
 
-exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
-   console.log('running');
-   admin.database().ref('/users').once("value", function(users) {
+exports.AnimateThoughtsPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
    			let timeNowMiliseconds = new Date().getTime();
    			let timeNowSeconds = timeNowMiliseconds/1000;
-   			let signUpDateTimeMiliseconds = new Date(user.val().signUpDate).getTime();
+   			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
    			let signUpDateTimeSeconds = signUpDateTimeMiliseconds/1000;
    			if(timeNowSeconds - signUpDateTimeSeconds >= 86400 && timeNowSeconds - signUpDateTimeSeconds < 86700) {
 				let message: any = {};
@@ -71,8 +69,8 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 				message['en'] = "Hey, it's me. I can help you best if you write down each thought as a post-it for me. Let's try it today!";
 				
 				let language = 'en';
-	    		if(user.val().language) {
-	   				language = user.val().language;
+	    		if(user.val().profile.language) {
+	   				language = user.val().profile.language;
 	   			}
 				let msg = message['en'];
 				let ttl = title['en'];
@@ -99,7 +97,16 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 		        	});
 			    });
 			}
-			let lastLoginTimeMiliseconds = new Date(user.val().lastLogin).getTime();
+		})
+   });
+   return null;
+     }
+);
+
+exports.checkInactivePush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let lastLoginTimeMiliseconds = new Date(user.val().profile.lastLogin).getTime();
    			let lastLoginTimeSeconds = lastLoginTimeMiliseconds/1000;
    			if(timeNowSeconds - lastLoginTimeSeconds >= 172800 && timeNowSeconds - lastLoginTimeSeconds < 173100) {
 				let message: any = {};
@@ -110,8 +117,8 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 				message['en'] = "Hey, I haven't heard from you in a while. Everything okay? I'd love to help you, use me for a project to convince you!";
 				
 				let language = 'en';
-	    		if(user.val().language) {
-	   				language = user.val().language;
+	    		if(user.val().profile.language) {
+	   				language = user.val().profile.language;
 	   			}
 				let msg = message['en'];
 				let ttl = title['en'];
@@ -138,6 +145,15 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 		        	});
 			    });
 			}
+		})
+   });
+   return null;
+     }
+);
+
+exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
    			admin.database().ref('/users/' + user.key + '/calendarEvents').once("value", function(calendarEvents) {
    				calendarEvents.forEach(function(calendarEvent) {
    					let eventStartTimeMiliseconds = new Date(calendarEvent.val().startTime).getTime();
@@ -149,8 +165,8 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 					    ref.once("value", function(devices) {
 					    	devices.forEach(function(device) {
 					    		let language = 'en';
-					    		if(user.val().language) {
-					   				language = user.val().language;
+					    		if(user.val().profile.language) {
+					   				language = user.val().profile.language;
 					   			}
 					   			let message: any = {};
 					   			message['de'] = 'Beginnt in Kürze.';
@@ -176,8 +192,8 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 					    ref.once("value", function(devices) {
 					    	devices.forEach(function(device) {
 					    		let language = 'en';
-					    		if(user.val().language) {
-					   				language = user.val().language;
+					    		if(user.val().profile.language) {
+					   				language = user.val().profile.language;
 					   			}
 					   			let message: any = {};
 					   			let send: boolean = false;
@@ -209,8 +225,18 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 						        }
 						     });});
 					}
-   				})
-   			})
+   				});
+   			});
+   		})
+   });
+   return null;
+     }
+);
+
+exports.checkInactive Push = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+
    		})
    });
    return null;
