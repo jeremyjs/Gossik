@@ -53,7 +53,7 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
    	return null;
 });
 
-exports.AnimateThoughtsPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+exports.AnimateThoughtsPush = functions.pubsub.schedule('0 12 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
    			let timeNowMiliseconds = new Date().getTime();
@@ -103,7 +103,7 @@ exports.AnimateThoughtsPush = functions.pubsub.schedule('*/5 * * * *').onRun((co
      }
 );
 
-exports.checkInactivePush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
+exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
    			let timeNowMiliseconds = new Date().getTime();
