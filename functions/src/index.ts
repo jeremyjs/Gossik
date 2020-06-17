@@ -235,6 +235,22 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
+exports.tutorialFivetodosPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+   			if(user.key == '1URqxqnA0ag7wa5bW9ty8Snz3p53') {
+   				console.log('leggo');
+   				admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
+	   				console.log('found');
+	   				console.log(action.val());
+	   			});
+   			}
+   		})
+   });
+   return null;
+     }
+);
+
 /*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
