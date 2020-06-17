@@ -175,6 +175,7 @@ export class DatabaseService {
     
     deleteAction(action: Action, userid) {
         action.active = false;
+        action.endDate = new Date().toISOString();
         return this.editAction(action, userid).then( () =>
             {
                 if(action.deadline) {

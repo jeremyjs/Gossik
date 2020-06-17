@@ -2278,6 +2278,7 @@ export class HomePage {
   		if(action.key == 'tutorial') {
   			if(!this.userProfile.tutorial.fivetodos) {
   				action.taken = true;
+  				action.startDate = new Date().toISOString();
 		  		this.startedAction = action;
 				this.db.editAction(action, this.auth.userid);
 				this.pageTitle = "Started todo";
@@ -2290,6 +2291,7 @@ export class HomePage {
   			}
   		} else {
   			action.taken = true;
+  			action.startDate = new Date().toISOString();
 	  		this.startedAction = action;
 			this.db.editAction(action, this.auth.userid);
 			this.pageTitle = "Started todo";

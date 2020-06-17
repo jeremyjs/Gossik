@@ -11,4 +11,6 @@ export interface Action {
     time: number;
     taken: boolean;
     active?: boolean;
+    startDate?: string;
+    endDate?: string;
 }
