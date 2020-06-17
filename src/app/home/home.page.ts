@@ -152,7 +152,7 @@ export class HomePage {
 	allDayLabel: any;
 	pageTitle: string;
 	cameFromProjectOverviewPage: boolean;
-	cameFromGoalNotFinishedPage: boolean;
+	cameFromFinishActionPage: boolean;
 	cameFromProcessPage: boolean;
 	calendarLoaded: boolean = false;
 	skippedAllToDos: boolean = false;
@@ -633,6 +633,21 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				if(data.data) {
+					for(let actionContent of data.data) {
+						let todo: Action = {
+						    userid: this.auth.userid,
+						    goalid: 'tutorial',
+						    content: actionContent.content,
+						    priority: 3,
+						    time: 20,
+						    taken: false,
+						    active: true
+						}
+						this.db.addAction(todo, {} as Capture, this.auth.userid);
+					}
+					this.translate.get(["5 todos have been created, you can finish the current todo now"]).subscribe( translation => {
+				  		this.presentToast(translation["5 todos have been created, you can finish the current todo now"]);
+					});
 					console.log(data.data);
 				}
 			});
@@ -763,7 +778,7 @@ export class HomePage {
   			this.captureType = undefined;
     	}
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
-    	this.cameFromGoalNotFinishedPage = (origin == 'GoalNotFinishedPage');
+    	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
@@ -774,7 +789,7 @@ export class HomePage {
     	} else if(this.cameFromProcessPage){
     		this.pageTitle = "Process thought";
     		this.capturePlaceholder = "Define action or reference";
-    	} else if (this.cameFromGoalNotFinishedPage) {
+    	} else if (this.cameFromFinishActionPage) {
     		this.pageTitle = "Define action";
     		this.capturePlaceholder = "Define action";
     	}
@@ -937,7 +952,7 @@ export class HomePage {
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
-  		} else if (this.cameFromGoalNotFinishedPage) {
+  		} else if (this.cameFromFinishActionPage) {
   			this.db.deleteAction(this.startedAction, this.auth.userid);
   			this.startedAction = {} as Action;
   			this.goToToDoPage();
@@ -1293,7 +1308,7 @@ export class HomePage {
 			if(nextActionArray.length == 1) {
 				this.pageCtrl = 'actionFinished';
 			} else {
-				this.goalNotFinished();
+				this.finishAction();
 			}
 		});
 	}
@@ -1304,8 +1319,24 @@ export class HomePage {
 		this.pageCtrl = 'actionAborted';
 	}
 
-	goalNotFinished() {
-		this.viewpoint = 'GoalNotFinishedPage';
+	finishAction() {
+		if(this.startedAction.key == 'tutorial') {
+			this.noFollowUpTodoRequired();
+			this.translate.get(["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!", "OK"]).subscribe( translation => {
+        		this.alertCtrl.create({
+					message: translation["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!"],
+					buttons: [
+						    	{
+							        text: translation["OK"]
+						      	}
+						    ]
+				}).then( alert => {
+					alert.present();
+				});
+        	});
+		} else {
+			this.viewpoint = 'FinishActionPage';
+		}
 	}
 
 	defineFollowUpTodoLater() {
@@ -1332,7 +1363,7 @@ export class HomePage {
 			let capture = {} as Capture;
 			data.key = this.startedAction.goalid;
 			capture.content = this.startedAction.content;
-			this.goToProcessCapturePage(capture, data, 'action', 'GoalNotFinishedPage');
+			this.goToProcessCapturePage(capture, data, 'action', 'FinishActionPage');
 		});
 	}
 
@@ -2246,6 +2277,11 @@ export class HomePage {
   	startAction(action) {
   		if(action.key == 'tutorial') {
   			if(!this.userProfile.tutorial.fivetodos) {
+  				action.taken = true;
+		  		this.startedAction = action;
+				this.db.editAction(action, this.auth.userid);
+				this.pageTitle = "Started todo";
+				this.changePage('ActionPage');
   				this.startFivetodos();
   			} else {
   				this.translate.get(["This todo is part of the tutorial, please start the tutorial first by reloading the 'Do' page."]).subscribe( translation => {
@@ -2262,10 +2298,6 @@ export class HomePage {
 		  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
 			});
   		}
-  	}
-
-  	finishAction() {
-  		this.goalNotFinished();
   	}
 
   	stopAction() {
