@@ -9,6 +9,11 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
+function convertDateToLocaleDate(date, offset) {
+	let convertedDate = new Date(date.getTime() - offset*60*1000);
+	return convertedDate;
+}
+
 exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((newPush, context) => {
 	let push = newPush.val();
 	admin.database().ref('/users').once("value", function(users) {
@@ -238,41 +243,82 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-   			if(user.key == '1URqxqnA0ag7wa5bW9ty8Snz3p53') {
-   				admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
-	   				let timeNowMiliseconds = new Date().getTime();
-	   				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
-	   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
-	   					let ref = admin.database().ref('/users/' + user.key + '/devices');
-					    ref.once("value", function(devices) {
-					    	devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-	   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
-	   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
-		   						let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: "Gossik",
-						                body: msg
-						            },
-						            data: {
-						              	title: "Gossik",
-						                body: msg
-						            }
-						        };
-						       	admin.messaging().sendToDevice(device.val(), payload);
-						     });
-					    });
-	   				}
-	   			});
-   			}
+			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
+   				let timeNowMiliseconds = new Date().getTime();
+   				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
+   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
+   					let ref = admin.database().ref('/users/' + user.key + '/devices');
+				    ref.once("value", function(devices) {
+				    	devices.forEach(function(device) {
+				    		let language = 'en';
+				    		if(user.val().profile.language) {
+				   				language = user.val().profile.language;
+				   			}
+				   			let message: any = {};
+   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
+   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
+	   						let msg = message['en'];
+				   			if(message[language]) {
+				   				msg = message[language];
+				   			}
+				    		let payload = {
+					            notification: {
+					                title: "Gossik",
+					                body: msg
+					            },
+					            data: {
+					              	title: "Gossik",
+					                body: msg
+					            }
+					        };
+					       	admin.messaging().sendToDevice(device.val(), payload);
+					     });
+				    });
+				}
+   			});
+   		})
+   });
+   return null;
+     }
+);
+
+exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
+   				let timeNowMiliseconds = new Date().getTime();
+   				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
+   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
+   					let ref = admin.database().ref('/users/' + user.key + '/devices');
+				    ref.once("value", function(devices) {
+				    	devices.forEach(function(device) {
+				    		let language = 'en';
+				    		if(user.val().profile.language) {
+				   				language = user.val().profile.language;
+				   			}
+				   			let message: any = {};
+   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
+   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
+	   						let msg = message['en'];
+				   			if(message[language]) {
+				   				msg = message[language];
+				   			}
+				    		let payload = {
+					            notification: {
+					                title: "Gossik",
+					                body: msg
+					            },
+					            data: {
+					              	title: "Gossik",
+					                body: msg
+					            }
+					        };
+					       	admin.messaging().sendToDevice(device.val(), payload);
+					     });
+				    });
+				    admin.database().ref('/users/' + user.key + '/profile/tutorial').update({ thoughtprocessing: false});
+   				}
+   			});
    		})
    });
    return null;

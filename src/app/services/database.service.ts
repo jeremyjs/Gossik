@@ -33,7 +33,8 @@ export class DatabaseService {
                 'projects': true,
                 'informations': true,
                 'calendar': true
-            }
+            },
+            timezoneOffset: new Date().getTimezoneOffset()
         }
         this.userData.profile["signUpDate"] = new Date().toISOString();
         this.translate.get(["Tutorial", "Define 5 todos"]).subscribe( translation => {
@@ -91,6 +92,10 @@ export class DatabaseService {
         let tutorial = {}
         tutorial[tutorialPart] = false;
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    }
+
+    updateTimezoneOffset(userid, timezoneOffset) {
+        return this.db.list('users/' + userid).update('profile', {timezoneOffset: timezoneOffset});
     }
 
     sendFeedback(feedback, time, userid) {

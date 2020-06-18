@@ -306,6 +306,13 @@ export class HomePage {
 		}
 	}
 
+	updateTimezoneOffset() {
+		let timezoneOffset = new Date().getTimezoneOffset();
+		if (!this.userProfile.timezoneOffset || (this.userProfile.timezoneOffset && this.userProfile.timezoneOffset != timezoneOffset)) {
+			this.db.updateTimezoneOffset(this.auth.userid, timezoneOffset);
+		}
+	}
+
 	ngOnInit() {
   		this.auth.afAuth.authState
 		.subscribe(
@@ -329,6 +336,7 @@ export class HomePage {
 				this.getGoals();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					this.updateTimezoneOffset();
 				});
 				if(this.platform.is('cordova')) {
 					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
