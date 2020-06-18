@@ -9,7 +9,7 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
-function convertDateToLocaleDate(date, offset) {
+function convertDateToLocaleDate(date: Date, offset: number) {
 	let convertedDate = new Date(date.getTime() - offset*60*1000);
 	return convertedDate;
 }
@@ -282,42 +282,47 @@ exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((co
      }
 );
 
-exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
-   				let timeNowMiliseconds = new Date().getTime();
-   				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
-   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
-   					let ref = admin.database().ref('/users/' + user.key + '/devices');
-				    ref.once("value", function(devices) {
-				    	devices.forEach(function(device) {
-				    		let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
-   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
-	   						let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg
-					            }
-					        };
-					       	admin.messaging().sendToDevice(device.val(), payload);
-					     });
-				    });
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').update({ thoughtprocessing: false});
-   				}
+   				if(action.val().endDate) {
+   					let timeNowMiliseconds = new Date().getTime();
+   					let endDateMiliseconds = new Date(action.val().endDate).getTime();
+   					let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+   					// TODO: Check if there are any thoughts
+   					console.log('time');
+   					console.log(timeNowConverted.getHours());
+   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000 + 3600 && timeNowConverted.getHours() == 20) {
+   						let ref = admin.database().ref('/users/' + user.key + '/devices');
+					    ref.once("value", function(devices) {
+					    	devices.forEach(function(device) {
+					    		let language = 'en';
+					    		if(user.val().profile.language) {
+					   				language = user.val().profile.language;
+					   			}
+					   			let message: any = {};
+	   							message['de'] = "Hey, hier bin ich wieder. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
+	   							message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+		   						let msg = message['en'];
+					   			if(message[language]) {
+					   				msg = message[language];
+					   			}
+					    		let payload = {
+						            notification: {
+						                title: "Gossik",
+						                body: msg
+						            },
+						            data: {
+						              	title: "Gossik",
+						                body: msg
+						            }
+						        };
+						       	admin.messaging().sendToDevice(device.val(), payload);
+						     });
+					    });
+   					}
+				}
    			});
    		})
    });
