@@ -14,6 +14,7 @@ function convertDateToLocaleDate(date: Date, offset: number) {
 	return convertedDate;
 }
 
+
 exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((newPush, context) => {
 	let push = newPush.val();
 	admin.database().ref('/users').once("value", function(users) {
@@ -282,44 +283,55 @@ exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((co
      }
 );
 
-exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
+exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
-   				if(action.val().endDate) {
+   				if(action.val() && action.val().endDate) {
    					let timeNowMiliseconds = new Date().getTime();
    					let endDateMiliseconds = new Date(action.val().endDate).getTime();
    					let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-   					// TODO: Check if there are any thoughts
-   					console.log('time');
-   					console.log(timeNowConverted.getHours());
-   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000 + 3600 && timeNowConverted.getHours() == 20) {
-   						let ref = admin.database().ref('/users/' + user.key + '/devices');
-					    ref.once("value", function(devices) {
-					    	devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-	   							message['de'] = "Hey, hier bin ich wieder. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
-	   							message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
-		   						let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: "Gossik",
-						                body: msg
-						            },
-						            data: {
-						              	title: "Gossik",
-						                body: msg
-						            }
-						        };
-						       	admin.messaging().sendToDevice(device.val(), payload);
-						     });
+   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000*2 && timeNowConverted.getHours() == 20) {
+   						let numberThoughts: number = 0;
+   						admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
+					    	thoughts.forEach(function(thought) {
+					    		numberThoughts += 1;
+					    	});
+					    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+					    		devices.forEach(function(device) {
+						    		let language = 'en';
+						    		if(user.val().profile.language) {
+						   				language = user.val().profile.language;
+						   			}
+						   			let message: any = {};
+						   			if(numberThoughts >= 1) {
+		   								message['de'] = "Hey, hier bin ich wieder. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
+		   								message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('false');
+			   						} else {
+			   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
+			   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
+			   							let newEndDate = new Date();
+			   							newEndDate.setHours(newEndDate.getHours() -3);
+			   							admin.database().ref('/users/' + user.key + '/nextActions/tutorial').child('endDate').set(newEndDate.toISOString());
+			   						}
+			   						let msg = message['en'];
+						   			if(message[language]) {
+						   				msg = message[language];
+						   			}
+						    		let payload = {
+							            notification: {
+							                title: "Gossik",
+							                body: msg
+							            },
+							            data: {
+							              	title: "Gossik",
+							                body: msg
+							            }
+							        };
+							       	admin.messaging().sendToDevice(device.val(), payload);
+							    });
+						    });
 					    });
    					}
 				}
