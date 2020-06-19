@@ -608,7 +608,8 @@ export class HomePage {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
 			let text = [];
-			text["fivetodos"] = [tutorialPart, "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+			text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+			text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
 			this.translate.get(text[tutorialPart]).subscribe( translation => {
 		  		let buttons = [];
 		  		buttons["fivetodos"] = [
@@ -622,6 +623,14 @@ export class HomePage {
 			      	{
 			      		text: translation["Later"],
 			      	}
+			    ];
+			    buttons["gettingToKnowPush"] = [
+			    	{
+			    		text: translation["OK"],
+			    		handler: () => {
+			    			this.db.finishTutorial(this.auth.userid, tutorialPart);
+			    		}
+			    	}
 			    ];
 		  		this.alertCtrl.create({
 					message: translation[tutorialPart],
@@ -1330,6 +1339,9 @@ export class HomePage {
 	finishAction() {
 		if(this.startedAction.key == 'tutorial') {
 			this.noFollowUpTodoRequired();
+			setTimeout( () => {
+				this.db.startTutorial(this.auth.userid, 'gettingToKnowPush');
+			}, 5000);
 			this.translate.get(["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!", "OK"]).subscribe( translation => {
         		this.alertCtrl.create({
 					message: translation["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!"],
@@ -1379,7 +1391,7 @@ export class HomePage {
 		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
 			this.startedAction = {} as Action;
 			this.goToToDoPage();
-		})
+		});
 	}
 
 	// ProjectsPage functions
@@ -2050,6 +2062,7 @@ export class HomePage {
   	// ToDoPage functions
 	goToToDoPage() {
 		this.showTutorial('fivetodos');
+		this.showTutorial('gettingToKnowPush');
 		this.duration = 0;
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 		.snapshotChanges()
