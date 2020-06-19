@@ -29,10 +29,10 @@ export class DatabaseService {
             email: email,
             tutorial: {
                 'fivetodos': true,
-                'thoughtprocessing': true,
-                'projects': true,
-                'informations': true,
-                'calendar': true,
+                'thoughtprocessing': false,
+                'projects': false,
+                'informations': false,
+                'calendar': false,
                 'gettingToKnowPush': false
             },
             timezoneOffset: new Date().getTimezoneOffset()

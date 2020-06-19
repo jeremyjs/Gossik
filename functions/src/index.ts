@@ -307,7 +307,7 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 						   			if(numberThoughts >= 1) {
 		   								message['de'] = "Hey, hier bin ich wieder. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
 		   								message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
-			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('false');
+			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
 			   						} else {
 			   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
 			   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
