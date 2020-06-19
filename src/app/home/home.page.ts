@@ -397,6 +397,21 @@ export class HomePage {
 	    toast.present();
   	}
 
+  	presentAlert(alertMessage) {
+  		this.translate.get([alertMessage, "OK"]).subscribe( translation => {
+  			this.alertCtrl.create({
+				message: translation[alertMessage],
+				buttons: [
+					      	{
+						        text: translation["OK"]
+					      	}
+					    ]
+			}).then( alert => {
+				alert.present();
+			});
+  		})
+  	}
+
   	goToPrivacyPolicyPage() {
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
   	}
@@ -607,39 +622,39 @@ export class HomePage {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
-			let text = [];
-			text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
-			text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
-			this.translate.get(text[tutorialPart]).subscribe( translation => {
-		  		let buttons = [];
-		  		buttons["fivetodos"] = [
-			      	{
-				        text: translation["Start introduction"],
-				        handler: () => {
-				        	this.db.finishTutorial(this.auth.userid, tutorialPart);
-				        	this.presentToast(translation["Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"]);
-				        }
-			      	}, 
-			      	{
-			      		text: translation["Later"],
-			      	}
-			    ];
-			    buttons["gettingToKnowPush"] = [
-			    	{
-			    		text: translation["OK"],
-			    		handler: () => {
-			    			this.db.finishTutorial(this.auth.userid, tutorialPart);
-			    		}
-			    	}
-			    ];
-		  		this.alertCtrl.create({
-					message: translation[tutorialPart],
-					buttons: buttons[tutorialPart]
-				}).then( alert => {
-					alert.present();
+				let text = [];
+				text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
+				this.translate.get(text[tutorialPart]).subscribe( translation => {
+			  		let buttons = [];
+			  		buttons["fivetodos"] = [
+				      	{
+					        text: translation["Start introduction"],
+					        handler: () => {
+					        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+					        	this.presentAlert("Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'");
+					        }
+				      	}, 
+				      	{
+				      		text: translation["Later"],
+				      	}
+				    ];
+				    buttons["gettingToKnowPush"] = [
+				    	{
+				    		text: translation["OK"],
+				    		handler: () => {
+				    			this.db.finishTutorial(this.auth.userid, tutorialPart);
+				    		}
+				    	}
+				    ];
+			  		this.alertCtrl.create({
+						message: translation[tutorialPart],
+						buttons: buttons[tutorialPart]
+					}).then( alert => {
+						alert.present();
+					});
 				});
-			});
-		}
+			}
 		});
   	}
 
@@ -662,10 +677,7 @@ export class HomePage {
 						}
 						this.db.addAction(todo, {} as Capture, this.auth.userid);
 					}
-					this.translate.get(["5 todos have been created, you can finish the current todo now"]).subscribe( translation => {
-				  		this.presentToast(translation["5 todos have been created, you can finish the current todo now"]);
-					});
-					console.log(data.data);
+					this.presentAlert("5 todos have been created, you can finish the current todo now");
 				}
 			});
 		});
