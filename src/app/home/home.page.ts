@@ -625,6 +625,7 @@ export class HomePage {
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
+				text["thoughts"] = ["thoughts", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -640,6 +641,14 @@ export class HomePage {
 				      	}
 				    ];
 				    buttons["gettingToKnowPush"] = [
+				    	{
+				    		text: translation["OK"],
+				    		handler: () => {
+				    			this.db.finishTutorial(this.auth.userid, tutorialPart);
+				    		}
+				    	}
+				    ];
+				    buttons["thoughts"] = [
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
@@ -733,6 +742,7 @@ export class HomePage {
 
   	goToProcessPage() {
   		this.pageTitle = "Thoughts ready to process";
+  		this.showTutorial('thoughts');
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(

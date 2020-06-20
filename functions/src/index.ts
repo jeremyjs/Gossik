@@ -248,16 +248,15 @@ exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((co
    				let timeNowMiliseconds = new Date().getTime();
    				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
    				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
-   					let ref = admin.database().ref('/users/' + user.key + '/devices');
-				    ref.once("value", function(devices) {
+   					admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 				    	devices.forEach(function(device) {
 				    		let language = 'en';
 				    		if(user.val().profile.language) {
 				   				language = user.val().profile.language;
 				   			}
 				   			let message: any = {};
-   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
-   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
+   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
+   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
 	   						let msg = message['en'];
 				   			if(message[language]) {
 				   				msg = message[language];
@@ -275,6 +274,7 @@ exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((co
 					       	admin.messaging().sendToDevice(device.val(), payload);
 					     });
 				    });
+				  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set('true');  
 				}
    			});
    		})
@@ -305,8 +305,8 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 						   			}
 						   			let message: any = {};
 						   			if(numberThoughts >= 1) {
-		   								message['de'] = "Hey, hier bin ich wieder. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
-		   								message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+		   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
+		   								message['en'] = "Hey, here I am again. Really interesting, what kind of thoughts you have. Joke, data privacy is very important to us and nobody will ever see your data. Only I will learn from your data to better support you, if you allow me to do that. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
 			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
 			   						} else {
 			   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
@@ -332,6 +332,9 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 							       	admin.messaging().sendToDevice(device.val(), payload);
 							    });
 						    });
+						    if(numberThoughts >= 1) {
+						    	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');	
+						    }
 					    });
    					}
 				}

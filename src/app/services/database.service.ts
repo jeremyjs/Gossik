@@ -33,7 +33,8 @@ export class DatabaseService {
                 'projects': false,
                 'informations': false,
                 'calendar': false,
-                'gettingToKnowPush': false
+                'gettingToKnowPush': false,
+                'thoughts': false
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
