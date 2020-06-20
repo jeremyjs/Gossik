@@ -241,7 +241,7 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
-exports.tutorialFivetodosPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+exports.tutorialthoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {

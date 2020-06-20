@@ -626,6 +626,7 @@ export class HomePage {
 				text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
+				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later", "Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it."];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -655,6 +656,18 @@ export class HomePage {
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart);
 				    		}
 				    	}
+				    ];
+				    buttons["thoughtprocessing"] = [
+				      	{
+					        text: translation["Start"],
+					        handler: () => {
+					        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+					        	this.presentAlert("Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it.");
+					        }
+				      	}, 
+				      	{
+				      		text: translation["Later"],
+				      	}
 				    ];
 			  		this.alertCtrl.create({
 						message: translation[tutorialPart],
