@@ -630,6 +630,7 @@ export class HomePage {
 				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
 				text["process"] = ["process", "OK"];
 				text["projects"] = ["projects", "Start", "Later"];
+				text["calendar"] = ["calendar", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -690,6 +691,15 @@ export class HomePage {
 				    	},
 				    	{
 				    		text: translation["Later"]
+				    	}
+				    ];
+				    buttons["calendar"] = [
+				    	{
+				    		text: translation["OK"],
+				    		handler: () => {
+				    			this.presentAlert("Congrats, you made it through the whole tutorial! I hope I was able to show you what I want to learn and do for you. Of course, my functionalities will continuously be improved and new ones will be added as well, so that I can support you even more in the future! It would be amazing if you could give as much feedback as possible (on the 'Settings' page). Whatever you need or want, please provide feedback. Okay, enough words, you are ready and I hope I can help you achieve your goals and dreams. Let's go!");
+				    			this.db.finishTutorial(this.auth.userid, 'calendar');
+				    		}
 				    	}
 				    ];
 			  		this.alertCtrl.create({
@@ -1742,6 +1752,7 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
+  		this.showTutorial('calendar');
   		this.calendarLoaded = false;
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
