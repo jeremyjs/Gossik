@@ -37,7 +37,7 @@ import { ChangeWeekModalPageModule } from './change-week-modal/change-week-modal
 import { AssignProjectModalPageModule } from './assign-project-modal/assign-project-modal.module';
 import { ToDoFilterModalPageModule } from './to-do-filter-modal/to-do-filter-modal.module';
 import { FivetodosModalPageModule } from './fivetodos-modal/fivetodos-modal.module';
-
+import { TutorialProjectsModalPageModule } from './tutorial-projects-modal/tutorial-projects-modal.module';
 
 import { DatePickerModule } from 'ionic4-date-picker';
 
@@ -84,6 +84,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     AssignProjectModalPageModule,
     ToDoFilterModalPageModule,
     FivetodosModalPageModule,
+    TutorialProjectsModalPageModule,
     DatePickerModule,
     NgCalendarModule
   	],

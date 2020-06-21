@@ -61,6 +61,10 @@ const routes: Routes = [
     path: 'fivetodos-modal',
     loadChildren: () => import('./fivetodos-modal/fivetodos-modal.module').then( m => m.FivetodosModalPageModule)
   },
+  {
+    path: 'tutorial-projects-modal',
+    loadChildren: () => import('./tutorial-projects-modal/tutorial-projects-modal.module').then( m => m.TutorialProjectsModalPageModule)
+  },
 ];
 
 @NgModule({

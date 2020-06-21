@@ -1,5 +1,6 @@
 {
   "5 todos have been created, you can finish the current todo now": "5 todos have been created, you can finish the current todo now",
+  "A new project has been created and is shown below. Click on it to assign the todo to this project.": "A new project has been created and is shown below. Click on it to assign the todo to this project.",
   "A new todo for which I can help you get it done, great. We can do it!": "A new todo for which I can help you get it done, great. We can do it!",
   "Abort": "Abort",
   "Accomplished": "Accomplished",
@@ -49,6 +50,7 @@
   "Do": "Do",
   "Do todos": "Do todos",
   "Done": "Done",
+  "Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'Overview' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.": "Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'Overview' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.",
   "Do you want to start with this action?": "Do you want to start with this todo?",
   "Duration": "Duration",
   "Edit": "Edit",

@@ -31,7 +31,8 @@ import { CalendarEventModalPage } from '../calendar-event-modal/calendar-event-m
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
 import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
-import  { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
+import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
+import { TutorialProjectsModalPage } from '../tutorial-projects-modal/tutorial-projects-modal.page';
 
 
 import * as moment from 'moment';
@@ -628,6 +629,7 @@ export class HomePage {
 				text["thoughts"] = ["thoughts", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
 				text["process"] = ["process", "OK"];
+				text["projects"] = ["projects", "Start", "Later"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -668,7 +670,7 @@ export class HomePage {
 					        }
 				      	}, 
 				      	{
-				      		text: translation["Later"],
+				      		text: translation["Later"]
 				      	}
 				    ];
 				    buttons["process"] = [
@@ -677,6 +679,17 @@ export class HomePage {
 				    		handler: () => {
 				    			this.presentAlert("We took a shortcut to define the first 5 todos. From now on, you need to declare a duration and priority for each todo because then I can better learn from you and know, what todos could be done when. This also helps you, because at any time I will show you only the relevant todos and you waste less time to find the right one. You can add additional characteristics to a todo, for example, you can set a deadline.");
 				    		}
+				    	}
+				    ];
+				    buttons["projects"] = [
+				    	{
+				    		text: translation["Start"],
+				    		handler: () => {
+				    			this.tutorialAssignTodos();
+				    		}
+				    	},
+				    	{
+				    		text: translation["Later"]
 				    	}
 				    ];
 			  		this.alertCtrl.create({
@@ -713,6 +726,51 @@ export class HomePage {
 				}
 			});
 		});
+  	}
+
+  	tutorialAssignTodos() {
+  		this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+	  	.snapshotChanges()
+	  	.pipe(take(1),
+			map(
+				changes => { 
+					return changes.map( c => {
+						let action: Action = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return action;
+				});
+			})
+		);
+	    this.actionList.subscribe( actionArray => {
+	      	this.actionArray = [];
+	        for(let action of actionArray) {
+	        	if(action.active != false) {
+					if(!action.taken) {
+					this.actionArray.push(action);
+					}
+				}
+	        }
+	        this.modalCtrl.create({ 
+				component: TutorialProjectsModalPage,
+				componentProps: {
+					goalArray: this.goalArray,
+					actionArray: this.actionArray,
+					goalDict: this.goalDict,
+					projectColors: this.projectColors
+				}
+			}).then( modal => {
+				modal.present();
+				modal.onDidDismiss().then( data => {
+					if(data.data && data.data == 'assigned') {
+						this.db.finishTutorial(this.auth.userid, 'projects');
+						this.goToProjectsPage();
+						this.presentAlert("Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'Overview' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.");
+						this.db.setNextTutorial(this.auth.userid, 'calendar');
+					}
+				});
+			});
+	    });
   	}
 
   	goToCapturePage() {
@@ -1498,6 +1556,7 @@ export class HomePage {
 			};
 	    });
 	    this.changePage('ProjectsPage');
+	    this.showTutorial('projects');
   	}
 	
 	reviewGoal(goal: Goal) {
@@ -1659,25 +1718,25 @@ export class HomePage {
 
   	deleteGoal(goal: Goal) {
   		this.translate.get(["Are you sure you want to delete this goal?", "No", "Delete"]).subscribe( alertMessage => {
-  		this.alertCtrl.create({
-			message: alertMessage["Are you sure you want to delete this goal?"],
-			buttons: [
-				    	{
-					        text: alertMessage["No"]
-				      	},
-				      	{
-					        text: alertMessage["Delete"],
-					        handler: () => {
-					        	this.translate.get(["Project deleted"]).subscribe( translation => {
-							      this.presentToast(translation["Project deleted"]);
-							    });
-					          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToProjectsPage());
-					        }
-				      	}
-				    ]
-		}).then( alert => {
-			alert.present();
-		});
+	  		this.alertCtrl.create({
+				message: alertMessage["Are you sure you want to delete this goal?"],
+				buttons: [
+					    	{
+						        text: alertMessage["No"]
+					      	},
+					      	{
+						        text: alertMessage["Delete"],
+						        handler: () => {
+						        	this.translate.get(["Project deleted"]).subscribe( translation => {
+								      this.presentToast(translation["Project deleted"]);
+								    });
+						          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToProjectsPage());
+						        }
+					      	}
+					    ]
+			}).then( alert => {
+				alert.present();
+			});
 		});
   	}
 
@@ -2123,71 +2182,92 @@ export class HomePage {
 		this.showTutorial('fivetodos');
 		this.showTutorial('gettingToKnowPush');
 		this.duration = 0;
-		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
-		.snapshotChanges()
-		.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let action: Action = { 
-							key: c.payload.key, ...c.payload.val()
-							};
-						return action;
-				});}));
-		this.takenActionList.subscribe( takenActionArray => {
-			this.takenActionArray = [];
-			for(let action of takenActionArray) {
-				if(action.active != false){
-					this.takenActionArray.push(action);
-				}
-			}
-			this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
-			if(this.takenActionListNotEmpty) {
-				this.startedAction = this.takenActionArray[0];
-			} else {
-				this.startedAction = {} as Action;
-			}
-			if(this.startedAction.key) {
-				this.pageTitle = "Finish started todo";
-				this.changePage('ActionPage');
-			} else {
-				this.pageTitle = "Do todos";
-				this.doableActionArray = [];
-				this.duration = 0;
-				this.doableActionArray = [];
-				this.goalKeyArray = [];
-		    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-				  	.snapshotChanges()
-				  	.pipe(take(1),
-						map(
-							changes => { 
-								return changes.map( c => {
-									let action: Action = { 
-										key: c.payload.key, ...c.payload.val()
-										};
-									return action;
+		this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let data: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return data;
+			});}));
+		this.goalList.subscribe(
+	      goalArray => {
+  			this.goalArray = [];
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+	        		this.goalDict[goal.key] = goal;
+	        		this.goalArray.push(goal);
+	        	}
+	        }
+	    	this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+			.snapshotChanges()
+			.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let action: Action = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return action;
 					});}));
-			    this.actionList.subscribe(
-			      actionArray => {
-			      	this.doableActionArray = [];
-			        for(let action of actionArray) {
-			        	if(action.active != false) {
-							if(!action.taken) {
-							this.doableActionArray.push(action);
+			this.takenActionList.subscribe( takenActionArray => {
+				this.takenActionArray = [];
+				for(let action of takenActionArray) {
+					if(action.active != false){
+						this.takenActionArray.push(action);
+					}
+				}
+				this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+				if(this.takenActionListNotEmpty) {
+					this.startedAction = this.takenActionArray[0];
+				} else {
+					this.startedAction = {} as Action;
+				}
+				if(this.startedAction.key) {
+					this.pageTitle = "Finish started todo";
+					this.changePage('ActionPage');
+				} else {
+					this.pageTitle = "Do todos";
+					this.doableActionArray = [];
+					this.duration = 0;
+					this.doableActionArray = [];
+					this.goalKeyArray = [];
+			    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+					  	.snapshotChanges()
+					  	.pipe(take(1),
+							map(
+								changes => { 
+									return changes.map( c => {
+										let action: Action = { 
+											key: c.payload.key, ...c.payload.val()
+											};
+										return action;
+						});}));
+				    this.actionList.subscribe(
+				      actionArray => {
+				      	this.doableActionArray = [];
+				        for(let action of actionArray) {
+				        	if(action.active != false) {
+								if(!action.taken) {
+								this.doableActionArray.push(action);
+								}
 							}
-						}
-			        }
-			        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-			        this.changePage('ToDoPage');
-			        if(this.timeAvailable) {
-			    		setTimeout(() => {
-				         this.timeAvailable.setFocus();
-				    	}, 400);
-			    	}
-			      }
-			    );
-			}
-		});
+				        }
+				        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+				        this.changePage('ToDoPage');
+				        if(this.timeAvailable) {
+				    		setTimeout(() => {
+					         this.timeAvailable.setFocus();
+					    	}, 400);
+				    	}
+				      }
+				    );
+				}
+			});
+	    })
 	}
 
 	filterToDos() {

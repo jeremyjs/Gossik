@@ -392,6 +392,53 @@ exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((con
      }
 );
 
+exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			if(user.val().profile.tutorial.next == 'calendar') {
+				let timeNowMiliseconds = new Date().getTime();
+				let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
+				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
+				//Thus, setting it to between 12 and 36h
+				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
+			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+			    		devices.forEach(function(device) {
+				    		let language = 'en';
+				    		if(user.val().profile.language) {
+				   				language = user.val().profile.language;
+				   			}
+				   			let message: any = {};
+   							message['de'] = "Hey, nerve ich dich bereits? Heute würde ich mit dir als letzten Teil vom Tutorial noch den Kalender anschauen. Öffne mich und gehe auf die 'Kalender' Seite, um das Tutorial zu starten.";
+   							message['en'] = "Hey, am I annoying you already? Today, I would have a look on the calendar with you as the last part of the tutorial. Open me and visit the 'Calendar' page to start the tutorial.";
+	   						let msg = message['en'];
+				   			if(message[language]) {
+				   				msg = message[language];
+				   			}
+				    		let payload = {
+					            notification: {
+					                title: "Gossik",
+					                body: msg
+					            },
+					            data: {
+					              	title: "Gossik",
+					                body: msg
+					            }
+					        };
+					       	admin.messaging().sendToDevice(device.val(), payload);
+					    });
+				    });
+				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('calendar').set('true');
+				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
+				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');
+				}
+			}
+   		})
+   });
+   return null;
+     }
+);
+
 /*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {

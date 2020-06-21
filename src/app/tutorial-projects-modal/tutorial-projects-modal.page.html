@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-row>
+	    	<ion-col size="10" class="flex">
+	    		<span class="margin-auto">{{"Assign Project" | translate }}</span>
+	    	</ion-col>
+	    	<ion-col size="2">
+	    		<button class="icon-only-button margin-right-20" (click)="cancel()">
+			      <img src="../../assets/icon/icon_cancel.png" height="20">
+			    </button>
+			</ion-col>
+  		</ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background-gray">
+	<div *ngIf="viewpoint == 'todo'" class="width-100 margin-0 transparent font-gray">
+		<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let todo of actionArray">
+			<ion-col>{{todo.content}}
+			</ion-col>
+			<ion-col>
+				<button *ngIf="todo.goalid == 'tutorial'" (click)="assignProject(todo)" class="font-white transparent">
+					{{"Assign Project" | translate}}...
+				</button>
+				<button *ngIf="todo.goalid != 'tutorial'" (click)="assignProject(todo)" class="font-white transparent">
+					{{goalDict[todo.goalid].name}}
+				</button>
+			</ion-col>
+		</ion-row>
+	</div>
+	
+	<div *ngIf="viewpoint == 'project'" class="width-100 margin-0 text-align-center display-inline-block transparent border-bottom-1">
+        <ion-row class="width-90 margin-left-auto margin-right-auto">
+          <ion-col size="9.6" class="no-padding">
+          <ion-input class="transparent display-inline-block margin-0 width-90 font-gray border-bottom-1" type="text" autocapitalize="on" [(ngModel)]="newProject.name" placeholder="{{'Define new goal'| translate}}..."></ion-input>
+          </ion-col>
+          <ion-col size="1.2" class="flex text-align-center no-padding">
+            <button class="transparent no-padding margin-auto" (click)="createProject()">
+              <img src="../../assets/icon/icon_confirm.png" height="20">
+            </button>
+          </ion-col>
+		</ion-row>
+	</div>
+
+	<div *ngIf="viewpoint == 'project'" class="margin-top-20">
+		<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
+			<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
+				<span>{{goal.name}}</span>
+			</button>
+		</ion-row>
+	</div>
+
+	<ion-row *ngIf="done" class="margin-top-45">
+	    <button class="transparent font-white margin-auto width-100" (click)="assign()">
+	    	<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
+	    </button>
+	</ion-row>
+
+</ion-content>
