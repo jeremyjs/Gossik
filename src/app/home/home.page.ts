@@ -775,7 +775,7 @@ export class HomePage {
 					if(data.data && data.data == 'assigned') {
 						this.db.finishTutorial(this.auth.userid, 'projects');
 						this.goToProjectsPage();
-						this.presentAlert("Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'Overview' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.");
+						this.presentAlert("Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'View' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.");
 						this.db.setNextTutorial(this.auth.userid, 'calendar');
 					}
 				});
