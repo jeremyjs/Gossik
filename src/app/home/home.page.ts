@@ -906,7 +906,7 @@ export class HomePage {
     	if(type != undefined) {
     		this.captureType = type;
     	} else {
-  			this.captureType = undefined;
+  			this.captureType = 'action';
     	}
     	if(this.userProfile.tutorial.process) {
     		this.captureProject = this.goalDict["tutorial"];
@@ -951,6 +951,7 @@ export class HomePage {
 				if(data.data) {
 					this.captureProject = data.data;
 					this.showCaptureType = true;
+					this.showCaptureDuration = true;
 					this.captureCheckIfDone();
 				}
 			});
