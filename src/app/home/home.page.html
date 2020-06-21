@@ -536,9 +536,12 @@
         <span class="font-gray width-100 font-size-20px">
           {{"Project" | translate }}
         </span>
-        <button *ngIf="captureProject" class="transparent font-white no-padding transparent font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
+        <button *ngIf="captureProject && !userProfile.tutorial.process" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
           {{captureProject.name}}
         </button>
+        <span *ngIf="captureProject && userProfile.tutorial.process" class="font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px">
+          {{captureProject.name}}
+        </span>
         <button *ngIf="!captureProject" class="button-design margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
           {{"Assign project" | translate}}...
         </button>
@@ -553,12 +556,15 @@
               <ion-radio value="action" class="height-15px width-15px margin-auto"></ion-radio>
             </ion-col>
             <ion-col size="11">
-              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('action')">
+              <button *ngIf="!userProfile.tutorial.process" class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('action')">
+                {{"Action" | translate }}
+              </button>
+              <button *ngIf="userProfile.tutorial.process" class="transparent font-white font-size-20px width-100 text-align-left padding-left-0">
                 {{"Action" | translate }}
               </button>
             </ion-col>
           </ion-row>
-          <ion-row class="margin-left-50">
+          <ion-row  *ngIf="!userProfile.tutorial.process" class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
               <ion-radio value="note" class="height-15px width-15px margin-auto"></ion-radio>
             </ion-col>
@@ -653,14 +659,14 @@
         <!-- Had to comment this one because deleted 'goalFinished' function
         <ion-button class="darkbutton button-left" (click)="goalFinished()">{{"Accomplished" | translate }}</ion-button>
         -->
-        <ion-button class="darkbutton button-right" (click)="goalNotFinished()">{{"Not yet" | translate }}</ion-button>
+        <ion-button class="darkbutton button-right" (click)="finishAction()">{{"Not yet" | translate }}</ion-button>
       </div>
     </div>
   </div>
 
-  <!-- GoalNotFinishedPage -->
-  <!-- Mobile GoalNotFinishedPage -->
-  <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'GoalNotFinishedPage' && isApp">
+  <!-- FinishActionPage -->
+  <!-- Mobile FinishActionPage -->
+  <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'FinishActionPage' && isApp">
     <ion-grid>
       <ion-row class="margin-top-45">
         <button class="button-design" (click)="defineFollowUpTodoNow()">

@@ -623,10 +623,11 @@ export class HomePage {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
 				let text = [];
-				text["fivetodos"] = ["fivetodos", "Start introduction", "Later", "Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'"];
+				text["fivetodos"] = ["fivetodos", "Start introduction", "Later"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
-				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later", "Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it."];
+				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
+				text["process"] = ["process", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -662,12 +663,21 @@ export class HomePage {
 					        text: translation["Start"],
 					        handler: () => {
 					        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+					        	this.db.startTutorial(this.auth.userid, 'process');
 					        	this.presentAlert("Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it.");
 					        }
 				      	}, 
 				      	{
 				      		text: translation["Later"],
 				      	}
+				    ];
+				    buttons["process"] = [
+				    	{
+				    		text: translation["OK"],
+				    		handler: () => {
+				    			this.presentAlert("We took a shortcut to define the first 5 todos. From now on, you need to declare a duration and priority for each todo because then I can better learn from you and know, what todos could be done when. This also helps you, because at any time I will show you only the relevant todos and you waste less time to find the right one. You can add additional characteristics to a todo, for example, you can set a deadline.");
+				    		}
+				    	}
 				    ];
 			  		this.alertCtrl.create({
 						message: translation[tutorialPart],
@@ -756,6 +766,7 @@ export class HomePage {
   	goToProcessPage() {
   		this.pageTitle = "Thoughts ready to process";
   		this.showTutorial('thoughts');
+  		this.showTutorial('thoughtprocessing');
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -829,6 +840,14 @@ export class HomePage {
     	} else {
   			this.captureType = undefined;
     	}
+    	if(this.userProfile.tutorial.process) {
+    		this.captureProject = this.goalDict["tutorial"];
+    		this.showCaptureProject = true;
+    		this.captureType = 'action';
+    		this.showCaptureType = true;
+    		this.showCaptureDuration = true;
+    	}
+    	this.showTutorial('process');
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');

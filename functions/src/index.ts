@@ -241,7 +241,7 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
-exports.tutorialthoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
@@ -306,7 +306,7 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 						   			let message: any = {};
 						   			if(numberThoughts >= 1) {
 		   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
-		   								message['en'] = "Hey, here I am again. Really interesting, what kind of thoughts you have. Joke, data privacy is very important to us and nobody will ever see your data. Only I will learn from your data to better support you, if you allow me to do that. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+		   								message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
 			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
 			   						} else {
 			   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
