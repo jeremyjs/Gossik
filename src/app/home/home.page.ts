@@ -1499,8 +1499,8 @@ export class HomePage {
 					this.goToToDoPage();
 				});
 			});
-			this.translate.get(["Todo finished. A new thought has been created if you want to define a follow-up todo"]).subscribe( translation => {
-        		this.presentToast(translation["Todo finished. A new thought has been created if you want to define a follow-up todo"]);
+			this.translate.get(["One less, congrats! A new thought has been created if you want to define a follow-up todo. Let's get some more done."]).subscribe( translation => {
+        		this.presentToast(translation["One less, congrats! A new thought has been created if you want to define a follow-up todo. Let's get some more done."]);
         	});
 		});
 	}
@@ -1512,6 +1512,9 @@ export class HomePage {
 			capture.content = this.startedAction.content;
 			this.goToProcessCapturePage(capture, data, 'action', 'FinishActionPage');
 		});
+		this.translate.get(["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]).subscribe( translation => {
+    		this.presentToast(translation["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]);
+    	});
 	}
 
 	noFollowUpTodoRequired() {
@@ -1519,6 +1522,9 @@ export class HomePage {
 			this.startedAction = {} as Action;
 			this.goToToDoPage();
 		});
+		this.translate.get(["One less, congrats! Let's do some more."]).subscribe( translation => {
+    		this.presentToast(translation["One less, congrats! Let's do some more."]);
+    	});
 	}
 
 	// ProjectsPage functions
