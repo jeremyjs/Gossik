@@ -1030,6 +1030,10 @@ export class HomePage {
   		} else {
   			this.goToProcessPage();
   		}
+  		if(this.userProfile.tutorial.process) {
+  			this.presentAlert("A new todo for which I can help you get it done, great. We can do it!");
+  			this.db.finishTutorial(this.auth.userid, 'process');
+  		}
   	}
 
   	addActionFromCapture() {
