@@ -2238,7 +2238,7 @@ export class HomePage {
 					this.startedAction = {} as Action;
 				}
 				if(this.startedAction.key) {
-					this.pageTitle = "Finish started todo";
+					this.pageTitle = "Let's get to work!";
 					this.changePage('ActionPage');
 				} else {
 					this.pageTitle = "Do todos";
@@ -2452,7 +2452,7 @@ export class HomePage {
   				action.startDate = new Date().toISOString();
 		  		this.startedAction = action;
 				this.db.editAction(action, this.auth.userid);
-				this.pageTitle = "Started todo";
+				this.pageTitle = "Let's get to work!";
 				this.changePage('ActionPage');
   				this.startFivetodos();
   			} else {
@@ -2465,7 +2465,7 @@ export class HomePage {
   			action.startDate = new Date().toISOString();
 	  		this.startedAction = action;
 			this.db.editAction(action, this.auth.userid);
-			this.pageTitle = "Started todo";
+			this.pageTitle = "Let's get to work!";
 			this.changePage('ActionPage');
 			this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
 		  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
