@@ -439,6 +439,53 @@ exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((con
      }
 );
 
+exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() == 20) {
+				let numberThoughts: number = 0;
+				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
+		    		thoughts.forEach(function(thought) {
+		    			numberThoughts += 1;
+		    		});
+		    		if(numberThoughts >= 20) {
+			    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+			    			devices.forEach(function(device) {
+					    		let language = 'en';
+					    		if(user.val().profile.language) {
+					   				language = user.val().profile.language;
+					   			}
+					   			let message: any = {};
+								message['de'] = "Hey, deine gespeicherten Gedanken häufen sich an. Ich kann dir besser helfen, wenn du diese regelmässig zu ToDos verarbeitest. Nutze doch 20 Minuten, um deine aktuellen Gedanken zu verarbeiten, das befreit enorm.";
+								message['en'] = "Hey, your saved thoughts are becoming more and more. I can better help you, if you regularly process them to todos. Why don't you use 20 minutes to process your current thoughts, it frees your mind.";
+	   							let msg = message['en'];
+					   			if(message[language]) {
+					   				msg = message[language];
+					   			}
+					    		let payload = {
+						            notification: {
+						                title: "Gossik",
+						                body: msg
+						            },
+						            data: {
+						              	title: "Gossik",
+						                body: msg
+						            }
+						        };
+						       	admin.messaging().sendToDevice(device.val(), payload);
+					    	});
+				    	});
+			    	}
+			    });
+			}
+   		})
+   });
+   return null;
+     }
+);
+
+
 /*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
