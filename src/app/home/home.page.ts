@@ -620,28 +620,29 @@ export class HomePage {
   	}
 
   	rushNextTutorial(nextTutorialPart) {
-  		if(nextTutorialPart == 'thoughts' && this.userProfile.tutorial.next == 'thoughts') {
+  		console.log(nextTutorialPart);
+  		if(nextTutorialPart == 'thoughts') {
   			this.translate.get(["tutorialThoughtsPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialThoughtsPush"]);
   				setTimeout( () => {
   					this.db.startTutorial(this.auth.userid, 'thoughts');
   				}, 3000);
   			});
-  		} else if(nextTutorialPart == 'thoughtprocessing' && this.userProfile.tutorial.next == 'thoughtprocessing') {
+  		} else if(nextTutorialPart == 'thoughtprocessing') {
   			this.translate.get(["tutorialThoughtprocessingPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
   				setTimeout( () => {
   					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
   				}, 3000);
   			});
-  		} else if(nextTutorialPart == 'projects' && this.userProfile.tutorial.next == 'projects') {
+  		} else if(nextTutorialPart == 'projects') {
   			this.translate.get(["tutorialProjectsPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialProjectsPush"]);
   				setTimeout( () => {
   					this.db.startTutorial(this.auth.userid, 'projects');
   				}, 3000);
   			});
-  		} else if(nextTutorialPart == 'calendar' && this.userProfile.tutorial.next == 'calendar') {
+  		} else if(nextTutorialPart == 'calendar') {
   			this.translate.get(["tutorialCalendarPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialCalendarPush"]);
   				setTimeout( () => {
@@ -655,6 +656,9 @@ export class HomePage {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
+				console.log(this.userProfile.tutorial);
+				console.log(tutorialPart);
+				console.log(this.userProfile.tutorial[tutorialPart]);
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "Start introduction", "Later"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];

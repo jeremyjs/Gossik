@@ -362,7 +362,7 @@ exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				   				language = user.val().profile.language;
 				   			}
 				   			let message: any = {};
-   							message['de'] = "Hey, schon wieder ich. Bereit für den zweitletzten Teil der Einleitung? Öffne mich und besuche die 'Übersicht' Seite, um das Gruppieren von ToDos zu Projekten mit mir anzuschauen.";
+   							message['de'] = "Hey, schon wieder ich. Bereit für den zweitletzten Teil der Einleitung? Öffne mich und besuche die 'Anschauen' Seite, um das Gruppieren von ToDos zu Projekten mit mir anzuschauen.";
    							message['en'] = "Hey, it's me again. Are you ready for the second last part of the tutorial? Open me and visit the 'View' page to have a look on the grouping of todos into projects with me.";
 	   						let msg = message['en'];
 				   			if(message[language]) {

@@ -94,7 +94,7 @@ export class DatabaseService {
 
     finishTutorial(userid, tutorialPart, nextTutorialPart) {
         let tutorial = {
-            next: tutorialPart,
+            next: nextTutorialPart,
             triggerDate: new Date().toISOString()
         }
         tutorial[tutorialPart] = false;
@@ -102,7 +102,10 @@ export class DatabaseService {
     }
 
     startTutorial(userid, tutorialPart) {
-        let tutorial = {}
+        let tutorial = {
+            next: '',
+            triggerDate: ''
+        }
         tutorial[tutorialPart] = true;
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
