@@ -92,8 +92,11 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile');
     }
 
-    finishTutorial(userid, tutorialPart) {
-        let tutorial = {}
+    finishTutorial(userid, tutorialPart, nextTutorialPart) {
+        let tutorial = {
+            next: tutorialPart,
+            triggerDate: new Date().toISOString()
+        }
         tutorial[tutorialPart] = false;
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }

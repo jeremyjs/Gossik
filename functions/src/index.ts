@@ -247,7 +247,7 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
    				let timeNowMiliseconds = new Date().getTime();
    				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
-   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000) {
+   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000 && user.val().userProfile.tutorial.next == 'thoughts') {
    					admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 				    	devices.forEach(function(device) {
 				    		let language = 'en';
@@ -291,7 +291,7 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
    					let timeNowMiliseconds = new Date().getTime();
    					let endDateMiliseconds = new Date(action.val().endDate).getTime();
    					let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000*2 && timeNowConverted.getHours() == 20) {
+   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000*2 && timeNowConverted.getHours() == 20 && user.val().userProfile.tutorial.next == 'thoughtprocessing') {
    						let numberThoughts: number = 0;
    						admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
 					    	thoughts.forEach(function(thought) {
@@ -354,7 +354,7 @@ exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
 				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
+				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20 && user.val().userProfile.tutorial.next == 'projects') {
 			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 			    		devices.forEach(function(device) {
 				    		let language = 'en';
@@ -401,7 +401,7 @@ exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
 				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
+				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20 && user.val().userProfile.tutorial.next == 'calendar') {
 			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 			    		devices.forEach(function(device) {
 				    		let language = 'en';

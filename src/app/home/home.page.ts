@@ -619,6 +619,38 @@ export class HomePage {
 		});
   	}
 
+  	rushNextTutorial(nextTutorialPart) {
+  		if(nextTutorialPart == 'thoughts' && this.userProfile.tutorial.next == 'thoughts') {
+  			this.translate.get(["tutorialThoughtsPush", "OK"]).subscribe( translation => {
+  				this.presentAlert(translation["tutorialThoughtsPush"]);
+  				setTimeout( () => {
+  					this.db.startTutorial(this.auth.userid, 'thoughts');
+  				}, 3000);
+  			});
+  		} else if(nextTutorialPart == 'thoughtprocessing' && this.userProfile.tutorial.next == 'thoughtprocessing') {
+  			this.translate.get(["tutorialThoughtprocessingPush", "OK"]).subscribe( translation => {
+  				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
+  				setTimeout( () => {
+  					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
+  				}, 3000);
+  			});
+  		} else if(nextTutorialPart == 'projects' && this.userProfile.tutorial.next == 'projects') {
+  			this.translate.get(["tutorialProjectsPush", "OK"]).subscribe( translation => {
+  				this.presentAlert(translation["tutorialProjectsPush"]);
+  				setTimeout( () => {
+  					this.db.startTutorial(this.auth.userid, 'projects');
+  				}, 3000);
+  			});
+  		} else if(nextTutorialPart == 'calendar' && this.userProfile.tutorial.next == 'calendar') {
+  			this.translate.get(["tutorialCalendarPush", "OK"]).subscribe( translation => {
+  				this.presentAlert(translation["tutorialCalendarPush"]);
+  				setTimeout( () => {
+  					this.db.startTutorial(this.auth.userid, 'calendar');
+  				}, 3000);
+  			});
+  		}
+  	}
+
   	showTutorial(tutorialPart) {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
@@ -637,7 +669,7 @@ export class HomePage {
 				      	{
 					        text: translation["Start introduction"],
 					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+					        	this.db.finishTutorial(this.auth.userid, tutorialPart, 'gettingToKnowPush');
 					        	this.presentAlert("Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'");
 					        }
 				      	}, 
@@ -649,7 +681,7 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.db.finishTutorial(this.auth.userid, tutorialPart);
+				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughts');
 				    		}
 				    	}
 				    ];
@@ -657,7 +689,7 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.db.finishTutorial(this.auth.userid, tutorialPart);
+				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughtprocessing');
 				    		}
 				    	}
 				    ];
@@ -665,7 +697,7 @@ export class HomePage {
 				      	{
 					        text: translation["Start"],
 					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, tutorialPart);
+					        	this.db.finishTutorial(this.auth.userid, tutorialPart, 'process');
 					        	this.db.startTutorial(this.auth.userid, 'process');
 					        	this.presentAlert("Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it.");
 					        }
@@ -698,7 +730,7 @@ export class HomePage {
 				    		text: translation["OK"],
 				    		handler: () => {
 				    			this.presentAlert("Congrats, you made it through the whole tutorial! I hope I was able to show you what I want to learn and do for you. Of course, my functionalities will continuously be improved and new ones will be added as well, so that I can support you even more in the future! It would be amazing if you could give as much feedback as possible (on the 'Settings' page). Whatever you need or want, please provide feedback. Okay, enough words, you are ready and I hope I can help you achieve your goals and dreams. Let's go!");
-				    			this.db.finishTutorial(this.auth.userid, 'calendar');
+				    			this.db.finishTutorial(this.auth.userid, 'calendar', '');
 				    		}
 				    	}
 				    ];
@@ -773,10 +805,9 @@ export class HomePage {
 				modal.present();
 				modal.onDidDismiss().then( data => {
 					if(data.data && data.data == 'assigned') {
-						this.db.finishTutorial(this.auth.userid, 'projects');
+						this.db.finishTutorial(this.auth.userid, 'projects', 'calendar');
 						this.goToProjectsPage();
 						this.presentAlert("Done! In future, you can assign your todos to projects while creating them. And something new: Sometimes there are thoughts for which you don't have to do anything, but you don't want to forget them because they are important for a project or for you. You can assign these thoughts to projects directly as thoughts. Like this, when clicking on a project on the 'View' page, you can see immediately all todos that need to be done and all relevant thoughts that came into your mind.");
-						this.db.setNextTutorial(this.auth.userid, 'calendar');
 					}
 				});
 			});
@@ -1101,8 +1132,7 @@ export class HomePage {
   		}
   		if(this.userProfile.tutorial.process) {
   			this.presentAlert("A new todo for which I can help you get it done, great. We can do it!");
-  			this.db.setNextTutorial(this.auth.userid, 'projects');
-  			this.db.finishTutorial(this.auth.userid, 'process');
+  			this.db.finishTutorial(this.auth.userid, 'process', 'projects');
   		}
   	}
 
