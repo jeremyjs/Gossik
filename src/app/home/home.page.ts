@@ -657,7 +657,7 @@ export class HomePage {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
 				let text = [];
-				text["fivetodos"] = ["fivetodos", "Start introduction", "Later"];
+				text["fivetodos"] = ["fivetodos", "OK"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
@@ -668,14 +668,7 @@ export class HomePage {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
 				      	{
-					        text: translation["Start introduction"],
-					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, tutorialPart, 'gettingToKnowPush');
-					        	this.presentAlert("Great, let's start. You are on the 'Do' page, so let's do something. Start the todo 'Define 5 todos'");
-					        }
-				      	}, 
-				      	{
-				      		text: translation["Later"],
+					        text: translation["OK"],
 				      	}
 				    ];
 				    buttons["gettingToKnowPush"] = [
@@ -765,7 +758,9 @@ export class HomePage {
 						}
 						this.db.addAction(todo, {} as Capture, this.auth.userid);
 					}
-					this.presentAlert("5 todos have been created, you can finish the current todo now");
+					this.presentAlert("fivetodosDone");
+					this.db.finishTutorial(this.auth.userid, "fivetodos", "gettingToKnowPush")
+					this.goToToDoPage();
 				}
 			});
 		});
@@ -2226,97 +2221,108 @@ export class HomePage {
 			});
 	}
 
+	goToInitPage() {
+		this.changePage('InitPage');
+	}
+
   	// ToDoPage functions
 	goToToDoPage() {
-		this.showTutorial('fivetodos');
-		this.showTutorial('gettingToKnowPush');
-		this.duration = 0;
-		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let data: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return data;
-			});}));
-		this.goalList.subscribe(
-	      goalArray => {
-  			this.goalArray = [];
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalDict[goal.key] = goal;
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    	this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
-			.snapshotChanges()
-			.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let action: Action = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return action;
+		this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
+			this.userProfile = userProfile;
+			if(this.userProfile.tutorial.fivetodos) {
+				this.showTutorial('fivetodos');
+				this.goToInitPage();
+			} else {
+				this.showTutorial('gettingToKnowPush');
+				this.duration = 0;
+				this.goalList = this.db.getGoalList(this.auth.userid)
+				  	.snapshotChanges()
+				  	.pipe(
+						map(
+							changes => { 
+								return changes.map( c => {
+									let data: Goal = { 
+										key: c.payload.key, ...c.payload.val()
+										};
+									return data;
 					});}));
-			this.takenActionList.subscribe( takenActionArray => {
-				this.takenActionArray = [];
-				for(let action of takenActionArray) {
-					if(action.active != false){
-						this.takenActionArray.push(action);
-					}
-				}
-				this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
-				if(this.takenActionListNotEmpty) {
-					this.startedAction = this.takenActionArray[0];
-				} else {
-					this.startedAction = {} as Action;
-				}
-				if(this.startedAction.key) {
-					this.pageTitle = "Let's get to work!";
-					this.changePage('ActionPage');
-				} else {
-					this.pageTitle = "Do todos";
-					this.doableActionArray = [];
-					this.duration = 0;
-					this.doableActionArray = [];
-					this.goalKeyArray = [];
-			    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-					  	.snapshotChanges()
-					  	.pipe(take(1),
-							map(
-								changes => { 
-									return changes.map( c => {
-										let action: Action = { 
-											key: c.payload.key, ...c.payload.val()
-											};
-										return action;
-						});}));
-				    this.actionList.subscribe(
-				      actionArray => {
-				      	this.doableActionArray = [];
-				        for(let action of actionArray) {
-				        	if(action.active != false) {
-								if(!action.taken) {
-								this.doableActionArray.push(action);
-								}
+				this.goalList.subscribe(
+			      goalArray => {
+		  			this.goalArray = [];
+			        for(let goal of goalArray) {
+			        	if(goal.active != false) {
+			        		this.goalDict[goal.key] = goal;
+			        		this.goalArray.push(goal);
+			        	}
+			        }
+			    	this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+					.snapshotChanges()
+					.pipe(
+						map(
+							changes => { 
+								return changes.map( c => {
+									let action: Action = { 
+										key: c.payload.key, ...c.payload.val()
+										};
+									return action;
+							});}));
+					this.takenActionList.subscribe( takenActionArray => {
+						this.takenActionArray = [];
+						for(let action of takenActionArray) {
+							if(action.active != false){
+								this.takenActionArray.push(action);
 							}
-				        }
-				        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-				        this.changePage('ToDoPage');
-				        if(this.timeAvailable) {
-				    		setTimeout(() => {
-					         this.timeAvailable.setFocus();
-					    	}, 400);
-				    	}
-				      }
-				    );
-				}
-			});
-	    })
+						}
+						this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+						if(this.takenActionListNotEmpty) {
+							this.startedAction = this.takenActionArray[0];
+						} else {
+							this.startedAction = {} as Action;
+						}
+						if(this.startedAction.key) {
+							this.pageTitle = "Let's get to work!";
+							this.changePage('ActionPage');
+						} else {
+							this.pageTitle = "Do todos";
+							this.doableActionArray = [];
+							this.duration = 0;
+							this.doableActionArray = [];
+							this.goalKeyArray = [];
+					    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+							  	.snapshotChanges()
+							  	.pipe(take(1),
+									map(
+										changes => { 
+											return changes.map( c => {
+												let action: Action = { 
+													key: c.payload.key, ...c.payload.val()
+													};
+												return action;
+								});}));
+						    this.actionList.subscribe(
+						      actionArray => {
+						      	this.doableActionArray = [];
+						        for(let action of actionArray) {
+						        	if(action.active != false) {
+										if(!action.taken) {
+										this.doableActionArray.push(action);
+										}
+									}
+						        }
+						        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+						        this.changePage('ToDoPage');
+						        if(this.timeAvailable) {
+						    		setTimeout(() => {
+							         this.timeAvailable.setFocus();
+							    	}, 400);
+						    	}
+						      }
+						    );
+						}
+					});
+			    });
+			}
+		});
 	}
 
 	filterToDos() {

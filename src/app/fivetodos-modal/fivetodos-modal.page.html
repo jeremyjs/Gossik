@@ -2,7 +2,7 @@
   	<ion-toolbar color="secondary">
 	    <ion-row>
 	    	<ion-col size="10" class="flex">
-	    		<span class="margin-auto">{{"Define 5 todos" | translate }}</span>
+	    		<span class="margin-auto">{{"Define todos" | translate }}</span>
 	    	</ion-col>
 	    	<ion-col size="2">
 	    		<button class="icon-only-button margin-right-20" (click)="cancel()">
@@ -15,11 +15,21 @@
 
 
 <ion-content class="background-gray font-white">
-	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[0].content" placeholder="{{'Define action' | translate}}..."></ion-input>
-	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[1].content" placeholder="{{'Define action' | translate}}..."></ion-input>
-	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[2].content" placeholder="{{'Define action' | translate}}..."></ion-input>
-	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[3].content" placeholder="{{'Define action' | translate}}..."></ion-input>
-	<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todos[4].content" placeholder="{{'Define action' | translate}}..."></ion-input>
+	<ion-row *ngFor="let todo of todos">
+		<ion-col size="10">
+			<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todo.content" placeholder="{{'Define action' | translate}}..."></ion-input>
+		</ion-col>
+		<ion-col size="2">
+			<button class="button-design" (click)="deleteTodo(todo)">
+				{{ "Delete" | translate }}
+			</button>
+		</ion-col>
+	</ion-row>
+	<ion-row class="margin-top-10">
+		<button class="transparent font-white margin-right-20" float-right (click)="addTodo()">
+	    	<img src="../../assets/icon/icon_add.png" height="30" class="margin-auto">
+	    </button>
+	</ion-row>
 	<ion-row *ngIf="showDone" class="margin-top-45">
 	    <button class="transparent font-white margin-auto width-100" (click)="defineTodos()">
 	    	<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">

@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar color="secondary">
+	<ion-toolbar color="secondary" *ngIf="viewpoint != 'InitPage'">
     <div *ngIf="loggedin" class="border-bottom-gray-1">
   		<div *ngIf="isApp && viewpoint == 'CapturePage'">
         <ion-grid>
@@ -367,6 +367,12 @@
 		</ion-card>
 	</div>
 
+  <div class="height-100 width-100 transparent flex" *ngIf="viewpoint == 'InitPage'">
+    <button (click)="startFivetodos()" class="margin-auto font-white transparent">
+      <img src="../../assets/icon/icon_add.png" class="margin-auto-auto" height="150">
+    </button>
+  </div>
+
   <!-- SettingsPage -->
   <div class="margin-top-10 width-90 padding-10 transparent height-100-minus-70px" *ngIf="viewpoint == 'SettingsPage'">
     <ion-grid>
@@ -453,7 +459,7 @@
               </button>
             </ion-col>
             <ion-col size="2" class="height-100">
-              <button class="background-white" float-right (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
+              <button class="background-white" (click)="deleteCapture(capture)">{{ "Delete" | translate }}</button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -1121,7 +1127,7 @@
             <h1 class="display-inline-block font-white margin-0 margin-right-10 font-size-30px">{{"References" | translate }}</h1>
           </ion-col>
           <ion-col size="3" class="flex no-padding">
-            <button class="transparent no-padding float-right margin-auto"  (click)="goToProcessCapturePage('', goal, 'note', 'ProjectOverviewPage')">
+            <button class="transparent no-padding margin-auto"  (click)="goToProcessCapturePage('', goal, 'note', 'ProjectOverviewPage')">
               <img src="../../assets/icon/icon_add.png" class="img-width-30px img-height-30px">
             </button>
           </ion-col>
@@ -1413,7 +1419,7 @@
   </div>
 
   <!-- Mobile Navigation Footer -->
-  <div class="width-100 height-70px margin-0 no-padding border-top-gray-1 position-absolute bottom-0" *ngIf="loggedin && isApp">
+  <div class="width-100 height-70px margin-0 no-padding border-top-gray-1 position-absolute bottom-0" *ngIf="loggedin && isApp && userProfile && !userProfile.tutorial.fivetodos">
     <ion-row class="width-100 height-100">
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
