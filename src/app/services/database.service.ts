@@ -117,6 +117,8 @@ export class DatabaseService {
             tutorial['tutorialProgress'] = 1;
         } else if (tutorialPart == 'thoughtprocessing') {
             tutorial['tutorialProgress'] = 2;
+        } else if(tutorialPart == 'projects') {
+            tutorial['tutorialProgress'] = 3;
         }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
