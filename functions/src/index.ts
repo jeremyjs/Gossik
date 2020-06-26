@@ -241,6 +241,93 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
+exports.getToKnowPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let timeNowMiliseconds = new Date().getTime();
+			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
+			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 2*3600*1000) {
+		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+		    		devices.forEach(function(device) {
+			    		let language = 'en';
+			    		if(user.val().profile.language) {
+			   				language = user.val().profile.language;
+			   			}
+			   			let message: any = {};
+							message['de'] = "Hey, ich bins nochmals. Da wir noch in der Kennenlernphase sind, werde ich dir hin und wieder Benachrichtigungen schicken, um zu lernen, wann du was machen willst - oder gar nichts machen willst. So lerne ich dich und deinen Tagesablauf kennen und kann dich dann aktiv unterstützen.";
+							message['en'] = "Hey, it's me again. We are still in the process of getting to know each other. Therefore I will send you push notifications once in a while to learn when you want to do what - or do nothing at all. Like this, I can get to know you and your daily schedule and then actively support you.";
+   						let msg = message['en'];
+			   			if(message[language]) {
+			   				msg = message[language];
+			   			}
+			    		let payload = {
+				            notification: {
+				                title: "Gossik",
+				                body: msg
+				            },
+				            data: {
+				              	title: "Gossik",
+				                body: msg
+				            }
+				        };
+				       	admin.messaging().sendToDevice(device.val(), payload);
+				    });
+			    });
+		    }
+   		})
+   });
+   return null;
+     }
+);
+
+exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() == 20) {
+				let numberThoughts: number = 0;
+				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
+		    		thoughts.forEach(function(thought) {
+		    			numberThoughts += 1;
+		    		});
+		    		if(numberThoughts >= 20) {
+			    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+			    			devices.forEach(function(device) {
+					    		let language = 'en';
+					    		if(user.val().profile.language) {
+					   				language = user.val().profile.language;
+					   			}
+					   			let message: any = {};
+								message['de'] = "Hey, deine gespeicherten Gedanken häufen sich an. Ich kann dir besser helfen, wenn du diese regelmässig zu ToDos verarbeitest. Nutze doch 20 Minuten, um deine aktuellen Gedanken zu verarbeiten, das befreit enorm.";
+								message['en'] = "Hey, your saved thoughts are becoming more and more. I can better help you, if you regularly process them to todos. Why don't you use 20 minutes to process your current thoughts, it frees your mind.";
+	   							let msg = message['en'];
+					   			if(message[language]) {
+					   				msg = message[language];
+					   			}
+					    		let payload = {
+						            notification: {
+						                title: "Gossik",
+						                body: msg
+						            },
+						            data: {
+						              	title: "Gossik",
+						                body: msg
+						            }
+						        };
+						       	admin.messaging().sendToDevice(device.val(), payload);
+					    	});
+				    	});
+			    	}
+			    });
+			}
+   		})
+   });
+   return null;
+     }
+);
+
+
+/* All previous tutorials commented out
 exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
@@ -432,52 +519,6 @@ exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
 				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');
 				}
-			}
-   		})
-   });
-   return null;
-     }
-);
-
-exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 20) {
-				let numberThoughts: number = 0;
-				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
-		    		thoughts.forEach(function(thought) {
-		    			numberThoughts += 1;
-		    		});
-		    		if(numberThoughts >= 20) {
-			    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    			devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-								message['de'] = "Hey, deine gespeicherten Gedanken häufen sich an. Ich kann dir besser helfen, wenn du diese regelmässig zu ToDos verarbeitest. Nutze doch 20 Minuten, um deine aktuellen Gedanken zu verarbeiten, das befreit enorm.";
-								message['en'] = "Hey, your saved thoughts are becoming more and more. I can better help you, if you regularly process them to todos. Why don't you use 20 minutes to process your current thoughts, it frees your mind.";
-	   							let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: "Gossik",
-						                body: msg
-						            },
-						            data: {
-						              	title: "Gossik",
-						                body: msg
-						            }
-						        };
-						       	admin.messaging().sendToDevice(device.val(), payload);
-					    	});
-				    	});
-			    	}
-			    });
 			}
    		})
    });

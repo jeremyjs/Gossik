@@ -400,13 +400,49 @@ export class HomePage {
 
   	presentAlert(alertMessage) {
   		this.translate.get([alertMessage, "OK"]).subscribe( translation => {
-  			this.alertCtrl.create({
-				message: translation[alertMessage],
-				buttons: [
+  			let buttons = [
 					      	{
 						        text: translation["OK"]
 					      	}
+					    ];
+  			if(alertMessage == 'fivetodosDone') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	setTimeout(() => {
+										this.presentAlert('tutorialTodoPageInit');
+									}, 1000);
+						        }
+					      	}
 					    ]
+  			} else if(alertMessage == 'tutorialTodoPageInit') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	setTimeout(() => {
+										this.presentAlert('tutorialTodoPageTime');
+									}, 1000);
+						        }
+					      	}
+					    ]
+  			}  else if(alertMessage == 'tutorialTodoPageTime') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	setTimeout(() => {
+										this.db.startTutorial(this.auth.userid, 'tutorialNextButton');
+										this.showTutorial('tutorialNextButton');
+									}, 1000);
+						        }
+					      	}
+					    ]
+  			}
+  			this.alertCtrl.create({
+				message: translation[alertMessage],
+				buttons: buttons
 			}).then( alert => {
 				alert.present();
 			});
@@ -658,12 +694,12 @@ export class HomePage {
 			if(this.userProfile.tutorial[tutorialPart]) {
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "OK"];
-				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
 				text["process"] = ["process", "OK"];
 				text["projects"] = ["projects", "Start", "Later"];
 				text["calendar"] = ["calendar", "OK"];
+				text["tutorialNextButton"] = ["tutorialNextButton", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -671,13 +707,13 @@ export class HomePage {
 					        text: translation["OK"],
 				      	}
 				    ];
-				    buttons["gettingToKnowPush"] = [
-				    	{
-				    		text: translation["OK"],
-				    		handler: () => {
+				    buttons["tutorialNextButton"] = [
+				      	{
+					        text: translation["OK"],
+					        handler: () => {
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughts');
 				    		}
-				    	}
+				      	}
 				    ];
 				    buttons["thoughts"] = [
 				    	{
@@ -759,7 +795,7 @@ export class HomePage {
 						this.db.addAction(todo, {} as Capture, this.auth.userid);
 					}
 					this.presentAlert("fivetodosDone");
-					this.db.finishTutorial(this.auth.userid, "fivetodos", "gettingToKnowPush")
+					this.db.finishTutorial(this.auth.userid, "fivetodos", "tutorialNextButton")
 					this.goToToDoPage();
 				}
 			});
@@ -2227,13 +2263,12 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
-		this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
+		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial.fivetodos) {
 				this.showTutorial('fivetodos');
 				this.goToInitPage();
 			} else {
-				this.showTutorial('gettingToKnowPush');
 				this.duration = 0;
 				this.goalList = this.db.getGoalList(this.auth.userid)
 				  	.snapshotChanges()
