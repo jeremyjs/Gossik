@@ -293,8 +293,8 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 			   				language = user.val().profile.language;
 			   			}
 			   			let message: any = {};
-						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
-						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
+						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten. Öffne mich, um die 'Organisieren' Seite gemeinsam anzuschauen.";
+						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together. Open me to have a look together on the 'Organize' page.";
 						let msg = message['en'];
 			   			if(message[language]) {
 			   				msg = message[language];
