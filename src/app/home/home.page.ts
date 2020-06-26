@@ -832,8 +832,10 @@ export class HomePage {
 						}
 						this.db.addAction(todo, {} as Capture, this.auth.userid);
 					}
-					this.presentAlert("fivetodosDone");
-					this.db.finishTutorial(this.auth.userid, "fivetodos", "tutorialNextButton")
+					if(this.userProfile.tutorial.fivetodos) {
+						this.presentAlert("fivetodosDone");
+						this.db.finishTutorial(this.auth.userid, "fivetodos", "tutorialNextButton")
+					}
 					this.goToToDoPage();
 				}
 			});
