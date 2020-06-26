@@ -400,7 +400,8 @@ export class HomePage {
 
   	presentAlert(alertMessage) {
   		this.translate.get([alertMessage, "OK"]).subscribe( translation => {
-  			let buttons = [
+  			let buttons = [];
+  			buttons = [
 					      	{
 						        text: translation["OK"]
 					      	}
@@ -1545,6 +1546,8 @@ export class HomePage {
 					alert.present();
 				});
         	});
+		} else if(this.userProfile.tutorial.tutorialProgress < 2) {
+			this.noFollowUpTodoRequired()
 		} else {
 			this.viewpoint = 'FinishActionPage';
 		}
@@ -2538,8 +2541,13 @@ export class HomePage {
   	}
 
   	stopAction() {
-  		this.duration = this.startedAction.time;
-  		this.changePage('StopActionPage');
+  		if(this.userProfile.tutorial.tutorialProgress < 2) {
+  			this.duration = this.startedAction.time;
+  			this.updateStartedActionTime();
+  		} else {
+  			this.duration = this.startedAction.time;
+  			this.changePage('StopActionPage');
+  		}
   	}
 
   	updateStartedActionTime() {

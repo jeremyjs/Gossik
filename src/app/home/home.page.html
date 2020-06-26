@@ -808,7 +808,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-gray font-size-1-5rem text-align-center">
-        <span class="margin-auto" *ngIf="userProfile.tutorial.tutorialProgress > 0">
+        <span class="margin-auto" *ngIf="userProfile.tutorial.tutorialProgress > 1">
           {{doableActionArray[0].time}}{{"min" | translate }}
         </span>
       </ion-row>
@@ -817,9 +817,9 @@
           {{doableActionArray[0].content}}
         </span>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 0" class="margin-auto font-gray text-align-center">
+      <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
-          {{goalDict[doableActionArray[0].goalid].name}}
+          fff{{goalDict[doableActionArray[0].goalid].name}}
         </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
@@ -1419,7 +1419,7 @@
   </div>
 
   <!-- Mobile Navigation Footer -->
-  <div class="width-100 height-70px margin-0 no-padding border-top-gray-1 position-absolute bottom-0" *ngIf="loggedin && isApp && userProfile">
+  <div class="width-100 height-70px margin-0 no-padding border-top-gray-1 position-absolute bottom-0" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile">
     <ion-row class="width-100 height-100">
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()" *ngIf="userProfile.tutorial.tutorialProgress > 0">

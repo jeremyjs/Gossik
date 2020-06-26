@@ -284,8 +284,8 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			let timeNowMiliseconds = new Date().getTime();
-			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
-			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 2*3600*1000) {
+			let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
+			if(user.val().profile.tutorial.next == 'thoughts' && timeNowMiliseconds - triggerDateMiliseconds >= 3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 2*3600*1000) {
 		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 			    	devices.forEach(function(device) {
 			    		let language = 'en';
