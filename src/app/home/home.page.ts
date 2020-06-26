@@ -823,7 +823,7 @@ export class HomePage {
 					for(let actionContent of data.data) {
 						let todo: Action = {
 						    userid: this.auth.userid,
-						    goalid: 'tutorial',
+						    goalid: '',
 						    content: actionContent.content,
 						    priority: 3,
 						    time: 20,
