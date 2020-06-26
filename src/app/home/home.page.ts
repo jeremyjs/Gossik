@@ -992,18 +992,20 @@ export class HomePage {
 		this.captureDuration = undefined;
 		this.captureDeadline = undefined;
 		this.captureDeadlineText = undefined;
-		this.showCaptureProject = true;
-		this.showCaptureType = false;
+		this.showCaptureProject = false;
+		this.showCaptureType = true;
 		this.showCaptureDuration = false;
 		this.showCapturePriority = false;
 		this.showCaptureDeadline = false;
 		this.showCaptureDone = false;
     	if(project != undefined) {
+    		this.showCaptureProject = true;
     		this.captureProject = project;
     		this.showCaptureType = true;
+    		this.showCaptureDuration = true
     		this.cameFromProjectOverviewPage = true;
     	} else {
-    		this.captureProject = undefined;
+    		this.captureProject = { key: ''};
     		this.cameFromProjectOverviewPage = false;
     	}
     	if(type != undefined) {
@@ -1011,9 +1013,12 @@ export class HomePage {
     	} else {
   			this.captureType = 'action';
     	}
+    	if(this.captureType == 'action') {
+    		this.showCaptureDuration = true;
+    	} else {
+    		this.captureCheckIfDone();
+    	}
     	if(this.userProfile.tutorial.process) {
-    		this.captureProject = this.goalDict["tutorial"];
-    		this.showCaptureProject = true;
     		this.captureType = 'action';
     		this.showCaptureType = true;
     		this.showCaptureDuration = true;
@@ -1053,8 +1058,6 @@ export class HomePage {
 			modal.onDidDismiss().then( data => {
 				if(data.data) {
 					this.captureProject = data.data;
-					this.showCaptureType = true;
-					this.showCaptureDuration = true;
 					this.captureCheckIfDone();
 				}
 			});
@@ -1092,6 +1095,7 @@ export class HomePage {
   		}
   		if(this.captureContent && this.capturePriority && this.captureDuration) {
   			this.showCaptureDeadline = true;
+  			this.showCaptureProject = true;
   		}
   		this.captureCheckIfDone();
   	}
@@ -1141,6 +1145,7 @@ export class HomePage {
   	assignPriority(priority) {
   		this.capturePriority = priority;
   		this.showCaptureDeadline = true;
+  		this.showCaptureProject = true;
   		this.captureCheckIfDone();
   	}
 
@@ -1167,7 +1172,7 @@ export class HomePage {
 
   	captureCheckIfDone() {
   		if(this.captureType == 'action') {
-  			if(this.captureContent && this.captureProject && this.captureDuration && this.capturePriority) {
+  			if(this.captureContent && this.captureDuration && this.capturePriority) {
 	  			this.showCaptureDone = true;
 	  		} else {
 	  			this.showCaptureDone = false

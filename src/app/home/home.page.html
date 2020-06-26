@@ -591,20 +591,6 @@
       <ion-card class="text-align-center margin-5 font-white transparent width-100 font-size-20px">
           <ion-textarea class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{capturePlaceholder | translate }}..." (ionFocus)="ionFocus($event)"></ion-textarea>
       </ion-card>
-      <ion-row *ngIf="showCaptureProject">
-        <span class="font-gray width-100 font-size-20px">
-          {{"Project" | translate }}
-        </span>
-        <button *ngIf="captureProject && !userProfile.tutorial.process" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
-          {{captureProject.name}}
-        </button>
-        <span *ngIf="captureProject && userProfile.tutorial.process" class="font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px">
-          {{captureProject.name}}
-        </span>
-        <button *ngIf="!captureProject" class="button-design margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
-          {{"Assign project" | translate}}...
-        </button>
-      </ion-row>
       <ion-row *ngIf="showCaptureType">
         <span class="font-gray width-100 font-size-20px">
           {{"Type" | translate }}
@@ -671,6 +657,20 @@
             </ion-col>
           </ion-row>
         </div>
+      </ion-row>
+      <ion-row *ngIf="showCaptureProject">
+        <span class="font-gray width-100 font-size-20px">
+          {{"Project" | translate }}
+        </span>
+        <button *ngIf="captureProject.key != '' && !userProfile.tutorial.process" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
+          {{captureProject.name}}
+        </button>
+        <span *ngIf="captureProject.key != '' && userProfile.tutorial.process" class="font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px">
+          {{captureProject.name}}
+        </span>
+        <button *ngIf="captureProject.key == ''" class="button-design margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
+          {{"Assign project" | translate}}...
+        </button>
       </ion-row>
       <ion-row *ngIf="showCaptureDeadline && !captureDeadline">
         <span class="width-100 font-gray font-size-20px">
@@ -820,7 +820,7 @@
           {{doableActionArray[0].content}}
         </span>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
+      <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != '' && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
           {{goalDict[doableActionArray[0].goalid].name}}
         </span>
