@@ -662,12 +662,9 @@
         <span class="font-gray width-100 font-size-20px">
           {{"Project" | translate }}
         </span>
-        <button *ngIf="captureProject.key != '' && !userProfile.tutorial.process" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
+        <button *ngIf="captureProject.key != ''" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
           {{captureProject.name}}
         </button>
-        <span *ngIf="captureProject.key != '' && userProfile.tutorial.process" class="font-white text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px">
-          {{captureProject.name}}
-        </span>
         <button *ngIf="captureProject.key == ''" class="button-design margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
           {{"Assign project" | translate}}...
         </button>

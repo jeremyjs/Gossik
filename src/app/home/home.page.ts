@@ -1128,6 +1128,7 @@ export class HomePage {
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
   		this.showCaptureDeadline = false;
+  		this.showCaptureProject = true;
   		this.captureCheckIfDone();
   	}
 
@@ -1181,7 +1182,7 @@ export class HomePage {
 	  			this.showCaptureDone = false
 	  		}
   		} else if (this.captureType == 'note') {
-  			if(this.captureContent && this.captureProject) {
+  			if(this.captureContent && this.captureProject.key != '') {
 	  			this.showCaptureDone = true;
 	  		} else {
 	  			this.showCaptureDone = false

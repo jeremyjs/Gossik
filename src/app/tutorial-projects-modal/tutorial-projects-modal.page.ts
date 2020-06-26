@@ -50,7 +50,6 @@ export class TutorialProjectsModalPage implements OnInit {
   	chooseGoal(goal) {
   		this.todo.goalid = goal.key;
   		this.viewpoint = 'todo';
-  		this.checkIfDone()
   	}
 
   	assign() {
