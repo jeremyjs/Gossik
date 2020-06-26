@@ -1003,7 +1003,7 @@ export class HomePage {
     		this.showCaptureDuration = true
     		this.cameFromProjectOverviewPage = true;
     	} else {
-    		this.captureProject = { key: ''};
+    		this.captureProject = { key: ''} as Goal;
     		this.cameFromProjectOverviewPage = false;
     	}
     	if(type != undefined) {
@@ -1598,7 +1598,12 @@ export class HomePage {
 		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			this.translate.get("Action finished").subscribe( translation => {
 				let capture = {} as Capture;
-				capture.content =  data.name + ' - ' + translation + ': ' + this.startedAction.content;
+				if(!data.name) {
+					data.name = '';
+				} else {
+					data.name += ': ';
+				}
+				capture.content =  data.name + translation + ': ' + this.startedAction.content;
 				capture.userid = this.auth.userid;
 				capture.active = true;
 				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {

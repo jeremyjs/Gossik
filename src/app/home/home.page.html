@@ -820,7 +820,7 @@
           {{doableActionArray[0].content}}
         </span>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != '' && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
+      <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != '' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
           {{goalDict[doableActionArray[0].goalid].name}}
         </span>
@@ -856,7 +856,7 @@
         </span>
       </ion-row>
       <ion-row class="margin-auto font-gray text-align-center">
-        <span class="margin-auto">
+        <span class="margin-auto" *ngIf="startedAction.goalid != ''">
           {{goalDict[startedAction.goalid].name}}
         </span>
       </ion-row>
