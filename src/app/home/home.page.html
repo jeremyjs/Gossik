@@ -526,11 +526,14 @@
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
         </ion-col>
         <ion-col size="8.5" class="text-align-left overflow-x-hidden">
-          <button class="transparent font-white text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
+          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent font-white text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
             <span class="font-size-20px">
               {{capture.content}}
             </span>
           </button>
+          <span *ngIf="userProfile.tutorial.tutorialProgress <= 1" class="transparent font-white text-align-left font-size-20px">
+              {{capture.content}}
+          </span>
         </ion-col>
         <ion-col size="2.5">
           <button class="button-design" (click)="deleteCapture(capture)">
@@ -819,7 +822,7 @@
       </ion-row>
       <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
         <span class="margin-auto">
-          fff{{goalDict[doableActionArray[0].goalid].name}}
+          {{goalDict[doableActionArray[0].goalid].name}}
         </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">

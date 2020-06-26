@@ -440,6 +440,17 @@ export class HomePage {
 						        }
 					      	}
 					    ]
+  			}  else if(alertMessage == 'thoughtsAdd') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	setTimeout(() => {
+										this.presentAlert('thoughtsProcess');
+									}, 1000);
+						        }
+					      	}
+					    ]
   			}
   			this.alertCtrl.create({
 				message: translation[alertMessage],
@@ -657,7 +668,6 @@ export class HomePage {
   	}
 
   	rushNextTutorial(nextTutorialPart) {
-  		console.log(nextTutorialPart);
   		if(nextTutorialPart == 'thoughts') {
   			this.translate.get(["tutorialThoughtsPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialThoughtsPush"]);
@@ -666,12 +676,40 @@ export class HomePage {
   				}, 3000);
   			});
   		} else if(nextTutorialPart == 'thoughtprocessing') {
-  			this.translate.get(["tutorialThoughtprocessingPush", "OK"]).subscribe( translation => {
-  				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
-  				setTimeout( () => {
-  					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
-  				}, 3000);
-  			});
+			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
+			.snapshotChanges()
+			.pipe(take(1),
+				map(
+					changes => { 
+						return changes.map( c => {
+							let capture: Capture = { 
+								key: c.payload.key, userid: c.payload.val().userid, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
+								};
+							return capture;
+					});}));
+			this.captureList.subscribe( captureArray => {
+				this.captureArray = []
+				for(let capture of captureArray) {
+					if(capture.active != false){
+						this.captureArray.push(capture);
+					}
+				}
+				if(this.captureArray.length >= 1) {
+					this.translate.get(["tutorialThoughtprocessingPush", "OK"]).subscribe( translation => {
+		  				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
+		  				setTimeout( () => {
+		  					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
+		  					if(this.viewpoint == 'ProcessPage') {
+		  						this.goToProcessPage();
+		  					}
+		  				}, 3000);
+		  			});
+				} else {
+					this.translate.get(["tutorialThoughtprocessingPushNoThoughts", "OK"]).subscribe( translation => {
+		  				this.presentAlert(translation["tutorialThoughtprocessingPushNoThoughts"]);
+		  			});
+				}
+			});  			
   		} else if(nextTutorialPart == 'projects') {
   			this.translate.get(["tutorialProjectsPush", "OK"]).subscribe( translation => {
   				this.presentAlert(translation["tutorialProjectsPush"]);
@@ -742,7 +780,7 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.presentAlert("We took a shortcut to define the first 5 todos. From now on, you need to declare a duration and priority for each todo because then I can better learn from you and know, what todos could be done when. This also helps you, because at any time I will show you only the relevant todos and you waste less time to find the right one. You can add additional characteristics to a todo, for example, you can set a deadline.");
+				    			this.presentAlert("processInit");
 				    		}
 				    	}
 				    ];

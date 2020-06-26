@@ -110,6 +110,8 @@ export class DatabaseService {
         tutorial[tutorialPart] = true;
         if(tutorialPart == 'thoughts') {
             tutorial['tutorialProgress'] = 1;
+        } else if (tutorialPart == 'thoughtprocessing') {
+            tutorial['tutorialProgress'] = 2;
         }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }

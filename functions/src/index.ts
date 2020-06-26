@@ -323,6 +323,64 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
      }
 );
 
+exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let timeNowMiliseconds = new Date().getTime();
+			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
+			if(user.val().profile.tutorial.next == 'thoughtprocessing' && timeNowMiliseconds - triggerDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 48*3600*1000 && timeNowConverted.getHours() == 20) {
+				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
+		    		let numberThoughts: number = 0;
+		    		thoughts.forEach(function(thought) {
+		    			numberThoughts += 1;
+		    		});
+		    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+			    		devices.forEach(function(device) {
+				    		let language = 'en';
+				    		if(user.val().profile.language) {
+				   				language = user.val().profile.language;
+				   			}
+				   			let message: any = {};
+				   			if(numberThoughts >= 1) {
+   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Bereit für den nächsten Teil der Einleitung? Öffne mich und besuche die 'Organisieren' Seite, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
+   								message['en'] = "Hey, here I am again. You really do have interesting thoughts. Joke, we take data privacy very seriously and nobody will ever read your data. Only I will learn from your data to better support you, if you allow me that. Ready for the next part of the tutorial? Open me and visit the 'Organize' page to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
+	   						} else {
+	   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
+	   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
+	   							let newTriggerDate = new Date();
+	   							newTriggerDate.setHours(newEndDate.getHours() -3);
+	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set(newTriggerDate.toISOString());
+	   						}
+	   						let msg = message['en'];
+				   			if(message[language]) {
+				   				msg = message[language];
+				   			}
+				    		let payload = {
+					            notification: {
+					                title: "Gossik",
+					                body: msg
+					            },
+					            data: {
+					              	title: "Gossik",
+					                body: msg
+					            }
+					        };
+					       	admin.messaging().sendToDevice(device.val(), payload);
+					    });
+				    });
+				    if(numberThoughts >= 1) {
+				    	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');	
+				    }
+		    	});
+			}
+   		})
+   });
+   return null;
+     }
+);
+
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
@@ -371,68 +429,6 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 
 
 /* All previous tutorials commented out
-exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
-   				if(action.val() && action.val().endDate) {
-   					let timeNowMiliseconds = new Date().getTime();
-   					let endDateMiliseconds = new Date(action.val().endDate).getTime();
-   					let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-   					if(timeNowMiliseconds - endDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 24*3600*1000*2 && timeNowConverted.getHours() == 20 && user.val().userProfile.tutorial.next == 'thoughtprocessing') {
-   						let numberThoughts: number = 0;
-   						admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
-					    	thoughts.forEach(function(thought) {
-					    		numberThoughts += 1;
-					    	});
-					    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-					    		devices.forEach(function(device) {
-						    		let language = 'en';
-						    		if(user.val().profile.language) {
-						   				language = user.val().profile.language;
-						   			}
-						   			let message: any = {};
-						   			if(numberThoughts >= 1) {
-		   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Bereit für Teil 2 der Einleitung? Öffne mich, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
-		   								message['en'] = "Hey, here I am again. Ready for part 2 of the tutorial? Open me to have a look at the processing of your saved thoughts together, I am looking forward to it.";
-			   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
-			   						} else {
-			   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
-			   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
-			   							let newEndDate = new Date();
-			   							newEndDate.setHours(newEndDate.getHours() -3);
-			   							admin.database().ref('/users/' + user.key + '/nextActions/tutorial').child('endDate').set(newEndDate.toISOString());
-			   						}
-			   						let msg = message['en'];
-						   			if(message[language]) {
-						   				msg = message[language];
-						   			}
-						    		let payload = {
-							            notification: {
-							                title: "Gossik",
-							                body: msg
-							            },
-							            data: {
-							              	title: "Gossik",
-							                body: msg
-							            }
-							        };
-							       	admin.messaging().sendToDevice(device.val(), payload);
-							    });
-						    });
-						    if(numberThoughts >= 1) {
-						    	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');	
-						    }
-					    });
-   					}
-				}
-   			});
-   		})
-   });
-   return null;
-     }
-);
-
 exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
