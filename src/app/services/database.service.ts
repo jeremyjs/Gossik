@@ -37,7 +37,8 @@ export class DatabaseService {
                 'process': false,
                 'next': '',
                 'triggerDate': '',
-                'tutorialProgress': 0
+                'tutorialProgress': 0,
+                'tutorialTodoPageTime': true
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }

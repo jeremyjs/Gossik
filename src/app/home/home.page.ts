@@ -423,7 +423,8 @@ export class HomePage {
 						        text: translation["OK"],
 						        handler: () => {
 						        	setTimeout(() => {
-										this.presentAlert('tutorialTodoPageTime');
+										this.db.startTutorial(this.auth.userid, 'tutorialNextButton');
+										this.showTutorial('tutorialNextButton');
 									}, 1000);
 						        }
 					      	}
@@ -433,10 +434,7 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	setTimeout(() => {
-										this.db.startTutorial(this.auth.userid, 'tutorialNextButton');
-										this.showTutorial('tutorialNextButton');
-									}, 1000);
+						        	this.db.finishTutorial(this.auth.userid, 'tutorialTodoPageTime', this.userProfile.tutorial.next);
 						        }
 					      	}
 					    ]
@@ -2316,6 +2314,9 @@ export class HomePage {
 				this.showTutorial('fivetodos');
 				this.goToInitPage();
 			} else {
+				if(this.userProfile.tutorial.tutorialProgress == 2 && this.userProfile.tutorial.tutorialTodoPageTime) {
+					this.presentAlert("tutorialTodoPageTime");
+				}
 				this.duration = 0;
 				this.goalList = this.db.getGoalList(this.auth.userid)
 				  	.snapshotChanges()
