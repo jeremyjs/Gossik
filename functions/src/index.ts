@@ -312,7 +312,9 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				       	admin.messaging().sendToDevice(device.val(), payload);
 			     	});
 			    });
-		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set(true);  
+		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set(true);
+		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
+		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');  
 		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('tutorialProgress').set(1);  
 			}
    		})
