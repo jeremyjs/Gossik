@@ -53,18 +53,6 @@ export class TutorialProjectsModalPage implements OnInit {
   		this.checkIfDone()
   	}
 
-  	checkIfDone() {
-  		let numberAssigned: number = 0;
-  		for(let todo of this.actionArray) {
-  			if(todo.goalid != '') {
-  				numberAssigned += 1;
-  			}
-  		}
-  		if(numberAssigned == this.actionArray.length) {
-  			this.done = true;
-  		}
-  	}
-
   	assign() {
   		for(let todo of this.actionArray) {
   			this.db.editAction(todo, this.auth.userid);
