@@ -108,6 +108,9 @@ export class DatabaseService {
             triggerDate: ''
         }
         tutorial[tutorialPart] = true;
+        if(tutorialPart == 'thoughts') {
+            tutorial['tutorialProgress'] = 1;
+        }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 

@@ -216,6 +216,8 @@ ion-button {
 .alert-message {
     scrollbar-width: none !important;
     color: #FFFFFF !important;
+    background: rgba(0,0,0,1) !important;
+    margin-top: 150px !important;
   }
 
 .feedback {
@@ -463,10 +465,16 @@ ion-toolbar {
 .alert-wrapper {
   --background: rgb(0,0,0);
   --ion-text-color: #FFFFFF !important; 
+  height: 100% !important;
+  width: 100% !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+  background: rgba(0,0,0,0.8) !important;
 }
 
 .alert-button-group {
   display: flex;
+  background: rgba(0,0,0,1) !important;
   justify-content: space-around !important;
 }
 

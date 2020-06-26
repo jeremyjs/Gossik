@@ -719,6 +719,7 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
+				    			this.presentAlert("thoughtsAdd");
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughtprocessing');
 				    		}
 				    	}
