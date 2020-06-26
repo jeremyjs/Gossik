@@ -241,12 +241,12 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
      }
 );
 
-exports.getToKnowPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+exports.getToKnowPush = functions.pubsub.schedule('0 6 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			let timeNowMiliseconds = new Date().getTime();
 			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
-			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 2*3600*1000) {
+			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 5*3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 29*3600*1000) {
 		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 		    		devices.forEach(function(device) {
 			    		let language = 'en';
@@ -274,6 +274,47 @@ exports.getToKnowPush = functions.pubsub.schedule('0 * * * *').onRun((context) =
 				    });
 			    });
 		    }
+   		})
+   });
+   return null;
+     }
+);
+
+exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+			let timeNowMiliseconds = new Date().getTime();
+			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
+			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 2*3600*1000) {
+		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+			    	devices.forEach(function(device) {
+			    		let language = 'en';
+			    		if(user.val().profile.language) {
+			   				language = user.val().profile.language;
+			   			}
+			   			let message: any = {};
+						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
+						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
+						let msg = message['en'];
+			   			if(message[language]) {
+			   				msg = message[language];
+			   			}
+			    		let payload = {
+				            notification: {
+				                title: "Gossik",
+				                body: msg
+				            },
+				            data: {
+				              	title: "Gossik",
+				                body: msg
+				            }
+				        };
+				       	admin.messaging().sendToDevice(device.val(), payload);
+			     	});
+			    });
+		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set(true);  
+		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('tutorialProgress').set(1);  
+			}
    		})
    });
    return null;
@@ -328,48 +369,6 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 
 
 /* All previous tutorials commented out
-exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			admin.database().ref('/users/' + user.key + '/nextActions').child('tutorial').once("value", function(action) {
-   				let timeNowMiliseconds = new Date().getTime();
-   				let timeActionEndedMiliseconds = new Date(action.val().endDate).getTime();
-   				if(timeNowMiliseconds >= timeActionEndedMiliseconds + 3600000 && timeNowMiliseconds < timeActionEndedMiliseconds + 7200000 && user.val().userProfile.tutorial.next == 'thoughts') {
-   					admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-				    	devices.forEach(function(device) {
-				    		let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-   							message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten.";
-   							message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together.";
-	   						let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg
-					            }
-					        };
-					       	admin.messaging().sendToDevice(device.val(), payload);
-					     });
-				    });
-				  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set('true');  
-				}
-   			});
-   		})
-   });
-   return null;
-     }
-);
-
 exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
