@@ -36,11 +36,6 @@ export class TutorialProjectsModalPage implements OnInit {
 	  	this.goalDict = this.navParams.get('goalDict');
 	  	this.actionArray = this.navParams.get('actionArray');
   		this.projectColors = this.navParams.get('projectColors');
-  		let tutorialProject = this.goalArray.find(goal => goal.key == 'tutorial');
-  		let index = this.goalArray.indexOf(tutorialProject);
-  		if(index != -1) {
-  			this.goalArray.splice(index,1);
-  		}
   	}
 
   	cancel() {
@@ -61,7 +56,7 @@ export class TutorialProjectsModalPage implements OnInit {
   	checkIfDone() {
   		let numberAssigned: number = 0;
   		for(let todo of this.actionArray) {
-  			if(todo.goalid != 'tutorial') {
+  			if(todo.goalid != '') {
   				numberAssigned += 1;
   			}
   		}

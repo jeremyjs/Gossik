@@ -697,9 +697,6 @@ export class HomePage {
 		  				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
 		  				setTimeout( () => {
 		  					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
-		  					if(this.viewpoint == 'ProcessPage') {
-		  						this.goToProcessPage();
-		  					}
 		  				}, 3000);
 		  			});
 				} else {
@@ -1137,6 +1134,9 @@ export class HomePage {
   	timeSet() {
   		this.captureDuration = this.duration;
   		if(this.captureDuration > 0) {
+  			if(this.userProfile.tutorial.process) {
+  				this.presentAlert('processPriority');
+  			}
 			this.showCapturePriority = true;
 	  		this.captureCheckIfDone();
   		}
@@ -1146,6 +1146,9 @@ export class HomePage {
   		this.capturePriority = priority;
   		this.showCaptureDeadline = true;
   		this.showCaptureProject = true;
+  		if(this.userProfile.tutorial.process) {
+			this.presentAlert('processDone');
+		}
   		this.captureCheckIfDone();
   	}
 
@@ -1208,7 +1211,7 @@ export class HomePage {
   			this.goToProcessPage();
   		}
   		if(this.userProfile.tutorial.process) {
-  			this.presentAlert("A new todo for which I can help you get it done, great. We can do it!");
+  			this.presentAlert("processEnd");
   			this.db.finishTutorial(this.auth.userid, 'process', 'projects');
   		}
   	}

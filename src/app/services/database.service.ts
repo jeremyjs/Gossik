@@ -39,7 +39,7 @@ export class DatabaseService {
                 'triggerDate': '',
                 'tutorialProgress': 0,
                 'tutorialNextButton': false,
-                'tutorialTodoPageTime': true
+                'tutorialTodoPageTime': false
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
@@ -101,6 +101,9 @@ export class DatabaseService {
             triggerDate: new Date().toISOString()
         }
         tutorial[tutorialPart] = false;
+        if(tutorialPart == 'process') {
+            tutorial['tutorialTodoPageTime'] = true;
+        }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 
