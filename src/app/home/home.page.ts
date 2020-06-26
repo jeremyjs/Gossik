@@ -468,7 +468,7 @@ export class HomePage {
 			this.db.createUser(user.user.uid, user.user.email);
 		}).then(
 			() => {
-				setTimeout(() => this.goToCapturePage());
+				setTimeout(() => this.goToToDoPage());
 			});
   	}
 	
@@ -656,9 +656,6 @@ export class HomePage {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
-				console.log(this.userProfile.tutorial);
-				console.log(tutorialPart);
-				console.log(this.userProfile.tutorial[tutorialPart]);
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "Start introduction", "Later"];
 				text["gettingToKnowPush"] = ["gettingToKnowPush", "OK"];
@@ -2487,31 +2484,15 @@ export class HomePage {
   	}
 
   	startAction(action) {
-  		if(action.key == 'tutorial') {
-  			if(!this.userProfile.tutorial.fivetodos) {
-  				action.taken = true;
-  				action.startDate = new Date().toISOString();
-		  		this.startedAction = action;
-				this.db.editAction(action, this.auth.userid);
-				this.pageTitle = "Let's get to work!";
-				this.changePage('ActionPage');
-  				this.startFivetodos();
-  			} else {
-  				this.translate.get(["This todo is part of the tutorial, please start the tutorial first by reloading the 'Do' page."]).subscribe( translation => {
-  					this.presentToast(translation["This todo is part of the tutorial, please start the tutorial first by reloading the 'Do' page."]);
-  				})
-  			}
-  		} else {
-  			action.taken = true;
-  			action.startDate = new Date().toISOString();
-	  		this.startedAction = action;
-			this.db.editAction(action, this.auth.userid);
-			this.pageTitle = "Let's get to work!";
-			this.changePage('ActionPage');
-			this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
-		  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
-			});
-  		}
+		action.taken = true;
+		action.startDate = new Date().toISOString();
+  		this.startedAction = action;
+		this.db.editAction(action, this.auth.userid);
+		this.pageTitle = "Let's get to work!";
+		this.changePage('ActionPage');
+		this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
+	  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
+		});
   	}
 
   	stopAction() {
