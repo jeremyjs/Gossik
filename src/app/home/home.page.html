@@ -803,7 +803,7 @@
           <span class="font-white margin-auto-left-3 margin-auto" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
         </ion-col>
         <ion-col class="flex">
-          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent no-padding margin-auto" (click)="goToProcessCapturePage()">
+          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('')">
             <img src="../../assets/icon/icon_add.png" height="20">
           </button>
           <button *ngIf="userProfile.tutorial.tutorialProgress <= 1" class="transparent no-padding margin-auto" (click)="startFivetodos()">
