@@ -85,6 +85,10 @@ ion-button {
   bottom: 0px;
 }
 
+.toast {
+  height: calc(100% - 70px) !important;
+}
+
 .darkbutton {
   color: #FFFFFF;
   background-color: var(--ion-color-primary) !important;

@@ -392,7 +392,8 @@ export class HomePage {
   	async presentToast(toastMessage) {
 	    const toast = await this.toastCtrl.create({
 	      message: toastMessage,
-	      duration: 5000
+	      cssClass: 'toast',
+	      duration: 3000
 	    });
 	    toast.present();
   	}
@@ -630,8 +631,8 @@ export class HomePage {
 			this.newCapture = {} as Capture;
 		  	this.newCapture.content = '';
 			this.goToProcessPage();
-			this.translate.get(["Your thought has been saved and is ready to process"]).subscribe( translation => {
-		  		this.presentToast(translation["Your thought has been saved and is ready to process"]);
+			this.translate.get(["Thought saved"]).subscribe( translation => {
+		  		this.presentToast(translation["Thought saved"]);
 			});
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
@@ -1193,13 +1194,13 @@ export class HomePage {
   	processCapture() {
   		if(this.captureType == 'action') {
   			this.addActionFromCapture();
-  			this.translate.get(["Your todo has been saved and is ready to get done"]).subscribe( translation => {
-		  		this.presentToast(translation["Your todo has been saved and is ready to get done"]);
+  			this.translate.get(["Todo saved"]).subscribe( translation => {
+		  		this.presentToast(translation["Todo saved"]);
 			});
   		} else if(this.captureType == 'note'){
   			this.addNoteFromCapture();
-  			this.translate.get(["Your information has been saved and can be seen in the project's overview page"]).subscribe( translation => {
-		  		this.presentToast(translation["Your information has been saved and can be seen in the project's overview page"]);
+  			this.translate.get(["Thought saved"]).subscribe( translation => {
+		  		this.presentToast(translation["Thought saved"]);
 			});
   		}
   		if(this.cameFromProjectOverviewPage) {
@@ -1600,8 +1601,8 @@ export class HomePage {
 					this.goToToDoPage();
 				});
 			});
-			this.translate.get(["One less, congrats! A new thought has been created if you want to define a follow-up todo. Let's get some more done."]).subscribe( translation => {
-        		this.presentToast(translation["One less, congrats! A new thought has been created if you want to define a follow-up todo. Let's get some more done."]);
+			this.translate.get(["One less, congrats!"]).subscribe( translation => {
+        		this.presentToast(translation["One less, congrats!"]);
         	});
 		});
 	}
@@ -1622,8 +1623,8 @@ export class HomePage {
 		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
 			this.startedAction = {} as Action;
 		});
-		this.translate.get(["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]).subscribe( translation => {
-    		this.presentToast(translation["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]);
+		this.translate.get(["One less, congrats!"]).subscribe( translation => {
+    		this.presentToast(translation["One less, congrats!"]);
     	});
 	}
 
@@ -1632,8 +1633,8 @@ export class HomePage {
 			this.startedAction = {} as Action;
 			this.goToToDoPage();
 		});
-		this.translate.get(["One less, congrats! Let's do some more."]).subscribe( translation => {
-    		this.presentToast(translation["One less, congrats! Let's do some more."]);
+		this.translate.get(["One less, congrats!"]).subscribe( translation => {
+    		this.presentToast(translation["One less, congrats!"]);
     	});
 	}
 
@@ -1977,8 +1978,8 @@ export class HomePage {
 								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 									eventData.event_id = event_id;
 									this.db.addCalendarEvent(eventData, this.auth.userid);
-									this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
-								  		this.presentToast(translation["Your calendar event has been saved"]);
+									this.translate.get(["Calendar event saved"]).subscribe( translation => {
+								  		this.presentToast(translation["Calendar event saved"]);
 									});
 									eventData.startTime = new Date(eventData.startTime);
 							        eventData.endTime = new Date(eventData.endTime);
@@ -1991,8 +1992,8 @@ export class HomePage {
 								});
 							} else {
 								this.db.addCalendarEvent(eventData, this.auth.userid);
-								this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
-							  		this.presentToast(translation["Your calendar event has been saved"]);
+								this.translate.get(["Calendar event saved"]).subscribe( translation => {
+							  		this.presentToast(translation["Calendar event saved"]);
 								});
 								eventData.startTime = new Date(eventData.startTime);
 						        eventData.endTime = new Date(eventData.endTime);
@@ -2006,8 +2007,8 @@ export class HomePage {
 						});
 					} else {
 						this.db.addCalendarEvent(eventData, this.auth.userid);
-						this.translate.get(["Your calendar event has been saved"]).subscribe( translation => {
-					  		this.presentToast(translation["Your calendar event has been saved"]);
+						this.translate.get(["Calendar event saved"]).subscribe( translation => {
+					  		this.presentToast(translation["Calendar event saved"]);
 						});
 						eventData.startTime = new Date(eventData.startTime);
 				        eventData.endTime = new Date(eventData.endTime);
@@ -2552,8 +2553,8 @@ export class HomePage {
 		this.db.editAction(action, this.auth.userid);
 		this.pageTitle = "Let's get to work!";
 		this.changePage('ActionPage');
-		this.translate.get(["You started with this todo, finish it here when it is done"]).subscribe( translation => {
-	  		this.presentToast(translation["You started with this todo, finish it here when it is done"]);
+		this.translate.get(["Todo started"]).subscribe( translation => {
+	  		this.presentToast(translation["Todo started"]);
 		});
   	}
 
