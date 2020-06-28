@@ -36,10 +36,18 @@ export class TutorialProjectsModalPage implements OnInit {
 	  	this.goalDict = this.navParams.get('goalDict');
 	  	this.actionArray = this.navParams.get('actionArray');
   		this.projectColors = this.navParams.get('projectColors');
-	  	console.log(this.goalArray);
-	  	console.log(this.goalDict);
-	  	console.log(this.actionArray);
-	  	console.log(this.projectColors);
+	  	this.translate.get(["tutorialFivetodosInit", "OK"]).subscribe( translation => {
+		this.alertCtrl.create({
+			message: translation["tutorialProjectsModalInit"],
+			buttons: [
+				    	{
+					        text: translation["OK"]
+				      	}
+				    ]
+		}).then( alert => {
+			alert.present();
+		});
+	});
   	}
 
   	cancel() {
