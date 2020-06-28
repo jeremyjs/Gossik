@@ -36,6 +36,10 @@ export class TutorialProjectsModalPage implements OnInit {
 	  	this.goalDict = this.navParams.get('goalDict');
 	  	this.actionArray = this.navParams.get('actionArray');
   		this.projectColors = this.navParams.get('projectColors');
+	  	console.log(this.goalArray);
+	  	console.log(this.goalDict);
+	  	console.log(this.actionArray);
+	  	console.log(this.projectColors);
   	}
 
   	cancel() {
@@ -99,20 +103,18 @@ export class TutorialProjectsModalPage implements OnInit {
 				this.goalArray.push(this.newProject);
 				this.goalDict[this.newProject.key] = this.newProject;
 				this.newProject = {} as Goal;
-				if(this.goalArray.length <= 2) {
-					this.translate.get(["A new project has been created and is shown below. Click on it to assign the todo to this project.", "OK", "Delete"]).subscribe( translation => {
-				  		this.alertCtrl.create({
-							message: translation["A new project has been created and is shown below. Click on it to assign the todo to this project."],
-							buttons: [
-								    	{
-									        text: translation["OK"]
-								      	},
-								    ]
-						}).then( alert => {
-							alert.present();
-						});
+				this.translate.get(["A new project has been created and is shown below. Click on it to assign the todo to this project.", "OK", "Delete"]).subscribe( translation => {
+			  		this.alertCtrl.create({
+						message: translation["A new project has been created and is shown below. Click on it to assign the todo to this project."],
+						buttons: [
+							    	{
+								        text: translation["OK"]
+							      	},
+							    ]
+					}).then( alert => {
+						alert.present();
 					});
-				}
+				});
 			});
 		}
   	}

@@ -19,10 +19,10 @@
 			<ion-col>{{todo.content}}
 			</ion-col>
 			<ion-col>
-				<button *ngIf="todo.goalid == ''" (click)="assignProject(todo)" class="font-white transparent">
+				<button *ngIf="todo.goalid == 'unassigned'" (click)="assignProject(todo)" class="font-white transparent">
 					{{"Assign Project" | translate}}...
 				</button>
-				<button *ngIf="todo.goalid != ''" (click)="assignProject(todo)" class="font-white transparent">
+				<button *ngIf="todo.goalid != 'unassigned'" (click)="assignProject(todo)" class="font-white transparent">
 					{{goalDict[todo.goalid].name}}
 				</button>
 			</ion-col>
