@@ -293,8 +293,8 @@ exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 			   				language = user.val().profile.language;
 			   			}
 			   			let message: any = {};
-						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern: Bis morgen Abend alle Gedanken, die dir über den Tag durch einfallen und die du nicht vergessen willst, bei mir auf der 'Organisieren' Seite als Gedanken zu speichern. Morgen Abend werden wir diese dann gemeinsam zu neuen ToDos verarbeiten. Öffne mich, um die 'Organisieren' Seite gemeinsam anzuschauen.";
-						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos: Use me to write down any thoughts on the 'Organize' page that come up during the day tomorrow and that you don't want to forget. Tomorrow in the evening we will process your thoughts to new todos together. Open me to have a look together on the 'Organize' page.";
+						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern. Die 'Gedanken' Seite wurde soeben freigeschaltet, öffne mich und besuch diese mal.";
+						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos. The 'Thoughts' page has just been unlocked, open me and visit it.";
 						let msg = message['en'];
 			   			if(message[language]) {
 			   				msg = message[language];
@@ -343,12 +343,12 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 				   			}
 				   			let message: any = {};
 				   			if(numberThoughts >= 1) {
-   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Bereit für den nächsten Teil der Einleitung? Öffne mich und besuche die 'Organisieren' Seite, um das Verarbeiten deiner gespeicherten Gedanken gemeinsam anzuschauen, ich freue mich.";
-   								message['en'] = "Hey, here I am again. You really do have interesting thoughts. Joke, we take data privacy very seriously and nobody will ever read your data. Only I will learn from your data to better support you, if you allow me that. Ready for the next part of the tutorial? Open me and visit the 'Organize' page to have a look at the processing of your saved thoughts together, I am looking forward to it.";
+   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Öffne mich und besuche die 'Organisieren' Seite.";
+   								message['en'] = "Hey, here I am again. You really do have interesting thoughts. Joke, we take data privacy very seriously and nobody will ever read your data. Only I will learn from you to better support you, if you allow me that. Open me and visit the 'Thoughts' page.";
 	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
 	   						} else {
-	   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
-	   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
+	   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals. Für den nächsten Teil der Einleitung benötigen wir mindestens einen gespeicherten Gedanken.";
+	   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow. For the next part of the tutorial, we need at least one saved thought.";
 	   							let newTriggerDate = new Date();
 	   							newTriggerDate.setHours(newTriggerDate.getHours() -3);
 	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set(newTriggerDate.toISOString());
@@ -418,53 +418,6 @@ exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 					    });
 				    });
 				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('projects').set(true);
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');
-				}
-			}
-   		})
-   });
-   return null;
-     }
-);
-
-exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			if(user.val().profile.tutorial.next == 'calendar') {
-				let timeNowMiliseconds = new Date().getTime();
-				let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
-				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
-				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - triggerDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
-			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    		devices.forEach(function(device) {
-				    		let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-   							message['de'] = "Hey, nerve ich dich bereits? Heute würde ich mit dir als letzten Teil vom Tutorial noch den Kalender anschauen. Öffne mich und gehe auf die 'Kalender' Seite, um das Tutorial zu starten.";
-   							message['en'] = "Hey, am I annoying you already? Today, I would have a look on the calendar with you as the last part of the tutorial. Open me and visit the 'Calendar' page to start the tutorial.";
-	   						let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg
-					            }
-					        };
-					       	admin.messaging().sendToDevice(device.val(), payload);
-					    });
-				    });
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('calendar').set('true');
 				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
 				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');
 				}

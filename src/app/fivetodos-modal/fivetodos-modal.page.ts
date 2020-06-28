@@ -23,9 +23,9 @@ export class FivetodosModalPage implements OnInit {
   }
 
   ngOnInit() {
-  	this.translate.get(["I am the first intelligent tool to help you get your things done. But for this, I need to know what needs to be done. As a start, tell me some things that you need to do in the coming days", "OK"]).subscribe( translation => {
+  	this.translate.get(["tutorialFivetodosInit", "OK"]).subscribe( translation => {
 		this.alertCtrl.create({
-			message: translation["I am the first intelligent tool to help you get your things done. But for this, I need to know what needs to be done. As a start, tell me some things that you need to do in the coming days"],
+			message: translation["tutorialFivetodosInit"],
 			buttons: [
 				    	{
 					        text: translation["OK"]
