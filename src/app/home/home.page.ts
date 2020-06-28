@@ -1955,6 +1955,7 @@ export class HomePage {
 	        	}
 	        }
 	    });
+	    console.log(this.selectedDay);
 	    if(!this.selectedDay) {
   			this.selectedDay = new Date();
 	    }
@@ -2160,55 +2161,66 @@ export class HomePage {
 
 	onTimeSelected(event) {
 		this.selectedDay = event.selectedTime;
-		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let goal: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return goal;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
-		if(event.events == undefined || event.events.length == 0) {
-			this.selectedDay = new Date(event.selectedTime);
-			let modal = this.modalCtrl.create({
-				component: CalendarEventModalPage,
-				componentProps: {selectedDay: this.selectedDay}
-			}).then (modal => {
-				modal.present();
-				modal.onDidDismiss().then(data => {
-					if(data.data){
-						let eventData: CalendarEvent = data.data;
-						eventData.userid = this.auth.userid;
-						eventData.allDay = false;
-						eventData.active = true;
-						if(!data.data.goalid) {
-							eventData.color = "#C0C0C0";
-							eventData.goalid = '';
-						} else {
-						    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
-						    if(goal) {
-						    	eventData.color = goal.color;
-							} else {
+		if(this.calendar.mode == 'day' || this.calendar.mode == 'week') {
+			this.goalArray = [];
+	  		this.goalList = this.db.getGoalList(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(
+					map(
+						changes => { 
+							return changes.map( c => {
+								let goal: Goal = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return goal;
+				});}));
+		    this.goalList.subscribe(
+		      goalArray => {
+		        for(let goal of goalArray) {
+		        	if(goal.active != false) {
+		        		this.goalArray.push(goal);
+		        	}
+		        }
+		    });
+			if(event.events == undefined || event.events.length == 0) {
+				let modal = this.modalCtrl.create({
+					component: CalendarEventModalPage,
+					componentProps: {selectedDay: this.selectedDay}
+				}).then (modal => {
+					modal.present();
+					modal.onDidDismiss().then(data => {
+						if(data.data){
+							let eventData: CalendarEvent = data.data;
+							eventData.userid = this.auth.userid;
+							eventData.allDay = false;
+							eventData.active = true;
+							if(!data.data.goalid) {
 								eventData.color = "#C0C0C0";
+								eventData.goalid = '';
+							} else {
+							    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
+							    if(goal) {
+							    	eventData.color = goal.color;
+								} else {
+									eventData.color = "#C0C0C0";
+								}
 							}
-						}
-						if(this.platform.is('cordova')) {
-							this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-								if(hasReadWritePermission) {
-									this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-										eventData.event_id = event_id;
+							if(this.platform.is('cordova')) {
+								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+									if(hasReadWritePermission) {
+										this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+											eventData.event_id = event_id;
+											this.db.addCalendarEvent(eventData, this.auth.userid)
+											eventData.startTime = new Date(eventData.startTime);
+									        eventData.endTime = new Date(eventData.endTime);
+											let events = this.eventSource;
+											events.push(eventData);
+											this.eventSource = [];
+											setTimeout(() => {
+												this.eventSource = events;
+											});
+										});
+									} else {
 										this.db.addCalendarEvent(eventData, this.auth.userid)
 										eventData.startTime = new Date(eventData.startTime);
 								        eventData.endTime = new Date(eventData.endTime);
@@ -2218,33 +2230,23 @@ export class HomePage {
 										setTimeout(() => {
 											this.eventSource = events;
 										});
-									});
-								} else {
-									this.db.addCalendarEvent(eventData, this.auth.userid)
-									eventData.startTime = new Date(eventData.startTime);
-							        eventData.endTime = new Date(eventData.endTime);
-									let events = this.eventSource;
-									events.push(eventData);
-									this.eventSource = [];
-									setTimeout(() => {
-										this.eventSource = events;
-									});
-								}
-							});
-						} else {
-							this.db.addCalendarEvent(eventData, this.auth.userid)
-							eventData.startTime = new Date(eventData.startTime);
-					        eventData.endTime = new Date(eventData.endTime);
-							let events = this.eventSource;
-							events.push(eventData);
-							this.eventSource = [];
-							setTimeout(() => {
-								this.eventSource = events;
-							});
+									}
+								});
+							} else {
+								this.db.addCalendarEvent(eventData, this.auth.userid)
+								eventData.startTime = new Date(eventData.startTime);
+						        eventData.endTime = new Date(eventData.endTime);
+								let events = this.eventSource;
+								events.push(eventData);
+								this.eventSource = [];
+								setTimeout(() => {
+									this.eventSource = events;
+								});
+							}
 						}
-					}
+					});
 				});
-			});
+			}
 		}
 	}
 
