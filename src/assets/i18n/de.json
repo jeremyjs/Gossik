@@ -189,6 +189,7 @@
   "tutorialTodoPageInit": "Damit ist die 'Machen' Seite freigeschaltet, wo du deine ToDos abarbeiten kannst. Ich schlage dir jeweils direkt ein ToDo vor, welches du dann starten oder überspringen kannst, falls du lieber einen neuen Vorschlag willst. Ausserdem werde ich von jeder Interaktion mit dir lernen, z.B. indem du auf 'Überspringen' klickst, lerne ich dass mein Vorschlag nicht optimal war. So werde ich versuchen, jederzeit das optimal machbare und wichtigste ToDo für dich zu finden.",
   "tutorialTodoPageTime": "Du kannst ab jetzt auch deine aktuell verfügbare Zeit eingeben, dann passe ich meinen Vorschlag an dich an.",
   "Type": "Typ",
+  "Unassigned todos": "Nicht zugeteilte ToDos",
   "View": "Anschauen",
   "processInit": "Für die ersten ToDos in der Einführung haben wir eine Abkürzung genommen. Damit ich besser lernen kann, wann welches ToDo abgearbeitet werden kann und soll, musst du deine ToDos ab jetzt etwas ausführlicher definieren. Wähle eine Dauer für dieses ToDo.",
   "Wed": "Mi",

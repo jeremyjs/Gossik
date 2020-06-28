@@ -820,7 +820,7 @@ export class HomePage {
 					for(let actionContent of data.data) {
 						let todo: Action = {
 						    userid: this.auth.userid,
-						    goalid: '',
+						    goalid: 'unassigned',
 						    content: actionContent.content,
 						    priority: 3,
 						    time: 20,
@@ -1002,7 +1002,7 @@ export class HomePage {
     		this.showCaptureDuration = true
     		this.cameFromProjectOverviewPage = true;
     	} else {
-    		this.captureProject = { key: ''} as Goal;
+    		this.captureProject = { key: 'unassigned'} as Goal;
     		this.cameFromProjectOverviewPage = false;
     	}
     	if(type != undefined) {
@@ -1576,24 +1576,7 @@ export class HomePage {
 	}
 
 	finishAction() {
-		if(this.startedAction.key == 'tutorial') {
-			this.noFollowUpTodoRequired();
-			setTimeout( () => {
-				this.db.startTutorial(this.auth.userid, 'gettingToKnowPush');
-			}, 5000);
-			this.translate.get(["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!", "OK"]).subscribe( translation => {
-        		this.alertCtrl.create({
-					message: translation["You just finished your first todo and with it, the initial tutorial is done for now, congrats! Together we will push through the other 5 todos until tomorrow evening, I will help you as much as I can, I promise!"],
-					buttons: [
-						    	{
-							        text: translation["OK"]
-						      	}
-						    ]
-				}).then( alert => {
-					alert.present();
-				});
-        	});
-		} else if(this.userProfile.tutorial.tutorialProgress < 2) {
+		if(this.userProfile.tutorial.tutorialProgress < 2) {
 			this.noFollowUpTodoRequired()
 		} else {
 			this.viewpoint = 'FinishActionPage';
@@ -1604,12 +1587,11 @@ export class HomePage {
 		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			this.translate.get("Action finished").subscribe( translation => {
 				let capture = {} as Capture;
-				if(!data.name) {
-					data.name = '';
-				} else {
-					data.name += ': ';
+				let stringInit = '';
+				if(data) {
+					stringInit = data.name + ': ';
 				}
-				capture.content =  data.name + translation + ': ' + this.startedAction.content;
+				capture.content =  stringInit + translation + ': ' + this.startedAction.content;
 				capture.userid = this.auth.userid;
 				capture.active = true;
 				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
@@ -1625,11 +1607,20 @@ export class HomePage {
 	}
 
 	defineFollowUpTodoNow() {
-		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
+		if(this.startedAction.goalid != 'unassigned') {
+			this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
+				let capture = {} as Capture;
+				data.key = this.startedAction.goalid;
+				capture.content = this.startedAction.content;
+				this.goToProcessCapturePage(capture, data, 'action', 'FinishActionPage');
+			});
+		} else {
 			let capture = {} as Capture;
-			data.key = this.startedAction.goalid;
 			capture.content = this.startedAction.content;
-			this.goToProcessCapturePage(capture, data, 'action', 'FinishActionPage');
+			this.goToProcessCapturePage(capture, { key: 'unassigned'} as Goal, 'action', 'FinishActionPage');	
+		}
+		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+			this.startedAction = {} as Action;
 		});
 		this.translate.get(["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]).subscribe( translation => {
     		this.presentToast(translation["One less, congrats! Let's define the follow-up todo now and soon we'll get it done as well."]);
@@ -1665,6 +1656,7 @@ export class HomePage {
 	      goalArray => {
   			this.goalArray = [];
   			goalArray.sort((a, b) => a.name.localeCompare(b.name));
+  			goalArray.unshift({key: 'unassigned'} as Goal);
 	        for(let goal of goalArray) {
 	        	if(goal.active != false) {
 		        	this.goalArray.push(goal);
@@ -1688,7 +1680,7 @@ export class HomePage {
 				      	}
 				    });
 				}
-			};
+			}
 	    });
 	    this.changePage('ProjectsPage');
 	    this.showTutorial('projects');
@@ -2321,7 +2313,7 @@ export class HomePage {
 			        }
 			    	this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 					.snapshotChanges()
-					.pipe(
+					.pipe(take(1),
 						map(
 							changes => { 
 								return changes.map( c => {

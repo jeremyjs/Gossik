@@ -189,6 +189,7 @@
   "tutorialTodoPageInit": "You unlocked the 'Do' page, where you can work off your todos. I will directly suggest a todo on this page which you then can start or skip, if you'd like a new suggestion. Additionally, I will learn from every interaction with you, e.g. when you click on 'Skip', I can learn that my suggestion was not optimal. With this, I will try to always find the optimally doable and most important todo for you.",
   "tutorialTodoPageTime": "From now on, you can also input your current available time and I will adapt my suggestion to you.",
   "Type": "Type",
+  "Unassigned todos": "Unassigned todos",
   "View": "View",
   "processInit": "We took a shortcut to define the first couple of todos. To better learn which todos can and should be worked on when, you need to define your todos with some more detail from now on. Choose a duration for this todo.",
   "Wed": "Wed",
