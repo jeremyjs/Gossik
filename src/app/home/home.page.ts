@@ -1691,6 +1691,7 @@ export class HomePage {
 				}
 			};
 	    });
+	    console.log('oui');
 	    this.changePage('ProjectsPage');
 	    this.showTutorial('projects');
   	}
@@ -2341,7 +2342,7 @@ export class HomePage {
 										};
 									return data;
 					});}));
-				this.goalList.subscribe(
+				this.goalList.pipe(take(1)).subscribe(
 			      goalArray => {
 		  			this.goalArray = [];
 			        for(let goal of goalArray) {
