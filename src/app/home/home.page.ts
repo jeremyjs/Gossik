@@ -1690,7 +1690,6 @@ export class HomePage {
 				}
 			};
 	    });
-	    console.log('oui');
 	    this.changePage('ProjectsPage');
 	    this.showTutorial('projects');
   	}
@@ -1955,7 +1954,6 @@ export class HomePage {
 	        	}
 	        }
 	    });
-	    console.log(this.selectedDay);
 	    if(!this.selectedDay) {
   			this.selectedDay = new Date();
 	    }
