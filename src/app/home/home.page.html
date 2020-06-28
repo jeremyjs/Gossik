@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-toolbar color="secondary" *ngIf="viewpoint != 'InitPage'">
-    <div *ngIf="loggedin" class="border-bottom-gray-1">
+    <div *ngIf="loggedin">
   		<div *ngIf="isApp && viewpoint == 'CapturePage'">
         <ion-grid>
           <ion-row>
@@ -612,7 +612,7 @@
               </button>
             </ion-col>
           </ion-row>
-          <ion-row  *ngIf="!userProfile.tutorial.process && !cameFromToDoPage" class="margin-left-50">
+          <ion-row  *ngIf="userProfile && userProfile.tutorial.tutorialProgress > 2 && !cameFromToDoPage" class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
               <ion-radio value="note" class="height-15px width-15px margin-auto"></ion-radio>
             </ion-col>
@@ -1438,7 +1438,7 @@
   </div>
 
   <!-- Mobile Navigation Footer -->
-  <div class="width-100 height-70px margin-0 no-padding border-top-gray-1 position-absolute bottom-0" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
+  <div class="width-100 height-70px margin-0 no-padding position-absolute bottom-0" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
     <ion-row class="width-100 height-100">
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()" *ngIf="userProfile.tutorial.tutorialProgress > 0">
