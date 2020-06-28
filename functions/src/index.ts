@@ -350,7 +350,7 @@ exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').o
 	   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals.";
 	   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow.";
 	   							let newTriggerDate = new Date();
-	   							newTriggerDate.setHours(newEndDate.getHours() -3);
+	   							newTriggerDate.setHours(newTriggerDate.getHours() -3);
 	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set(newTriggerDate.toISOString());
 	   						}
 	   						let msg = message['en'];
@@ -390,7 +390,7 @@ exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
 				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
+				if(timeNowMiliseconds - triggerDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
 			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 			    		devices.forEach(function(device) {
 				    		let language = 'en';
@@ -437,7 +437,7 @@ exports.tutorialCalendarPush = functions.pubsub.schedule('0 * * * *').onRun((con
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
 				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - endDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - endDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
+				if(timeNowMiliseconds - triggerDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
 			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 			    		devices.forEach(function(device) {
 				    		let language = 'en';
@@ -523,7 +523,8 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 
 
 
-/* Modifying the database manually for each user
+// Modifying the database manually for each user
+/*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
@@ -552,6 +553,8 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
    				profile.profile.signUpDate = user.val().signUpDate;
    			}
    			user.ref.update(profile);
+   			// update just one specific value
+   			admin.database().ref('/users/' + user.key + '/profile').child('timezoneOffset').set(-120);
    		})
    });
    return null;

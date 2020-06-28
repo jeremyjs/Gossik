@@ -29,17 +29,35 @@ export class DatabaseService {
             email: email,
             tutorial: {
                 'fivetodos': true,
+                'fivetodosStartdate': '',
+                'fivetodosEnddate': '',
                 'thoughtprocessing': false,
+                'thoughtprocessingStartdate': '',
+                'thoughtprocessingEnddate': '',
                 'projects': false,
+                'projectsStartdate': '',
+                'projectsEnddate': '',
                 'calendar': false,
+                'calendarStartdate': '',
+                'calendarEnddate': '',
                 'gettingToKnowPush': false,
+                'gettingToKnowPushStartdate': '',
+                'gettingToKnowPushEnddate': '',
                 'thoughts': false,
+                'thoughtsStartdate': '',
+                'thoughtsEnddate': '',
                 'process': false,
+                'processStartdate': '',
+                'processEnddate': '',
                 'next': '',
                 'triggerDate': '',
                 'tutorialProgress': 0,
                 'tutorialNextButton': false,
-                'tutorialTodoPageTime': false
+                'tutorialNextButtonStartdate': '',
+                'tutorialNextButtonEnddate': '',
+                'tutorialTodoPageTime': false,
+                'tutorialTodoPageTimeStartdate': '',
+                'tutorialTodoPageTimeEnddate': '',
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
@@ -101,6 +119,7 @@ export class DatabaseService {
             triggerDate: new Date().toISOString()
         }
         tutorial[tutorialPart] = false;
+        tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();
         if(tutorialPart == 'process') {
             tutorial['tutorialTodoPageTime'] = true;
         }
@@ -111,8 +130,9 @@ export class DatabaseService {
         let tutorial = {
             next: '',
             triggerDate: ''
-        }
+        };
         tutorial[tutorialPart] = true;
+        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
         if(tutorialPart == 'thoughts') {
             tutorial['tutorialProgress'] = 1;
         } else if (tutorialPart == 'thoughtprocessing') {
@@ -128,6 +148,12 @@ export class DatabaseService {
             next: tutorialPart,
             triggerDate: new Date().toISOString()
         };
+        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    }
+
+    setTutorialStartdate(userid, tutorialPart) {
+        let tutorial = {};
+        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 

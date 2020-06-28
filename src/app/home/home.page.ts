@@ -726,6 +726,7 @@ export class HomePage {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial[tutorialPart]) {
+				this.db.setTutorialStartdate(this.auth.userid, tutorialPart);
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
