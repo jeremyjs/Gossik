@@ -232,10 +232,13 @@
         </ion-grid>
       </div>
       <div *ngIf="isApp && viewpoint == 'ProcessCapturePage'">
-        <button *ngIf="!cameFromProjectOverviewPage" class="transparent" (click)="goToProcessPage()">
+        <button *ngIf="cameFromProjectOverviewPage" class="transparent" (click)="reviewGoal(captureProject)">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
-        <button *ngIf="cameFromProjectOverviewPage" class="transparent" (click)="reviewGoal(captureProject)">
+        <button *ngIf="cameFromProcessPage" class="transparent" (click)="goToProcessPage()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+        </button>
+        <button *ngIf="cameFromFinishActionPage || cameFromToDoPage" class="transparent" (click)="goToToDoPage()">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
       </div>
@@ -803,7 +806,7 @@
           <span class="font-white margin-auto-left-3 margin-auto" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
         </ion-col>
         <ion-col class="flex">
-          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('')">
+          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')">
             <img src="../../assets/icon/icon_add.png" height="20">
           </button>
           <button *ngIf="userProfile.tutorial.tutorialProgress <= 1" class="transparent no-padding margin-auto" (click)="startFivetodos()">

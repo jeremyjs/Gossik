@@ -1025,6 +1025,7 @@ export class HomePage {
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');
+    	this.cameFromToDoPage = (origin == 'ToDoPage');
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
     		this.capturePlaceholder = "Define action";
@@ -1035,6 +1036,9 @@ export class HomePage {
     		this.pageTitle = "Process thought";
     		this.capturePlaceholder = "Define action or reference";
     	} else if (this.cameFromFinishActionPage) {
+    		this.pageTitle = "Define action";
+    		this.capturePlaceholder = "Define action";
+    	} else if (this.cameFromToDoPage) {
     		this.pageTitle = "Define action";
     		this.capturePlaceholder = "Define action";
     	}
@@ -1183,7 +1187,7 @@ export class HomePage {
 	  			this.showCaptureDone = false
 	  		}
   		} else if (this.captureType == 'note') {
-  			if(this.captureContent && this.captureProject.key != '') {
+  			if(this.captureContent && this.captureProject.key != 'unassigned') {
 	  			this.showCaptureDone = true;
 	  		} else {
 	  			this.showCaptureDone = false
@@ -1205,9 +1209,7 @@ export class HomePage {
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
-  		} else if (this.cameFromFinishActionPage) {
-  			this.db.deleteAction(this.startedAction, this.auth.userid);
-  			this.startedAction = {} as Action;
+  		} else if (this.cameFromFinishActionPage || this.cameFromToDoPage) {
   			this.goToToDoPage();
   		} else {
   			this.goToProcessPage();
@@ -1978,8 +1980,8 @@ export class HomePage {
 								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 									eventData.event_id = event_id;
 									this.db.addCalendarEvent(eventData, this.auth.userid);
-									this.translate.get(["Calendar event saved"]).subscribe( translation => {
-								  		this.presentToast(translation["Calendar event saved"]);
+									this.translate.get(["Event saved"]).subscribe( translation => {
+								  		this.presentToast(translation["Event saved"]);
 									});
 									eventData.startTime = new Date(eventData.startTime);
 							        eventData.endTime = new Date(eventData.endTime);
@@ -1992,8 +1994,8 @@ export class HomePage {
 								});
 							} else {
 								this.db.addCalendarEvent(eventData, this.auth.userid);
-								this.translate.get(["Calendar event saved"]).subscribe( translation => {
-							  		this.presentToast(translation["Calendar event saved"]);
+								this.translate.get(["Event saved"]).subscribe( translation => {
+							  		this.presentToast(translation["Event saved"]);
 								});
 								eventData.startTime = new Date(eventData.startTime);
 						        eventData.endTime = new Date(eventData.endTime);
@@ -2007,8 +2009,8 @@ export class HomePage {
 						});
 					} else {
 						this.db.addCalendarEvent(eventData, this.auth.userid);
-						this.translate.get(["Calendar event saved"]).subscribe( translation => {
-					  		this.presentToast(translation["Calendar event saved"]);
+						this.translate.get(["Event saved"]).subscribe( translation => {
+					  		this.presentToast(translation["Event saved"]);
 						});
 						eventData.startTime = new Date(eventData.startTime);
 				        eventData.endTime = new Date(eventData.endTime);
