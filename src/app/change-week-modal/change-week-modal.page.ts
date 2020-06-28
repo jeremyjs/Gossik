@@ -55,4 +55,8 @@ export class ChangeWeekModalPage implements OnInit {
   	this.modalCtrl.dismiss(date);
   }
 
+  cancel() {
+    this.modalCtrl.dismiss();
+  }
+
 }
