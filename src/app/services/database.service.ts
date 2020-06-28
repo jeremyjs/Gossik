@@ -31,7 +31,7 @@ export class DatabaseService {
                 'fivetodos': true,
                 'thoughtprocessing': false,
                 'projects': false,
-                'calendar': false,
+                'calendar': true,
                 'gettingToKnowPush': false,
                 'thoughts': false,
                 'process': false,
