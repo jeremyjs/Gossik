@@ -155,7 +155,6 @@ export class HomePage {
 	cameFromProjectOverviewPage: boolean;
 	cameFromFinishActionPage: boolean;
 	cameFromProcessPage: boolean;
-	calendarLoaded: boolean = false;
 	skippedAllToDos: boolean = false;
 	duration: number;
 	userProfile: any;
@@ -1730,11 +1729,7 @@ export class HomePage {
 				this.eventSource = events;
 			});
 		});
-		this.calendarLoaded = false;
 	    this.pageCtrl = 'ProjectOverview';
-	    setTimeout( () => {
-			this.calendarLoaded = true;
-		}, 3000);
 	    this.goal = goal;
 	    this.referenceList = this.db.getReferenceListFromGoal(goal.key, this.auth.userid)
 		  	.snapshotChanges()
@@ -1880,7 +1875,6 @@ export class HomePage {
   	// CalendarPage functions
   	goToCalendarPage() {
   		this.showTutorial('calendar');
-  		this.calendarLoaded = false;
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -1937,11 +1931,7 @@ export class HomePage {
 			});
 			this.pageTitle = "Calendar";
 			this.changePage('CalendarPage');
-			setTimeout( () => {
-				this.calendarLoaded = true;
-			}, 1000);
 		});
-		//this.onEventSelected(this.calendar.currentDate);
   	}
   	
   	addEvent(){
@@ -2140,10 +2130,6 @@ export class HomePage {
 							      	{
 								        text: alertMessage['Delete'],
 								        handler: () => {
-								        	this.calendarLoaded = false;
-								        	setTimeout( () => {
-								        		this.calendarLoaded = true;
-								        	}, 1000);
 								        	this.translate.get(["Event deleted"]).subscribe( translation => {
 										      this.presentToast(translation["Event deleted"]);
 										    });
@@ -2172,81 +2158,57 @@ export class HomePage {
 		});
 	}
 
-	changeCalendarMode(calendarMode) {
-		this.calendar.mode = calendarMode;
-	}
-
-	onViewTitleChanged(title) {
-		this.viewTitle = title;
-	}
-
 	onTimeSelected(event) {
-		if(this.calendarLoaded) {
-			this.calendarLoaded = false;
-			setTimeout(() => {
-				this.calendarLoaded = true;
-			}, 1000);
-			this.selectedDay = event.selectedTime;
-			this.goalArray = [];
-	  		this.goalList = this.db.getGoalList(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(
-					map(
-						changes => { 
-							return changes.map( c => {
-								let goal: Goal = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return goal;
-				});}));
-		    this.goalList.subscribe(
-		      goalArray => {
-		        for(let goal of goalArray) {
-		        	if(goal.active != false) {
-		        		this.goalArray.push(goal);
-		        	}
-		        }
-		    });
-			if(event.events == undefined || event.events.length == 0) {
-				this.selectedDay = new Date(event.selectedTime);
-				let modal = this.modalCtrl.create({
-					component: CalendarEventModalPage,
-					componentProps: {selectedDay: this.selectedDay}
-				}).then (modal => {
-					modal.present();
-					modal.onDidDismiss().then(data => {
-						if(data.data){
-							let eventData: CalendarEvent = data.data;
-							eventData.userid = this.auth.userid;
-							eventData.allDay = false;
-							eventData.active = true;
-							if(!data.data.goalid) {
-								eventData.color = "#C0C0C0";
-								eventData.goalid = '';
+		this.selectedDay = event.selectedTime;
+		this.goalArray = [];
+  		this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let goal: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return goal;
+			});}));
+	    this.goalList.subscribe(
+	      goalArray => {
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+	        		this.goalArray.push(goal);
+	        	}
+	        }
+	    });
+		if(event.events == undefined || event.events.length == 0) {
+			this.selectedDay = new Date(event.selectedTime);
+			let modal = this.modalCtrl.create({
+				component: CalendarEventModalPage,
+				componentProps: {selectedDay: this.selectedDay}
+			}).then (modal => {
+				modal.present();
+				modal.onDidDismiss().then(data => {
+					if(data.data){
+						let eventData: CalendarEvent = data.data;
+						eventData.userid = this.auth.userid;
+						eventData.allDay = false;
+						eventData.active = true;
+						if(!data.data.goalid) {
+							eventData.color = "#C0C0C0";
+							eventData.goalid = '';
+						} else {
+						    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
+						    if(goal) {
+						    	eventData.color = goal.color;
 							} else {
-							    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
-							    if(goal) {
-							    	eventData.color = goal.color;
-								} else {
-									eventData.color = "#C0C0C0";
-								}
+								eventData.color = "#C0C0C0";
 							}
-							if(this.platform.is('cordova')) {
-								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-									if(hasReadWritePermission) {
-										this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-											eventData.event_id = event_id;
-											this.db.addCalendarEvent(eventData, this.auth.userid)
-											eventData.startTime = new Date(eventData.startTime);
-									        eventData.endTime = new Date(eventData.endTime);
-											let events = this.eventSource;
-											events.push(eventData);
-											this.eventSource = [];
-											setTimeout(() => {
-												this.eventSource = events;
-											});
-										});
-									} else {
+						}
+						if(this.platform.is('cordova')) {
+							this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+								if(hasReadWritePermission) {
+									this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+										eventData.event_id = event_id;
 										this.db.addCalendarEvent(eventData, this.auth.userid)
 										eventData.startTime = new Date(eventData.startTime);
 								        eventData.endTime = new Date(eventData.endTime);
@@ -2256,24 +2218,42 @@ export class HomePage {
 										setTimeout(() => {
 											this.eventSource = events;
 										});
-									}
-								});
-							} else {
-								this.db.addCalendarEvent(eventData, this.auth.userid)
-								eventData.startTime = new Date(eventData.startTime);
-						        eventData.endTime = new Date(eventData.endTime);
-								let events = this.eventSource;
-								events.push(eventData);
-								this.eventSource = [];
-								setTimeout(() => {
-									this.eventSource = events;
-								});
-							}
+									});
+								} else {
+									this.db.addCalendarEvent(eventData, this.auth.userid)
+									eventData.startTime = new Date(eventData.startTime);
+							        eventData.endTime = new Date(eventData.endTime);
+									let events = this.eventSource;
+									events.push(eventData);
+									this.eventSource = [];
+									setTimeout(() => {
+										this.eventSource = events;
+									});
+								}
+							});
+						} else {
+							this.db.addCalendarEvent(eventData, this.auth.userid)
+							eventData.startTime = new Date(eventData.startTime);
+					        eventData.endTime = new Date(eventData.endTime);
+							let events = this.eventSource;
+							events.push(eventData);
+							this.eventSource = [];
+							setTimeout(() => {
+								this.eventSource = events;
+							});
 						}
-					});
+					}
 				});
-			}
+			});
 		}
+	}
+
+	changeCalendarMode(calendarMode) {
+		this.calendar.mode = calendarMode;
+	}
+
+	onViewTitleChanged(title) {
+		this.viewTitle = title;
 	}
 
 	changeWeek(direction: number) {
@@ -2283,21 +2263,13 @@ export class HomePage {
 	}
 
 	changeDay(direction: number) {
-		this.calendarLoaded = false;
 		let nextDay = new Date(this.calendar.currentDate);
 		nextDay.setDate(this.calendar.currentDate.getDate() +  direction);
 		this.calendar.currentDate = nextDay;
-		setTimeout( () => {
-			this.calendarLoaded = true;
-		}, 1000);
 	}
 
 	changeDateToday() {
-		this.calendarLoaded = false;
 		this.calendar.currentDate = new Date();
-		setTimeout( () => {
-			this.calendarLoaded = true;
-		}, 1000);
 	}
 
 	changeDate() {
@@ -2306,11 +2278,7 @@ export class HomePage {
 			}).then (modal => {
 				modal.present();
 				modal.onDidDismiss().then(data => {
-					this.calendarLoaded = false;
 					this.calendar.currentDate = data.data;
-					setTimeout( () => {
-						this.calendarLoaded = true;
-					}, 1000);
 				});
 			});
 	}
