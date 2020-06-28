@@ -155,6 +155,7 @@ export class HomePage {
 	cameFromProjectOverviewPage: boolean;
 	cameFromFinishActionPage: boolean;
 	cameFromProcessPage: boolean;
+	cameFromToDoPage: boolean;
 	skippedAllToDos: boolean = false;
 	duration: number;
 	userProfile: any;
