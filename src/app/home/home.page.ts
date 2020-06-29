@@ -2324,7 +2324,6 @@ export class HomePage {
 	goToToDoPage() {
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
-			console.log(this.userProfile.tutorial);
 			if(this.userProfile.tutorial.fivetodos) {
 				this.showTutorial('fivetodos');
 				this.goToInitPage();
@@ -2451,11 +2450,11 @@ export class HomePage {
 	  		let selectedIndices = [0]
 	  		if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration' || pickerName == 'StopActionPageDuration') {
 	  			columnNames = ['duration'];
-	  			if(this.duration) {
-	  				selectedIndices[0] = this.duration;
+	  			for(let i = 0; i <= 80; i++) {
+	  				columnOptions[0].push(5*i);
 	  			}
-	  			for(let i = 0; i <= 400; i++) {
-	  				columnOptions[0].push(i)
+	  			if(this.duration) {
+	  				selectedIndices[0] = columnOptions[0].findIndex(option => option == this.duration);
 	  			}
 	  		}
 			this.pickerCtrl.create({
@@ -2501,7 +2500,7 @@ export class HomePage {
 
     getColumnOptions(columnOptions) {
       let options = [];
-      for (let i = 0; i < columnOptions.length; i++) {
+      for (let i of columnOptions) {
         options.push({
           text: i,
           value: i
