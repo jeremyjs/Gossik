@@ -39,15 +39,6 @@ export class TutorialProjectsModalPage implements OnInit {
   		this.projectColors = this.navParams.get('projectColors');
   	}
 
-  	ionFocus(event){
-		event.target.firstChild.placeholder = '';
-		this.translate.get(["Define new Goal"]).subscribe( translation => {
-	  		if(this.newProject == translation["Define new goal"]) {
-	  			this.newProject = '';
-	  		}
-		});
-	}
-
   	cancel() {
   		this.modalCtrl.dismiss();
   	}
