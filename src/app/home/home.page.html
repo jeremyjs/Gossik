@@ -826,10 +826,14 @@
         </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
+        <span class="margin-auto">
           {{doableActionArray[0].time}}{{"min" | translate }}
+        </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
+        <span class="margin-auto">
           {{goalDict[doableActionArray[0].goalid].name}}
+        </span>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
         <ion-col class="flex text-align-center">
