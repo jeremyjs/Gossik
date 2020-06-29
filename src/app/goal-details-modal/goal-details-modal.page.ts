@@ -45,7 +45,8 @@ export class GoalDetailsModalPage implements OnInit {
   async presentToast(toastMessage) {
       const toast = await this.toastCtrl.create({
       message: toastMessage,
-      duration: 5000
+      duration: 5000,
+      cssClass: 'toast'
     });
     toast.present();
   }
