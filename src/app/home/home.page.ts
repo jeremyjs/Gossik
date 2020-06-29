@@ -159,6 +159,7 @@ export class HomePage {
 	skippedAllToDos: boolean = false;
 	duration: number;
 	userProfile: any;
+	addingProject: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1383,6 +1384,7 @@ export class HomePage {
 			} else {
 				this.errorMsg = "You cannot create a goal without a name.";
 			}
+			this.addingProject = false;
 	    });
 	}
 
@@ -1719,6 +1721,10 @@ export class HomePage {
 	    });
 	    this.changePage('ProjectsPage');
 	    this.showTutorial('projects');
+  	}
+
+  	addProject() {
+  		this.addingProject = true;
   	}
 	
 	reviewGoal(goal: Goal) {
