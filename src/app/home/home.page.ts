@@ -475,7 +475,9 @@ export class HomePage {
   					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	this.presentAlert("tutorialEndFeedback");
+						        	setTimeout(() => {
+										this.presentAlert("tutorialEndFeedback");
+									}, 1000);
 						        }
 					      	}
 					    ];
@@ -755,7 +757,7 @@ export class HomePage {
 				text["thoughts"] = ["thoughts", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
 				text["process"] = ["process", "OK"];
-				text["projects"] = ["projects", "Start", "Later"];
+				text["projects"] = ["projects", "OK"];
 				text["calendar"] = ["calendar", "OK"];
 				text["tutorialNextButton"] = ["tutorialNextButton", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
@@ -769,7 +771,9 @@ export class HomePage {
 				      	{
 					        text: translation["OK"],
 					        handler: () => {
-					        	this.presentAlert("tutorialFeedback");
+					        	setTimeout(() => {
+									this.presentAlert("tutorialFeedback");
+								}, 1000);
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughts');
 				    		}
 				      	}
@@ -778,7 +782,9 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.presentAlert("thoughtsAdd");
+				    			setTimeout(() => {
+				    				this.presentAlert("thoughtsAdd");
+								}, 1000);
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughtprocessing');
 				    		}
 				    	}
@@ -789,7 +795,9 @@ export class HomePage {
 					        handler: () => {
 					        	this.db.finishTutorial(this.auth.userid, tutorialPart, 'process');
 					        	this.db.startTutorial(this.auth.userid, 'process');
-					        	this.presentAlert("Great! You are on the 'Organize' page. Here you find all your saved thoughts. You should regularly visit this page and process your thoughts to organize them in todos. Click on one thought to start processing it.");
+					        	setTimeout(() => {
+					        		this.presentAlert("tutorialProcessInit");
+								}, 1000);
 					        }
 				      	}, 
 				      	{
@@ -800,26 +808,29 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.presentAlert("processInit");
+				    			setTimeout(() => {
+				    				this.presentAlert("processInit");
+								}, 1000);
 				    		}
 				    	}
 				    ];
 				    buttons["projects"] = [
 				    	{
-				    		text: translation["Start"],
+				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.presentAlert("projectsAssign");
+				    			setTimeout(() => {
+				    				this.presentAlert("projectsAssign");
+								}, 1000);
 				    		}
-				    	},
-				    	{
-				    		text: translation["Later"]
 				    	}
 				    ];
 				    buttons["calendar"] = [
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			this.presentAlert("calendarEnd");
+				    			setTimeout(() => {
+				    				this.presentAlert("calendarEnd");
+								}, 1000);
 				    			this.db.finishTutorial(this.auth.userid, 'calendar', '');
 				    		}
 				    	}
@@ -899,7 +910,7 @@ export class HomePage {
 				modal.present();
 				modal.onDidDismiss().then( data => {
 					if(data.data && data.data == 'assigned') {
-						this.db.finishTutorial(this.auth.userid, 'projects', 'calendar');
+						this.db.finishTutorial(this.auth.userid, 'projects', '');
 						this.goToProjectsPage();
 						this.presentAlert("tutorialProjectsDone");
 					}
