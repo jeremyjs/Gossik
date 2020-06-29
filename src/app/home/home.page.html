@@ -523,7 +523,14 @@
   </div>
   <!-- Mobile ProcessPage -->
   <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-155px">
-    <ion-grid class="height-100 overflow-scroll margin-top-85">
+    <ion-grid class="height-100 overflow-scroll">
+      <ion-row class="text-align-right">
+        <ion-col>
+          <button (click)="goToCapturePage()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-row class="transparent width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
@@ -545,9 +552,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <button (click)="goToCapturePage()" class="position-absolute top-10 right-10 font-white transparent">
-      <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-    </button>
   </div>
 
   <!-- ProcessCapturePage -->
@@ -796,6 +800,16 @@
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="height-100 width-90">
+      <ion-row class="text-align-right">
+        <ion-col>
+          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+          <button *ngIf="userProfile.tutorial.tutorialProgress <= 1" (click)="startFivetodos()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-row class="margin-top-10">
         <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 2">
           <button class="transparent no-padding margin-auto" (click)="filterToDos()">
@@ -804,14 +818,6 @@
         </ion-col>
         <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 1">
           <span class="font-white margin-auto-left-3 margin-auto" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
-        </ion-col>
-        <ion-col class="flex">
-          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent no-padding margin-auto" (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')">
-            <img src="../../assets/icon/icon_add.png" height="20">
-          </button>
-          <button *ngIf="userProfile.tutorial.tutorialProgress <= 1" class="transparent no-padding margin-auto" (click)="startFivetodos()">
-            <img src="../../assets/icon/icon_add.png" height="20">
-          </button>
         </ion-col>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-gray font-size-1-5rem text-align-center">
@@ -1056,6 +1062,7 @@
   <!-- Mobile ProjectsPage-->
   <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
     <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar overflow-scroll">
+    <!--
       <ion-card class="width-90 margin-auto transparent">
         <ion-row class="width-90 margin-left-auto margin-right-auto">
           <ion-col size="9.6" class="no-padding">
@@ -1068,6 +1075,14 @@
           </ion-col>
         </ion-row>
       </ion-card>
+    -->
+      <ion-row class="text-align-right">
+        <ion-col>
+          <button (click)="goToCapturePage()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-card class="width-90 margin-top-10 overflow-y-hidden overflow-x-hidden text-align-center margin-auto transparent" no-lines *ngFor="let goal of goalArray">
         <ion-grid *ngIf="goal.key == 'unassigned'">
           <ion-row class="height-45px">
@@ -1326,6 +1341,13 @@
   </div>
   <!-- Mobile CalendarPage -->
   <div class="height-100-minus-70px width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
+    <ion-row class="text-align-right">
+      <ion-col>
+        <button (click)="addEvent()" float-right class="font-white transparent">
+          <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+        </button>
+      </ion-col>
+    </ion-row>
     <ion-row class="width-100 text-align-right">
       <ion-col size="5" class="text-align-center">
         <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
@@ -1338,11 +1360,6 @@
       <ion-col size="5" class="text-align-center">
         <button class="button-design margin-auto font-size-15px" (click)="changeDateToday()">
           {{"Today" | translate}}
-        </button>
-      </ion-col>
-      <ion-col size="2" class="text-align-center">
-        <button class="transparent font-white no-padding" (click)="addEvent()">
-          <img src="../../assets/icon/icon_add.png" height="30">
         </button>
       </ion-col>
     </ion-row>
