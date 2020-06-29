@@ -145,4 +145,8 @@ export class NativeCalendarService {
   hasReadWritePermission() {
   	return this.calendar.hasReadWritePermission();
   }
+
+  requestReadWritePermission() {
+  	return this.calendar.requestReadWritePermission();
+  }
 }

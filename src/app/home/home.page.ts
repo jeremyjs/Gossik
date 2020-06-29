@@ -344,6 +344,12 @@ export class HomePage {
 					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 						if(hasReadWritePermission) {
 							this.nativeCalendar.updateDatabase();
+						} else {
+							this.nativeCalendar.requestReadWritePermission().then( hasReadWritePermission => {
+								if(hasReadWritePermission) {
+									this.nativeCalendar.updateDatabase();
+								}
+							});
 						}
 					});
 				}
@@ -1267,6 +1273,9 @@ export class HomePage {
   			action.deadline = this.captureDeadline.toISOString();
 			let deadlineStartTime = new Date (action.deadline).setHours(2);
 			let deadlineEndTime = new Date (action.deadline).setHours(5);
+			if(!this.captureProject.color) {
+				this.captureProject.color = "#C0C0C0";
+			}
 			let eventData: CalendarEvent = {
 				userid: this.auth.userid,
 				goalid: action.goalid,
@@ -1278,6 +1287,7 @@ export class HomePage {
 				color: this.captureProject.color
 			}
 			if(this.platform.is('cordova')) {
+				console.log('is cordova!');
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
 						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
