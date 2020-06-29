@@ -605,7 +605,7 @@
         <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="captureType" (ionChange)="assignType()">
           <ion-row class="margin-left-50 margin-top-10">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
-              <ion-radio value="action" class="height-15px width-15px margin-auto"></ion-radio>
+              <ion-radio value="action" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
               <button *ngIf="!userProfile.tutorial.process" class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('action')">
@@ -618,7 +618,7 @@
           </ion-row>
           <ion-row  *ngIf="userProfile && userProfile.tutorial.tutorialProgress > 2 && !cameFromToDoPage" class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
-              <ion-radio value="note" class="height-15px width-15px margin-auto"></ion-radio>
+              <ion-radio value="note" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
               <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignType('note')">
@@ -632,11 +632,11 @@
         <span class="font-gray font-size-20px">
           {{"Duration" | translate }}
         </span>
-        <div class="width-100 margin-top-10 margin-left-50">
-          <ion-row class="width-100">
-            <span class="font-white margin-auto-left-3" (click)="openPicker('ProcessCapturePageDuration')">{{duration}}{{"min" | translate }}</span>
-          </ion-row>
-        </div>
+        <ion-row class="width-100 margin-top-10 margin-left-50">
+          <ion-col class="padding-left-0">
+            <span class="font-white" (click)="openPicker('ProcessCapturePageDuration')">{{duration}}{{"min" | translate }}</span>
+          </ion-col>
+        </ion-row>
       </ion-row>
       <ion-row *ngIf="showCapturePriority">
         <span class="font-gray font-size-20px">
@@ -645,7 +645,7 @@
         <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="capturePriority" (ionChange)="assignPriority()">
           <ion-row class="margin-left-50 margin-top-10">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
-              <ion-radio value="1" class="height-15px width-15px margin-auto"></ion-radio>
+              <ion-radio value="1" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
               <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('1')">
@@ -655,7 +655,7 @@
           </ion-row>
           <ion-row class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
-              <ion-radio value="2" class="height-15px width-15px margin-auto"></ion-radio>
+              <ion-radio value="2" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
               <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('2')">
@@ -665,7 +665,7 @@
           </ion-row>
           <ion-row class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
-              <ion-radio value="3" class="height-15px width-15px margin-auto"></ion-radio>
+              <ion-radio value="3" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
               <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('3')">
@@ -679,30 +679,37 @@
         <span class="font-gray width-100 font-size-20px">
           {{"Project" | translate }}
         </span>
-        <button *ngIf="captureProject.key != 'unassigned'" class="transparent font-white no-padding text-align-left margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
-          {{captureProject.name}}
-        </button>
-        <button *ngIf="captureProject.key == 'unassigned'" class="button-design margin-left-50 overflow-x-hidden margin-top-10 font-size-20px" (click)="assignProject()">
-          {{"Assign project" | translate}}...
-        </button>
+        <ion-row class="width-100 margin-top-10 margin-left-50">
+          <ion-col class="padding-left-0">
+            <button *ngIf="captureProject.key != 'unassigned'" class="transparent font-white no-padding text-align-left overflow-x-hidden font-size-20px" (click)="assignProject()">
+              {{captureProject.name}}
+            </button>
+            <button *ngIf="captureProject.key == 'unassigned'" class="button-design overflow-x-hidden font-size-20px" (click)="assignProject()">
+              {{"Assign project" | translate}}...
+            </button>
+          </ion-col>
+        </ion-row>
       </ion-row>
-      <ion-row *ngIf="showCaptureDeadline && !captureDeadline">
+      <ion-row *ngIf="showCaptureDeadline">
         <span class="width-100 font-gray font-size-20px">
           {{"Deadline" | translate }}
         </span>
-        <button class="button-design margin-left-50 margin-top-10 font-size-20px" (click)="assignDeadline()">
-            {{"Add deadline" | translate }}
-        </button>
-      </ion-row>
-      <ion-row *ngIf="showCaptureDeadline && captureDeadline">
-        <span class="font-gray font-size-20px">
-          {{"Deadline" | translate }}
-        </span>
-        <button class="transparent font-white margin-left-50 margin-top-10 font-size-20px" (click)="assignDeadline()">{{captureDeadlineText}}
-        </button>
-        <button class="margin-left-50 transparent" (click)="deleteDeadline()">
-          <img src="../../assets/icon/icon_delete.png" height="20">
-        </button>
+        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="!captureDeadline">
+          <ion-col class="padding-left-0">
+            <button class="button-design font-size-20px" (click)="assignDeadline()">
+                {{"Add deadline" | translate }}
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="captureDeadline">
+          <ion-col class="padding-left-0">
+            <button class="transparent font-white font-size-20px no-padding text-align-left display-inline-block" (click)="assignDeadline()">{{captureDeadlineText}}
+            </button>
+            <button class="transparent no-padding display-inline-block" (click)="deleteDeadline()">
+              <img src="../../assets/icon/icon_delete.png" height="30">
+            </button>
+          </ion-col>
+        </ion-row>
       </ion-row>
       <ion-row *ngIf="showCaptureDone" class="margin-top-45">
         <button class="transparent font-gray margin-auto width-100" (click)="processCapture()">
