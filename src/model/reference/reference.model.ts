@@ -4,4 +4,6 @@ export interface Reference {
     goalid: string;
     content: string;
     active?: boolean;
+    createDate?: any;
+    deleteDate?: any;
 }

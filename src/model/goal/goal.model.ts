@@ -4,4 +4,6 @@ export interface Goal {
     name: string;
     color: string;
     active?: boolean;
+    createDate?: any;
+    deleteDate?: any;
 }

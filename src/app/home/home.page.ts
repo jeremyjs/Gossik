@@ -721,7 +721,7 @@ export class HomePage {
 					changes => { 
 						return changes.map( c => {
 							let capture: Capture = { 
-								key: c.payload.key, userid: c.payload.val().userid, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
+								key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
 								};
 							return capture;
 					});}));
@@ -936,7 +936,7 @@ export class HomePage {
 				changes => { 
 					return changes.map( c => {
 						let capture: Capture = { 
-							key: c.payload.key, userid: c.payload.val().userid, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
+							key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
 							};
 						return capture;
 				});}));
@@ -983,7 +983,7 @@ export class HomePage {
 				changes => { 
 					return changes.map( c => {
 						let capture: Capture = { 
-							key: c.payload.key, userid: c.payload.val().userid, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
+							key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
 							};
 						return capture;
 				});}));
@@ -1146,6 +1146,7 @@ export class HomePage {
   	}
 
   	assignContent(event) {
+  		console.log(event);
   		if(this.captureContent) {
   			if(this.captureType == 'action') {
 		  		this.showCaptureDuration = true;
@@ -1631,6 +1632,7 @@ export class HomePage {
 	}
 
 	finishAction() {
+		this.startedAction.endDate = new Date().toISOString();
 		if(this.userProfile.tutorial.tutorialProgress < 2) {
 			this.noFollowUpTodoRequired()
 		} else {

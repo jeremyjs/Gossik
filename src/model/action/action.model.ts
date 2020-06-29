@@ -11,6 +11,8 @@ export interface Action {
     time: number;
     taken: boolean;
     active?: boolean;
-    startDate?: string;
-    endDate?: string;
+    createDate?: any;
+    deleteDate?: any;
+    startDate?: any;
+    endDate?: any;
 }

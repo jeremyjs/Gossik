@@ -210,11 +210,13 @@ export class DatabaseService {
     }
  
     addCapture(capture: Capture, userid) {
+        capture.createDate = new Date().toISOString();
         return this.db.list('/users/' + userid + '/captures').push(capture);
     }
 	
 	deleteCapture(capture: Capture, userid) {
         capture.active = false;
+        capture.deleteDate = new Date().toISOString();
         return this.editCapture(capture, userid);
     }
 
@@ -223,12 +225,13 @@ export class DatabaseService {
     }
 
     addCalendarEvent(calendarEvent: CalendarEvent, userid) {
+        calendarEvent.createDate = new Date().toISOString();
         return this.db.list('/users/' + userid + '/calendarEvents').push(calendarEvent);
     }
     
     deleteAction(action: Action, userid) {
         action.active = false;
-        action.endDate = new Date().toISOString();
+        action.deleteDate = new Date().toISOString();
         return this.editAction(action, userid).then( () =>
             {
                 if(action.deadline) {
@@ -244,6 +247,7 @@ export class DatabaseService {
         .subscribe( event => {
             event.key = eventid;
             event.active = false;
+            event.deleteDate = new Date().toISOString();
             this.editCalendarEvent(event, userid); 
         });
     }
@@ -260,6 +264,7 @@ export class DatabaseService {
     
     deleteReference(reference: Reference, userid) {
         reference.active = false;
+        reference.deleteDate = new Date().toISOString();
         return this.editReference(reference, userid);
 	}
     
@@ -268,6 +273,7 @@ export class DatabaseService {
     }
 
     addGoal(goal: Goal, userid) {
+        goal.createDate = new Date().toISOString();
         return this.db.list('/users/' + userid + '/goals').push(goal);
     }
 
@@ -303,6 +309,7 @@ export class DatabaseService {
         if(capture.key) {
             this.deleteCapture(capture, userid);
         }
+        action.createDate = new Date().toISOString();
         return this.db.list('users/' + userid + '/nextActions').push(action);
     }
 
@@ -322,6 +329,7 @@ export class DatabaseService {
     }
 
     addReference(reference: Reference, capture: Capture, userid){
+        reference.createDate = new Date().toISOString();
         return this.db.list('/users/' + userid + '/references').push(reference)
         .then( () => {
             if(capture.key) {
@@ -371,6 +379,7 @@ export class DatabaseService {
     deleteGoal(goal, userid) {
         let goalkey = goal.key;
         goal.active = false;
+        goal.deleteDate = new Date().toISOString();
         return this.editGoal(goal, userid).then( () => {
             this.db.list<Action>('/users/' + userid + '/nextActions', ref => ref.orderByChild('goalid').equalTo(goalkey))
             .snapshotChanges()
