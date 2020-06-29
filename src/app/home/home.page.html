@@ -810,30 +810,18 @@
           </button>
         </ion-col>
       </ion-row>
-      <ion-row class="margin-top-10">
-        <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 2">
-          <button class="transparent no-padding margin-auto" (click)="filterToDos()">
-            <img src="../../assets/icon/icon_filter.png" height="30">
-          </button>
-        </ion-col>
-        <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 1">
-          <span class="font-white margin-auto-left-3 margin-auto font-size-30px" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-auto font-gray font-size-1-5rem text-align-center">
-        <span class="margin-auto" *ngIf="userProfile.tutorial.tutorialProgress > 1">
-          {{doableActionArray[0].time}}{{"min" | translate }}
-        </span>
-      </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-white font-size-1-5rem text-align-center">
         <span class="margin-auto">
           {{doableActionArray[0].content}}
         </span>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
-        <span class="margin-auto">
+      <ion-row *ngIf="doableActionArray[0]" class="margin-auto width-80 font-gray one-line">
+        <ion-col size="8" class="overflow-x-hidden text-align-left" *ngIf="doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2">
           {{goalDict[doableActionArray[0].goalid].name}}
-        </span>
+        </ion-col>
+        <ion-col size="4" *ngIf="userProfile.tutorial.tutorialProgress > 1">
+          {{doableActionArray[0].time}}{{"min" | translate }}
+        </ion-col>
       </ion-row>
       <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
         <ion-col class="flex text-align-center">
