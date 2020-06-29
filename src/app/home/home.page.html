@@ -301,19 +301,19 @@
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
 						<div class="form-error">{{loginError}}</div>
-						<button class="button-design margin-auto" expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>	
+						<button class="button-design font-size-20px margin-auto" expand="block" type="submit" [disabled]="!loginForm.valid">{{"Log in" | translate }}</button>	
 					</div>
 				</form>
 				<ion-list class="transparent margin-top-45">
-					<button icon-left class="button-design margin-left-20" (click)="goToSignUp()">
+					<button icon-left class="button-design font-size-20px margin-left-20" (click)="goToSignUp()">
 						{{"Sign up" | translate }}
 					</button>
           <br>
-					<button icon-left class="button-design margin-left-20" (click)="goToForgotPassword()">
+					<button icon-left class="button-design font-size-20px margin-top-10 margin-left-20" (click)="goToForgotPassword()">
 						{{"Forgot password" | translate }}
 					</button>
           <br>
-          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design font-size-20px margin-top-10 margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
 				</ion-list>
@@ -326,19 +326,19 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="button-design" expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
+						<button class="button-design font-size-20px" expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
 					</div>
 				</form>
         <ion-list class="transparent margin-top-45">
-          <button icon-left class="button-design margin-left-20" (click)="goToSignUp()">
+          <button icon-left class="button-design font-size-20px margin-left-20" (click)="goToSignUp()">
             {{"Sign up" | translate }}
           </button>
           <br>
-          <button icon-left class="button-design margin-left-20" (click)="goToLoginPage()">
+          <button icon-left class="button-design font-size-20px margin-top-10 margin-left-20" (click)="goToLoginPage()">
             {{"Login" | translate }}
           </button>
           <br>
-          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design font-size-20px margin-top-10 margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
         </ion-list>
@@ -354,19 +354,19 @@
 						</ion-item>
 					</ion-list>
 					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="button-design" expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
+						<button class="button-design font-size-20px" expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
 					</div>
 				</form>
         <ion-list class="transparent margin-top-45">
-          <button icon-left class="button-design margin-left-20" (click)="goToLoginPage()">
+          <button icon-left class="button-design font-size-20px margin-left-20" (click)="goToLoginPage()">
             {{"Login" | translate }}
           </button>
           <br>
-          <button icon-left class="button-design margin-left-20" (click)="goToForgotPassword()">
+          <button icon-left class="button-design margin-top-10 font-size-20px margin-left-20" (click)="goToForgotPassword()">
             {{"Forgot password" | translate }}
           </button>
           <br>
-          <button class="button-design margin-left-20" (click)="goToPrivacyPolicyPage()">
+          <button class="button-design margin-top-10 font-size-20px margin-left-20" (click)="goToPrivacyPolicyPage()">
             {{"Privacy Policy" | translate }}
           </button>
         </ion-list>
@@ -384,25 +384,25 @@
   <div class="margin-top-10 width-90 padding-10 transparent height-100-minus-70px" *ngIf="viewpoint == 'SettingsPage'">
     <ion-grid>
       <ion-row>
-        <button class="button-design margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
+        <button class="button-design font-size-20px margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
       </ion-row>
       <ion-row>
-        <button class="button-design margin-top-10" (click)="goToFeedbackPage()">
+        <button class="button-design font-size-20px margin-top-10" (click)="goToFeedbackPage()">
           {{"Give feedback" | translate }}
         </button>
       </ion-row>
       <ion-row>
-        <button class="button-design margin-top-10" (click)="goToPrivacyPolicyPage()">
+        <button class="button-design font-size-20px margin-top-10" (click)="goToPrivacyPolicyPage()">
           {{"Privacy Policy" | translate }}
         </button>
       </ion-row>
       <ion-row>
-        <button class="button-design margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
+        <button class="button-design font-size-20px margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
           {{"Show Feedback" | translate }}
         </button>
       </ion-row>
       <ion-row>
-        <button class="button-design margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
+        <button class="button-design font-size-20px margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
           {{"Send Push" | translate }}
         </button>
       </ion-row>
@@ -416,7 +416,7 @@
         <ion-textarea class="feedback transparent border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}..."></ion-textarea>
       </ion-row>
       <ion-row>
-        <button class="button-design margin-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
+        <button class="button-design font-size-20px margin-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
       </ion-row>
     </ion-grid>
   </div>
@@ -753,17 +753,17 @@
   <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'FinishActionPage' && isApp">
     <ion-grid>
       <ion-row class="margin-top-45">
-        <button class="button-design" (click)="defineFollowUpTodoNow()">
+        <button class="button-design font-size-20px" (click)="defineFollowUpTodoNow()">
           {{"Define follow-up todo now" | translate}}
         </button>
       </ion-row>
-      <ion-row class="margin-top-10">
-        <button class="button-design" (click)="defineFollowUpTodoLater()">
+      <ion-row class="margin-top-20">
+        <button class="button-design font-size-20px" (click)="defineFollowUpTodoLater()">
           {{"Define follow-up todo later" | translate}}
         </button>
       </ion-row>
-      <ion-row class="margin-top-10">
-        <button class="button-design" (click)="noFollowUpTodoRequired()">
+      <ion-row class="margin-top-20">
+        <button class="button-design font-size-20px" (click)="noFollowUpTodoRequired()">
           {{"No follow-up todo required" | translate}}
         </button>
       </ion-row>
