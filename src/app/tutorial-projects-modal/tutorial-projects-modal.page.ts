@@ -20,6 +20,7 @@ export class TutorialProjectsModalPage implements OnInit {
 	newProject = {} as Goal;
 	projectColors = [];
 	done: boolean = false;
+	addingProject: boolean = false;
 
   	constructor(
 	  	public navParams: NavParams,
@@ -57,6 +58,10 @@ export class TutorialProjectsModalPage implements OnInit {
   			this.db.editAction(todo, this.auth.userid);
   		}
   		this.modalCtrl.dismiss('assigned');
+  	}
+
+  	addProject() {
+  		this.addingProject = true;
   	}
 
   	createProject() {
@@ -113,6 +118,7 @@ export class TutorialProjectsModalPage implements OnInit {
 				});
 			});
 		}
+		this.addingProject = false;
   	}
 
 }

@@ -15,6 +15,7 @@ export class AssignProjectModalPage implements OnInit {
 	newProject: string;
 	newGoal = {} as Goal;
 	projectColors = [];
+	addingProject: boolean = false;
 
 
   constructor(
@@ -37,6 +38,10 @@ export class AssignProjectModalPage implements OnInit {
 
   cancel() {
   	this.modalCtrl.dismiss();
+  }
+
+  addProject() {
+  	this.addingProject = true;
   }
 
   createProject(project) {
@@ -80,6 +85,7 @@ export class AssignProjectModalPage implements OnInit {
 		});
 		this.goalArray.push(this.newGoal);
 	}
+	this.addingProject = false;
 	this.newProject = '';
   }
 
