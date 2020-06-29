@@ -1137,6 +1137,9 @@ export class HomePage {
   		if(this.captureContent && this.capturePriority && this.captureDuration) {
   			this.showCaptureDeadline = true;
   			this.showCaptureProject = true;
+  		} else {
+  			this.showCaptureDeadline = false;
+  			this.showCaptureProject = false;
   		}
   		this.captureCheckIfDone();
   	}
@@ -2444,8 +2447,10 @@ export class HomePage {
 		}).then( modal => {
 			modal.present();
 			modal.onDidDismiss().then( data => {
-				this.goalKeyArray = data.data;
-				this.showDoableActions();
+				if(data.data) {
+					this.goalKeyArray = data.data;
+					this.showDoableActions();
+				}
 			});
 		});
   	}

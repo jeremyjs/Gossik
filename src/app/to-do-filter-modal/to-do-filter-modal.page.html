@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar color="secondary">
+  	<div>
+        <button class="transparent" (click)="cancel()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+        </button>
+    </div>
     <ion-row class="font-white display-block text-align-center font-size-30px">
       <span class="border-bottom-1 display-inline-block width-70">
       {{"Filter" | translate}}
@@ -28,8 +33,8 @@
 		</button>
 	</ion-row>
 	<ion-row class="margin-top-45 margin-bottom-45">
-    	<button class="transparent font-gray margin-auto width-100" (click)="filter()">
-      		<img src="../../assets/icon/icon_confirm.png" height="50" class="margin-auto">
+    	<button class="button-design margin-auto font-size-20px" (click)="filter()">
+      		{{"Apply filter" | translate}}
     	</button>
   	</ion-row>
 

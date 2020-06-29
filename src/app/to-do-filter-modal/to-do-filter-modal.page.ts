@@ -40,6 +40,10 @@ export class ToDoFilterModalPage implements OnInit {
   	}
   }
 
+  cancel() {
+    this.modalCtrl.dismiss();
+  }
+
   filter() {
   	this.modalCtrl.dismiss(this.chosenGoalArray);
   }
