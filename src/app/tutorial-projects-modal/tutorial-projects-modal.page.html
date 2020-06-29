@@ -29,31 +29,33 @@
 		</ion-row>
 	</div>
 	
-	<div *ngIf="viewpoint == 'project'" class="margin-top-20">
-		<ion-row class="text-align-right" *ngIf="!addingProject">
-	        <ion-col>
-	          	<button (click)="addProject()" float-right class="font-white transparent">
-	            	<img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-	          	</button>
-	        </ion-col>
-	    </ion-row>
-	    <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
-	        <ion-row class="no-padding">
-	          	<ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray" type="text" (keyup.enter)="createProject()" autocapitalize="on" [(ngModel)]="newProject.name" placeholder="{{'Define new goal' | translate}}..."></ion-input>
-	        </ion-row>
-	        <ion-row>
-	          	<ion-col class="flex">
-	            	<button class="transparent margin-auto" (click)="createProject()">
-	              		<img src="../../assets/icon/icon_confirm.png" height="25">
-	            	</button>
-	          	</ion-col>
-	        </ion-row>
-	    </ion-card>
-		<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
-			<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
-				<span>{{goal.name}}</span>
-			</button>
-		</ion-row>
+	<div *ngIf="viewpoint == 'project'" class="margin-top-20 width-100">
+		<ion-grid class="height-100 width-90">
+			<ion-row class="text-align-right" *ngIf="!addingProject">
+		        <ion-col>
+		          	<button (click)="addProject()" float-right class="font-white transparent">
+		            	<img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+		          	</button>
+		        </ion-col>
+		    </ion-row>
+		    <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
+		        <ion-row class="no-padding">
+		          	<ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray" type="text" (keyup.enter)="createProject()" autocapitalize="on" [(ngModel)]="newProject.name" placeholder="{{'Define new goal' | translate}}..."></ion-input>
+		        </ion-row>
+		        <ion-row>
+		          	<ion-col class="flex">
+		            	<button class="transparent margin-auto" (click)="createProject()">
+		              		<img src="../../assets/icon/icon_confirm.png" class="img-height-60px img-width-60px">
+		            	</button>
+		          	</ion-col>
+		        </ion-row>
+		    </ion-card>
+			<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
+				<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
+					<span>{{goal.name}}</span>
+				</button>
+			</ion-row>
+		</ion-grid>
 	</div>
 
 	<ion-row *ngIf="viewpoint == 'todo'" class="margin-top-45">

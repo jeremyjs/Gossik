@@ -522,8 +522,8 @@
     </div>
   </div>
   <!-- Mobile ProcessPage -->
-  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-155px">
-    <ion-grid class="height-100 overflow-scroll">
+  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-155px width-100">
+    <ion-grid class="height-100 overflow-scroll width-90">
       <ion-row class="text-align-right">
         <ion-col>
           <button (click)="goToCapturePage()" float-right class="font-white transparent">
@@ -1049,11 +1049,11 @@
   </div>
   <!-- Mobile ProjectsPage-->
   <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
-    <div *ngIf="pageCtrl == ''" class="height-100 no-scrollbar overflow-scroll">
+    <ion-grid *ngIf="pageCtrl == ''" class="height-100 width-90 no-scrollbar overflow-scroll">
       <ion-row class="text-align-right" *ngIf="!addingProject">
         <ion-col>
-          <button (click)="addProject()" float-right class="font-white transparent">
-            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          <button (click)="addProject()" float-right class="margin-auto transparent">
+            <img src="../../assets/icon/icon_add.png" class="img-height-60px img-width-60px">
           </button>
         </ion-col>
       </ion-row>
@@ -1064,7 +1064,7 @@
         <ion-row>
           <ion-col class="flex">
             <button class="transparent margin-auto" (click)="addGoal(goalname)">
-              <img src="../../assets/icon/icon_confirm.png" height="25">
+              <img src="../../assets/icon/icon_confirm.png" class="img-height-60px img-width-60px">
             </button>
           </ion-col>
         </ion-row>
@@ -1104,7 +1104,7 @@
           </ion-row>
         </ion-grid>
       </ion-card>
-    </div>
+    </ion-grid>
     <div class="height-100 width-100 no-scrollbar overflow-scroll" *ngIf="pageCtrl == 'ProjectOverview'">
       <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
         <ion-grid>
@@ -1326,118 +1326,120 @@
     </ion-row>
   </div>
   <!-- Mobile CalendarPage -->
-  <div class="height-100-minus-70px width-90 margin-auto margin-top-10 border-radius-20px" *ngIf="viewpoint == 'CalendarPage' && isApp">
-    <ion-row class="text-align-right">
-      <ion-col>
-        <button (click)="addEvent()" float-right class="font-white transparent">
-          <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-        </button>
-      </ion-col>
-    </ion-row>
-    <ion-row class="width-100 text-align-right">
-      <ion-col size="5" class="text-align-center">
-        <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
-          {{"Day view" | translate}}
-        </button>
-        <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('month')">
-          {{"Month view" | translate}}
-        </button>
-      </ion-col>
-      <ion-col size="5" class="text-align-center">
-        <button class="button-design margin-auto font-size-15px" (click)="changeDateToday()">
-          {{"Today" | translate}}
-        </button>
-      </ion-col>
-    </ion-row>
-    <ion-row class="width-100 height-45px text-align-center">
-      <span class="margin-auto">
-        <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(-1)">
-          <img src="../../assets/icon/icon_arrow_left.png" height="30">
-        </button>
-        <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(-31)">
-          <img src="../../assets/icon/icon_arrow_left.png" height="30">
-        </button>
-        <button class="background-transparent font-white no-padding line-height-1" (click)="changeDate()">
-          <h3 class="display-inline-block margin-0 font-size-30px">{{ viewTitle }}</h3>
-        </button>
-        <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(1)">
-          <img src="../../assets/icon/icon_arrow_right.png" height="30">
-        </button>
-        <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(31)">
-          <img src="../../assets/icon/icon_arrow_right.png" height="30">
-        </button>
-      </span>
-    </ion-row>
-    <ion-row class="width-100 height-85">
-      <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'month'">
-        <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
-          <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
-                <ion-row *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)" class="transparent height-auto">
-                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-20px font-white width-100">{{event.startTime|date: 'HH:mm'}}
-                            -
-                            {{event.endTime|date: 'HH:mm'}}
-                        </span>
-                    <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn font-size-20px font-white">{{allDayLabel}}</span>
-                    <span class="event-detail font-size-20px font-white">  |  {{event.title}}</span>
-                </ion-row>
-                <ion-row *ngIf="selectedDate?.events.length==0" class="transparent">
-                    <div class="no-events-label font-size-20px font-white">{{noEventsLabel}}</div>
-                </ion-row>
-            </ion-grid>
-        </ng-template>
-        <calendar [eventSource]="eventSource"
-                  [calendarMode]="calendar.mode"
-                  [currentDate]="calendar.currentDate"
-                  (onEventSelected)="onEventSelected($event)"
-                  (onTitleChanged)="onViewTitleChanged($event)"
-                  (onTimeSelected)="onTimeSelected($event)"
-                  step="5"
-                  class="calendar height-100"
-                  autoSelect="true"
-                  [weekviewNormalEventTemplate]="template"
-                  [weekviewAllDayEventTemplate]="template"
-                  [dayviewNormalEventTemplate]="template"
-                  [dayviewAllDayEventTemplate]="template"
-                  [monthviewEventDetailTemplate]="template"
-                  scrollToHour="8"
-                  [locale]="translate.currentLang"
-                  formatHourColumn="{{'formatHourColumn' | translate }}"
-                  formatWeekTitle="{{'formatWeekTitle' | translate }}"
-                  formatDayTitle="{{'formatDayTitle' | translate }}"
-                  startingDayWeek="1"
-                  startingDayMonth="1"
-                  allDayLabel="{{'Deadlines' | translate }}">
-        </calendar>
-      </div>
-      <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'day'">
-        <ng-template #template let-displayEvent="displayEvent" >
-          <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
-        </ng-template>
-        <calendar [eventSource]="eventSource"
-                  [calendarMode]="calendar.mode"
-                  [currentDate]="calendar.currentDate"
-                  (onEventSelected)="onEventSelected($event)"
-                  (onTitleChanged)="onViewTitleChanged($event)"
-                  (onTimeSelected)="onTimeSelected($event)"
-                  step="5"
-                  class="calendar height-100"
-                  autoSelect="false"
-                  [weekviewNormalEventTemplate]="template"
-                  [weekviewAllDayEventTemplate]="template"
-                  [dayviewNormalEventTemplate]="template"
-                  [dayviewAllDayEventTemplate]="template"
-                  [monthviewEventDetailTemplate]="template"
-                  scrollToHour="8"
-                  [locale]="translate.currentLang"
-                  formatHourColumn="{{'formatHourColumn' | translate }}"
-                  formatWeekTitle="{{'formatWeekTitle' | translate }}"
-                  formatDayTitle="{{'formatDayTitle' | translate }}"
-                  startingDayWeek="1"
-                  startingDayMonth="1"
-                  allDayLabel="{{'Deadlines' | translate }}">
-        </calendar>
-      </div>
-    </ion-row>
+  <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'CalendarPage' && isApp">
+    <ion-grid class="height-100 width-90">
+      <ion-row class="text-align-right">
+        <ion-col>
+          <button (click)="addEvent()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="width-100 text-align-right">
+        <ion-col size="5" class="text-align-center">
+          <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
+            {{"Day view" | translate}}
+          </button>
+          <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('month')">
+            {{"Month view" | translate}}
+          </button>
+        </ion-col>
+        <ion-col size="5" class="text-align-center">
+          <button class="button-design margin-auto font-size-15px" (click)="changeDateToday()">
+            {{"Today" | translate}}
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="width-100 height-45px text-align-center">
+        <span class="margin-auto">
+          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(-1)">
+            <img src="../../assets/icon/icon_arrow_left.png" height="30">
+          </button>
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(-31)">
+            <img src="../../assets/icon/icon_arrow_left.png" height="30">
+          </button>
+          <button class="background-transparent font-white no-padding line-height-1" (click)="changeDate()">
+            <h3 class="display-inline-block margin-0 font-size-30px">{{ viewTitle }}</h3>
+          </button>
+          <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(1)">
+            <img src="../../assets/icon/icon_arrow_right.png" height="30">
+          </button>
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(31)">
+            <img src="../../assets/icon/icon_arrow_right.png" height="30">
+          </button>
+        </span>
+      </ion-row>
+      <ion-row class="width-100 height-85">
+        <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'month'">
+          <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+            <ion-grid class="event-detail-container transparent" *ngIf="showEventDetail">
+                  <ion-row *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)" class="transparent height-auto">
+                          <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn font-size-20px font-white width-100">{{event.startTime|date: 'HH:mm'}}
+                              -
+                              {{event.endTime|date: 'HH:mm'}}
+                          </span>
+                      <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn font-size-20px font-white">{{allDayLabel}}</span>
+                      <span class="event-detail font-size-20px font-white">  |  {{event.title}}</span>
+                  </ion-row>
+                  <ion-row *ngIf="selectedDate?.events.length==0" class="transparent">
+                      <div class="no-events-label font-size-20px font-white">{{noEventsLabel}}</div>
+                  </ion-row>
+              </ion-grid>
+          </ng-template>
+          <calendar [eventSource]="eventSource"
+                    [calendarMode]="calendar.mode"
+                    [currentDate]="calendar.currentDate"
+                    (onEventSelected)="onEventSelected($event)"
+                    (onTitleChanged)="onViewTitleChanged($event)"
+                    (onTimeSelected)="onTimeSelected($event)"
+                    step="5"
+                    class="calendar height-100"
+                    autoSelect="true"
+                    [weekviewNormalEventTemplate]="template"
+                    [weekviewAllDayEventTemplate]="template"
+                    [dayviewNormalEventTemplate]="template"
+                    [dayviewAllDayEventTemplate]="template"
+                    [monthviewEventDetailTemplate]="template"
+                    scrollToHour="8"
+                    [locale]="translate.currentLang"
+                    formatHourColumn="{{'formatHourColumn' | translate }}"
+                    formatWeekTitle="{{'formatWeekTitle' | translate }}"
+                    formatDayTitle="{{'formatDayTitle' | translate }}"
+                    startingDayWeek="1"
+                    startingDayMonth="1"
+                    allDayLabel="{{'Deadlines' | translate }}">
+          </calendar>
+        </div>
+        <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'day'">
+          <ng-template #template let-displayEvent="displayEvent" >
+            <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+          </ng-template>
+          <calendar [eventSource]="eventSource"
+                    [calendarMode]="calendar.mode"
+                    [currentDate]="calendar.currentDate"
+                    (onEventSelected)="onEventSelected($event)"
+                    (onTitleChanged)="onViewTitleChanged($event)"
+                    (onTimeSelected)="onTimeSelected($event)"
+                    step="5"
+                    class="calendar height-100"
+                    autoSelect="false"
+                    [weekviewNormalEventTemplate]="template"
+                    [weekviewAllDayEventTemplate]="template"
+                    [dayviewNormalEventTemplate]="template"
+                    [dayviewAllDayEventTemplate]="template"
+                    [monthviewEventDetailTemplate]="template"
+                    scrollToHour="8"
+                    [locale]="translate.currentLang"
+                    formatHourColumn="{{'formatHourColumn' | translate }}"
+                    formatWeekTitle="{{'formatWeekTitle' | translate }}"
+                    formatDayTitle="{{'formatDayTitle' | translate }}"
+                    startingDayWeek="1"
+                    startingDayMonth="1"
+                    allDayLabel="{{'Deadlines' | translate }}">
+          </calendar>
+        </div>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <!-- Mobile Navigation Footer -->

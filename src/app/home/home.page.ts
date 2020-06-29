@@ -966,7 +966,7 @@ export class HomePage {
   	}
 
   	goToProcessPage() {
-  		this.pageTitle = "Thoughts ready to process";
+  		this.pageTitle = "Thoughts";
   		this.showTutorial('thoughts');
   		this.showTutorial('thoughtprocessing');
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
@@ -1676,7 +1676,7 @@ export class HomePage {
 
 	// ProjectsPage functions
 	goToProjectsPage() {
-		this.pageTitle = "Project list";
+		this.pageTitle = "Overview";
   		this.goal.name = '';
 	    this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -2324,6 +2324,7 @@ export class HomePage {
 	goToToDoPage() {
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
+			console.log(this.userProfile.tutorial);
 			if(this.userProfile.tutorial.fivetodos) {
 				this.showTutorial('fivetodos');
 				this.goToInitPage();
@@ -2380,7 +2381,7 @@ export class HomePage {
 							this.pageTitle = "Let's get to work!";
 							this.changePage('ActionPage');
 						} else {
-							this.pageTitle = "Do todos";
+							this.pageTitle = "Do";
 							this.doableActionArray = [];
 							this.duration = 0;
 							this.doableActionArray = [];
