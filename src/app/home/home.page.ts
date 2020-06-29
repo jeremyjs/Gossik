@@ -771,9 +771,6 @@ export class HomePage {
 				      	{
 					        text: translation["OK"],
 					        handler: () => {
-					        	setTimeout(() => {
-									this.presentAlert("tutorialFeedback");
-								}, 1000);
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughts');
 				    		}
 				      	}

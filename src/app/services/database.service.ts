@@ -96,9 +96,12 @@ export class DatabaseService {
     }
 
     finishTutorial(userid, tutorialPart, nextTutorialPart) {
-        let tutorial = {
-            next: nextTutorialPart,
-            triggerDate: new Date().toISOString()
+        let tutorial = {};
+        if(tutorialPart != 'calendar') {
+            tutorial = {
+                next: nextTutorialPart,
+                triggerDate: new Date().toISOString()
+            }
         }
         tutorial[tutorialPart] = false;
         tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();
