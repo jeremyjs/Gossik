@@ -276,7 +276,7 @@
     	</div>
     </div>
     <ion-row class="font-white display-block text-align-center font-size-30px">
-      <span class="border-bottom-1 display-inline-block width-70">
+      <span class="border-bottom-1 display-inline-block width-70" *ngIf="loggedin">
       {{pageTitle | translate}}
       </span>
     </ion-row>

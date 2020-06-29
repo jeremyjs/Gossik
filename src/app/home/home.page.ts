@@ -581,6 +581,7 @@ export class HomePage {
   	logout() {
   		this.db.logout();
 		this.auth.signOut();
+		this.pageTitle = '';
 		this.goToLoginPage();
 
     }
