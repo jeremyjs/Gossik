@@ -1187,10 +1187,14 @@ export class HomePage {
   		}
   	}
 
-  	assignPriority(priority) {
-  		this.capturePriority = priority;
-  		this.showCaptureDeadline = true;
-  		this.showCaptureProject = true;
+  	assignPriority(priority?) {
+  		if(priority) {
+  			this.capturePriority = priority;
+  		}
+  		if(this.capturePriority) {
+  			this.showCaptureDeadline = true;
+  			this.showCaptureProject = true;
+  		}
   		if(this.userProfile.tutorial.process) {
 			this.presentAlert('processDone');
 		}

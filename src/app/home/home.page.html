@@ -642,28 +642,38 @@
         <span class="font-gray font-size-20px">
           {{"Priority" | translate }}
         </span>
-        <div class="width-100 margin-top-10">
-          <ion-row class="width-100">
-            <ion-col>
-              <button *ngIf="capturePriority == 1" class="display-inline-block transparent font-white text-align-center width-100 font-size-20px" (click)="assignPriority(1)">{{"low" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 1" class="display-inline-block transparent font-gray text-align-center width-100 font-size-20px" (click)="assignPriority(1)">{{"low" | translate}}
-              </button>
+        <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="capturePriority" (ionChange)="assignPriority()">
+          <ion-row class="margin-left-50 margin-top-10">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="1" class="height-15px width-15px margin-auto"></ion-radio>
             </ion-col>
-            <ion-col>
-              <button *ngIf="capturePriority == 2" class="display-inline-block transparent font-white text-align-center width-100 font-size-20px" (click)="assignPriority(2)">{{"medium" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 2" class="display-inline-block transparent font-gray text-align-center width-100 font-size-20px" (click)="assignPriority(2)">{{"medium" | translate}}
-              </button>
-            </ion-col>
-            <ion-col>
-              <button *ngIf="capturePriority == 3" class="display-inline-block transparent font-white text-align-left width-100 font-size-20px" (click)="assignPriority(3)">{{"high" | translate}}
-              </button>
-              <button *ngIf="capturePriority != 3" class="display-inline-block transparent font-gray text-align-left width-100 font-size-20px" (click)="assignPriority(3)">{{"high" | translate}}
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('1')">
+                {{"low" | translate }}
               </button>
             </ion-col>
           </ion-row>
-        </div>
+          <ion-row class="margin-left-50">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="2" class="height-15px width-15px margin-auto"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('2')">
+                {{"medium" | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row class="margin-left-50">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="3" class="height-15px width-15px margin-auto"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignPriority('3')">
+                {{"high" | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-radio-group>
       </ion-row>
       <ion-row *ngIf="showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2">
         <span class="font-gray width-100 font-size-20px">
@@ -1130,10 +1140,10 @@
           </ion-row>
           <ion-row>
             <button class="transparent" (click)="deleteGoal(goal)">
-              <img src="../../assets/icon/icon_delete.png" height="20">
+              <img src="../../assets/icon/icon_delete.png" class="img-height-30px img-width-30px">
             </button>
             <button class="transparent" (click)="editGoal(goal)">
-              <img src="../../assets/icon/icon_edit.png" height="20">
+              <img src="../../assets/icon/icon_edit.png" class="img-height-30px img-width-30px">
             </button>
           </ion-row>
         </ion-grid>
