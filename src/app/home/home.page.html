@@ -275,7 +275,11 @@
   	    </div>
     	</div>
     </div>
-    <div class="font-gray text-align-center font-size-30px">{{pageTitle | translate}}</div>
+    <ion-row class="font-white display-block text-align-center font-size-30px">
+      <span class="border-bottom-1 display-inline-block width-70">
+      {{pageTitle | translate}}
+      </span>
+    </ion-row>
 	</ion-toolbar>
 </ion-header>
 
@@ -599,7 +603,7 @@
           <ion-textarea class="font-white transparent margin-0 width-90 text-align-left font-size-20px" type="text" autoGrow="true" (ionBlur)="assignContent($event)" (ionChange)="assignContent($event)" autocapitalize="on" [(ngModel)]="captureContent" placeholder="{{capturePlaceholder | translate }}..." (ionFocus)="ionFocus($event)"></ion-textarea>
       </ion-card>
       <ion-row *ngIf="showCaptureType">
-        <span class="font-gray width-100 font-size-20px">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Type" | translate }}
         </span>
         <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="captureType" (ionChange)="assignType()">
@@ -629,17 +633,17 @@
         </ion-radio-group>
       </ion-row>
       <ion-row *ngIf="showCaptureDuration">
-        <span class="font-gray font-size-20px">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Duration" | translate }}
         </span>
         <ion-row class="width-100 margin-top-10 margin-left-50">
           <ion-col class="padding-left-0">
-            <span class="font-white" (click)="openPicker('ProcessCapturePageDuration')">{{duration}}{{"min" | translate }}</span>
+            <span class="font-white font-size-20px" (click)="openPicker('ProcessCapturePageDuration')">{{duration}}{{"min" | translate }}</span>
           </ion-col>
         </ion-row>
       </ion-row>
       <ion-row *ngIf="showCapturePriority">
-        <span class="font-gray font-size-20px">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Priority" | translate }}
         </span>
         <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="capturePriority" (ionChange)="assignPriority()">
@@ -676,7 +680,7 @@
         </ion-radio-group>
       </ion-row>
       <ion-row *ngIf="showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2">
-        <span class="font-gray width-100 font-size-20px">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Project" | translate }}
         </span>
         <ion-row class="width-100 margin-top-10 margin-left-50">
@@ -691,7 +695,7 @@
         </ion-row>
       </ion-row>
       <ion-row *ngIf="showCaptureDeadline">
-        <span class="width-100 font-gray font-size-20px">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Deadline" | translate }}
         </span>
         <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="!captureDeadline">
