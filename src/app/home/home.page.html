@@ -1359,7 +1359,7 @@
     </ion-row>
   </div>
   <!-- Mobile CalendarPage -->
-  <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'CalendarPage' && isApp">
+  <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-grid class="height-100 width-90">
       <ion-row class="text-align-right">
         <ion-col>
@@ -1370,15 +1370,15 @@
       </ion-row>
       <ion-row class="width-100 text-align-right">
         <ion-col size="5" class="text-align-center">
-          <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('day')">
+          <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('day')">
             {{"Day view" | translate}}
           </button>
-          <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10" (click)="changeCalendarMode('month')">
+          <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('month')">
             {{"Month view" | translate}}
           </button>
         </ion-col>
         <ion-col size="5" class="text-align-center">
-          <button class="button-design margin-auto font-size-15px" (click)="changeDateToday()">
+          <button class="button-design margin-auto font-size-20px" (click)="changeDateToday()">
             {{"Today" | translate}}
           </button>
         </ion-col>
