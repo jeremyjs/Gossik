@@ -40,15 +40,19 @@ export class NativeCalendarService {
 		  	for(let event of events) {
 		  		let calendarEvent = {} as CalendarEvent;
 		  		calendarEvent.userid = this.auth.userid;
-		  		let startTime = new Date(event.dtstart);
-		  		let endTime = new Date(event.dtend);
-		  		calendarEvent.startTime = startTime.toISOString();
-		  		calendarEvent.endTime = endTime.toISOString();
+		  		if(this.platform.is('android')) {
+		  			calendarEvent.startTime = new Date(event.dtstart).toISOString();
+		  			calendarEvent.endTime = new Date(event.dtend).toISOString();
+		  			calendarEvent.event_id = event.event_id;
+		  			calendarEvent.eventLocation = event.eventLocation;
+		  			calendarEvent.allDay = event.allDay;
+		  		} else if(this.platform.is('ios')) {
+		  			calendarEvent.startTime = new Date(event.startDate).toISOString();
+		  			calendarEvent.endTime = new Date(event.endDate).toISOString();
+		  			calendarEvent.event_id = event.id;
+		  		}
 		  		calendarEvent.title = event.title;
-		  		calendarEvent.allDay = event.allDay;
 		  		calendarEvent.active = true;
-		  		calendarEvent.event_id = event.event_id;
-		  		calendarEvent.eventLocation = event.eventLocation;
 		  		let eventAlreadyInDatabase: boolean = false;
 		  		let eventInDatabase = {} as CalendarEvent;
 		  		let calendarEventList = this.db.getCalendarEventListFromUser(this.auth.userid)
@@ -126,9 +130,16 @@ export class NativeCalendarService {
 	calendarEventList.subscribe( data => {
 		for(let ev of data) {
 			if(ev.event_id && ev.active) {
-				let nEvent = calEvents.find(nativeEvent => nativeEvent.event_id == ev.event_id);
-				if(nEvent == undefined) {
-					this.db.deleteCalendarEvent(ev.key, this.auth.userid);
+				if(this.platform.is('android')) {
+					let nEvent = calEvents.find(nativeEvent => nativeEvent.event_id == ev.event_id);
+					if(nEvent == undefined) {
+						this.db.deleteCalendarEvent(ev.key, this.auth.userid);
+					}
+				} else if(this.platform.is('ios')) {
+					let nEvent = calEvents.find(nativeEvent => nativeEvent.id == ev.event_id);
+					if(nEvent == undefined) {
+						this.db.deleteCalendarEvent(ev.key, this.auth.userid);
+					}
 				}
 			}
 		}
