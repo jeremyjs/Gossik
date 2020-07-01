@@ -2389,6 +2389,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage() {
+		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
 			if(this.userProfile.tutorial.fivetodos) {
