@@ -45,25 +45,6 @@ export class DatabaseService {
         }
         this.userData.profile["signUpDate"] = new Date().toISOString();
         this.translate.get(["Tutorial", "Define 5 todos"]).subscribe( translation => {
-            this.userData.goals = {
-                tutorial: {
-                    userid: userid,
-                    name: translation["Tutorial"],
-                    color: '#F38787',
-                    active: true
-                }
-            };
-            this.userData.nextActions = {
-                tutorial: {
-                    userid: userid,
-                    goalid: 'tutorial',
-                    content: translation["Define 5 todos"],
-                    priority: 3,
-                    time: 5,
-                    taken: false,
-                    active: true
-                }
-            };
             return this.db.list('users').set(userid, this.userData);
         }); 
     }

@@ -2,7 +2,9 @@
   	<ion-toolbar color="secondary">
 	    <ion-row>
 	    	<ion-col size="10" class="flex">
-	    		<span class="margin-auto">{{"Define todos" | translate }}</span>
+	    		<span class="border-bottom-1 text-align-center margin-auto display-inline-block width-70 font-size-30px font-white">
+	    		{{"Define todos" | translate }}
+	    	</span>
 	    	</ion-col>
 	    	<ion-col size="2">
 	    		<button class="icon-only-button margin-right-20" (click)="cancel()">
@@ -19,8 +21,8 @@
 		<ion-col size="10">
 			<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todo.content" placeholder="{{'Define action' | translate}}..."></ion-input>
 		</ion-col>
-		<ion-col size="2">
-			<button class="button-design" (click)="deleteTodo(todo)">
+		<ion-col size="2" *ngIf="todo.content">
+			<button class="transparent" (click)="deleteTodo(todo)">
 				<img src="../../assets/icon/icon_delete.png">
 			</button>
 		</ion-col>
