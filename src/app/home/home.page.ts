@@ -618,6 +618,9 @@ export class HomePage {
 			this.db.createUser(user.user.uid, user.user.email);
 		}).then(
 			() => {
+				this.translate.get(["Successfully registered"]).subscribe( translation => {
+			  		this.presentToast(translation["Successfully registered"]);
+				});
 				setTimeout(() => this.goToToDoPage());
 			});
   	}
