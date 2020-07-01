@@ -160,8 +160,7 @@ export class HomePage {
 	duration: number;
 	userProfile: any;
 	addingProject: boolean = false;
-	calendarEvents: CalendarEvent[];
-	calendarEventsByProject = {};
+	calendarEvents: CalendarEvent[] = [];
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -219,10 +218,8 @@ export class HomePage {
 				});
 			})
 		);
-		this.calendarEventList.subscribe(
-	      	calendarEventArray => {
-	      		this.calendarEventsByProject = {};
-	      		this.calendarEvents = [];
+		this.calendarEventList.subscribe( calendarEventArray => {
+			this.calendarEvents = [];
 	        for(let calendarEvent of calendarEventArray) {
 	        	if(calendarEvent.active != false) {
 		        	calendarEvent.startTime = new Date(calendarEvent.startTime);
@@ -230,7 +227,46 @@ export class HomePage {
 		        	this.calendarEvents.push(calendarEvent);
 		        }
 	        };
-		});
+	        if(this.platform.is('cordova')) {
+				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+					if(hasReadWritePermission) {
+						this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
+							if(this.calendarEvents.length > 0) {
+								for(let calendarEvent of this.calendarEvents) {
+									if(calendarEvent.event_id) {
+											let nativeEventFromGossik = nativeEvents.findIndex(nativeEvent => nativeEvent.event_id == calendarEvent.event_id);
+											if(nativeEventFromGossik != -1) {
+												nativeEvents.splice(nativeEventFromGossik,1);
+											}
+									}
+								}
+							}
+							this.calendarEvents.push(...nativeEvents);
+						});
+					} else {
+						this.nativeCalendar.requestReadWritePermission().then( hasReadWritePermission => {
+							if(hasReadWritePermission) {
+								this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
+									if(this.calendarEvents.length > 0) {
+										for(let calendarEvent of this.calendarEvents) {
+											if(calendarEvent.event_id) {
+												let nativeEventFromGossik = nativeEvents.findIndex(nativeEvent => nativeEvent.event_id == calendarEvent.event_id);
+												if(nativeEventFromGossik != -1) {
+													nativeEvents.splice(nativeEventFromGossik,1);
+												}
+											}
+										}
+									}
+									this.calendarEvents.push(...nativeEvents);
+									console.log('native events after request loaded');
+									console.log(this.calendarEvents);
+								});
+							}
+						});
+					}
+				});
+			}
+	    });
 	}
 
 	getStartedAction() {
@@ -371,19 +407,6 @@ export class HomePage {
 					this.userProfile = userProfile;
 					this.updateTimezoneOffset();
 				});
-				if(this.platform.is('cordova')) {
-					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-						if(hasReadWritePermission) {
-							this.nativeCalendar.updateDatabase();
-						} else {
-							this.nativeCalendar.requestReadWritePermission().then( hasReadWritePermission => {
-								if(hasReadWritePermission) {
-									this.nativeCalendar.updateDatabase();
-								}
-							});
-						}
-					});
-				}
 				if(this.isApp) {
 					this.calendar.mode = 'month'
 				} else {
@@ -1326,7 +1349,6 @@ export class HomePage {
 				color: this.captureProject.color
 			}
 			if(this.platform.is('cordova')) {
-				console.log('is cordova!');
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
 						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
@@ -2022,7 +2044,9 @@ export class HomePage {
 							if(hasReadWritePermission) {
 								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 									eventData.event_id = event_id;
-									this.db.addCalendarEvent(eventData, this.auth.userid);
+									this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+										eventData.key = event.key;
+									});
 									this.translate.get(["Event saved"]).subscribe( translation => {
 								  		this.presentToast(translation["Event saved"]);
 									});
@@ -2036,7 +2060,9 @@ export class HomePage {
 									});
 								});
 							} else {
-								this.db.addCalendarEvent(eventData, this.auth.userid);
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									eventData.key = event.key;
+								});
 								this.translate.get(["Event saved"]).subscribe( translation => {
 							  		this.presentToast(translation["Event saved"]);
 								});
@@ -2051,7 +2077,9 @@ export class HomePage {
 							}
 						});
 					} else {
-						this.db.addCalendarEvent(eventData, this.auth.userid);
+						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+							eventData.key = event.key;
+						});
 						this.translate.get(["Event saved"]).subscribe( translation => {
 					  		this.presentToast(translation["Event saved"]);
 						});
@@ -2144,7 +2172,7 @@ export class HomePage {
 			let goal = '';
 			let time = '';
 			this.translate.get(["Goal", "Time", "Ok", "Delete", "Edit"]).subscribe( alertMessage => {
-				if(event.goalid) {
+				if(data) {
 					goal = alertMessage["Goal"] + ': ' + data.name + '<br>';
 				}
 				if(!event.allDay) {
@@ -2152,42 +2180,50 @@ export class HomePage {
 					let end = moment(event.endTime).format('HH:mm');
 					time = alertMessage["Time"] + ': ' + start + ' - ' + end;
 				}
+				let buttons = [
+			    	{
+				        text: alertMessage['Ok']
+			      	},
+			      	{
+				        text: alertMessage['Delete'],
+				        handler: () => {
+				        	this.translate.get(["Event deleted"]).subscribe( translation => {
+						      this.presentToast(translation["Event deleted"]);
+						    });
+				          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
+				          	if(event.event_id && this.platform.is('cordova')) {
+				          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+				          			if(hasReadWritePermission) {
+				          				this.nativeCalendar.deleteEvent(event.event_id);
+				          			}
+				          		});
+				          	}
+				          	let events = this.eventSource;
+				          	console.log('events before removing from eventsource')
+				          	console.log(events);
+				          	let index = events.indexOf(event);
+							events.splice(index,1);
+							let calendarEventsIndex = this.calendarEvents.indexOf(event);
+							this.calendarEvents.splice(calendarEventsIndex,1);
+							console.log(events);
+							this.eventSource = [];
+							setTimeout(() => {
+								this.eventSource = events;
+							});
+				        }
+			      	}
+			    ]
+			    if(!event.native) {
+			    	buttons.push({
+				        text: alertMessage['Edit'],
+				        handler: () => {
+				          	this.editCalendarEvent(event);
+				        }
+			      	});
+			    }
 				this.alertCtrl.create({
 						message: event.title + '<br>' + goal + time,
-						buttons: [
-							    	{
-								        text: alertMessage['Ok']
-							      	},
-							      	{
-								        text: alertMessage['Edit'],
-								        handler: () => {
-								          	this.editCalendarEvent(event);
-								        }
-							      	},
-							      	{
-								        text: alertMessage['Delete'],
-								        handler: () => {
-								        	this.translate.get(["Event deleted"]).subscribe( translation => {
-										      this.presentToast(translation["Event deleted"]);
-										    });
-								          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
-								          	if(event.event_id && this.platform.is('cordova')) {
-								          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-								          			if(hasReadWritePermission) {
-								          				this.nativeCalendar.deleteEvent(event.event_id);
-								          			}
-								          		});
-								          	}
-								          	let events = this.eventSource;
-								          	let index = events.indexOf(event);
-											events.splice(index,1);
-											this.eventSource = [];
-											setTimeout(() => {
-												this.eventSource = events;
-											});
-								        }
-							      	}
-							    ]
+						buttons: buttons
 				}).then ( alert => {
 					alert.present();
 				});
@@ -2246,7 +2282,9 @@ export class HomePage {
 									if(hasReadWritePermission) {
 										this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
 											eventData.event_id = event_id;
-											this.db.addCalendarEvent(eventData, this.auth.userid)
+											this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+												eventData.key = event.key;
+											});
 											eventData.startTime = new Date(eventData.startTime);
 									        eventData.endTime = new Date(eventData.endTime);
 											let events = this.eventSource;
@@ -2257,7 +2295,9 @@ export class HomePage {
 											});
 										});
 									} else {
-										this.db.addCalendarEvent(eventData, this.auth.userid)
+										this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+											eventData.key = event.key;
+										});
 										eventData.startTime = new Date(eventData.startTime);
 								        eventData.endTime = new Date(eventData.endTime);
 										let events = this.eventSource;
@@ -2269,7 +2309,9 @@ export class HomePage {
 									}
 								});
 							} else {
-								this.db.addCalendarEvent(eventData, this.auth.userid)
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									eventData.key = event.key;
+								});
 								eventData.startTime = new Date(eventData.startTime);
 						        eventData.endTime = new Date(eventData.endTime);
 								let events = this.eventSource;

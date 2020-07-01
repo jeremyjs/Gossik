@@ -245,10 +245,12 @@ export class DatabaseService {
         .valueChanges()
         .pipe(take(1))
         .subscribe( event => {
-            event.key = eventid;
-            event.active = false;
-            event.deleteDate = new Date().toISOString();
-            this.editCalendarEvent(event, userid); 
+            if(event) {
+                event.key = eventid;
+                event.active = false;
+                event.deleteDate = new Date().toISOString();
+                this.editCalendarEvent(event, userid);
+            }
         });
     }
 

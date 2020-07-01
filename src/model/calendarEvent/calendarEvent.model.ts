@@ -14,4 +14,5 @@ export interface CalendarEvent {
     eventLocation?: string;
     createDate?: any;
     deleteDate?: any;
+    native?: boolean;
 }
