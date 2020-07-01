@@ -522,6 +522,17 @@ export class HomePage {
 						        }
 					      	}
 					    ];
+  			}	else if(alertMessage == "tutorialProcessInit") {
+  				buttons = [
+  					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	setTimeout(() => {
+										this.showTutorial("process");
+									}, 1000);
+						        }
+					      	}
+					    ];
   			}	else if(alertMessage == "tutorialProjectsDone") {
   				buttons = [
   					      	{
@@ -866,8 +877,6 @@ export class HomePage {
 				      	{
 					        text: translation["Start"],
 					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, tutorialPart, 'process');
-					        	this.db.startTutorial(this.auth.userid, 'process');
 					        	setTimeout(() => {
 					        		this.presentAlert("tutorialProcessInit");
 								}, 1000);
