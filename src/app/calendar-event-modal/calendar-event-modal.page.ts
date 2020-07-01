@@ -92,7 +92,9 @@ export class CalendarEventModalPage implements OnInit {
 	        	this.goalArray.push(goal);
 	        }
 	    }
-	    this.gotGoals = true;
+	    if(this.goalArray.length > 0) {
+	    	this.gotGoals = true;
+	    }
 	});
 	this.pastCheck = false;
   }
