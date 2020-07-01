@@ -1275,10 +1275,10 @@ export class HomePage {
   		if(this.capturePriority) {
   			this.showCaptureDeadline = true;
   			this.showCaptureProject = true;
+  			if(this.userProfile.tutorial.process) {
+				this.presentAlert('processDone');
+			}
   		}
-  		if(this.userProfile.tutorial.process) {
-			this.presentAlert('processDone');
-		}
   		this.captureCheckIfDone();
   	}
 

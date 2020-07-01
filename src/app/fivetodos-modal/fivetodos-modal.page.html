@@ -21,15 +21,17 @@
 		</ion-col>
 		<ion-col size="2">
 			<button class="button-design" (click)="deleteTodo(todo)">
-				{{ "Delete" | translate }}
+				<img src="../../assets/icon/icon_delete.png">
 			</button>
 		</ion-col>
 	</ion-row>
-	<ion-row class="margin-top-10">
-		<button class="transparent font-white margin-right-20" float-right (click)="addTodo()">
-	    	<img src="../../assets/icon/icon_add.png" height="30" class="margin-auto">
-	    </button>
-	</ion-row>
+	<ion-row class="text-align-right margin-top-10">
+        <ion-col>
+          <button (click)="addTodo()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+          </button>
+        </ion-col>
+    </ion-row>
 	<ion-row *ngIf="showDone" class="margin-top-45">
 	    <button class="transparent font-white margin-auto width-100" (click)="defineTodos()">
 	    	<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
