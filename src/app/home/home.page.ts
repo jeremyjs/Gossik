@@ -526,11 +526,6 @@ export class HomePage {
   				buttons = [
   					      	{
 						        text: translation["OK"],
-						        handler: () => {
-						        	setTimeout(() => {
-										this.showTutorial("process");
-									}, 1000);
-						        }
 					      	}
 					    ];
   			}	else if(alertMessage == "tutorialProjectsDone") {
@@ -877,6 +872,8 @@ export class HomePage {
 				      	{
 					        text: translation["Start"],
 					        handler: () => {
+					        	this.db.finishTutorial(this.auth.userid, 'thoughtprocessing', 'process');
+					        	this.db.startTutorial(this.auth.userid, 'process');
 					        	setTimeout(() => {
 					        		this.presentAlert("tutorialProcessInit");
 								}, 1000);

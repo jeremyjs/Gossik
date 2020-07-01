@@ -646,9 +646,9 @@
         <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Priority" | translate }}
         </span>
-        <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="capturePriority" (ionChange)="assignPriority()">
+        <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="capturePriority">
           <ion-row class="margin-left-50 margin-top-10">
-            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex" (click)="assignPriority('1')">
               <ion-radio value="1" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
@@ -658,7 +658,7 @@
             </ion-col>
           </ion-row>
           <ion-row class="margin-left-50">
-            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex" (click)="assignPriority('2')">
               <ion-radio value="2" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
@@ -668,7 +668,7 @@
             </ion-col>
           </ion-row>
           <ion-row class="margin-left-50">
-            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex" (click)="assignPriority('3')">
               <ion-radio value="3" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
             <ion-col size="11">
@@ -1123,7 +1123,7 @@
       </ion-row>
       <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
         <ion-row class="no-padding">
-          <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}..."></ion-input>
+          <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray font-size-20px" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}..."></ion-input>
         </ion-row>
         <ion-row>
           <ion-col class="flex">

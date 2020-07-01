@@ -1,28 +1,30 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-row>
-	    	<ion-col size="10" class="flex">
-	    		<span class="margin-auto">{{"Assign Project" | translate }}</span>
-	    	</ion-col>
-	    	<ion-col size="2">
-	    		<button class="icon-only-button margin-right-20" (click)="cancel()">
-			      <img src="../../assets/icon/icon_cancel.png" height="20">
-			    </button>
-			</ion-col>
-  		</ion-row>
+    	<ion-col size="10" class="flex">
+    		<span class="border-bottom-1 text-align-center margin-auto display-inline-block width-70 font-size-30px font-white">
+    		{{"Assign Project" | translate }}
+    	</span>
+    	</ion-col>
+    	<ion-col size="2">
+    		<button class="icon-only-button margin-right-20" (click)="cancel()">
+		      <img src="../../assets/icon/icon_cancel.png" height="20">
+		    </button>
+		</ion-col>
+	</ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="background-gray">
 	<div *ngIf="viewpoint == 'todo'" class="width-100 margin-0 transparent font-gray">
-		<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let todo of actionArray">
-			<ion-col>{{todo.content}}
+		<ion-row class="font-white margin-left-30 margin-bottom-10 margin-top-10" *ngFor="let todo of actionArray">
+			<ion-col class="font-size-20px">{{todo.content}}
 			</ion-col>
 			<ion-col>
-				<button *ngIf="todo.goalid == 'unassigned'" (click)="assignProject(todo)" class="font-white transparent">
+				<button *ngIf="todo.goalid == 'unassigned'" (click)="assignProject(todo)" class="font-white transparent font-size-20px">
 					{{"Assign Project" | translate}}...
 				</button>
-				<button *ngIf="todo.goalid != 'unassigned'" (click)="assignProject(todo)" class="font-white transparent">
+				<button *ngIf="todo.goalid != 'unassigned'" (click)="assignProject(todo)" class="font-white transparent font-size-20px">
 					{{goalDict[todo.goalid].name}}
 				</button>
 			</ion-col>
@@ -40,7 +42,7 @@
 		    </ion-row>
 		    <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
 		        <ion-row class="no-padding">
-		          	<ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray" type="text" (keyup.enter)="createProject()" autocapitalize="on" [(ngModel)]="newProject.name" placeholder="{{'Define new goal' | translate}}..."></ion-input>
+		          	<ion-input class="font-size-20px transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray" type="text" (keyup.enter)="createProject()" autocapitalize="on" [(ngModel)]="newProject.name" placeholder="{{'Define new goal' | translate}}..."></ion-input>
 		        </ion-row>
 		        <ion-row>
 		          	<ion-col class="flex">
@@ -51,7 +53,7 @@
 		        </ion-row>
 		    </ion-card>
 			<ion-row class="margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
-				<button class="transparent font-gray width-100 text-align-left" (click)="chooseGoal(goal)">
+				<button class="transparent font-gray width-100 text-align-left font-size-20px" (click)="chooseGoal(goal)">
 					<span>{{goal.name}}</span>
 				</button>
 			</ion-row>
