@@ -161,6 +161,7 @@ export class HomePage {
 	userProfile: any;
 	addingProject: boolean = false;
 	calendarEvents: CalendarEvent[] = [];
+	todoview: string = 'task';
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -2469,6 +2470,31 @@ export class HomePage {
 		});
 	}
 
+	changeTodo(todoview) {
+		this.todoview = todoview;
+	}
+
+	askStartTodo(todo) {
+		this.translate.get(["Do you want to start with this action?", "Start", "No"]).subscribe( alertMessage => {
+			this.alertCtrl.create({
+					message: alertMessage["Do you want to start with this action?"],
+					buttons: [
+						      	{
+							        text: alertMessage['Start'],
+							        handler: () => {
+							        	this.startAction(todo);
+							        }
+						      	},
+						      	{
+							        text: alertMessage['No']
+						      	}
+						    ]
+			}).then ( alert => {
+				alert.present();
+			});
+		});
+	}
+
 	filterToDos() {
   		this.modalCtrl.create({ 
 			component: ToDoFilterModalPage,
@@ -2666,24 +2692,24 @@ export class HomePage {
 
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
-				this.alertCtrl.create({
-						message: alertMessage["Do you want to start with this action?"],
-						buttons: [
-							      	{
-								        text: alertMessage['Start'],
-								        handler: () => {
-								          	action.taken = true;
-										    this.db.editAction(action, this.auth.userid);
-										    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
-								        }
-							      	},
-							      	{
-								        text: alertMessage['No']
-							      	}
-							    ]
-				}).then ( alert => {
-					alert.present();
-				});
+			this.alertCtrl.create({
+					message: alertMessage["Do you want to start with this action?"],
+					buttons: [
+						      	{
+							        text: alertMessage['Start'],
+							        handler: () => {
+							          	action.taken = true;
+									    this.db.editAction(action, this.auth.userid);
+									    this.doableActionArray.splice(this.doableActionArray.indexOf(action), 1);
+							        }
+						      	},
+						      	{
+							        text: alertMessage['No']
+						      	}
+						    ]
+			}).then ( alert => {
+				alert.present();
 			});
+		});
   	}
 }

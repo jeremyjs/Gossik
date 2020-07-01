@@ -841,38 +841,69 @@
           <span class="font-white margin-auto-left-3 margin-auto font-size-30px" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="margin-auto margin-top-45 font-white font-size-1-5rem text-align-center">
-        <span class="margin-auto">
-          {{doableActionArray[0].content}}
-        </span>
-      </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
-        <span class="margin-auto">
-          {{doableActionArray[0].time}}{{"min" | translate }}
-        </span>
-      </ion-row>
-      <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
-        <span class="margin-auto">
-          {{goalDict[doableActionArray[0].goalid].name}}
-        </span>
-      </ion-row>
-      <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
-        <ion-col class="flex text-align-center">
-          <button class="button-design margin-auto font-size-20px" (click)="skipAction()">
-            {{"Skip" | translate}}
+      <ion-row>
+        <ion-col class="flex">
+          <button *ngIf="todoview == 'task'" class="transparent no-padding margin-auto" (click)="changeTodo('list')">
+            <img src="../../assets/icon/icon_todo_task.png" height="60">
           </button>
-        </ion-col>
-        <ion-col class="flex text-align-center">
-          <button class="button-design margin-auto font-size-20px" (click)="startAction(doableActionArray[0])">
-            {{"Start" | translate}}
+          <button *ngIf="todoview == 'list'" class="transparent no-padding margin-auto" (click)="changeTodo('task')">
+            <img src="../../assets/icon/icon_todo_list.png" height="60">
           </button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="skippedAllToDos" class="margin-top-45">
-        <button class="button-design margin-auto" (click)="showDoableActions()">
-          {{"Refresh ToDos" | translate}}
-        </button>
-      </ion-row>
+      <ion-card *ngIf="todoview == 'task'" class="margin-top-45">
+        <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-white font-size-1-5rem text-align-center">
+          <span class="margin-auto">
+            {{doableActionArray[0].content}}
+          </span>
+        </ion-row>
+        <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
+          <span class="margin-auto">
+            {{doableActionArray[0].time}}{{"min" | translate }}
+          </span>
+        </ion-row>
+        <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
+          <span class="margin-auto">
+            {{goalDict[doableActionArray[0].goalid].name}}
+          </span>
+        </ion-row>
+        <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
+          <ion-col class="flex text-align-center">
+            <button class="button-design margin-auto font-size-20px" (click)="skipAction()">
+              {{"Skip" | translate}}
+            </button>
+          </ion-col>
+          <ion-col class="flex text-align-center">
+            <button class="button-design margin-auto font-size-20px" (click)="startAction(doableActionArray[0])">
+              {{"Start" | translate}}
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="skippedAllToDos" class="margin-top-45">
+          <button class="button-design margin-auto" (click)="showDoableActions()">
+            {{"Refresh ToDos" | translate}}
+          </button>
+        </ion-row>
+      </ion-card>
+      <ion-card *ngIf="todoview == 'list'" class="margin-0 margin-top-45">
+        <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="border-radius-20px border-1 margin-top-10 background-102">
+          <ion-row class="font-white font-size-1-5rem text-align-left">
+            <span>
+              {{todo.content}}
+            </span>
+          </ion-row>
+          <ion-row *ngIf="userProfile.tutorial.tutorialProgress > 1" class="font-gray text-align-left">
+            <span>
+              {{todo.time}}{{"min" | translate }}
+            </span>
+          </ion-row>
+          <ion-row *ngIf="doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="font-gray text-align-left">
+            <span>
+              {{goalDict[todo.goalid].name}}
+            </span>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
     </ion-grid>
   </div>
 
