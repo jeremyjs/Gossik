@@ -242,6 +242,12 @@ export class HomePage {
 									}
 								}
 							}
+							if(this.platform.is('ios')) {
+								for(let nativeEvent of nativeEvents) {
+									nativeEvent.startTime.setHours(nativeEvent.startTime.getHours() + this.userProfile.timezoneOffset/60);
+									nativeEvent.endTime.setHours(nativeEvent.endTime.getHours() + this.userProfile.timezoneOffset/60);
+								}
+							}
 							this.calendarEvents.push(...nativeEvents);
 						});
 					} else {
@@ -258,9 +264,13 @@ export class HomePage {
 											}
 										}
 									}
+									if(this.platform.is('ios')) {
+										for(let nativeEvent of nativeEvents) {
+											nativeEvent.startTime.setHours(nativeEvent.startTime.getHours() + this.userProfile.timezoneOffset/60);
+											nativeEvent.endTime.setHours(nativeEvent.endTime.getHours() + this.userProfile.timezoneOffset/60);
+										}
+									}
 									this.calendarEvents.push(...nativeEvents);
-									console.log('native events after request loaded');
-									console.log(this.calendarEvents);
 								});
 							}
 						});
@@ -2200,13 +2210,10 @@ export class HomePage {
 				          		});
 				          	}
 				          	let events = this.eventSource;
-				          	console.log('events before removing from eventsource')
-				          	console.log(events);
 				          	let index = events.indexOf(event);
 							events.splice(index,1);
 							let calendarEventsIndex = this.calendarEvents.indexOf(event);
 							this.calendarEvents.splice(calendarEventsIndex,1);
-							console.log(events);
 							this.eventSource = [];
 							setTimeout(() => {
 								this.eventSource = events;
