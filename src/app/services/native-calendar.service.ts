@@ -55,7 +55,8 @@ export class NativeCalendarService {
   			userid: this.auth.userid,
   			title: event.title,
   			active: true,
-  			native: true
+  			native: true,
+  			color: "#C0C0C0"
   		} as CalendarEvent;
   		if(this.platform.is('android')) {
   			calendarEvent.startTime = new Date(event.dtstart);
