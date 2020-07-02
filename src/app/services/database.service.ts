@@ -196,6 +196,7 @@ export class DatabaseService {
     }
 	
 	deleteCapture(capture: Capture, userid) {
+        console.log(capture);
         capture.active = false;
         capture.deleteDate = new Date().toISOString();
         return this.editCapture(capture, userid);

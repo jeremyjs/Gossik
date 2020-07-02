@@ -786,8 +786,8 @@ export class HomePage {
 					changes => { 
 						return changes.map( c => {
 							let capture: Capture = { 
-								key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
-								};
+								key: c.payload.key, ...c.payload.val()
+							};
 							return capture;
 					});}));
 			this.captureList.subscribe( captureArray => {
@@ -1001,8 +1001,8 @@ export class HomePage {
 				changes => { 
 					return changes.map( c => {
 						let capture: Capture = { 
-							key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
-							};
+							key: c.payload.key, ...c.payload.val()
+						};
 						return capture;
 				});}));
 		this.captureList.subscribe( captureArray => {
@@ -1048,8 +1048,8 @@ export class HomePage {
 				changes => { 
 					return changes.map( c => {
 						let capture: Capture = { 
-							key: c.payload.key, userid: c.payload.val().userid, createDate: c.payload.val().createDate, content: c.payload.val().content.replace(/\n/g, '<br>'), active: c.payload.val().active
-							};
+							key: c.payload.key, ...c.payload.val()
+						};
 						return capture;
 				});}));
 		this.captureList.subscribe( captureArray => {
