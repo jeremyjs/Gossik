@@ -163,6 +163,7 @@ export class HomePage {
 	calendarEvents: CalendarEvent[] = [];
 	todoview: string = 'task';
 	showNavigationBar: boolean = true;
+	showOptionals: boolean;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -1100,15 +1101,14 @@ export class HomePage {
 		this.showCapturePriority = false;
 		this.showCaptureDeadline = false;
 		this.showCaptureDone = false;
+		this.showOptionals = false;
     	if(project != undefined) {
     		this.showCaptureProject = true;
     		this.captureProject = project;
     		this.showCaptureType = true;
     		this.showCaptureDuration = true
-    		this.cameFromProjectOverviewPage = true;
     	} else {
     		this.captureProject = { key: 'unassigned'} as Goal;
-    		this.cameFromProjectOverviewPage = false;
     	}
     	if(type != undefined) {
     		this.captureType = type;
@@ -1199,11 +1199,7 @@ export class HomePage {
   		if(this.captureContent && this.captureDuration) {
   			this.showCapturePriority = true;
   		}
-  		if(this.captureContent && this.capturePriority && this.captureDuration) {
-  			this.showCaptureDeadline = true;
-  			this.showCaptureProject = true;
-  		} else {
-  			this.showCaptureDeadline = false;
+  		if(this.captureProject.key == 'unassigned') {
   			this.showCaptureProject = false;
   		}
   		this.captureCheckIfDone();
@@ -1259,12 +1255,8 @@ export class HomePage {
   		if(priority) {
   			this.capturePriority = priority;
   		}
-  		if(this.capturePriority) {
-  			this.showCaptureDeadline = true;
-  			this.showCaptureProject = true;
-  			if(this.userProfile.tutorial.process) {
-				this.presentAlert('processDone');
-			}
+  		if(this.capturePriority && this.userProfile.tutorial.process) {
+			this.presentAlert('processDone');
   		}
   		this.captureCheckIfDone();
   	}
@@ -1303,6 +1295,30 @@ export class HomePage {
 	  		} else {
 	  			this.showCaptureDone = false
 	  		}
+  		}
+  	}
+
+  	checkOptional() {
+  		this.showOptionals = true;
+  	}
+
+  	addOptional(optional) {
+  		if(optional == 'project') {
+  			this.showCaptureProject = true;
+  		} else if(optional == 'deadline') {
+  			this.showCaptureDeadline = true;
+  		}
+  		this.showOptionals = false;
+  	}
+
+  	deleteOptional(optional) {
+  		if(optional == 'project') {
+  			this.captureProject = {key: 'unassigned'} as Goal;
+  			this.showCaptureProject = false;
+  		} else if(optional == 'deadline') {
+  			this.captureDeadline = undefined;
+  			this.captureDeadlineText = undefined;
+  			this.showCaptureDeadline = false;
   		}
   	}
 

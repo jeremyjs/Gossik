@@ -26,6 +26,7 @@ export class ToDoFilterModalPage implements OnInit {
 
   selectAll() {
     this.chosenGoalArray = this.goalArray.map(goal => goal.key);
+    console.log(this.chosenGoalArray);
   }
 
   clearAll() {
@@ -38,6 +39,7 @@ export class ToDoFilterModalPage implements OnInit {
   	} else {
   		this.chosenGoalArray.splice(this.chosenGoalArray.indexOf(goal.key), 1);
   	}
+    console.log(this.chosenGoalArray);
   }
 
   cancel() {
