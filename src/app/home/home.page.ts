@@ -2187,12 +2187,6 @@ export class HomePage {
 					}
 					data.data.startTime = new Date(data.data.startTime);
 			        data.data.endTime = new Date(data.data.endTime);
-					let events = this.eventSource;
-					events.push(data.data);
-					this.eventSource = [];
-					setTimeout(() => {
-						this.eventSource = events;
-					});
 				}
 			});
 		});
