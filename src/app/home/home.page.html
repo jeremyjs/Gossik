@@ -1525,7 +1525,7 @@
 
   <!-- Mobile Navigation Footer -->
   <div class="width-100 height-70px margin-0 no-padding position-absolute bottom-0" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
-    <ion-row class="width-100 height-100">
+    <ion-row class="width-100 height-100 padding-bottom-15">
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()" *ngIf="userProfile.tutorial.tutorialProgress > 0">
           <ion-row>
