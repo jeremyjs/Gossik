@@ -81,9 +81,10 @@ export class AssignProjectModalPage implements OnInit {
 			}
 		}
 		this.db.addGoal(this.newGoal, this.auth.userid).then( goal => {
-			this.newGoal.key = goal.key
+			this.newGoal.key = goal.key;
 		});
 		this.goalArray.push(this.newGoal);
+		this.modalCtrl.dismiss(this.newGoal);
 	}
 	this.addingProject = false;
 	this.newProject = '';

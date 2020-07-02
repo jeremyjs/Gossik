@@ -102,20 +102,10 @@ export class TutorialProjectsModalPage implements OnInit {
 			this.db.addGoal(this.newProject, this.auth.userid).then( goal => {
 				this.newProject.key = goal.key;
 				this.goalArray.push(this.newProject);
+				this.todo.goalid = goal.key;
+  				this.viewpoint = 'todo';
 				this.goalDict[this.newProject.key] = this.newProject;
 				this.newProject = {} as Goal;
-				this.translate.get(["A new project has been created and is shown below. Click on it to assign the todo to this project.", "OK", "Delete"]).subscribe( translation => {
-			  		this.alertCtrl.create({
-						message: translation["A new project has been created and is shown below. Click on it to assign the todo to this project."],
-						buttons: [
-							    	{
-								        text: translation["OK"]
-							      	},
-							    ]
-					}).then( alert => {
-						alert.present();
-					});
-				});
 			});
 		}
 		this.addingProject = false;
