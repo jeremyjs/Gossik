@@ -668,6 +668,11 @@ export class HomePage {
     	this.changePage('FeedbackPage');
     }
 
+    goToInfoPage() {
+    	this.pageTitle = "Info";
+    	this.changePage('InfoPage');
+    }
+
     goToShowFeedbackPage() {
     	this.feedbackList = this.db.getFeedbackList()
 		.snapshotChanges()
@@ -2461,7 +2466,7 @@ export class HomePage {
 							this.startedAction = {} as Action;
 						}
 						if(this.startedAction.key) {
-							this.pageTitle = "Let's get to work!";
+							this.pageTitle = "Focus";
 							this.changePage('ActionPage');
 						} else {
 							this.pageTitle = "Do";
@@ -2702,7 +2707,7 @@ export class HomePage {
 		action.startDate = new Date().toISOString();
   		this.startedAction = action;
 		this.db.editAction(action, this.auth.userid);
-		this.pageTitle = "Let's get to work!";
+		this.pageTitle = "Focus";
 		this.changePage('ActionPage');
 		this.translate.get(["Todo started"]).subscribe( translation => {
 	  		this.presentToast(translation["Todo started"]);

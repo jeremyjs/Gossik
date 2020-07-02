@@ -196,7 +196,7 @@
             <ion-col size="6">
             </ion-col>
             <ion-col size="2" class="flex text-align-center no-padding">
-              <button *ngIf="userProfile.tutorial.next" class="transparent font-white" (click)="rushNextTutorial(userProfile.tutorial.next)">
+              <button *ngIf="userProfile?.tutorial.next" class="transparent font-white" (click)="rushNextTutorial(userProfile.tutorial.next)">
                 {{"Next" | translate}}
               </button>
             </ion-col>
@@ -251,6 +251,11 @@
         </button>
       </div>
       <div *ngIf="isApp && viewpoint == 'FeedbackPage'">
+        <button class="transparent" (click)="goToSettingsPage()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+        </button>
+      </div>
+      <div *ngIf="isApp && viewpoint == 'InfoPage'">
         <button class="transparent" (click)="goToSettingsPage()">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
@@ -409,7 +414,59 @@
           {{"Send Push" | translate }}
         </button>
       </ion-row>
+      <ion-row>
+        <button class="button-design font-size-20px margin-top-10" (click)="goToInfoPage()">{{"Info" | translate}}</button>
+      </ion-row>
     </ion-grid>
+  </div>
+
+  <!-- InfoPage -->
+  <div class="margin-top-10 padding-10 transparent font-white text-align-center height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'InfoPage'">
+    <strong>{{"Thoughts" | translate}}</strong>
+    <p>
+      {{"infoThoughts1" | translate}}
+    </p>
+    <p>
+      {{"infoThoughts2" | translate}}
+    </p>
+    <p>
+      {{"infoThoughts3" | translate}}
+    </p>
+    <strong>{{"Overview" | translate}}</strong>
+    <p>
+      {{"infoOverview1" | translate}}
+    </p>
+    <strong>{{"Project overview" | translate}}</strong>
+    <p>
+      {{"infoProjectOverview1" | translate}}
+    </p>
+    <strong>{{"Do" | translate}}</strong>
+    <p>
+      {{"infoDo1" | translate}}
+    </p>
+    <p>
+      {{"infoDo2" | translate}}
+    </p>
+    <p>
+      {{"infoDo3" | translate}}
+    </p>
+    <strong>{{"Focus" | translate}}</strong>
+    <p>
+      {{"infoFocus1" | translate}}
+    </p>
+    <p>
+      {{"infoFocus2" | translate}}
+    </p>
+    <p>
+      {{"infoFocus3" | translate}}
+    </p>
+    <strong>{{"Calendar" | translate}}</strong>
+    <p>
+      {{"infoCalendar1" | translate}}
+    </p>
+    <p>
+      {{"infoCalendar2" | translate}}
+    </p>
   </div>
 
   <!-- FeedbackPage -->
