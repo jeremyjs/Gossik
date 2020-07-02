@@ -238,7 +238,10 @@
         <button *ngIf="cameFromProcessPage" class="transparent" (click)="goToProcessPage()">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
-        <button *ngIf="cameFromFinishActionPage || cameFromToDoPage" class="transparent" (click)="goToToDoPage()">
+        <button *ngIf="cameFromToDoPage" class="transparent" (click)="goToToDoPage()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+        </button>
+        <button *ngIf="cameFromFinishActionPage" class="transparent" (click)="stopFollowUp()">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
       </div>

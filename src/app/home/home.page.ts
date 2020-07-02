@@ -1064,6 +1064,10 @@ export class HomePage {
 		this.changePage('ProcessPage');
   	}
 
+  	stopFollowUp() {
+  		this.defineFollowUpTodoLater();
+  	}
+
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
   		this.capture = capture;
   		this.captureContent = capture.content;
@@ -1336,8 +1340,13 @@ export class HomePage {
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
-  		} else if (this.cameFromFinishActionPage || this.cameFromToDoPage) {
+  		} else if (this.cameFromToDoPage) {
   			this.goToToDoPage();
+  		} else if(this.cameFromFinishActionPage) {
+  			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+				this.startedAction = {} as Action;
+				this.goToToDoPage();
+			});
   		} else {
   			this.goToProcessPage();
   		}
@@ -1754,9 +1763,6 @@ export class HomePage {
 			capture.content = this.startedAction.content;
 			this.goToProcessCapturePage(capture, { key: 'unassigned'} as Goal, 'action', 'FinishActionPage');	
 		}
-		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-			this.startedAction = {} as Action;
-		});
 		this.translate.get(["One less, congrats!"]).subscribe( translation => {
     		this.presentToast(translation["One less, congrats!"]);
     	});
