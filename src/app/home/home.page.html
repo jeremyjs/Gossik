@@ -730,7 +730,7 @@
         <button *ngIf="!showCaptureDeadline" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('deadline')">{{"Deadline" | translate}}
         </button>
       </ion-row>
-      <ion-row *ngIf="showCaptureDone && captureType == 'action' && !showOptionals" class="margin-top-10">
+      <ion-row *ngIf="showCaptureDone && captureType == 'action' && !showOptionals && captureShowAdd" class="margin-top-10">
         <button class="transparent font-gray" (click)="checkOptional()">
           <img src="../../assets/icon/icon_add.png" height="20">
         </button>

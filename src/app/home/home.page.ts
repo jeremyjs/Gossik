@@ -148,6 +148,7 @@ export class HomePage {
 	showCaptureDeadline: boolean = false;
 	captureDeadlineText: string;
 	showCaptureDone: boolean = false;
+	captureShowAdd: boolean = true;
 	startedAction = {} as Action;
 	goalEmpty: boolean;
 	allDayLabel: any;
@@ -1106,11 +1107,9 @@ export class HomePage {
 		this.showCaptureDeadline = false;
 		this.showCaptureDone = false;
 		this.showOptionals = false;
-    	if(project != undefined) {
+    	if(project != undefined && project.key != 'unassigned') {
     		this.showCaptureProject = true;
     		this.captureProject = project;
-    		this.showCaptureType = true;
-    		this.showCaptureDuration = true
     	} else {
     		this.captureProject = { key: 'unassigned'} as Goal;
     	}
@@ -1312,6 +1311,9 @@ export class HomePage {
   		} else if(optional == 'deadline') {
   			this.showCaptureDeadline = true;
   		}
+  		if(this.showCaptureProject && this.showCaptureDeadline) {
+  			this.captureShowAdd = false;
+  		}
   		this.showOptionals = false;
   	}
 
@@ -1323,6 +1325,11 @@ export class HomePage {
   			this.captureDeadline = undefined;
   			this.captureDeadlineText = undefined;
   			this.showCaptureDeadline = false;
+  		}
+  		if(this.showCaptureProject && this.showCaptureDeadline) {
+  			this.captureShowAdd = false;
+  		} else {
+  			this.captureShowAdd = true;
   		}
   	}
 
