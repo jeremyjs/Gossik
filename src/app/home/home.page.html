@@ -782,7 +782,7 @@
         </ion-row>
       </ion-row>
       <ion-row class="width-100 margin-top-10" *ngIf="showOptionals">
-        <button *ngIf="!showCaptureProject" class="transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('project')">{{"Project" | translate}}
+        <button *ngIf="!showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2" class="transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('project')">{{"Project" | translate}}
         </button>
         <button *ngIf="!showCaptureDeadline" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('deadline')">{{"Deadline" | translate}}
         </button>
