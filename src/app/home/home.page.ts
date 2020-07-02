@@ -2352,6 +2352,11 @@ export class HomePage {
 	}
 
 	changeCalendarMode(calendarMode) {
+		if(calendarMode == 'month') {
+			this.selectedDay = this.calendar.currentDate;
+		} else if(calendarMode == 'day') {
+			this.calendar.currentDate = this.selectedDay;
+		}
 		this.calendar.mode = calendarMode;
 	}
 
