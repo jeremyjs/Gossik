@@ -2400,6 +2400,7 @@ export class HomePage {
 					});}));
 				this.goalList.pipe(take(1)).subscribe(
 			      goalArray => {
+			      	goalArray.sort((a, b) => a.name.localeCompare(b.name));
 		  			this.goalArray = [];
 			        for(let goal of goalArray) {
 			        	if(goal.active != false) {
