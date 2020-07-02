@@ -481,33 +481,25 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-			let profile = { 
-				profile: {
-					language: 'en',
-	   				email: user.val().email,
-	   				lastLogin: new Date().toISOString(),
-	   				signUpDate: new Date().toISOString(),
-	   				tutorial: {
+			let tutorial = {
+				tutorial: {
 		                'fivetodos': true,
-		                'thoughtprocessing': true,
-		                'projects': true,
-		                'informations': true,
-		                'calendar': true
+		                'thoughtprocessing': false,
+		                'projects': false,
+		                'calendar': true,
+		                'gettingToKnowPush': false,
+		                'thoughts': false,
+		                'process': false,
+		                'next': '',
+		                'triggerDate': '',
+		                'tutorialProgress': 0,
+		                'tutorialNextButton': false,
+		                'tutorialTodoPageTime': false
 		            }
-				}
-   			};
-   			if(user.val().language) {
-   				profile.profile.language = user.val().language;
-   			}
-   			if(user.val().lastLogin) {
-   				profile.profile.lastLogin = user.val().lastLogin;
-   			}
-   			if(user.val().signUpDate) {
-   				profile.profile.signUpDate = user.val().signUpDate;
-   			}
-   			user.ref.update(profile);
+		    };
+   			admin.database().ref('/users/' + user.key + '/profile').update(tutorial);
    			// update just one specific value
-   			admin.database().ref('/users/' + user.key + '/profile').child('timezoneOffset').set(-120);
+   			//admin.database().ref('/users/' + user.key + '/profile').child('timezoneOffset').set(-120);
    		})
    });
    return null;

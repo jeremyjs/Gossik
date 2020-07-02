@@ -162,6 +162,7 @@ export class HomePage {
 	addingProject: boolean = false;
 	calendarEvents: CalendarEvent[] = [];
 	todoview: string = 'task';
+	showNavigationBar: boolean = true;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -718,22 +719,11 @@ export class HomePage {
 	// CapturePage functions
 
 	ionFocus(event){
-		event.target.firstChild.placeholder = '';
-		this.translate.get(["Input new capture"]).subscribe( translation => {
-	  		if(this.newCapture.content == translation["Input new capture"]) {
-	  			this.newCapture.content = '';
-	  		}
-		});
+		this.showNavigationBar = false;
 	}
 
-	ionBlurCapture(event) {
-		this.translate.get(["Input new capture"]).subscribe( translation => {
-	  		if(!this.newCapture.content) {
-	  			event.target.firstChild.placeholder = translation["Input new capture"];
-	  		} else if(this.newCapture.content == '') {
-	  			event.target.firstChild.placeholder = translation["Input new capture"];
-	  		}
-		});
+	ionBlur(event) {
+		this.showNavigationBar = true;
 	}
 
   	addCapture(capture: Capture) {

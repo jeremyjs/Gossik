@@ -39,7 +39,7 @@ export class DatabaseService {
                 'triggerDate': '',
                 'tutorialProgress': 0,
                 'tutorialNextButton': false,
-                'tutorialTodoPageTime': false,
+                'tutorialTodoPageTime': false
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
