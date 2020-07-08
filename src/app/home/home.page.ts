@@ -1112,6 +1112,7 @@ export class HomePage {
 		this.showCaptureDeadline = false;
 		this.showCaptureDone = false;
 		this.showOptionals = false;
+		this.captureShowAdd = true;
     	if(project != undefined && project.key != 'unassigned') {
     		this.showCaptureProject = true;
     		this.captureProject = project;
