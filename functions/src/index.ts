@@ -474,6 +474,29 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
      }
 );
 
+function getRandomInteger(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+exports.setRandomPushTimes = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() == 0) {
+	   			let randomPushTimes = [];
+	   			randomPushTimes.push(getRandomInteger(8,11));
+	   			randomPushTimes.push(getRandomInteger(13,21));
+	   			randomPushTimes.push(getRandomInteger(13,21));
+				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
+   			}
+   		})
+   });
+   return null;
+     }
+);
+
 
 
 // Modifying the database manually for each user
