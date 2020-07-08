@@ -587,6 +587,7 @@
   </div>
   <!-- Mobile ProcessPage -->
   <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-70px width-100">
+    <ion-grid class="width-90">
       <ion-row class="text-align-right">
         <ion-col>
           <button (click)="goToCapturePage()" float-right class="font-white transparent">
@@ -594,7 +595,8 @@
           </button>
         </ion-col>
       </ion-row>
-      <ion-grid class="height-100-minus-70px overflow-scroll width-90">
+    </ion-grid>
+    <ion-grid class="height-100-minus-85px overflow-scroll width-90">
       <ion-row class="transparent width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
@@ -1190,14 +1192,16 @@
   </div>
   <!-- Mobile ProjectsPage-->
   <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'ProjectsPage' && isApp">
-    <ion-grid *ngIf="pageCtrl == ''" class="height-100 width-90 no-scrollbar overflow-scroll">
+    <ion-grid *ngIf="pageCtrl == ''" class="width-90">
       <ion-row class="text-align-right" *ngIf="!addingProject">
         <ion-col>
-          <button (click)="addProject()" float-right class="margin-auto transparent">
-            <img src="../../assets/icon/icon_add.png" class="img-height-60px img-width-60px">
+          <button (click)="addProject()" float-right class="font-white transparent">
+            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
           </button>
         </ion-col>
       </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="pageCtrl == ''" class="height-100-minus-85px overflow-scroll width-90">
       <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
         <ion-row class="no-padding">
           <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray font-size-20px" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}..."></ion-input>
