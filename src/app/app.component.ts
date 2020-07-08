@@ -29,8 +29,6 @@ export class AppComponent {
       this.splashScreen.hide();
       let language = this.translate.getBrowserLang();
       let availableLanguages: string[] = ['de', 'en'];
-      console.log(language);
-      console.log(availableLanguages);
       if(availableLanguages.indexOf(language) == -1) {
           language = 'en';
       }
