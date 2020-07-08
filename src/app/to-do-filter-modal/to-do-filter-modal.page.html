@@ -27,8 +27,14 @@
 				</button>
 			</ion-col>
 		</ion-row>
+		<ion-row class="font-white margin-left-30 margin-bottom-10">
+			<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal('unassigned')">
+				<span *ngIf="chosenGoalArray.indexOf('unassigned') != -1" class="font-size-20px">{{"Unassigned todos" | translate}}</span>
+				<span *ngIf="chosenGoalArray.indexOf('unassigned') == -1" class="font-gray font-size-20px">{{"Unassigned todos" | translate}}</span>
+			</button>
+		</ion-row>
 		<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let goal of goalArray">
-			<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal(goal)">
+			<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal(goal.key)">
 				<span *ngIf="chosenGoalArray.indexOf(goal.key) != -1" class="font-size-20px">{{goal.name}}</span>
 				<span *ngIf="chosenGoalArray.indexOf(goal.key) == -1" class="font-gray font-size-20px">{{goal.name}}</span>
 			</button>
