@@ -18,6 +18,7 @@ import { map, take } from 'rxjs/operators';
 export class DatabaseService {
 
   	userData = {} as User;
+    availableLanguages: string[] = ['de', 'en'];
  
     constructor(
     	private db: AngularFireDatabase,
@@ -150,6 +151,9 @@ export class DatabaseService {
     }
 
     changeLanguage(userid, language) {
+        if(this.availableLanguages.indexOf(language) == -1) {
+            language = 'en';
+        }
         return this.db.list('users/' + userid).update('profile', {language: language});
     }
 
