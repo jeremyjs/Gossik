@@ -501,57 +501,65 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
-				if(user.val().nextActions) {
-					let todos = [];
-					for(let key in user.val().nextActions) {
-						if(user.val().nextActions[key].active != false) {
-							let todo = user.val().nextActions[key]
-							todo['todoid'] = key;
-							todos.push(todo);
+			if(user.val().profile.randomPushTimes) {
+				if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
+					if(user.val().nextActions) {
+						let todos = [];
+						for(let key in user.val().nextActions) {
+							if(user.val().nextActions[key].active != false) {
+								let todo = user.val().nextActions[key]
+								todo['todoid'] = key;
+								todos.push(todo);
+							}
+						}
+						if(todos.length > 0) {
+							//currently we pick a random todo, later on the one with the highest priority
+							//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+							let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
+							let language = 'en';
+				    		if(user.val().profile.language) {
+				   				language = user.val().profile.language;
+				   			}
+				   			let message: any = {};
+				   			let title: any = {};
+							message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
+							message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
+							title['de'] = "Lass uns das erledigen";
+							title['en'] = "Let's get this done";
+							let msg = message['en'];
+				   			if(message[language]) {
+				   				msg = message[language];
+				   			}
+				    		let payload = {
+					            notification: {
+					                title: "Gossik",
+					                body: msg
+					            },
+					            data: {
+					              	title: "Gossik",
+					                body: msg
+					            }
+					        };
+				    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+				    			devices.forEach(function(device) {
+							       	admin.messaging().sendToDevice(device.val(), payload);
+						    	});
+					    	});
+					    	let pushNotification = {
+					    		message: msg,
+					    		todoid: randomTodo.todoid,
+					    		createDate: new Date().toISOString()
+					    	}
+					    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
 						}
 					}
-					if(todos.length > 0) {
-						//currently we pick a random todo, later on the one with the highest priority
-						//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-						let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
-						let language = 'en';
-			    		if(user.val().profile.language) {
-			   				language = user.val().profile.language;
-			   			}
-			   			let message: any = {};
-			   			let title: any = {};
-						message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
-						message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
-						title['de'] = "Lass uns das erledigen";
-						title['en'] = "Let's get this done";
-						let msg = message['en'];
-			   			if(message[language]) {
-			   				msg = message[language];
-			   			}
-			    		let payload = {
-				            notification: {
-				                title: "Gossik",
-				                body: msg
-				            },
-				            data: {
-				              	title: "Gossik",
-				                body: msg
-				            }
-				        };
-			    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    			devices.forEach(function(device) {
-						       	admin.messaging().sendToDevice(device.val(), payload);
-					    	});
-				    	});
-				    	let pushNotification = {
-				    		message: msg,
-				    		todoid: randomTodo.todoid,
-				    		createDate: new Date().toISOString()
-				    	}
-				    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
-					}
 				}
+			} else {
+				let randomPushTimes = [];
+	   			randomPushTimes.push(getRandomInteger(8,11));
+	   			randomPushTimes.push(getRandomInteger(13,21));
+	   			randomPushTimes.push(getRandomInteger(13,21));
+				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
 			}
    		})
    });
