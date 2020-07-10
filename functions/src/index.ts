@@ -568,7 +568,6 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 );
 
 
-
 // Modifying the database manually for each user
 /*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
