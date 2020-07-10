@@ -422,51 +422,63 @@
 
   <!-- InfoPage -->
   <div class="margin-top-10 padding-10 transparent font-white text-align-center height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'InfoPage'">
-    <strong>{{"Thoughts" | translate}}</strong>
-    <p>
-      {{"infoThoughts1" | translate}}
-    </p>
-    <p>
-      {{"infoThoughts2" | translate}}
-    </p>
-    <p>
-      {{"infoThoughts3" | translate}}
-    </p>
-    <strong>{{"Overview" | translate}}</strong>
-    <p>
-      {{"infoOverview1" | translate}}
-    </p>
-    <strong>{{"Project overview" | translate}}</strong>
-    <p>
-      {{"infoProjectOverview1" | translate}}
-    </p>
-    <strong>{{"Do" | translate}}</strong>
-    <p>
-      {{"infoDo1" | translate}}
-    </p>
-    <p>
-      {{"infoDo2" | translate}}
-    </p>
-    <p>
-      {{"infoDo3" | translate}}
-    </p>
-    <strong>{{"Focus" | translate}}</strong>
-    <p>
-      {{"infoFocus1" | translate}}
-    </p>
-    <p>
-      {{"infoFocus2" | translate}}
-    </p>
-    <p>
-      {{"infoFocus3" | translate}}
-    </p>
-    <strong>{{"Calendar" | translate}}</strong>
-    <p>
-      {{"infoCalendar1" | translate}}
-    </p>
-    <p>
-      {{"infoCalendar2" | translate}}
-    </p>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('Thoughts')">{{"Thoughts" | translate}}</strong>
+    <span *ngIf="showInfoThoughts">
+      <p>
+        {{"infoThoughts1" | translate}}
+      </p>
+      <p>
+        {{"infoThoughts2" | translate}}
+      </p>
+      <p>
+        {{"infoThoughts3" | translate}}
+      </p>
+    </span>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('Overview')">{{"Overview" | translate}}</strong>
+    <span *ngIf="showInfoOverview">
+      <p>
+        {{"infoOverview1" | translate}}
+      </p>
+    </span>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('ProjectOverview')">{{"Project overview" | translate}}</strong>
+    <span *ngIf="showInfoProjectOverview">
+      <p>
+        {{"infoProjectOverview1" | translate}}
+      </p>
+    </span>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('Do')">{{"Do" | translate}}</strong>
+    <span *ngIf="showInfoDo">
+      <p>
+        {{"infoDo1" | translate}}
+      </p>
+      <p>
+        {{"infoDo2" | translate}}
+      </p>
+      <p>
+        {{"infoDo3" | translate}}
+      </p>
+    </span>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('Focus')">{{"Focus" | translate}}</strong>
+    <span *ngIf="showInfoFocus">
+      <p>
+        {{"infoFocus1" | translate}}
+      </p>
+      <p>
+        {{"infoFocus2" | translate}}
+      </p>
+      <p>
+        {{"infoFocus3" | translate}}
+      </p>
+    </span>
+    <strong class="display-block margin-top-10" (click)="changeShowInfo('Calendar')">{{"Calendar" | translate}}</strong>
+    <span *ngIf="showInfoCalendar">
+      <p>
+        {{"infoCalendar1" | translate}}
+      </p>
+      <p>
+        {{"infoCalendar2" | translate}}
+      </p>
+    </span>
   </div>
 
   <!-- FeedbackPage -->

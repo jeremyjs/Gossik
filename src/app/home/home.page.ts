@@ -165,6 +165,12 @@ export class HomePage {
 	todoview: string = 'task';
 	showNavigationBar: boolean = true;
 	showOptionals: boolean;
+	showInfoThoughts: boolean = false;
+	showInfoOverview: boolean = false;
+	showInfoProjectOverview: boolean = false;
+	showInfoDo: boolean = false;
+	showInfoFocus: boolean = false;
+	showInfoCalendar: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -671,6 +677,22 @@ export class HomePage {
     goToInfoPage() {
     	this.pageTitle = "Info";
     	this.changePage('InfoPage');
+    }
+
+    changeShowInfo(info) {
+    	if(info == 'Thoughts') {
+    		this.showInfoThoughts = !this.showInfoThoughts;
+    	} else if(info == 'Overview') {
+    		this.showInfoOverview = !this.showInfoOverview;
+    	} else if(info == 'ProjectOverview') {
+    		this.showInfoProjectOverview = !this.showInfoProjectOverview;
+    	} else if(info == 'Do') {
+    		this.showInfoDo = !this.showInfoDo;
+    	} else if(info == 'Focus') {
+    		this.showInfoFocus = !this.showInfoFocus;
+    	} else if(info == 'Calendar') {
+    		this.showInfoCalendar = !this.showInfoCalendar;
+    	}
     }
 
     goToShowFeedbackPage() {
