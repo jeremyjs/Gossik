@@ -759,6 +759,7 @@ export class HomePage {
   	}
 
   	cancelCapture() {
+  		this.newCapture.content = '';
 		this.goToProcessPage();
   	}
 
