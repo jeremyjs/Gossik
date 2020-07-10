@@ -45,9 +45,7 @@ export class DatabaseService {
             timezoneOffset: new Date().getTimezoneOffset()
         }
         this.userData.profile["signUpDate"] = new Date().toISOString();
-        this.translate.get(["Tutorial", "Define 5 todos"]).subscribe( translation => {
-            return this.db.list('users').set(userid, this.userData);
-        }); 
+        return this.db.list('users').set(userid, this.userData); 
     }
 
     logout() {
@@ -91,6 +89,13 @@ export class DatabaseService {
             tutorial['tutorialTodoPageTime'] = true;
         }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    }
+
+    initiateLearnedSchedule(userid) {
+        let learnedSchedule = [];
+        learnedSchedule.push([1,22,3]);
+        learnedSchedule.push([4,5,6]);
+        return this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedSchedule));
     }
 
     startTutorial(userid, tutorialPart) {

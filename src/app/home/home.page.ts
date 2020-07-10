@@ -2724,6 +2724,7 @@ export class HomePage {
   	}
 
   	startAction(action) {
+  		this.db.initiateLearnedSchedule(this.auth.userid);
 		action.taken = true;
 		action.startDate = new Date().toISOString();
   		this.startedAction = action;
