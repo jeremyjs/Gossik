@@ -92,10 +92,82 @@ export class DatabaseService {
     }
 
     initiateLearnedSchedule(userid) {
-        let learnedSchedule = [];
-        learnedSchedule.push([1,22,3]);
-        learnedSchedule.push([4,5,6]);
-        return this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedSchedule));
+        this.db.list<Goal>('/users/' + userid + '/goals')
+        .snapshotChanges()
+        .pipe(
+        map(
+            changes => { 
+                return changes.map( c => {
+                    let goal: Goal = { 
+                        key: c.payload.key, ...c.payload.val()
+                        };
+                    return goal;
+            });}))
+        .subscribe(goals => {
+            console.log(goals.length);
+            let learnedSchedule = [];
+            let learnedScheduleRow = [];
+            for(let hour = 0; hour <= 167; hour ++) {
+                learnedScheduleRow.push(0);
+            }
+            for(let goal of goals) {
+                if(goal.active != false) {
+                    learnedSchedule.push(learnedScheduleRow);
+                }
+            }
+            return this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedSchedule));
+        });
+    }
+
+    getTimezoneOffset(userid) {
+        return this.db.object('users/' + userid + '/profile/timezoneOffset');
+    }
+
+    getLearnedSchedule(userid) {
+        return this.db.object('users/' + userid + '/profile/learnedSchedule');
+    }
+
+    increaseLearnedSchedule(userid, projectid, date) {
+        this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
+            if(learnedSchedule.payload.val()) {
+                this.getGoalList(userid).snapshotChanges().pipe(map( changes => { 
+                    return changes.map( c => {
+                        let goal: Goal = { 
+                            key: c.payload.key, ...c.payload.val()
+                            };
+                        return goal;
+                        });
+                }))
+                .subscribe(goals => {
+                    let goalArray = [];
+                    let row = 0;
+                    for(let goal of goals) {
+                        if(goal.active != false) {
+                            goalArray.push(goal);
+                        }
+                        if(projectid == goal.key) {
+                            row = goalArray.length - 1;
+                        }
+                    }
+                    this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
+                        let localeDate = new Date(date.getTime() - timezoneOffset.payload.val()*60*1000);
+                        let weekDay = localeDate.getDay() - 1;
+                        if(weekDay == -1) {
+                            weekDay = 6;
+                        }
+                        let hour = localeDate.getHours();
+                        let column = weekDay * 24 + hour;
+                        console.log(row);
+                        console.log(column);
+                        //let learnedScheduleObject = JSON.parse(learnedSchedule);
+                        //learnedScheduleObject[row][column] += 1;
+                        //this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
+                    })
+                });
+            } else {
+                this.initiateLearnedSchedule(userid);
+            }
+        })
     }
 
     startTutorial(userid, tutorialPart) {
