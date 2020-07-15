@@ -104,16 +104,15 @@ export class DatabaseService {
                     return goal;
             });}))
         .subscribe(goals => {
-            console.log(goals.length);
-            let learnedSchedule = [];
-            let learnedScheduleRow = [];
-            for(let hour = 0; hour <= 167; hour ++) {
-                learnedScheduleRow.push(0);
-            }
+            let learnedSchedule = {};
+            let learnedScheduleRow = {};
             for(let goal of goals) {
                 if(goal.active != false) {
-                    learnedSchedule.push(learnedScheduleRow);
+                    learnedScheduleRow[goal.key] = 0;
                 }
+            }
+            for(let hour = 0; hour <= 167; hour ++) {
+                learnedSchedule[hour]= learnedScheduleRow;
             }
             return this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedSchedule));
         });
@@ -127,43 +126,21 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile/learnedSchedule');
     }
 
-    increaseLearnedSchedule(userid, projectid, date) {
+    updateLearnedSchedule(userid, projectid, date, value) {
         this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
             if(learnedSchedule.payload.val()) {
-                this.getGoalList(userid).snapshotChanges().pipe(map( changes => { 
-                    return changes.map( c => {
-                        let goal: Goal = { 
-                            key: c.payload.key, ...c.payload.val()
-                            };
-                        return goal;
-                        });
-                }))
-                .subscribe(goals => {
-                    let goalArray = [];
-                    let row = 0;
-                    for(let goal of goals) {
-                        if(goal.active != false) {
-                            goalArray.push(goal);
-                        }
-                        if(projectid == goal.key) {
-                            row = goalArray.length - 1;
-                        }
+                this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
+                    let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
+                    let weekDay = localeDate.getDay() - 1;
+                    if(weekDay == -1) {
+                        weekDay = 6;
                     }
-                    this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
-                        let localeDate = new Date(date.getTime() - timezoneOffset.payload.val()*60*1000);
-                        let weekDay = localeDate.getDay() - 1;
-                        if(weekDay == -1) {
-                            weekDay = 6;
-                        }
-                        let hour = localeDate.getHours();
-                        let column = weekDay * 24 + hour;
-                        console.log(row);
-                        console.log(column);
-                        //let learnedScheduleObject = JSON.parse(learnedSchedule);
-                        //learnedScheduleObject[row][column] += 1;
-                        //this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
-                    })
-                });
+                    let hour = localeDate.getHours();
+                    let row = weekDay * 24 + hour;
+                    let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
+                    learnedScheduleObject[row][projectid] += value;
+                    this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
+                })
             } else {
                 this.initiateLearnedSchedule(userid);
             }
@@ -277,7 +254,6 @@ export class DatabaseService {
     }
 	
 	deleteCapture(capture: Capture, userid) {
-        console.log(capture);
         capture.active = false;
         capture.deleteDate = new Date().toISOString();
         return this.editCapture(capture, userid);

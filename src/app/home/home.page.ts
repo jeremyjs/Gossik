@@ -2462,14 +2462,8 @@ export class HomePage {
 			        		this.goalArray.push(goal);
 			        	}
 			        }
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[2].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[5].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[4].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[4].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[4].key, new Date());
-			        this.db.increaseLearnedSchedule(this.auth.userid, this.goalArray[7].key, new Date());
-			    	this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+			        this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
+			        this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 					.snapshotChanges()
 					.pipe(take(1),
 						map(
@@ -2500,7 +2494,6 @@ export class HomePage {
 							this.pageTitle = "Do";
 							this.doableActionArray = [];
 							this.duration = 0;
-							this.doableActionArray = [];
 							this.goalKeyArray = [];
 					    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
 							  	.snapshotChanges()
