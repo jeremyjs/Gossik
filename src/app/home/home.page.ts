@@ -949,17 +949,20 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				if(data.data) {
-					for(let actionContent of data.data) {
-						let todo: Action = {
-						    userid: this.auth.userid,
-						    goalid: 'unassigned',
-						    content: actionContent.content,
-						    priority: 3,
-						    time: 20,
-						    taken: false,
-						    active: true
+					console.log(data.data);
+					for(let action of data.data) {
+						if(action.content) {
+							let todo: Action = {
+							    userid: this.auth.userid,
+							    goalid: 'unassigned',
+							    content: action.content,
+							    priority: 3,
+							    time: 20,
+							    taken: false,
+							    active: true
+							}
+							this.db.addAction(todo, {} as Capture, this.auth.userid);
 						}
-						this.db.addAction(todo, {} as Capture, this.auth.userid);
 					}
 					if(this.userProfile.tutorial.fivetodos) {
 						this.presentAlert("fivetodosDone");
@@ -2462,7 +2465,7 @@ export class HomePage {
 			        		this.goalArray.push(goal);
 			        	}
 			        }
-			        this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
+			        //this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
 			        this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 					.snapshotChanges()
 					.pipe(take(1),
