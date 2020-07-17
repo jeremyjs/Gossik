@@ -2465,7 +2465,6 @@ export class HomePage {
 			        		this.goalArray.push(goal);
 			        	}
 			        }
-			        this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
 			        this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 					.snapshotChanges()
 					.pipe(take(1),
@@ -2727,10 +2726,24 @@ export class HomePage {
   	}
 
   	startAction(action) {
-		action.taken = true;
+  		action.taken = true;
 		action.startDate = new Date().toISOString();
   		this.startedAction = action;
 		this.db.editAction(action, this.auth.userid);
+		if(this.action.goalid != 'unassigned') {
+			let dates = [new Date()];
+			let minute = 0;
+			let hourUpdated = new Date().getHours();
+			while(minute <= action.time) {
+				let date = new Date(new Date().getTime() + minute*60*1000);
+				if(date.getHours() != hourUpdated) {
+					dates.push(date);
+					hourUpdated++;
+				}
+				minute++;
+			}
+			this.db.updateLearnedSchedule(this.auth.userid, action.goalid, dates, 1);
+		}
 		this.pageTitle = "Focus";
 		this.changePage('ActionPage');
 		this.translate.get(["Todo started"]).subscribe( translation => {

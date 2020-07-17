@@ -126,21 +126,26 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile/learnedSchedule');
     }
 
-    updateLearnedSchedule(userid, projectid, date, value) {
+    updateLearnedSchedule(userid, projectid, dates, value) {
         this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
             if(learnedSchedule.payload.val()) {
                 this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
-                    let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
-                    let weekDay = localeDate.getDay() - 1;
-                    if(weekDay == -1) {
-                        weekDay = 6;
-                    }
-                    //getHours() gives locale hours already, so no need to use localeDate
-                    let hour = date.getHours();
-                    let row = weekDay * 24 + hour;
                     let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
-                    learnedScheduleObject[row][projectid] += value;
-                    console.log(learnedScheduleObject);
+                    console.log(dates);
+                    for(let date of dates) {
+                        let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
+                        let weekDay = localeDate.getDay() - 1;
+                        if(weekDay == -1) {
+                            weekDay = 6;
+                        }
+                        //getHours() gives locale hours already, so no need to use localeDate
+                        let hour = date.getHours();
+                        let row = weekDay * 24 + hour;
+                        console.log(projectid);
+                        console.log(row);
+                        learnedScheduleObject[row][projectid] += value;
+                        console.log(learnedScheduleObject);
+                    }
                     this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
                 })
             } else {
