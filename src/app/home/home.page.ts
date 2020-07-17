@@ -2465,7 +2465,7 @@ export class HomePage {
 			        		this.goalArray.push(goal);
 			        	}
 			        }
-			        //this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
+			        this.db.updateLearnedSchedule(this.auth.userid, this.goalArray[0].key, new Date(), 1);
 			        this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
 					.snapshotChanges()
 					.pipe(take(1),

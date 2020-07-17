@@ -135,10 +135,12 @@ export class DatabaseService {
                     if(weekDay == -1) {
                         weekDay = 6;
                     }
-                    let hour = localeDate.getHours();
+                    //getHours() gives locale hours already, so no need to use localeDate
+                    let hour = date.getHours();
                     let row = weekDay * 24 + hour;
                     let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
                     learnedScheduleObject[row][projectid] += value;
+                    console.log(learnedScheduleObject);
                     this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
                 })
             } else {
