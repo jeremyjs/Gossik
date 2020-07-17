@@ -2569,6 +2569,8 @@ export class HomePage {
 			modal.onDidDismiss().then( data => {
 				if(data.data) {
 					this.goalKeyArray = data.data;
+					let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
+					this.db.updateLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
 					this.showDoableActions();
 				}
 			});
@@ -2742,7 +2744,7 @@ export class HomePage {
 				}
 				minute++;
 			}
-			this.db.updateLearnedSchedule(this.auth.userid, action.goalid, dates, 1);
+			this.db.updateLearnedSchedule(this.auth.userid, [action.goalid], dates, 1);
 		}
 		this.pageTitle = "Focus";
 		this.changePage('ActionPage');

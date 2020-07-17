@@ -126,7 +126,7 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile/learnedSchedule');
     }
 
-    updateLearnedSchedule(userid, projectid, dates, value) {
+    updateLearnedSchedule(userid, projectids, dates, value) {
         this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
             if(learnedSchedule.payload.val()) {
                 this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
@@ -141,9 +141,11 @@ export class DatabaseService {
                         //getHours() gives locale hours already, so no need to use localeDate
                         let hour = date.getHours();
                         let row = weekDay * 24 + hour;
-                        console.log(projectid);
                         console.log(row);
-                        learnedScheduleObject[row][projectid] += value;
+                        for(let projectid of projectids) {
+                            console.log(projectid);
+                            learnedScheduleObject[row][projectid] += value;
+                        }
                         console.log(learnedScheduleObject);
                     }
                     this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
