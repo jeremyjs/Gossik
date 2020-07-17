@@ -12,7 +12,6 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class FivetodosModalPage implements OnInit {
 	todos: Action[] = [];
-	showDone: boolean = false;
 
   constructor(
   		public translate: TranslateService,
@@ -37,14 +36,6 @@ export class FivetodosModalPage implements OnInit {
 	});
   }
 
-  ionChange() {
-  	if(this.todos.every(todo => todo.content && todo.content != '')) {
-  		this.showDone = true;
-  	} else {
-  		this.showDone = false;
-  	}
-  }
-
   addTodo() {
   	this.todos.push({} as Action);
   }
@@ -59,7 +50,28 @@ export class FivetodosModalPage implements OnInit {
   }
 
   defineTodos() {
-  	this.modalCtrl.dismiss(this.todos);
+  	let checkTodos: boolean = false;
+  	for(let todo of this.todos) {
+  		if(todo.content) {
+  			checkTodos = true;
+  		}
+  	}
+  	if(checkTodos) {
+   		this.modalCtrl.dismiss(this.todos);
+   	} else {
+   		this.translate.get(["Please define at least one to-do", "OK"]).subscribe( translation => {
+			this.alertCtrl.create({
+				message: translation["Please define at least one to-do"],
+				buttons: [
+					    	{
+						        text: translation["OK"]
+					      	}
+					    ]
+			}).then( alert => {
+				alert.present();
+			});
+		});
+   	}
   }
 
 }

@@ -132,6 +132,7 @@
   "Please choose a project to assign.": "Please choose a project to assign.",
   "Please define a valid delegation.": "Please define a valid waitingFor.",
   "Please define an action.": "Please define a to-do.",
+  "Please define at least one to-do": "Please define at least one to-do",
   "Please indicate whether you finished the action or want to abort it.": "Please indicate whether you finished the to-do or want to cancel it.",
   "Please update the remaining time for this action": "Please update the remaining time for this to-do",
   "Priority": "Priority",

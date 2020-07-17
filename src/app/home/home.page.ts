@@ -949,7 +949,6 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
 					for(let action of data.data) {
 						if(action.content) {
 							let todo: Action = {

@@ -132,6 +132,7 @@
   "Please choose a project to assign.": "Bitte wähle ein Projekt aus.",
   "Please define a valid delegation.": "Bitte definiere eine Abwarten",
   "Please define an action.": "Bitte definiere eine ToDo",
+  "Please define at least one to-do": "Bitte definiere mindestens ein ToDo",
   "Please indicate whether you finished the action or want to abort it.": "Bitte gib an, ob du die ToDo beendet hast oder sie abbrechen möchtest.",
   "Please update the remaining time for this action": "Bitte aktualisiere die verbleibene Zeit für diese Aufgabe",
   "Priority": "Priorität",

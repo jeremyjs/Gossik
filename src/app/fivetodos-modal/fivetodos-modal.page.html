@@ -19,7 +19,7 @@
 <ion-content class="background-gray font-white">
 	<ion-row *ngFor="let todo of todos">
 		<ion-col size="10">
-			<ion-input class="border-bottom-1 font-white" type="text" (ionChange)="ionChange()" autocapitalize="on" [(ngModel)]="todo.content" placeholder="{{'Define action' | translate}}..."></ion-input>
+			<ion-input class="border-bottom-1 font-white" type="text" autocapitalize="on" [(ngModel)]="todo.content" placeholder="{{'Define action' | translate}}..."></ion-input>
 		</ion-col>
 		<ion-col size="2" *ngIf="todo.content">
 			<button class="transparent" (click)="deleteTodo(todo)">
@@ -34,7 +34,7 @@
           </button>
         </ion-col>
     </ion-row>
-	<ion-row *ngIf="showDone" class="margin-top-45">
+	<ion-row class="margin-top-45">
 	    <button class="transparent font-white margin-auto width-100" (click)="defineTodos()">
 	    	<img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
 	    </button>
