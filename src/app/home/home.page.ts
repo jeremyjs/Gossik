@@ -2105,6 +2105,17 @@ export class HomePage {
 						} else {
 							eventData.color = "#C0C0C0";
 						}
+						let dates = [new Date(eventData.startTime)];
+						let minute = 0;
+						let hourUpdated = new Date(eventData.startTime).getHours();
+						while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
+							if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+								dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
+								hourUpdated++;
+							}
+							minute++;
+						}
+						this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 					}
 					if(this.platform.is('cordova')) {
 						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -2334,6 +2345,17 @@ export class HomePage {
 								} else {
 									eventData.color = "#C0C0C0";
 								}
+								let dates = [new Date(eventData.startTime)];
+								let minute = 0;
+								let hourUpdated = new Date(eventData.startTime).getHours();
+								while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
+									if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+										dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
+										hourUpdated++;
+									}
+									minute++;
+								}
+								this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 							}
 							if(this.platform.is('cordova')) {
 								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -2736,9 +2758,8 @@ export class HomePage {
 			let minute = 0;
 			let hourUpdated = new Date().getHours();
 			while(minute <= action.time) {
-				let date = new Date(new Date().getTime() + minute*60*1000);
-				if(date.getHours() != hourUpdated) {
-					dates.push(date);
+				if(new Date(new Date().getTime() + minute*60*1000).getHours() != hourUpdated) {
+					dates.push(new Date(new Date().getTime() + minute*60*1000));
 					hourUpdated++;
 				}
 				minute++;
