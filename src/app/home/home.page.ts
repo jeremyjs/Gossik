@@ -48,7 +48,8 @@ export class HomePage {
 
 	@ViewChild(IonContent, { read: IonContent, static: true }) content: IonContent;
 	@ViewChild('TimeAvailable', {  static: false })  timeAvailable: IonInput;
-	loginForm: FormGroup;
+	loginEmail: string;
+	loginPassword: string;
 	loginError: string;
 	forgotPasswordForm: FormGroup;
 	signUpForm: FormGroup;
@@ -194,8 +195,8 @@ export class HomePage {
 		public pickerCtrl: PickerController
 		) {
 		this.isApp = this.platform.is('cordova');
-		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
-		this.isApp = true;
+		//console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
+		//this.isApp = true;
 		this.backButton = this.platform.backButton;
 		this.backButton.subscribe(()=>{
 			this.alertCtrl.getTop().then ( alert => {
@@ -584,10 +585,6 @@ export class HomePage {
 
   	// LoginPage functions
 	goToLoginPage() {
-		this.loginForm = this.fb.group({
-			email: ['', Validators.compose([Validators.required, Validators.email])],
-			password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
-		});
 		this.forgotPasswordForm = this.fb.group({
 			email: ['', Validators.compose([Validators.required, Validators.email])]
 		});
@@ -599,13 +596,9 @@ export class HomePage {
 	}
 
   	login() {
-		let data = this.loginForm.value;
-		if (!data.email) {
-			return;
-		}
 		let credentials = {
-			email: data.email,
-			password: data.password
+			email: this.loginEmail,
+			password: this.loginPassword
 		};
 		this.db.login();
 		this.auth.signInWithEmail(credentials)
