@@ -53,7 +53,8 @@ export class HomePage {
 	loginError: string;
 	resetPasswordError: string;
 	resetPasswordEmail: string;
-	signUpForm: FormGroup;
+	signUpEmail: string;
+	signUpPassword: string;
 	signUpError: string;
   	viewpoint: string;
 	captureList: Observable<Capture[]>;
@@ -587,10 +588,6 @@ export class HomePage {
   	// LoginPage functions
 	goToLoginPage() {
 		this.loginError = undefined;
-		this.signUpForm = this.fb.group({
-			email: ['', Validators.compose([Validators.required, Validators.email])],
-			password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
-		});
 		this.changePage('LoginPage');
 	}
 
@@ -612,14 +609,14 @@ export class HomePage {
   	} 
 
   	goToSignUp(){
+  		this.signUpError = undefined;
 		this.pageCtrl = 'signUp';
 	}
 
 	signUp() {
-		let data = this.signUpForm.value;
 		let credentials = {
-			email: data.email,
-			password: data.password
+			email: this.signUpEmail,
+			password: this.signUpPassword
 		};
 		this.auth.signUp(credentials).then(user =>  {
 			this.db.createUser(user.user.uid, user.user.email);
@@ -629,7 +626,9 @@ export class HomePage {
 			  		this.presentToast(translation["Successfully registered"]);
 				});
 				setTimeout(() => this.goToToDoPage());
-			});
+			},
+			error => this.signUpError = error.message
+		);
   	}
 	
 	goToForgotPassword() {

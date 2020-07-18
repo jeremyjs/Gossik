@@ -345,19 +345,16 @@
         </ion-list>
 			</div>
 			<div *ngIf="pageCtrl == 'signUp'" class="transparent font-white">
-				<form (ngSubmit)="signUp()" [formGroup]="signUpForm">
-					<ion-list inset class="transparent font-white">
-						<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
-							<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
-						</ion-item>
-						<ion-item no-lines class="transparent font-white show-full-highlight-0">
-							<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." formControlName="password"></ion-input>
-						</ion-item>
-					</ion-list>
-					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="button-design font-size-20px" expand="block" type="submit" [disabled]="!signUpForm.valid">{{"Sign up" | translate }}</button>
-					</div>
-				</form>
+				<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
+					<ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="signUpEmail"></ion-input>
+				</ion-item>
+				<ion-item no-lines class="transparent font-white show-full-highlight-0">
+					<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." [(ngModel)]="signUpPassword"></ion-input>
+				</ion-item>
+				<div padding-horizontal class="transparent font-white text-align-center">
+          <div class="form-error">{{signUpError}}</div>
+					<button class="button-design font-size-20px" (click)="signUp()">{{"Sign up" | translate }}</button>
+				</div>
         <ion-list class="transparent margin-top-45">
           <button icon-left class="button-design font-size-20px margin-left-20" (click)="goToLoginPage()">
             {{"Login" | translate }}
