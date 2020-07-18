@@ -298,14 +298,12 @@
 	<div *ngIf="viewpoint == 'LoginPage'" class="transparent height-100-minus-70px">
 		<ion-card class="transparent">
 			<div *ngIf="pageCtrl == ''" class="transparent">
-				<ion-list inset class="transparent">
-					<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
-						<ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="loginEmail"></ion-input>
-					</ion-item>
-					<ion-item no-lines class="transparent font-white show-full-highlight-0">
-						<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." [(ngModel)]="loginPassword"></ion-input>
-					</ion-item>
-				</ion-list>
+				<ion-item no-lines class="transparent font-white show-full-highlight-0 border-width-0">
+					<ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="loginEmail"></ion-input>
+				</ion-item>
+				<ion-item no-lines class="transparent font-white show-full-highlight-0">
+					<ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." [(ngModel)]="loginPassword"></ion-input>
+				</ion-item>
 				<div padding-horizontal class="transparent font-white text-align-center">
 					<div class="form-error">{{loginError}}</div>
 					<button class="button-design font-size-20px margin-auto" (click)="login()">{{"Log in" | translate }}</button>	
@@ -325,16 +323,13 @@
 				</ion-list>
 			</div>
 			<div *ngIf="pageCtrl == 'forgotPassword'" class="transparent font-white">
-				<form (ngSubmit)="resetPassword()" [formGroup]="forgotPasswordForm">
-					<ion-list inset class="transparent font-white">
-						<ion-item no-lines class="transparent font-white show-full-highlight-0">
-							<ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." formControlName="email"></ion-input>
-						</ion-item>
-					</ion-list>
-					<div padding-horizontal class="transparent font-white text-align-center">
-						<button class="button-design font-size-20px" expand="block" type="submit" [disabled]="!forgotPasswordForm.valid">{{"Reset password" | translate }}</button>			
-					</div>
-				</form>
+				<ion-item no-lines class="transparent font-white show-full-highlight-0 text-align-center">
+					<ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="resetPasswordEmail"></ion-input>
+				</ion-item>
+				<div padding-horizontal class="transparent font-white text-align-center">
+          <div class="form-error">{{resetPasswordError}}</div>
+					<button class="button-design font-size-20px" (click)="resetPassword()">{{"Reset password" | translate }}</button>			
+				</div>
         <ion-list class="transparent margin-top-45">
           <button icon-left class="button-design font-size-20px margin-left-20" (click)="goToSignUp()">
             {{"Sign up" | translate }}

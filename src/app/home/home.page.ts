@@ -51,7 +51,8 @@ export class HomePage {
 	loginEmail: string;
 	loginPassword: string;
 	loginError: string;
-	forgotPasswordForm: FormGroup;
+	resetPasswordError: string;
+	resetPasswordEmail: string;
 	signUpForm: FormGroup;
 	signUpError: string;
   	viewpoint: string;
@@ -195,8 +196,8 @@ export class HomePage {
 		public pickerCtrl: PickerController
 		) {
 		this.isApp = this.platform.is('cordova');
-		//console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
-		//this.isApp = true;
+		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
+		this.isApp = true;
 		this.backButton = this.platform.backButton;
 		this.backButton.subscribe(()=>{
 			this.alertCtrl.getTop().then ( alert => {
@@ -585,9 +586,7 @@ export class HomePage {
 
   	// LoginPage functions
 	goToLoginPage() {
-		this.forgotPasswordForm = this.fb.group({
-			email: ['', Validators.compose([Validators.required, Validators.email])]
-		});
+		this.loginError = undefined;
 		this.signUpForm = this.fb.group({
 			email: ['', Validators.compose([Validators.required, Validators.email])],
 			password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -634,18 +633,19 @@ export class HomePage {
   	}
 	
 	goToForgotPassword() {
+		this.resetPasswordError = undefined;
 		this.pageCtrl = 'forgotPassword';
 	}
 
 	resetPassword() {
-		let email = this.forgotPasswordForm.value.email;
-		if (!email) {
-			return;
-		}
-		this.auth.sendPasswordResetEmail(email)
-			.then(
-				() => this.pageCtrl = ''
-				);
+		this.auth.sendPasswordResetEmail(this.resetPasswordEmail)
+		.then(
+				() => {
+						
+							this.pageCtrl = '';
+				},
+				error => this.resetPasswordError = error.message
+			);
 	}
 
 	goToSettingsPage() {
