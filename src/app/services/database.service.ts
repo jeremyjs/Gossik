@@ -148,7 +148,7 @@ export class DatabaseService {
                         }
                     }
                     console.log(learnedScheduleObject);
-                    this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
+                    //this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
                 })
             } else {
                 this.initiateLearnedSchedule(userid);

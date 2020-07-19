@@ -497,6 +497,81 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
      }
 );
 
+exports.checkRandomTodoDone = functions.pubsub.schedule('* * * * *').onRun((context) => {
+    admin.database().ref('/users').once("value", function(users) {
+   		users.forEach(function(user) {
+   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() == 23) {
+	   			admin.database().ref('/users/' + user.key + '/pushNotifications').once("value", function(pushNotifications) {
+	   				pushNotifications.forEach(function(pushNotification) {
+	   					admin.database().ref('/users/' + user.key + '/nextActions/' + pushNotification.val().todoid).once("value", function(todo) {
+	   						if(todo.val().startDate && todo.val().goalid) {
+								let startDate = new Date(todo.val().startDate);
+								let randomPushTimeDate = new Date(pushNotification.val().createDate);
+								if(startDate.getTime() - randomPushTimeDate.getTime() <= 3600*1000 && startDate.getTime() - randomPushTimeDate.getTime() >= 0) {
+									admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
+										let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
+										let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
+										let weekDay = localeDate.getDay() - 1;
+				                        if(weekDay == -1) {
+				                            weekDay = 6;
+				                        }
+				                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
+				                        //to get back users local hour, we here also need to use localeDate
+				                        let hour = localeDate.getHours();
+				                        let row = weekDay * 24 + hour;
+				                        learnedScheduleObject[row][todo.val().goalid] += 1;
+										admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
+									});
+								} else {
+									let randomPushTimeDate = new Date(pushNotification.val().createDate);
+									admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
+										let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
+										let localeDate = convertDateToLocaleDate(randomPushTimeDate, user.val().profile.timezoneOffset);
+										let weekDay = localeDate.getDay() - 1;
+				                        if(weekDay == -1) {
+				                            weekDay = 6;
+				                        }
+				                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
+				                        //to get back users local hour, we here also need to use localeDate
+				                        let hour = localeDate.getHours();
+				                        let row = weekDay * 24 + hour;
+				                        for(let goalid in learnedScheduleObject[row]) {
+											learnedScheduleObject[row][goalid] -= 0.1;
+										}
+										admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
+									});
+								}
+							} else {
+								let randomPushTimeDate = new Date(pushNotification.val().createDate);
+								admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
+									let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
+									let localeDate = convertDateToLocaleDate(randomPushTimeDate, user.val().profile.timezoneOffset);
+									let weekDay = localeDate.getDay() - 1;
+			                        if(weekDay == -1) {
+			                            weekDay = 6;
+			                        }
+			                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
+			                        //to get back users local hour, we here also need to use localeDate
+			                        let hour = localeDate.getHours();
+			                        let row = weekDay * 24 + hour;
+				                    for(let goalid in learnedScheduleObject[row]) {
+										learnedScheduleObject[row][goalid] -= 0.1;
+									}
+									admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
+								});
+							}
+							admin.database().ref('/users/' + user.key + '/pushNotifications/' + pushNotification.key).remove();
+	   					})
+	   				});
+	   			});
+   			}
+   		});
+   });
+   return null;
+     }
+);
+
 exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
