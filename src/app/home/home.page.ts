@@ -1399,7 +1399,7 @@ export class HomePage {
   		} else if(optional == 'deadline') {
   			this.showCaptureDeadline = true;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline) {
+  		if(this.showCaptureProject && this.showCaptureDeadline || this.showCaptureDeadline && this.userProfile.tutorial.tutorialProgress <= 2) {
   			this.captureShowAdd = false;
   		}
   		this.showOptionals = false;
@@ -1414,7 +1414,7 @@ export class HomePage {
   			this.captureDeadlineText = undefined;
   			this.showCaptureDeadline = false;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline) {
+  		if(this.showCaptureProject && this.showCaptureDeadline || this.showCaptureDeadline && this.userProfile.tutorial.tutorialProgress <= 2) {
   			this.captureShowAdd = false;
   		} else {
   			this.captureShowAdd = true;
