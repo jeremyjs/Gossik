@@ -477,7 +477,7 @@
   <!-- Mobile LearnedSchedulePage -->
   <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'LearnedSchedulePage' && isApp">
     <ng-template #template let-displayEvent="displayEvent" >
-      <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+      <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
     </ng-template>
     <calendar [eventSource]="eventSource"
               [calendarMode]="'week'"

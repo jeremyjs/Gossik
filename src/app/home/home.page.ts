@@ -688,35 +688,70 @@ export class HomePage {
     }
 
     goToLearnedSchedulePage() {
-    	this.calendar.currentDate = new Date();
-  		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let data: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return data;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
-  		this.eventSource = [];
-        let events = this.eventSource;
-		this.eventSource = [];
-		setTimeout(() => {
-			this.eventSource = events;
+    	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
+			let learnedSchedule = JSON.parse(userProfile.learnedSchedule.toString());
+			this.calendar.currentDate = new Date();
+	  		this.goalList = this.db.getGoalList(this.auth.userid)
+			  	.snapshotChanges()
+			  	.pipe(
+					map(
+						changes => { 
+							return changes.map( c => {
+								let data: Goal = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return data;
+				});}));
+		    this.goalList.subscribe(
+		      goalArray => {
+		        for(let goal of goalArray) {
+		        	if(goal.active != false) {
+		        		this.goalDict[goal.key] = goal;
+		        	}
+		        }
+		        let learnedScheduleDate = new Date();
+		        let weekDay = learnedScheduleDate.getDay();
+		        let monday: Date;
+		        if(weekDay == 0) {
+		        	monday = new Date(learnedScheduleDate.getTime() - 6*24*3600*1000);
+		        } else {
+		        	monday = new Date(learnedScheduleDate.getTime() - (weekDay-1)*24*3600*1000);
+		        }
+		        monday.setHours(0,0,0);
+		        this.eventSource = [];
+		        for(let hour in learnedSchedule) {
+					let max: Number = 0;
+					let maxKey = undefined;
+					let sum: Number = 0;
+					for(let projectid in learnedSchedule[hour]) {
+						sum += learnedSchedule[hour][projectid];
+						if(learnedSchedule[hour][projectid] > max) {
+							max = learnedSchedule[hour][projectid];
+							maxKey = projectid;
+						}
+					}
+					if(maxKey) {
+						let learnedScheduleEvent = {
+						    startTime: monday,
+						    endTime: new Date(monday.getTime() + 3600*1000),
+						    title: this.goalDict[maxKey].name,
+						    allDay: false,
+						    color: this.goalDict[maxKey].color,
+						    opacity: max / sum
+						}
+						this.eventSource.push(learnedScheduleEvent);
+					}
+					monday = new Date(monday.getTime() + 3600*1000);
+				}
+				let events = this.eventSource;
+				this.eventSource = [];
+				setTimeout(() => {
+					this.eventSource = events;
+				});
+		    	this.pageTitle = "Learned Schedule";
+		    	this.changePage('LearnedSchedulePage');
+		    });
 		});
-    	this.pageTitle = "Learned Schedule";
-    	this.changePage('LearnedSchedulePage');
     }
 
     goToShowFeedbackPage() {
