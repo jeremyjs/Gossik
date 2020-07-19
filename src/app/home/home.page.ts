@@ -769,6 +769,7 @@ export class HomePage {
 		.subscribe( feedbackArray => {
 			this.feedbackArray = feedbackArray;
 		});
+		this.pageTitle = 'Feedback';
     	this.changePage('ShowFeedbackPage');
     }
 

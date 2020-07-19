@@ -255,6 +255,11 @@
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
         </button>
       </div>
+      <div *ngIf="isApp && viewpoint == 'ShowFeedbackPage'">
+        <button class="transparent" (click)="goToSettingsPage()">
+          <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+        </button>
+      </div>
       <div *ngIf="isApp && viewpoint == 'InfoPage'">
         <button class="transparent" (click)="goToSettingsPage()">
           <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
