@@ -687,6 +687,38 @@ export class HomePage {
     	}
     }
 
+    goToLearnedSchedulePage() {
+    	this.calendar.currentDate = new Date();
+  		this.goalArray = [];
+  		this.goalList = this.db.getGoalList(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let data: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return data;
+			});}));
+	    this.goalList.subscribe(
+	      goalArray => {
+	        for(let goal of goalArray) {
+	        	if(goal.active != false) {
+	        		this.goalArray.push(goal);
+	        	}
+	        }
+	    });
+  		this.eventSource = [];
+        let events = this.eventSource;
+		this.eventSource = [];
+		setTimeout(() => {
+			this.eventSource = events;
+		});
+    	this.pageTitle = "Learned Schedule";
+    	this.changePage('LearnedSchedulePage');
+    }
+
     goToShowFeedbackPage() {
     	this.feedbackList = this.db.getFeedbackList()
 		.snapshotChanges()

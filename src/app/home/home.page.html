@@ -407,6 +407,9 @@
       <ion-row>
         <button class="button-design font-size-20px margin-top-10" (click)="goToInfoPage()">{{"Info" | translate}}</button>
       </ion-row>
+      <ion-row>
+        <button class="button-design font-size-20px margin-top-10" (click)="goToLearnedSchedulePage()">{{"Learned Schedule" | translate}}</button>
+      </ion-row>
     </ion-grid>
   </div>
 
@@ -469,6 +472,29 @@
         {{"infoCalendar2" | translate}}
       </p>
     </span>
+  </div>
+
+  <!-- Mobile LearnedSchedulePage -->
+  <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'LearnedSchedulePage' && isApp">
+    <ng-template #template let-displayEvent="displayEvent" >
+      <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+    </ng-template>
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="'week'"
+              [currentDate]="calendar.currentDate"
+              (onEventSelected)="onEventSelected($event)"
+              formatWeekViewDayHeader="EEE"
+              step="5"
+              class="calendar height-100 padding-10 noAllDay"
+              autoSelect="false"
+              lockSwipes="true"
+              [weekviewNormalEventTemplate]="template"
+              scrollToHour="8"
+              [locale]="translate.currentLang"
+              formatHourColumn="{{'formatHourColumn' | translate }}"
+              startingDayWeek="1"
+              allDayLabel="{{'Deadlines' | translate }}">
+    </calendar>
   </div>
 
   <!-- FeedbackPage -->
