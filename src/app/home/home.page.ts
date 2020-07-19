@@ -689,7 +689,7 @@ export class HomePage {
 
     goToLearnedSchedulePage() {
     	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
-			let learnedSchedule = JSON.parse(userProfile.learnedSchedule.toString());
+			let learnedSchedule = JSON.parse(userProfile['learnedSchedule'].toString());
 			this.calendar.currentDate = new Date();
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
 			  	.snapshotChanges()
@@ -720,9 +720,9 @@ export class HomePage {
 		        monday.setHours(0,0,0);
 		        this.eventSource = [];
 		        for(let hour in learnedSchedule) {
-					let max: Number = 0;
+					let max: number = 0;
 					let maxKey = undefined;
-					let sum: Number = 0;
+					let sum: number = 0;
 					for(let projectid in learnedSchedule[hour]) {
 						sum += learnedSchedule[hour][projectid];
 						if(learnedSchedule[hour][projectid] > max) {

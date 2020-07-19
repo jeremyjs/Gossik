@@ -1242,13 +1242,11 @@
           </ion-col>
         </ion-row>
       </ion-card>
-      <ion-card class="width-90 margin-top-10 overflow-y-hidden overflow-x-hidden text-align-center margin-auto transparent" no-lines *ngFor="let goal of goalArray">
+      <ion-card class="margin-top-10 overflow-y-hidden overflow-x-hidden text-align-center margin-auto transparent" no-lines *ngFor="let goal of goalArray">
         <ion-grid *ngIf="goal.key == 'unassigned'">
           <ion-row class="height-45px">
-            <ion-col size="1.5" class="flex">
-            </ion-col>
-            <ion-col size="10.5" class="text-align-left">
-              <h1 class="one-line max-height-30px margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white">{{"Unassigned todos" | translate}}</h1>
+            <ion-col class="text-align-left">
+              <h2 class="one-line max-height-30px margin-0 margin-auto overflow-x-hidden overflow-y-hidden width-90 font-white">{{"Unassigned todos" | translate}}</h2>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -1259,7 +1257,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <ion-grid *ngIf="goal.key != 'unassigned'" (click)="reviewGoal(goal)">
+        <ion-grid class="widt-90" *ngIf="goal.key != 'unassigned'" (click)="reviewGoal(goal)">
           <ion-row class="height-45px">
             <ion-col size="1.5" class="flex">
               <ion-card class="margin-auto project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
