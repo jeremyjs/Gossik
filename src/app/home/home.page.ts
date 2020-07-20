@@ -349,32 +349,36 @@ export class HomePage {
 		this.db.saveDeviceToken(this.auth.userid, token);
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
-			let title = '';
-			if(data.title) {
-				title = data.title;
-			} else if(data.notification && data.notification.title) {
-				title = data.notification.title;
-			} else if(data.aps && data.aps.alert && data.aps.alert.title) {
-				title = data.aps.alert.title;
+			if(!data.data.target) {
+				let title = '';
+				if(data.title) {
+					title = data.title;
+				} else if(data.notification && data.notification.title) {
+					title = data.notification.title;
+				} else if(data.aps && data.aps.alert && data.aps.alert.title) {
+					title = data.aps.alert.title;
+				}
+				let body = '';
+				if(data.body){
+			        body = data.body;
+			    } else if(data.notification && data.notification.body){
+			        body = data.notification.body;
+			    } else if(data.aps && data.aps.alert && data.aps.alert.body){
+			        body = data.aps.alert.body;
+			    }
+				this.alertCtrl.create({
+					message: title + ' ' + body,
+					buttons: [
+						    	{
+							        text: "Ok"
+						      	}
+						    ]
+				}).then( alert => {
+					alert.present();
+				});
+			} else {
+				this.goToToDoPage(data.data.todoid);
 			}
-			let body = '';
-			if(data.body){
-		        body = data.body;
-		    } else if(data.notification && data.notification.body){
-		        body = data.notification.body;
-		    } else if(data.aps && data.aps.alert && data.aps.alert.body){
-		        body = data.aps.alert.body;
-		    }
-			this.alertCtrl.create({
-				message: title + ' ' + body,
-				buttons: [
-					    	{
-						        text: "Ok"
-					      	}
-					    ]
-			}).then( alert => {
-				alert.present();
-			});
 		});
 	}
 
@@ -2513,7 +2517,7 @@ export class HomePage {
 	}
 
   	// ToDoPage functions
-	goToToDoPage() {
+	goToToDoPage(todoid?: string) {
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
@@ -2592,14 +2596,21 @@ export class HomePage {
 						    this.actionList.subscribe(
 						      actionArray => {
 						      	this.doableActionArray = [];
+						      	let targetTodo = undefined;
 						        for(let action of actionArray) {
 						        	if(action.active != false) {
 										if(!action.taken) {
-										this.doableActionArray.push(action);
+											this.doableActionArray.push(action);
+											if(todoid && action.key == todoid) {
+												targetTodo = action;
+											}
 										}
 									}
 						        }
 						        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+						        if(todoid) {
+						        	this.doableActionArray.unshift(targetTodo);
+						        }
 						        this.changePage('ToDoPage');
 						        if(this.timeAvailable) {
 						    		setTimeout(() => {

@@ -612,7 +612,9 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 					            },
 					            data: {
 					              	title: "Gossik",
-					                body: msg
+					                body: msg,
+					                target: 'todo',
+					                todoid: randomTodo.todoid
 					            }
 					        };
 				    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
