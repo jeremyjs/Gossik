@@ -827,12 +827,14 @@
           <img src="../../assets/icon/icon_add.png" height="20">
         </button>
       </ion-row>
-      <ion-row *ngIf="showCaptureDone" class="margin-top-45">
+    </ion-grid>
+    <ion-row *ngIf="showCaptureDone" class="height-70px">
+      <ion-col class="flex">
         <button class="transparent font-gray margin-auto width-100" (click)="processCapture()">
           <img src="../../assets/icon/icon_confirm.png" height="30" class="margin-auto">
         </button>
-      </ion-row>
-    </ion-grid>
+      </ion-col>
+    </ion-row>
   </div>
 
   <!-- ProcessTakenActionPage -->
