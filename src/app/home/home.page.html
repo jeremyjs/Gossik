@@ -816,10 +816,36 @@
           </ion-col>
         </ion-row>
       </ion-row>
+      <ion-row *ngIf="showCaptureSchedule">
+        <span class="font-gray font-size-20px display-inline-block border-bottom-1">
+          {{"Scheduled execution" | translate }}
+        </span>
+        <button class="transparent no-padding" (click)="deleteOptional('schedule')">
+          <img src="../../assets/icon/icon_delete.png" height="20">
+        </button>
+        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="!captureSchedule">
+          <ion-col class="padding-left-0">
+            <button class="button-design font-size-20px" (click)="assignSchedule()">
+                {{"Schedule execution" | translate }}
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="captureSchedule">
+          <ion-col class="padding-left-0">
+            <button class="transparent font-white font-size-20px no-padding text-align-left display-inline-block" (click)="assignSchedule()">{{captureScheduleText}}
+            </button>
+            <button class="transparent no-padding display-inline-block" (click)="deleteSchedule()">
+              <img src="../../assets/icon/icon_delete.png" height="30">
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-row>
       <ion-row class="width-100 margin-top-10" *ngIf="showOptionals">
         <button *ngIf="!showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2" class="transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('project')">{{"Project" | translate}}
         </button>
         <button *ngIf="!showCaptureDeadline" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('deadline')">{{"Deadline" | translate}}
+        </button>
+        <button *ngIf="!showCaptureSchedule" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('schedule')">{{"Schedule execution" | translate}}
         </button>
       </ion-row>
       <ion-row *ngIf="showCaptureDone && captureType == 'action' && !showOptionals && captureShowAdd" class="margin-top-10">

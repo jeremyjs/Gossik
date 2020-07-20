@@ -150,6 +150,9 @@ export class HomePage {
 	captureDeadline: any;
 	showCaptureDeadline: boolean = false;
 	captureDeadlineText: string;
+	showCaptureSchedule: boolean = false;
+	captureSchedule: any;
+	captureScheduleText: string
 	showCaptureDone: boolean = false;
 	captureShowAdd: boolean = true;
 	startedAction = {} as Action;
@@ -1196,6 +1199,9 @@ export class HomePage {
 		this.showCaptureDuration = false;
 		this.showCapturePriority = false;
 		this.showCaptureDeadline = false;
+		this.captureSchedule = undefined;
+		this.captureScheduleText = undefined;
+		this.showCaptureSchedule = false;
 		this.showCaptureDone = false;
 		this.showOptionals = false;
 		this.captureShowAdd = true;
@@ -1377,6 +1383,27 @@ export class HomePage {
   		this.captureCheckIfDone();
   	}
 
+  	assignSchedule() {
+  		let modal = this.modalCtrl.create({
+			component: ChangeWeekModalPage
+		}).then (modal => {
+			modal.present();
+			modal.onDidDismiss().then(data => {
+				if(data.data) {
+					this.captureSchedule = data.data;
+					this.captureScheduleText = new Date (this.captureSchedule).toLocaleDateString(this.translate.currentLang, this.formatOptions);
+				}
+				this.captureCheckIfDone();
+			});
+		});
+  	}
+
+  	deleteSchedule() {
+  		this.captureSchedule = undefined;
+  		this.captureScheduleText = undefined;
+  		this.captureCheckIfDone();
+  	}
+
   	captureCheckIfDone() {
   		if(this.captureType == 'action') {
   			if(this.captureContent && this.captureDuration && this.capturePriority) {
@@ -1402,8 +1429,10 @@ export class HomePage {
   			this.showCaptureProject = true;
   		} else if(optional == 'deadline') {
   			this.showCaptureDeadline = true;
+  		} else if(optional == 'schedule') {
+  			this.showCaptureSchedule = true;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline || this.showCaptureDeadline && this.userProfile.tutorial.tutorialProgress <= 2) {
+  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule || this.showCaptureDeadline && this.showCaptureSchedule && this.userProfile.tutorial.tutorialProgress <= 2) {
   			this.captureShowAdd = false;
   		}
   		this.showOptionals = false;
@@ -1417,8 +1446,12 @@ export class HomePage {
   			this.captureDeadline = undefined;
   			this.captureDeadlineText = undefined;
   			this.showCaptureDeadline = false;
+  		} else if(optional == 'schedule') {
+  			this.captureSchedule = undefined;
+  			this.captureScheduleText = undefined;
+  			this.showCaptureSchedule = false;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline || this.showCaptureDeadline && this.userProfile.tutorial.tutorialProgress <= 2) {
+  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule || this.showCaptureDeadline && this.showCaptureSchedule && this.userProfile.tutorial.tutorialProgress <= 2) {
   			this.captureShowAdd = false;
   		} else {
   			this.captureShowAdd = true;
