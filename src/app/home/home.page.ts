@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime, PickerController } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime, PickerController, DomController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -197,7 +197,8 @@ export class HomePage {
 		private firebase: FirebaseX,
 		private nativeCalendar: NativeCalendarService,
 		public toastCtrl: ToastController,
-		public pickerCtrl: PickerController
+		public pickerCtrl: PickerController,
+		public domCtrl: DomController
 		) {
 		this.isApp = this.platform.is('cordova');
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
@@ -433,6 +434,10 @@ export class HomePage {
 				this.getStartedAction();
 				this.getGoals();
 				this.getCalendarEvents();
+				const innerScroll = this.content.el.shadowRoot.querySelector('.inner-scroll');
+				this.domCtrl.write(() => {
+					innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
+				});
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.updateTimezoneOffset();
