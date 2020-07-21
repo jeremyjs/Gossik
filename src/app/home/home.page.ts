@@ -152,7 +152,7 @@ export class HomePage {
 	captureDeadlineText: string;
 	showCaptureSchedule: boolean = false;
 	captureSchedule: any;
-	captureScheduleText: string
+	captureScheduleISOString: string;
 	showCaptureDone: boolean = false;
 	captureShowAdd: boolean = true;
 	startedAction = {} as Action;
@@ -1200,7 +1200,7 @@ export class HomePage {
 		this.showCapturePriority = false;
 		this.showCaptureDeadline = false;
 		this.captureSchedule = undefined;
-		this.captureScheduleText = undefined;
+		this.captureScheduleISOString = new Date().toISOString();
 		this.showCaptureSchedule = false;
 		this.showCaptureDone = false;
 		this.showOptionals = false;
@@ -1377,31 +1377,12 @@ export class HomePage {
 		});
   	}
 
-  	deleteDeadline() {
-  		this.captureDeadline = undefined;
-  		this.captureDeadlineText = undefined;
-  		this.captureCheckIfDone();
-  	}
-
-  	assignSchedule() {
-  		let modal = this.modalCtrl.create({
-			component: ChangeWeekModalPage
-		}).then (modal => {
-			modal.present();
-			modal.onDidDismiss().then(data => {
-				if(data.data) {
-					this.captureSchedule = data.data;
-					this.captureScheduleText = new Date (this.captureSchedule).toLocaleDateString(this.translate.currentLang, this.formatOptions);
-				}
-				this.captureCheckIfDone();
-			});
-		});
-  	}
-
-  	deleteSchedule() {
-  		this.captureSchedule = undefined;
-  		this.captureScheduleText = undefined;
-  		this.captureCheckIfDone();
+  	setSchedule() {
+  		if(new Date(this.captureScheduleISOString) != new Date()) {
+  			this.captureSchedule = new Date(this.captureScheduleISOString);
+  		} else {
+  			this.captureSchedule = undefined;
+  		}
   	}
 
   	captureCheckIfDone() {
@@ -1448,7 +1429,7 @@ export class HomePage {
   			this.showCaptureDeadline = false;
   		} else if(optional == 'schedule') {
   			this.captureSchedule = undefined;
-  			this.captureScheduleText = undefined;
+  			this.captureScheduleISOString = new Date().toISOString();
   			this.showCaptureSchedule = false;
   		}
   		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule || this.showCaptureDeadline && this.showCaptureSchedule && this.userProfile.tutorial.tutorialProgress <= 2) {
@@ -1497,7 +1478,7 @@ export class HomePage {
 		    time: this.captureDuration,
 		    taken: false,
 		    active: true
-  		}
+  		};
   		if(this.captureDeadline) {
   			action.deadline = this.captureDeadline.toISOString();
 			let deadlineStartTime = new Date (action.deadline).setHours(2);
@@ -1514,7 +1495,7 @@ export class HomePage {
 				allDay: true,
 				active: true,
 				color: this.captureProject.color
-			}
+			};
 			if(this.platform.is('cordova')) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
@@ -1564,6 +1545,55 @@ export class HomePage {
 			}
         } else {
 			this.db.addAction(action, this.capture, this.auth.userid);
+		}
+		if(this.captureSchedule) {
+			let eventData: CalendarEvent = {
+				userid: this.auth.userid,
+				allDay: false,
+				active: true,
+				startTime: this.captureSchedule.toISOString(),
+				endTime: new Date(this.captureSchedule.getTime() + this.captureDuration*60*1000).toISOString(),
+				title: this.captureContent,
+				goalid: ''
+			}
+			if(!this.captureProject) {
+				eventData.color = "#C0C0C0";
+				eventData.goalid = '';
+			} else {
+			    eventData.color = this.captureProject.color;
+			    eventData.goalid = this.captureProject.key;
+				let dates = [new Date(eventData.startTime)];
+				let minute = 0;
+				let hourUpdated = new Date(eventData.startTime).getHours();
+				while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
+					if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+						dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
+						hourUpdated++;
+					}
+					minute++;
+				}
+				this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+			}
+			if(this.platform.is('cordova')) {
+				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+					if(hasReadWritePermission) {
+						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+							eventData.event_id = event_id;
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+								eventData.key = event.key;
+							});
+						});
+					} else {
+						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+							eventData.key = event.key;
+						});
+					}
+				});
+			} else {
+				this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+					eventData.key = event.key;
+				});
+			}
 		}
   	}
 

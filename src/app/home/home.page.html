@@ -629,7 +629,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid class="height-100-minus-85px overflow-scroll width-90">
+    <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
       <ion-row class="transparent width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
         <ion-col size="1" class="no-padding flex">
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
@@ -810,9 +810,6 @@
           <ion-col class="padding-left-0">
             <button class="transparent font-white font-size-20px no-padding text-align-left display-inline-block" (click)="assignDeadline()">{{captureDeadlineText}}
             </button>
-            <button class="transparent no-padding display-inline-block" (click)="deleteDeadline()">
-              <img src="../../assets/icon/icon_delete.png" height="30">
-            </button>
           </ion-col>
         </ion-row>
       </ion-row>
@@ -823,20 +820,9 @@
         <button class="transparent no-padding" (click)="deleteOptional('schedule')">
           <img src="../../assets/icon/icon_delete.png" height="20">
         </button>
-        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="!captureSchedule">
+        <ion-row class="width-100 margin-top-10 margin-left-50">
           <ion-col class="padding-left-0">
-            <button class="button-design font-size-20px" (click)="assignSchedule()">
-                {{"Schedule execution" | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
-        <ion-row class="width-100 margin-top-10 margin-left-50" *ngIf="captureSchedule">
-          <ion-col class="padding-left-0">
-            <button class="transparent font-white font-size-20px no-padding text-align-left display-inline-block" (click)="assignSchedule()">{{captureScheduleText}}
-            </button>
-            <button class="transparent no-padding display-inline-block" (click)="deleteSchedule()">
-              <img src="../../assets/icon/icon_delete.png" height="30">
-            </button>
+            <ion-datetime class="font-white no-padding" displayFormat="DDD DD.MMM YYYY - HH:mm" dayShortNames="[{{'Sun' | translate}}, {{'Mon' | translate}}, {{'Tue' | translate}}, {{'Wed' | translate}}, {{'Thu' | translate}}, {{'Fri' | translate}}, {{'Sat' | translate}}]" pickerFormat="DD MMM YYYY - HH:mm" max="2100" [(ngModel)]="captureScheduleISOString" [doneText]="translate.instant('Done')" [cancelText]="translate.instant('Cancel')" (ionChange)="setSchedule()"></ion-datetime>
           </ion-col>
         </ion-row>
       </ion-row>
@@ -959,8 +945,8 @@
     </div>
   </div>
   <!-- Mobile ToDoPage -->
-  <div class="height-100-minus-70px overflow-scroll" *ngIf="viewpoint == 'ToDoPage' && isApp">
-    <ion-grid class="height-100 width-90">
+  <div class="height-100-minus-70px overflow-scroll no-scrollbar" *ngIf="viewpoint == 'ToDoPage' && isApp">
+    <ion-grid class="width-90">
       <ion-row class="text-align-right">
         <ion-col>
           <button *ngIf="userProfile.tutorial.tutorialProgress > 1" (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')" float-right class="font-white transparent">
@@ -971,6 +957,8 @@
           </button>
         </ion-col>
       </ion-row>
+    </ion-grid>
+    <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
       <ion-row class="margin-top-45">
         <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 2">
           <button class="transparent no-padding margin-auto" (click)="filterToDos()">
@@ -1262,7 +1250,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid *ngIf="pageCtrl == ''" class="height-100-minus-85px overflow-scroll width-90">
+    <ion-grid *ngIf="pageCtrl == ''" class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
       <ion-card class="width-90 margin-auto transparent" *ngIf="addingProject">
         <ion-row class="no-padding">
           <ion-input class="transparent display-inline-block margin-0 width-90 placeholder-white border-bottom-1 font-gray font-size-20px" type="text" (ionFocus)="ionFocus($event)" (keyup.enter)="addGoal(goalname)" autocapitalize="on" [(ngModel)]="goalname" placeholder="{{'Define new goal' | translate}}..."></ion-input>
@@ -1530,8 +1518,8 @@
     </ion-row>
   </div>
   <!-- Mobile CalendarPage -->
-  <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'CalendarPage' && isApp">
-    <ion-grid class="height-100 width-90">
+  <div class="height-100-minus-70px width-100" *ngIf="viewpoint == 'CalendarPage' && isApp">
+    <ion-grid class="width-90">
       <ion-row class="text-align-right">
         <ion-col>
           <button (click)="addEvent()" float-right class="font-white transparent">
@@ -1539,6 +1527,8 @@
           </button>
         </ion-col>
       </ion-row>
+    </ion-grid>
+    <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
       <ion-row class="width-100 text-align-right">
         <ion-col size="5" class="text-align-center">
           <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('day')">
