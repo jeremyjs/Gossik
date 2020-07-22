@@ -28,6 +28,7 @@ export class DatabaseService {
     createUser(userid, email) {
         this.userData.profile = {
             email: email,
+            assistant: 1,
             tutorial: {
                 'fivetodos': true,
                 'thoughtprocessing': false,
@@ -89,6 +90,14 @@ export class DatabaseService {
             tutorial['tutorialTodoPageTime'] = true;
         }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    }
+
+    initiateAssistant(userid) {
+        return this.db.list('users/'+ userid + '/profile').set('assistant', 'standard');
+    }
+
+    updateAssistant(userid, assistant) {
+        return this.db.list('users/'+ userid + '/profile').set('assistant', assistant);
     }
 
     initiateLearnedSchedule(userid) {

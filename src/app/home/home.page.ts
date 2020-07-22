@@ -700,8 +700,11 @@ export class HomePage {
     	}
     }
 
-    goToLearnedSchedulePage() {
+    goToAssistantPage() {
     	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
+			if(!this.userProfile['assistant']) {
+				this.db.initiateAssistant(this.auth.userid);
+			}
 			let learnedSchedule = JSON.parse(userProfile['learnedSchedule'].toString());
 			this.calendar.currentDate = new Date();
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -761,10 +764,14 @@ export class HomePage {
 				setTimeout(() => {
 					this.eventSource = events;
 				});
-		    	this.pageTitle = "Learned Schedule";
-		    	this.changePage('LearnedSchedulePage');
+		    	this.pageTitle = "Assistant";
+		    	this.changePage('AssistantPage');
 		    });
 		});
+    }
+
+    assignAssistant(assistant) {
+    	this.db.updateAssistant(this.auth.userid, assistant);
     }
 
     goToShowFeedbackPage() {

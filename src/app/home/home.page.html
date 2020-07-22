@@ -413,7 +413,7 @@
         <button class="button-design font-size-20px margin-top-10" (click)="goToInfoPage()">{{"Info" | translate}}</button>
       </ion-row>
       <ion-row>
-        <button class="button-design font-size-20px margin-top-10" (click)="goToLearnedSchedulePage()">{{"Learned Schedule" | translate}}</button>
+        <button class="button-design font-size-20px margin-top-10" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
       </ion-row>
     </ion-grid>
   </div>
@@ -479,8 +479,40 @@
     </span>
   </div>
 
-  <!-- Mobile LearnedSchedulePage -->
-  <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'LearnedSchedulePage' && isApp">
+  <!-- Mobile AssistantPage -->
+  <div class="height-100-minus-70px width-100 overflow-scroll" *ngIf="viewpoint == 'AssistantPage' && isApp">
+    <ion-radio-group class="font-gray font-size-20px width-100" [(ngModel)]="userProfile.assistant">
+          <ion-row>
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="chiller" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignAssistant('chiller')">
+                {{"Chiller" | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="standard" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignAssistant('standard')">
+                {{"Standard" | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+              <ion-radio value="pusher" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
+            </ion-col>
+            <ion-col size="11">
+              <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignAssistant('pusher')">
+                {{"Pusher" | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-radio-group>
     <ng-template #template let-displayEvent="displayEvent" >
       <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
     </ng-template>
