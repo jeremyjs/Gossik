@@ -434,9 +434,10 @@ export class HomePage {
 				this.getStartedAction();
 				this.getGoals();
 				this.getCalendarEvents();
-				const innerScroll = this.content.el.shadowRoot.querySelector('.inner-scroll');
-				this.domCtrl.write(() => {
-					innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
+				this.content.getScrollElement().then(innerScroll => {
+					this.domCtrl.write(() => {
+						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
+					});
 				});
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
