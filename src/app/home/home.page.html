@@ -490,6 +490,16 @@
       <ion-radio-group class="font-gray font-size-20px display-block width-100" [(ngModel)]="userProfile.assistant">
         <ion-row>
           <ion-col size="1" class="padding-left-0 padding-right-0 flex">
+            <ion-radio value="silent" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
+          </ion-col>
+          <ion-col size="11">
+            <button class="transparent font-white font-size-20px width-100 text-align-left padding-left-0" (click)="assignAssistant('silent')">
+              {{"Silent" | translate }}
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="1" class="padding-left-0 padding-right-0 flex">
             <ion-radio value="chiller" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
           </ion-col>
           <ion-col size="11">
@@ -520,6 +530,11 @@
         </ion-row>
       </ion-radio-group>
     </ion-row>
+    <ion-row *ngIf="userProfile.assistant == 'silent'" class="margin-auto font-size-20px width-90">
+      <p>
+        {{"silentAssistantDescription" | translate}}
+      </p>
+    </ion-row>
     <ion-row *ngIf="userProfile.assistant == 'chiller'" class="margin-auto font-size-20px width-90">
       <p>
         {{"chillerAssistantDescription" | translate}}
@@ -534,6 +549,11 @@
       <p>
         {{"pusherAssistantDescription" | translate}}
       </p>
+    </ion-row>
+    <ion-row>
+      <h1>
+        {{"Insights about your Schedule" | translate}}
+      </h1>
     </ion-row>
     <ng-template #template let-displayEvent="displayEvent" >
       <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
