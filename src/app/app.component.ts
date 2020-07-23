@@ -32,7 +32,7 @@ export class AppComponent {
       if(availableLanguages.indexOf(language) == -1) {
           language = 'en';
       }
-      this.translate.use(language);
+      this.translate.use('en');
     });
   }
 

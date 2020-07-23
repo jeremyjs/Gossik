@@ -449,6 +449,7 @@ export class HomePage {
 					this.calendar.mode = 'week';
 				}
 				this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
+				this.translate.use('en');
 			  	this.db.trackLogin(this.auth.userid);
 			  	this.loggedin = true;
 			  	this.router.events.subscribe(res => {
@@ -1560,6 +1561,7 @@ export class HomePage {
 			this.db.addAction(action, this.capture, this.auth.userid);
 		}
 		if(this.captureSchedule) {
+			console.log(this.captureProject);
 			let eventData: CalendarEvent = {
 				userid: this.auth.userid,
 				allDay: false,
@@ -1569,7 +1571,7 @@ export class HomePage {
 				title: this.captureContent,
 				goalid: ''
 			}
-			if(!this.captureProject) {
+			if(this.captureProject.key == 'unassigned') {
 				eventData.color = "#C0C0C0";
 				eventData.goalid = '';
 			} else {
@@ -1587,6 +1589,7 @@ export class HomePage {
 				}
 				this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 			}
+			console.log(eventData.color);
 			if(this.platform.is('cordova')) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
