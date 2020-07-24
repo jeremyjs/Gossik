@@ -748,7 +748,7 @@ export class HomePage {
 							maxKey = projectid;
 						}
 					}
-					if(maxKey) {
+					if(maxKey && maxKey != 'unassigned') {
 						let learnedScheduleEvent = {
 						    startTime: monday,
 						    endTime: new Date(monday.getTime() + 3600*1000),

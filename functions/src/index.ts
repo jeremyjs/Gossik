@@ -644,66 +644,54 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
      }
 );
 
-exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-   			if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-				let todos = [];
-				for(let key in user.val().nextActions) {
-					if(user.val().nextActions[key].active != false) {
-						let todo = user.val().nextActions[key]
-						todo['todoid'] = key;
-						todos.push(todo);
-					}
-				}
-				if(todos.length > 0) {
-					//currently we pick a random todo, later on the one with the highest priority
-					//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-					let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
-					let language = 'en';
-		    		if(user.val().profile.language) {
-		   				language = user.val().profile.language;
-		   			}
-		   			let message: any = {};
-		   			let title: any = {};
-					message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
-					message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
-					title['de'] = "Lass uns das erledigen";
-					title['en'] = "Let's get this done";
-					let msg = message['en'];
-		   			if(message[language]) {
-		   				msg = message[language];
-		   			}
-		    		let payload = {
-			            notification: {
-			                title: "Gossik",
-			                body: msg
-			            },
-			            data: {
-			              	title: "Gossik",
-			                body: msg,
-			                target: 'todo',
-			                todoid: randomTodo.todoid
-			            }
-			        };
-		    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-		    			devices.forEach(function(device) {
-					       	admin.messaging().sendToDevice(device.val(), payload);
-				    	});
-			    	});
-			    	let pushNotification = {
-			    		message: msg,
-			    		todoid: randomTodo.todoid,
-			    		createDate: new Date().toISOString()
-			    	}
-			    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
-				}
+/*exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
+	console.log('Bun');
+    admin.database().ref('/users/R1CFRqnvsmdJtxIJZIvgF1Md0lr1').once("value", function(user) {
+		let todos = [];
+		for(let key in user.val().nextActions) {
+			if(user.val().nextActions[key].active != false) {
+				let todo = user.val().nextActions[key]
+				todo['todoid'] = key;
+				todos.push(todo);
 			}
-   		})
-   });
-   return null;
-     }
-);
+		}
+		if(todos.length > 0) {
+			//currently we pick a random todo, later on the one with the highest priority
+			//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+			let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
+   			let payload = {
+	            notification: {
+	                title: "Gossik",
+	                body: "Hoiiiii"
+	            },
+	            data: {
+	              	title: "Gossik",
+	                body: "Hoiiiii",
+	                target: 'todo',
+	                todoid: randomTodo.todoid
+	            }
+	        };
+    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
+    			devices.forEach(function(device) {
+			       	admin.messaging().sendToDevice(device.val(), payload)
+			       	.catch(err => {
+			       		console.log('caaaatchiiiiiing');
+			       		console.log(err);
+			       	});
+		    	});
+	    	});
+	    	let pushNotification = {
+	    		message: "Hoiiiii",
+	    		todoid: randomTodo.todoid,
+	    		createDate: new Date().toISOString()
+	    	}
+	    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
+		}
+   	});
+   	return null;
+});
+*/
+
 
 
 // Modifying the database manually for each user
