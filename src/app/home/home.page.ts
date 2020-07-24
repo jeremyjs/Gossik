@@ -353,7 +353,9 @@ export class HomePage {
 		this.db.saveDeviceToken(this.auth.userid, token);
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
-			if(!data.data.target) {
+			console.log('received new push!!!');
+			console.log(data);
+			if(!data.target) {
 				let title = '';
 				if(data.title) {
 					title = data.title;
@@ -381,7 +383,7 @@ export class HomePage {
 					alert.present();
 				});
 			} else {
-				this.goToToDoPage(data.data.todoid);
+				this.goToToDoPage(data.todoid);
 			}
 		});
 	}
@@ -449,8 +451,7 @@ export class HomePage {
 					this.calendar.mode = 'week';
 				}
 				this.db.changeLanguage(this.auth.userid, this.translate.currentLang);
-				this.translate.use('en');
-			  	this.db.trackLogin(this.auth.userid);
+				this.db.trackLogin(this.auth.userid);
 			  	this.loggedin = true;
 			  	this.router.events.subscribe(res => {
 					if (res instanceof NavigationEnd) {
@@ -2682,13 +2683,17 @@ export class HomePage {
 											this.doableActionArray.push(action);
 											if(todoid && action.key == todoid) {
 												targetTodo = action;
+												console.log('found todo');
+												console.log(action);
 											}
 										}
 									}
 						        }
 						        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+						        console.log(this.doableActionArray);
 						        if(todoid) {
 						        	this.doableActionArray.unshift(targetTodo);
+						        	console.log(this.doableActionArray);
 						        }
 						        this.changePage('ToDoPage');
 						        if(this.timeAvailable) {

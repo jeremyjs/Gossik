@@ -889,7 +889,7 @@
       </ion-row>
       <ion-row *ngIf="showCaptureSchedule">
         <span class="font-gray font-size-20px display-inline-block border-bottom-1">
-          {{"Scheduled execution" | translate }}
+          {{"Do on specific day" | translate }}
         </span>
         <button class="transparent no-padding" (click)="deleteOptional('schedule')">
           <img src="../../assets/icon/icon_delete.png" height="20">
@@ -905,7 +905,7 @@
         </button>
         <button *ngIf="!showCaptureDeadline" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('deadline')">{{"Deadline" | translate}}
         </button>
-        <button *ngIf="!showCaptureSchedule" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('schedule')">{{"Schedule execution" | translate}}
+        <button *ngIf="!showCaptureSchedule" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('schedule')">{{"Do on specific day" | translate}}
         </button>
       </ion-row>
       <ion-row *ngIf="showCaptureDone && captureType == 'action' && !showOptionals && captureShowAdd" class="margin-top-10">
