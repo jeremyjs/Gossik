@@ -28,20 +28,12 @@ export class DatabaseService {
     createUser(userid, email) {
         this.userData.profile = {
             email: email,
-            assistant: 1,
+            assistant: 'standard',
             tutorial: {
                 'fivetodos': true,
-                'thoughtprocessing': false,
-                'projects': false,
-                'calendar': true,
-                'gettingToKnowPush': false,
-                'thoughts': false,
-                'process': false,
-                'next': '',
-                'triggerDate': '',
-                'tutorialProgress': 0,
-                'tutorialNextButton': false,
-                'tutorialTodoPageTime': false
+                'thoughts': true,
+                'thoughtprocessing': true,
+                'assistant': true
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
@@ -58,16 +50,6 @@ export class DatabaseService {
         this.db.database.goOnline();
     }
 
-    /*
-    addTutorial(userid) {
-        this.db.object<any>('users/' + userid).valueChanges().pipe(take(1)).subscribe( user => {
-            if(!user.hasOwnProperty('tutorial')) {
-                return this.db.list('users/' + userid).set('tutorial', this.tutorial);
-            }
-        });
-    }
-    */
-
     getTutorialList(userid) {
         return this.db.object('users/' + userid + '/tutorial');
     }
@@ -78,17 +60,8 @@ export class DatabaseService {
 
     finishTutorial(userid, tutorialPart, nextTutorialPart) {
         let tutorial = {};
-        if(tutorialPart != 'calendar') {
-            tutorial = {
-                next: nextTutorialPart,
-                triggerDate: new Date().toISOString()
-            }
-        }
         tutorial[tutorialPart] = false;
         tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();
-        if(tutorialPart == 'process') {
-            tutorial['tutorialTodoPageTime'] = true;
-        }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 

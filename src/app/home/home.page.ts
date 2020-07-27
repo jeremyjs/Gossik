@@ -524,7 +524,6 @@ export class HomePage {
 						        handler: () => {
 						        	setTimeout(() => {
 										this.db.startTutorial(this.auth.userid, 'tutorialNextButton');
-										this.showTutorial('tutorialNextButton');
 									}, 1000);
 						        }
 					      	}
@@ -538,23 +537,6 @@ export class HomePage {
 						        }
 					      	}
 					    ];
-  			}  else if(alertMessage == 'thoughtsAdd') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	setTimeout(() => {
-										this.presentAlert('thoughtsProcess');
-									}, 1000);
-						        }
-					      	}
-					    ];
-  			}	else if(alertMessage == "tutorialProcessInit") {
-  				buttons = [
-  					      	{
-						        text: translation["OK"],
-					      	}
-					    ];
   			}	else if(alertMessage == "tutorialProjectsDone") {
   				buttons = [
   					      	{
@@ -563,15 +545,6 @@ export class HomePage {
 						        	setTimeout(() => {
 										this.presentAlert("tutorialEnd");
 									}, 1000);
-						        }
-					      	}
-					    ];
-  			}	else if(alertMessage == "projectsAssign") {
-  				buttons = [
-  					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	this.tutorialAssignTodos();
 						        }
 					      	}
 					    ];
@@ -707,6 +680,7 @@ export class HomePage {
 			if(!this.userProfile['assistant']) {
 				this.db.initiateAssistant(this.auth.userid);
 			}
+			this.showTutorial('assistant');
 			let learnedSchedule = JSON.parse(userProfile['learnedSchedule'].toString());
 			this.calendar.currentDate = new Date();
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -936,24 +910,13 @@ export class HomePage {
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
-				text["thoughtprocessing"] = ["thoughtprocessing", "Start", "Later"];
-				text["process"] = ["process", "OK"];
-				text["projects"] = ["projects", "OK"];
-				text["calendar"] = ["calendar", "OK"];
-				text["tutorialNextButton"] = ["tutorialNextButton", "OK"];
+				text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
+				text["assistant"] = ["assistant", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
 				      	{
 					        text: translation["OK"],
-				      	}
-				    ];
-				    buttons["tutorialNextButton"] = [
-				      	{
-					        text: translation["OK"],
-					        handler: () => {
-				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughts');
-				    		}
 				      	}
 				    ];
 				    buttons["thoughts"] = [
@@ -981,37 +944,6 @@ export class HomePage {
 				      	{
 				      		text: translation["Later"]
 				      	}
-				    ];
-				    buttons["process"] = [
-				    	{
-				    		text: translation["OK"],
-				    		handler: () => {
-				    			setTimeout(() => {
-				    				this.presentAlert("processInit");
-								}, 1000);
-				    		}
-				    	}
-				    ];
-				    buttons["projects"] = [
-				    	{
-				    		text: translation["OK"],
-				    		handler: () => {
-				    			setTimeout(() => {
-				    				this.presentAlert("projectsAssign");
-								}, 1000);
-				    		}
-				    	}
-				    ];
-				    buttons["calendar"] = [
-				    	{
-				    		text: translation["OK"],
-				    		handler: () => {
-				    			setTimeout(() => {
-				    				this.presentAlert("calendarEnd");
-								}, 1000);
-				    			this.db.finishTutorial(this.auth.userid, 'calendar', '');
-				    		}
-				    	}
 				    ];
 			  		this.alertCtrl.create({
 						message: translation[tutorialPart],
@@ -1150,7 +1082,6 @@ export class HomePage {
   	goToProcessPage() {
   		this.pageTitle = "Thoughts";
   		this.showTutorial('thoughts');
-  		this.showTutorial('thoughtprocessing');
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -1241,7 +1172,6 @@ export class HomePage {
     		this.showCaptureType = true;
     		this.showCaptureDuration = true;
     	}
-    	this.showTutorial('process');
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');
@@ -2003,7 +1933,6 @@ export class HomePage {
 			}
 	    });
 	    this.changePage('ProjectsPage');
-	    this.showTutorial('projects');
   	}
 
   	addProject() {
@@ -2167,7 +2096,6 @@ export class HomePage {
 
   	// CalendarPage functions
   	goToCalendarPage() {
-  		this.showTutorial('calendar');
   		this.calendar.currentDate = new Date();
   		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
@@ -2605,9 +2533,6 @@ export class HomePage {
 				this.showTutorial('fivetodos');
 				this.goToInitPage();
 			} else {
-				if(this.userProfile.tutorial.tutorialProgress == 2 && this.userProfile.tutorial.tutorialTodoPageTime) {
-					this.presentAlert("tutorialTodoPageTime");
-				}
 				this.duration = 0;
 				this.goalList = this.db.getGoalList(this.auth.userid)
 				  	.snapshotChanges()
