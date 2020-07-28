@@ -73,6 +73,18 @@ ion-button {
   border-radius: 20px !important;
 }
 
+.img_green {
+  filter: brightness(0.5) sepia(1) saturate(10000%) hue-rotate(120deg);
+  -webkit-filter: brightness(0.5) sepia(1) saturate(10000%) hue-rotate(120deg);
+  -moz-filter: brightness(0.5) sepia(1) saturate(10000%) hue-rotate(120deg);
+  -o-filter: brightness(0.5) sepia(1) saturate(10000%) hue-rotate(120deg);
+  -ms-filter: brightness(0.5) sepia(1) saturate(10000%) hue-rotate(120deg);
+}
+
+.green {
+  color: green !important;
+}
+
 .position-absolute {
   position: absolute;
 }

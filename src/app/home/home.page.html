@@ -29,7 +29,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -52,7 +53,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -75,7 +77,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -98,7 +101,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -121,7 +125,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -144,7 +149,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -167,7 +173,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -213,7 +220,8 @@
           <ion-row>
             <ion-col size="2" class="flex text-align-center no-padding">
               <button (click)="goToSettingsPage()" class="transparent">
-                <img src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="userProfile.tutorial.assistant" class="img_green" src="../../assets/icon/icon_settings_gray.png" height="30">
+                <img *ngIf="!userProfile.tutorial.assistant" src="../../assets/icon/icon_settings_gray.png" height="30">
               </button>
             </ion-col>
             <ion-col size="6">
@@ -418,7 +426,8 @@
         <button class="button-design font-size-20px margin-top-10" (click)="goToInfoPage()">{{"Info" | translate}}</button>
       </ion-row>
       <ion-row>
-        <button class="button-design font-size-20px margin-top-10" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
+        <button *ngIf="userProfile.tutorial.assistant" class="button-design font-size-20px margin-top-10 green" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
+        <button *ngIf="!userProfile.tutorial.assistant" class="button-design font-size-20px margin-top-10" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
       </ion-row>
     </ion-grid>
   </div>

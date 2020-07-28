@@ -527,7 +527,25 @@ export class HomePage {
 						        }
 					      	}
 					    ];
-  			}
+  			} else if(alertMessage == 'assistantLearn') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	this.presentAlert("assistantDone");
+						        }
+					      	}
+					    ];
+  			} else if(alertMessage == 'assistantDone') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	this.db.finishTutorial(this.auth.userid, "assistant");
+						        }
+					      	}
+					    ];
+  			} 
   			this.alertCtrl.create({
 				message: translation[alertMessage],
 				buttons: buttons
@@ -837,23 +855,12 @@ export class HomePage {
 					        text: translation["OK"],
 				      	}
 				    ];
-				    buttons["thoughts"] = [
-				    	{
-				    		text: translation["OK"],
-				    		handler: () => {
-				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughtprocessing');
-				    		}
-				    	}
-				    ];
-				    buttons["thoughtprocessing"] = [
+				    buttons["assistant"] = [
 				      	{
-					        text: translation["Start"],
+					        text: translation["OK"],
 					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, 'thoughtprocessing', 'process');
+					        	this.presentAlert("assistantLearn");
 					        }
-				      	}, 
-				      	{
-				      		text: translation["Later"]
 				      	}
 				    ];
 			  		this.alertCtrl.create({
@@ -1275,7 +1282,7 @@ export class HomePage {
   		}
   		if(this.userProfile.tutorial.process) {
   			this.presentAlert("processEnd");
-  			this.db.finishTutorial(this.auth.userid, 'process', 'projects');
+  			this.db.finishTutorial(this.auth.userid, 'process');
   		}
   	}
 
