@@ -58,7 +58,7 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile');
     }
 
-    finishTutorial(userid, tutorialPart, nextTutorialPart) {
+    finishTutorial(userid, tutorialPart) {
         let tutorial = {};
         tutorial[tutorialPart] = false;
         tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();

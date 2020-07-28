@@ -709,14 +709,11 @@
           <img src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
         </ion-col>
         <ion-col size="9.5" class="text-align-left overflow-x-hidden flex">
-          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" class="transparent font-white text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
+          <button  class="transparent font-white text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
             <span class="font-size-20px">
               {{capture.content}}
             </span>
           </button>
-          <span *ngIf="userProfile.tutorial.tutorialProgress <= 1" class="transparent font-white text-align-left font-size-20px">
-              {{capture.content}}
-          </span>
         </ion-col>
         <ion-col size="1.5" class="no-padding flex">
           <button class="transparent no-padding" (click)="deleteCapture(capture)">
@@ -789,7 +786,7 @@
               </button>
             </ion-col>
           </ion-row>
-          <ion-row  *ngIf="userProfile && userProfile.tutorial.tutorialProgress > 2 && !cameFromToDoPage" class="margin-left-50">
+          <ion-row  *ngIf="!cameFromToDoPage" class="margin-left-50">
             <ion-col size="1" class="padding-left-0 padding-right-0 flex">
               <ion-radio value="note" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>
             </ion-col>
@@ -848,7 +845,7 @@
           </ion-row>
         </ion-radio-group>
       </ion-row>
-      <ion-row *ngIf="showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2">
+      <ion-row *ngIf="showCaptureProject">
         <span class="font-gray font-size-20px display-inline-block border-bottom-1">
           {{"Project" | translate }}
         </span>
@@ -901,7 +898,7 @@
         </ion-row>
       </ion-row>
       <ion-row class="width-100 margin-top-10" *ngIf="showOptionals">
-        <button *ngIf="!showCaptureProject && userProfile && userProfile.tutorial.tutorialProgress > 2" class="transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('project')">{{"Project" | translate}}
+        <button *ngIf="!showCaptureProject" class="transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('project')">{{"Project" | translate}}
         </button>
         <button *ngIf="!showCaptureDeadline" class=" margin-top-10 transparent font-white font-size-20px no-padding text-align-left width-100" (click)="addOptional('deadline')">{{"Deadline" | translate}}
         </button>
@@ -1023,10 +1020,7 @@
     <ion-grid class="width-90">
       <ion-row class="text-align-right">
         <ion-col>
-          <button *ngIf="userProfile.tutorial.tutorialProgress > 1" (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')" float-right class="font-white transparent">
-            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-          </button>
-          <button *ngIf="userProfile.tutorial.tutorialProgress <= 1" (click)="startFivetodos()" float-right class="font-white transparent">
+          <button (click)="goToProcessCapturePage('', undefined, 'action', 'ToDoPage')" float-right class="font-white transparent">
             <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
           </button>
         </ion-col>
@@ -1034,12 +1028,12 @@
     </ion-grid>
     <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
       <ion-row class="margin-top-45">
-        <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 2">
+        <ion-col class="flex">
           <button class="transparent no-padding margin-auto" (click)="filterToDos()">
             <img src="../../assets/icon/icon_filter.png" height="30">
           </button>
         </ion-col>
-        <ion-col class="flex" *ngIf="userProfile.tutorial.tutorialProgress > 1">
+        <ion-col class="flex">
           <span class="font-white margin-auto-left-3 margin-auto font-size-30px" (click)="openPicker('ToDoPageDuration')">{{duration}}{{"min" | translate }}</span>
         </ion-col>
       </ion-row>
@@ -1059,12 +1053,12 @@
             {{doableActionArray[0].content}}
           </span>
         </ion-row>
-        <ion-row *ngIf="doableActionArray[0] && userProfile.tutorial.tutorialProgress > 1" class="margin-auto font-gray text-align-center">
+        <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-gray text-align-center">
           <span class="margin-auto">
             {{doableActionArray[0].time}}{{"min" | translate }}
           </span>
         </ion-row>
-        <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="margin-auto font-gray text-align-center">
+        <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned'" class="margin-auto font-gray text-align-center">
           <span class="margin-auto">
             {{goalDict[doableActionArray[0].goalid].name}}
           </span>
@@ -1094,12 +1088,12 @@
               {{todo.content}}
             </span>
           </ion-row>
-          <ion-row *ngIf="userProfile.tutorial.tutorialProgress > 1" class="font-gray text-align-left">
+          <ion-row class="font-gray text-align-left">
             <span>
               {{todo.time}}{{"min" | translate }}
             </span>
           </ion-row>
-          <ion-row *ngIf="doableActionArray[0].goalid != 'unassigned' && userProfile.tutorial.tutorialProgress > 2" class="font-gray text-align-left">
+          <ion-row *ngIf="todo.goalid != 'unassigned'" class="font-gray text-align-left">
             <span>
               {{goalDict[todo.goalid].name}}
             </span>
@@ -1714,7 +1708,7 @@
   <div class="width-100 height-70px margin-0 no-padding position-absolute bottom-0" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
     <ion-row class="width-100 height-100 padding-bottom-15">
       <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()" *ngIf="userProfile.tutorial.tutorialProgress > 0">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
           <ion-row>
           <img *ngIf="viewpoint == 'ProcessPage'" src="../../assets/icon/icon_organize.png" height="40" class="margin-auto">
           <img *ngIf="viewpoint != 'ProcessPage'" src="../../assets/icon/icon_organize_gray.png" height="40" class="margin-auto">
@@ -1730,7 +1724,7 @@
         </button>
       </ion-col>
       <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProjectsPage()" *ngIf="userProfile.tutorial.tutorialProgress > 2">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToProjectsPage()">
           <ion-row>
           <img *ngIf="viewpoint == 'ProjectsPage'" src="../../assets/icon/icon_overview.png" height="40" class="margin-auto">
           <img *ngIf="viewpoint != 'ProjectsPage'" src="../../assets/icon/icon_overview_gray.png" height="40" class="margin-auto">

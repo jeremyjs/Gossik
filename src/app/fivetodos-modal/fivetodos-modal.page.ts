@@ -22,9 +22,9 @@ export class FivetodosModalPage implements OnInit {
   }
 
   ngOnInit() {
-  	this.translate.get(["tutorialFivetodosInit", "OK"]).subscribe( translation => {
+  	this.translate.get(["fivetodosModalInit", "OK"]).subscribe( translation => {
 		this.alertCtrl.create({
-			message: translation["tutorialFivetodosInit"],
+			message: translation["fivetodosModalInit"],
 			buttons: [
 				    	{
 					        text: translation["OK"]

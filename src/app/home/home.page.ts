@@ -32,7 +32,6 @@ import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page
 import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
 import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
 import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
-import { TutorialProjectsModalPage } from '../tutorial-projects-modal/tutorial-projects-modal.page';
 
 
 import * as moment from 'moment';
@@ -168,7 +167,7 @@ export class HomePage {
 	userProfile: any;
 	addingProject: boolean = false;
 	calendarEvents: CalendarEvent[] = [];
-	todoview: string = 'task';
+	todoview: string = 'list';
 	showNavigationBar: boolean = true;
 	showOptionals: boolean;
 	showInfoThoughts: boolean = false;
@@ -506,56 +505,25 @@ export class HomePage {
 						        text: translation["OK"]
 					      	}
 					    ];
-  			if(alertMessage == 'fivetodosDone') {
+  			if(alertMessage == 'fivetodosCreated') {
   				buttons = [
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
 						        	setTimeout(() => {
-										this.presentAlert('tutorialTodoPageInit');
-									}, 1000);
+										this.presentAlert('fivetodosDone');
+									}, 100);
 						        }
 					      	}
 					    ];
-  			} else if(alertMessage == 'tutorialTodoPageInit') {
+  			} else if(alertMessage == 'fivetodosDone') {
   				buttons = [
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	setTimeout(() => {
-										this.db.startTutorial(this.auth.userid, 'tutorialNextButton');
-									}, 1000);
-						        }
-					      	}
-					    ];
-  			}  else if(alertMessage == 'tutorialTodoPageTime') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	this.db.finishTutorial(this.auth.userid, 'tutorialTodoPageTime', this.userProfile.tutorial.next);
-						        }
-					      	}
-					    ];
-  			}	else if(alertMessage == "tutorialProjectsDone") {
-  				buttons = [
-  					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	setTimeout(() => {
-										this.presentAlert("tutorialEnd");
-									}, 1000);
-						        }
-					      	}
-					    ];
-  			}	else if(alertMessage == "tutorialEnd") {
-  				buttons = [
-  					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	setTimeout(() => {
-										this.presentAlert("tutorialEndFeedback");
-									}, 1000);
+						        	this.db.finishTutorial(this.auth.userid, "fivetodos").then( () => {
+						        		this.goToToDoPage();
+						        	});
 						        }
 					      	}
 					    ];
@@ -852,56 +820,6 @@ export class HomePage {
 		});
   	}
 
-  	rushNextTutorial(nextTutorialPart) {
-  		if(nextTutorialPart == 'thoughts') {
-  			this.translate.get(["tutorialThoughtsPush", "OK"]).subscribe( translation => {
-  				this.presentAlert(translation["tutorialThoughtsPush"]);
-  				setTimeout( () => {
-  					this.db.startTutorial(this.auth.userid, 'thoughts');
-  				}, 3000);
-  			});
-  		} else if(nextTutorialPart == 'thoughtprocessing') {
-			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
-			.snapshotChanges()
-			.pipe(take(1),
-				map(
-					changes => { 
-						return changes.map( c => {
-							let capture: Capture = { 
-								key: c.payload.key, ...c.payload.val()
-							};
-							return capture;
-					});}));
-			this.captureList.subscribe( captureArray => {
-				this.captureArray = []
-				for(let capture of captureArray) {
-					if(capture.active != false){
-						this.captureArray.push(capture);
-					}
-				}
-				if(this.captureArray.length >= 1) {
-					this.translate.get(["tutorialThoughtprocessingPush", "OK"]).subscribe( translation => {
-		  				this.presentAlert(translation["tutorialThoughtprocessingPush"]);
-		  				setTimeout( () => {
-		  					this.db.startTutorial(this.auth.userid, 'thoughtprocessing');
-		  				}, 3000);
-		  			});
-				} else {
-					this.translate.get(["tutorialThoughtprocessingPushNoThoughts", "OK"]).subscribe( translation => {
-		  				this.presentAlert(translation["tutorialThoughtprocessingPushNoThoughts"]);
-		  			});
-				}
-			});  			
-  		} else if(nextTutorialPart == 'projects') {
-  			this.translate.get(["tutorialProjectsPush", "OK"]).subscribe( translation => {
-  				this.presentAlert(translation["tutorialProjectsPush"]);
-  				setTimeout( () => {
-  					this.db.startTutorial(this.auth.userid, 'projects');
-  				}, 3000);
-  			});
-  		}
-  	}
-
   	showTutorial(tutorialPart) {
   		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
@@ -923,9 +841,6 @@ export class HomePage {
 				    	{
 				    		text: translation["OK"],
 				    		handler: () => {
-				    			setTimeout(() => {
-				    				this.presentAlert("thoughtsAdd");
-								}, 1000);
 				    			this.db.finishTutorial(this.auth.userid, tutorialPart, 'thoughtprocessing');
 				    		}
 				    	}
@@ -935,10 +850,6 @@ export class HomePage {
 					        text: translation["Start"],
 					        handler: () => {
 					        	this.db.finishTutorial(this.auth.userid, 'thoughtprocessing', 'process');
-					        	this.db.startTutorial(this.auth.userid, 'process');
-					        	setTimeout(() => {
-					        		this.presentAlert("tutorialProcessInit");
-								}, 1000);
 					        }
 				      	}, 
 				      	{
@@ -978,57 +889,11 @@ export class HomePage {
 						}
 					}
 					if(this.userProfile.tutorial.fivetodos) {
-						this.presentAlert("fivetodosDone");
-						this.db.finishTutorial(this.auth.userid, "fivetodos", "tutorialNextButton")
+						this.presentAlert("fivetodosCreated");
 					}
-					this.goToToDoPage();
 				}
 			});
 		});
-  	}
-
-  	tutorialAssignTodos() {
-  		this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-	  	.snapshotChanges()
-	  	.pipe(take(1),
-			map(
-				changes => { 
-					return changes.map( c => {
-						let action: Action = { 
-							key: c.payload.key, ...c.payload.val()
-							};
-						return action;
-				});
-			})
-		);
-	    this.actionList.subscribe( actionArray => {
-	      	this.actionArray = [];
-	        for(let action of actionArray) {
-	        	if(action.active != false) {
-					if(!action.taken) {
-					this.actionArray.push(action);
-					}
-				}
-	        }
-	        this.modalCtrl.create({ 
-				component: TutorialProjectsModalPage,
-				componentProps: {
-					goalArray: this.goalArray,
-					actionArray: this.actionArray,
-					goalDict: this.goalDict,
-					projectColors: this.projectColors
-				}
-			}).then( modal => {
-				modal.present();
-				modal.onDidDismiss().then( data => {
-					if(data.data && data.data == 'assigned') {
-						this.db.finishTutorial(this.auth.userid, 'projects', '');
-						this.goToProjectsPage();
-						this.presentAlert("tutorialProjectsDone");
-					}
-				});
-			});
-	    });
   	}
 
   	goToCapturePage() {
@@ -1358,7 +1223,7 @@ export class HomePage {
   		} else if(optional == 'schedule') {
   			this.showCaptureSchedule = true;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule || this.showCaptureDeadline && this.showCaptureSchedule && this.userProfile.tutorial.tutorialProgress <= 2) {
+  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule) {
   			this.captureShowAdd = false;
   		}
   		this.showOptionals = false;
@@ -1377,7 +1242,7 @@ export class HomePage {
   			this.captureScheduleISOString = new Date().toISOString();
   			this.showCaptureSchedule = false;
   		}
-  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule || this.showCaptureDeadline && this.showCaptureSchedule && this.userProfile.tutorial.tutorialProgress <= 2) {
+  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule) {
   			this.captureShowAdd = false;
   		} else {
   			this.captureShowAdd = true;
@@ -1829,11 +1694,7 @@ export class HomePage {
 
 	finishAction() {
 		this.startedAction.endDate = new Date().toISOString();
-		if(this.userProfile.tutorial.tutorialProgress < 2) {
-			this.noFollowUpTodoRequired()
-		} else {
-			this.viewpoint = 'FinishActionPage';
-		}
+		this.viewpoint = 'FinishActionPage';
 	}
 
 	defineFollowUpTodoLater() {
@@ -2615,10 +2476,8 @@ export class HomePage {
 									}
 						        }
 						        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-						        console.log(this.doableActionArray);
 						        if(todoid) {
 						        	this.doableActionArray.unshift(targetTodo);
-						        	console.log(this.doableActionArray);
 						        }
 						        this.changePage('ToDoPage');
 						        if(this.timeAvailable) {
@@ -2854,13 +2713,8 @@ export class HomePage {
   	}
 
   	stopAction() {
-  		if(this.userProfile.tutorial.tutorialProgress < 2) {
-  			this.duration = this.startedAction.time;
-  			this.updateStartedActionTime();
-  		} else {
-  			this.duration = this.startedAction.time;
-  			this.changePage('StopActionPage');
-  		}
+  		this.duration = this.startedAction.time;
+  		this.changePage('StopActionPage');
   	}
 
   	updateStartedActionTime() {
