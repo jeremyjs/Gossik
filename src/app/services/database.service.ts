@@ -31,8 +31,11 @@ export class DatabaseService {
             assistant: 'standard',
             tutorial: {
                 'fivetodos': true,
-                'thoughts': true,
-                'thoughtprocessing': true,
+                'thoughts': false,
+                'thoughtprocessing': false,
+                'process': false,
+                'processTodo': false,
+                'processThoght': false,
                 'assistant': true
             },
             timezoneOffset: new Date().getTimezoneOffset()
@@ -58,10 +61,19 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile');
     }
 
-    finishTutorial(userid, tutorialPart) {
+    finishTutorial(userid, tutorialPart, nextTutorialPart?, nextTutorialPart2?, nextTutorialPart3?) {
         let tutorial = {};
         tutorial[tutorialPart] = false;
         tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();
+        if(nextTutorialPart) {
+            tutorial[nextTutorialPart] = true;
+        }
+        if(nextTutorialPart2) {
+            tutorial[nextTutorialPart2] = true;
+        }
+        if(nextTutorialPart3) {
+            tutorial[nextTutorialPart3] = true;
+        }
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 
@@ -136,31 +148,6 @@ export class DatabaseService {
                 this.initiateLearnedSchedule(userid);
             }
         })
-    }
-
-    startTutorial(userid, tutorialPart) {
-        let tutorial = {
-            next: '',
-            triggerDate: ''
-        };
-        tutorial[tutorialPart] = true;
-        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
-        if(tutorialPart == 'thoughts') {
-            tutorial['tutorialProgress'] = 1;
-        } else if (tutorialPart == 'thoughtprocessing') {
-            tutorial['tutorialProgress'] = 2;
-        } else if(tutorialPart == 'projects') {
-            tutorial['tutorialProgress'] = 3;
-        }
-        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
-    }
-
-    setNextTutorial(userid, tutorialPart) {
-        let tutorial = {
-            next: tutorialPart,
-            triggerDate: new Date().toISOString()
-        };
-        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 
     setTutorialStartdate(userid, tutorialPart) {

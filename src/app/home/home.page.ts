@@ -176,6 +176,7 @@ export class HomePage {
 	showInfoDo: boolean = false;
 	showInfoFocus: boolean = false;
 	showInfoCalendar: boolean = false;
+	showTutorialAlert: boolean = true;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -352,8 +353,6 @@ export class HomePage {
 		this.db.saveDeviceToken(this.auth.userid, token);
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
-			console.log('received new push!!!');
-			console.log(data);
 			if(!data.target) {
 				let title = '';
 				if(data.title) {
@@ -541,11 +540,22 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	this.db.finishTutorial(this.auth.userid, "assistant");
+						        	this.db.finishTutorial(this.auth.userid, "assistant", "thoughts");
 						        }
 					      	}
 					    ];
-  			} 
+  			} else if(alertMessage == 'thoughtsCreated') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	this.db.finishTutorial(this.auth.userid, "thoughts", "thoughtprocessing").then( () => {
+						        		this.goToProcessPage();
+						        	});
+						        }
+					      	}
+					    ];
+  			}
   			this.alertCtrl.create({
 				message: translation[alertMessage],
 				buttons: buttons
@@ -805,10 +815,14 @@ export class HomePage {
 			this.db.addCapture(capture, this.auth.userid);
 			this.newCapture = {} as Capture;
 		  	this.newCapture.content = '';
-			this.goToProcessPage();
-			this.translate.get(["Thought saved"]).subscribe( translation => {
-		  		this.presentToast(translation["Thought saved"]);
-			});
+		  	if(this.userProfile.tutorial.thoughts) {
+		  		this.presentAlert("thoughtsCreated");
+		  	} else {
+				this.goToProcessPage();
+				this.translate.get(["Thought saved"]).subscribe( translation => {
+			  		this.presentToast(translation["Thought saved"]);
+				});
+			}
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
@@ -846,6 +860,9 @@ export class HomePage {
 				let text = [];
 				text["fivetodos"] = ["fivetodos", "OK"];
 				text["thoughts"] = ["thoughts", "OK"];
+				text["process"] = ["process", "OK"];
+				text["processTodo"] = ["processTodo", "OK"];
+				text["processThought"] = ["processThought", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
 				text["assistant"] = ["assistant", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
@@ -855,12 +872,45 @@ export class HomePage {
 					        text: translation["OK"],
 				      	}
 				    ];
+				    buttons["thoughts"] = [
+				      	{
+					        text: translation["OK"],
+					        handler: () => {
+					        	this.presentAlert("thoughtsExplain");
+					        }
+				      	}
+				    ];
+				    buttons["thoughtprocessing"] = [
+				      	{
+					        text: translation["OK"]
+				      	}
+				    ];
+				    buttons["process"] = [
+				      	{
+					        text: translation["OK"]
+				      	}
+				    ];
+				    buttons["processTodo"] = [
+				      	{
+					        text: translation["OK"]
+				      	}
+				    ];
+				    buttons["processThought"] = [
+				      	{
+					        text: translation["OK"]
+				      	}
+				    ];
 				    buttons["assistant"] = [
 				      	{
 					        text: translation["OK"],
 					        handler: () => {
 					        	this.presentAlert("assistantLearn");
 					        }
+				      	}
+				    ];
+				    buttons["assistant"] = [
+				      	{
+					        text: translation["OK"]
 				      	}
 				    ];
 			  		this.alertCtrl.create({
@@ -954,6 +1004,7 @@ export class HomePage {
   	goToProcessPage() {
   		this.pageTitle = "Thoughts";
   		this.showTutorial('thoughts');
+  		this.showTutorial('thoughtprocessing');
   		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -1029,25 +1080,28 @@ export class HomePage {
     	} else {
     		this.captureProject = { key: 'unassigned'} as Goal;
     	}
-    	if(type != undefined) {
-    		this.captureType = type;
-    	} else {
-  			this.captureType = 'action';
-    	}
+    	this.captureType = type;
     	if(this.captureType == 'action') {
     		this.showCaptureDuration = true;
     	} else {
     		this.captureCheckIfDone();
     	}
-    	if(this.userProfile.tutorial.process) {
-    		this.captureType = 'action';
-    		this.showCaptureType = true;
-    		this.showCaptureDuration = true;
+    	if(this.userProfile.tutorial.thoughtprocessing) {
+    		this.db.finishTutorial(this.auth.userid, 'thoughtprocessing', 'process', 'processTodo', 'processThought');
     	}
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');
     	this.cameFromToDoPage = (origin == 'ToDoPage');
+    	if(this.cameFromToDoPage || this.cameFromProjectOverviewPage && this.captureType == 'action') {
+    		this.showCaptureDuration = false;
+    		if(this.userProfile.tutorial.processTodo) {
+    			this.presentAlert("Please input what needs to be done.");
+    		}
+    	} 
+    	if(this.cameFromProcessPage) {
+    		this.showTutorial('process')
+    	}
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
     		this.capturePlaceholder = "Define action";
@@ -1107,10 +1161,15 @@ export class HomePage {
     		this.pageTitle = "Process thought";
     		this.capturePlaceholder = "Define action or reference";
     	}
+    	if(this.userProfile.tutorial.process) {
+    		this.db.finishTutorial(this.auth.userid, 'process');
+    	}
   		this.captureCheckIfDone();
   	}
 
   	assignAction() {
+  		console.log('asf');
+  		this.showTutorial('processTodo');
   		if(this.captureContent) {
   			this.showCaptureDuration = true;
   		}
@@ -1124,9 +1183,16 @@ export class HomePage {
   	}
 
   	assignContent(event) {
+  		console.log('aaaaa');
   		if(this.captureContent) {
   			if(this.captureType == 'action') {
 		  		this.showCaptureDuration = true;
+		  		if(this.showTutorialAlert) {
+		  			this.showTutorialAlert = false;
+			  		setTimeout(() => {
+			         	this.showTutorial('processTodo');
+			    	}, 2000);
+			  	}
 		  	}
   		} else {
   			this.translate.get(["Define action","Define reference", "Define action or reference"]).subscribe( translation => {
@@ -1142,15 +1208,8 @@ export class HomePage {
   		this.captureCheckIfDone();
   	}
 
-  	setCaptureContent(capture) {
-  		this.captureContent = capture.content;
-  		if(this.captureType == 'action') {
-	  		this.showCaptureDuration = true;
-	  	}
-	  	this.captureCheckIfDone();
-  	}
-
   	assignNote() {
+  		this.showTutorial('processThought');
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
   		this.showCaptureDeadline = false;
@@ -1161,7 +1220,7 @@ export class HomePage {
   	timeSet() {
   		this.captureDuration = this.duration;
   		if(this.captureDuration > 0) {
-  			if(this.userProfile.tutorial.process) {
+  			if(this.userProfile.tutorial.processTodo) {
   				this.presentAlert('processPriority');
   			}
 			this.showCapturePriority = true;
@@ -1173,8 +1232,8 @@ export class HomePage {
   		if(priority) {
   			this.capturePriority = priority;
   		}
-  		if(this.capturePriority && this.userProfile.tutorial.process) {
-			this.presentAlert('processDone');
+  		if(this.capturePriority && this.userProfile.tutorial.processTodo) {
+			this.presentAlert('processTodoReady');
   		}
   		this.captureCheckIfDone();
   	}
@@ -1206,13 +1265,17 @@ export class HomePage {
   		if(this.captureType == 'action') {
   			if(this.captureContent && this.captureDuration && this.capturePriority) {
 	  			this.showCaptureDone = true;
+	  		} else if(!this.captureContent && this.captureDuration && this.capturePriority) {
+	  			this.presentAlert("You still need to define what exactly needs to be done.");
 	  		} else {
 	  			this.showCaptureDone = false
 	  		}
   		} else if (this.captureType == 'note') {
   			if(this.captureContent && this.captureProject.key != 'unassigned') {
 	  			this.showCaptureDone = true;
-	  		} else {
+	  		} else if(this.captureContent && this.captureProject.key != 'unassigned') { 
+	  			this.presentAlert("You still need to define what exactly needs to be done.");
+	  		} else{
 	  			this.showCaptureDone = false
 	  		}
   		}
@@ -1280,10 +1343,6 @@ export class HomePage {
   		} else {
   			this.goToProcessPage();
   		}
-  		if(this.userProfile.tutorial.process) {
-  			this.presentAlert("processEnd");
-  			this.db.finishTutorial(this.auth.userid, 'process');
-  		}
   	}
 
   	addActionFromCapture() {
@@ -1296,6 +1355,10 @@ export class HomePage {
 		    taken: false,
 		    active: true
   		};
+  		if(this.userProfile.tutorial.processTodo) {
+  			this.presentAlert("processTodoEnd");
+  			this.db.finishTutorial(this.auth.userid, 'processTodo');
+  		}
   		if(this.captureDeadline) {
   			action.deadline = this.captureDeadline.toISOString();
 			let deadlineStartTime = new Date (action.deadline).setHours(2);
@@ -1364,7 +1427,6 @@ export class HomePage {
 			this.db.addAction(action, this.capture, this.auth.userid);
 		}
 		if(this.captureSchedule) {
-			console.log(this.captureProject);
 			let eventData: CalendarEvent = {
 				userid: this.auth.userid,
 				allDay: false,
@@ -1392,7 +1454,6 @@ export class HomePage {
 				}
 				this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 			}
-			console.log(eventData.color);
 			if(this.platform.is('cordova')) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
@@ -1423,6 +1484,10 @@ export class HomePage {
   			goalid: this.captureProject.key,
   			active: true
   		};
+  		if(this.userProfile.tutorial.processThought) {
+  			this.presentAlert("processThoughtEnd");
+  			this.db.finishTutorial(this.auth.userid, 'processThought');
+  		}
 		this.db.addReference(reference, this.capture, this.auth.userid);
   	}
 
@@ -2476,8 +2541,6 @@ export class HomePage {
 											this.doableActionArray.push(action);
 											if(todoid && action.key == todoid) {
 												targetTodo = action;
-												console.log('found todo');
-												console.log(action);
 											}
 										}
 									}
