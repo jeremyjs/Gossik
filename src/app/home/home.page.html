@@ -570,7 +570,7 @@
     <calendar [eventSource]="eventSource"
               [calendarMode]="'week'"
               [currentDate]="calendar.currentDate"
-              (onEventSelected)="onEventSelected($event)"
+              (onEventSelected)="onEventSelected($event, 'assistant')"
               formatWeekViewDayHeader="EEE"
               step="5"
               class="calendar padding-10 noAllDay"

@@ -2244,7 +2244,7 @@ export class HomePage {
 
 	}
 
-	onEventSelected(event){
+	onEventSelected(event, origin?: string){
 		this.db.getGoalFromGoalid(event.goalid, this.auth.userid).valueChanges().subscribe( data => {
 			let goal = '';
 			let time = '';
@@ -2257,37 +2257,46 @@ export class HomePage {
 					let end = moment(event.endTime).format('HH:mm');
 					time = alertMessage["Time"] + ': ' + start + ' - ' + end;
 				}
-				let buttons = [
-			    	{
-				        text: alertMessage['Ok']
-			      	},
-			      	{
-				        text: alertMessage['Delete'],
-				        handler: () => {
-				        	this.translate.get(["Event deleted"]).subscribe( translation => {
-						      this.presentToast(translation["Event deleted"]);
-						    });
-				          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
-				          	if(event.event_id && this.platform.is('cordova')) {
-				          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-				          			if(hasReadWritePermission) {
-				          				this.nativeCalendar.deleteEvent(event.event_id);
-				          			}
-				          		});
-				          	}
-				          	let events = this.eventSource;
-				          	let index = events.indexOf(event);
-							events.splice(index,1);
-							let calendarEventsIndex = this.calendarEvents.indexOf(event);
-							this.calendarEvents.splice(calendarEventsIndex,1);
-							this.eventSource = [];
-							setTimeout(() => {
-								this.eventSource = events;
-							});
-				        }
-			      	}
-			    ]
-			    if(!event.native) {
+				let buttons = [];
+				if(origin) {
+					buttons = [
+				    	{
+					        text: alertMessage['Ok']
+				      	}
+			      	]
+			    } else {
+					buttons = [
+				    	{
+					        text: alertMessage['Ok']
+				      	},
+				      	{
+					        text: alertMessage['Delete'],
+					        handler: () => {
+					        	this.translate.get(["Event deleted"]).subscribe( translation => {
+							      this.presentToast(translation["Event deleted"]);
+							    });
+					          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
+					          	if(event.event_id && this.platform.is('cordova')) {
+					          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+					          			if(hasReadWritePermission) {
+					          				this.nativeCalendar.deleteEvent(event.event_id);
+					          			}
+					          		});
+					          	}
+					          	let events = this.eventSource;
+					          	let index = events.indexOf(event);
+								events.splice(index,1);
+								let calendarEventsIndex = this.calendarEvents.indexOf(event);
+								this.calendarEvents.splice(calendarEventsIndex,1);
+								this.eventSource = [];
+								setTimeout(() => {
+									this.eventSource = events;
+								});
+					        }
+				      	}
+				    ]
+				}
+			    if(!event.native && !origin) {
 			    	buttons.push({
 				        text: alertMessage['Edit'],
 				        handler: () => {
