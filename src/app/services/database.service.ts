@@ -35,7 +35,7 @@ export class DatabaseService {
                 'thoughtprocessing': false,
                 'process': false,
                 'processTodo': false,
-                'processThoght': false,
+                'processThought': false,
                 'assistant': true
             },
             timezoneOffset: new Date().getTimezoneOffset()
@@ -88,7 +88,7 @@ export class DatabaseService {
     initiateLearnedSchedule(userid) {
         this.db.list<Goal>('/users/' + userid + '/goals')
         .snapshotChanges()
-        .pipe(
+        .pipe(take(1),
         map(
             changes => { 
                 return changes.map( c => {
@@ -120,12 +120,11 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile/learnedSchedule');
     }
 
-    updateLearnedSchedule(userid, projectids, dates, value) {
+    learnLearnedSchedule(userid, projectids, dates, value) {
         this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
             if(learnedSchedule.payload.val()) {
                 this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
                     let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
-                    console.log(dates);
                     for(let date of dates) {
                         let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
                         let weekDay = localeDate.getDay() - 1;
@@ -135,19 +134,26 @@ export class DatabaseService {
                         //getHours() gives locale hours already, so no need to use localeDate
                         let hour = date.getHours();
                         let row = weekDay * 24 + hour;
-                        console.log(row);
                         for(let projectid of projectids) {
-                            console.log(projectid);
-                            learnedScheduleObject[row][projectid] += value;
+                            if(learnedScheduleObject[row][projectid]) {
+                                learnedScheduleObject[row][projectid] += value;
+                            } else {
+                                for(let hour = 0; hour <= 167; hour ++) {
+                                    if(hour != row) {
+                                        learnedScheduleObject[hour][projectid] = 0;
+                                    } else {
+                                        learnedScheduleObject[hour][projectid] = value;
+                                    }
+                                }
+                            }
                         }
                     }
-                    console.log(learnedScheduleObject);
                     this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
-                })
+                });
             } else {
                 this.initiateLearnedSchedule(userid);
             }
-        })
+        });
     }
 
     setTutorialStartdate(userid, tutorialPart) {

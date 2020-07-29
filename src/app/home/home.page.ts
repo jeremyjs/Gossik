@@ -442,6 +442,9 @@ export class HomePage {
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.updateTimezoneOffset();
+					if(!this.userProfile.learnedSchedule) {
+						this.db.initiateLearnedSchedule(this.auth.userid);
+					}
 				});
 				if(this.isApp) {
 					this.calendar.mode = 'month'
@@ -904,13 +907,9 @@ export class HomePage {
 				      	{
 					        text: translation["OK"],
 					        handler: () => {
+					        	console.log('hi');
 					        	this.presentAlert("assistantLearn");
 					        }
-				      	}
-				    ];
-				    buttons["assistant"] = [
-				      	{
-					        text: translation["OK"]
 				      	}
 				    ];
 			  		this.alertCtrl.create({
@@ -1452,7 +1451,7 @@ export class HomePage {
 					}
 					minute++;
 				}
-				this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+				this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 			}
 			if(this.platform.is('cordova')) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -2120,7 +2119,7 @@ export class HomePage {
 							}
 							minute++;
 						}
-						this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+						this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 					}
 					if(this.platform.is('cordova')) {
 						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -2369,7 +2368,7 @@ export class HomePage {
 									}
 									minute++;
 								}
-								this.db.updateLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+								this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
 							}
 							if(this.platform.is('cordova')) {
 								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -2609,7 +2608,7 @@ export class HomePage {
 				if(data.data) {
 					this.goalKeyArray = data.data;
 					let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
-					this.db.updateLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
+					this.db.learnLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
 					this.showDoableActions();
 				}
 			});
@@ -2782,7 +2781,7 @@ export class HomePage {
 				}
 				minute++;
 			}
-			this.db.updateLearnedSchedule(this.auth.userid, [action.goalid], dates, 1);
+			this.db.learnLearnedSchedule(this.auth.userid, [action.goalid], dates, 1);
 		}
 		this.pageTitle = "Focus";
 		this.changePage('ActionPage');
