@@ -476,6 +476,7 @@ export class HomePage {
   	}
 
 	changePage(viewpoint: string, pageCtrl?: string) {
+		console.log('hello' + String(viewpoint));
   		this.content.scrollToTop();
   		this.errorMsg = '';
   		if(pageCtrl != undefined) {
@@ -684,7 +685,7 @@ export class HomePage {
 			this.calendar.currentDate = new Date();
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
 			  	.snapshotChanges()
-			  	.pipe(
+			  	.pipe(take(1),
 					map(
 						changes => { 
 							return changes.map( c => {
@@ -1036,7 +1037,7 @@ export class HomePage {
   		this.captureContent = capture.content;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
-		.pipe(
+		.pipe(take(1),
 			map(
 				changes => { 
 					return changes.map( c => {
@@ -2182,16 +2183,16 @@ export class HomePage {
 	editCalendarEvent(calendarEvent) {
 		this.goalArray = [];
   		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let goal: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return goal;
-			});}));
+	  	.snapshotChanges()
+	  	.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let goal: Goal = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return goal;
+		});}));
 	    this.goalList.subscribe(
 	      goalArray => {
 	        for(let goal of goalArray) {
@@ -2318,16 +2319,16 @@ export class HomePage {
 		if(this.calendar.mode == 'day' || this.calendar.mode == 'week') {
 			this.goalArray = [];
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(
-					map(
-						changes => { 
-							return changes.map( c => {
-								let goal: Goal = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return goal;
-				});}));
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let goal: Goal = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return goal;
+			});}));
 		    this.goalList.subscribe(
 		      goalArray => {
 		        for(let goal of goalArray) {
