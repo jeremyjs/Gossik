@@ -2587,6 +2587,7 @@ export class HomePage {
 										if(!action.taken) {
 											this.doableActionArray.push(action);
 											if(todoid && action.key == todoid) {
+												this.todoview = 'task';
 												targetTodo = action;
 											}
 										}
