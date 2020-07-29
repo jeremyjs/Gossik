@@ -565,7 +565,7 @@ export class HomePage {
 						        text: translation["OK"],
 						        handler: () => {
 						        	if(!this.userProfile.tutorial.processThought) {
-						        		this.presentAlert("tutorialEnd");
+						        		this.showTutorial("tutorialEnd");
 						        	}
 						        }
 					      	}
@@ -576,7 +576,7 @@ export class HomePage {
 						        text: translation["OK"],
 						        handler: () => {
 						        	if(!this.userProfile.tutorial.processThought) {
-						        		this.presentAlert("tutorialEnd");
+						        		this.showTutorial("tutorialEnd");
 						        	}
 						        }
 					      	}
@@ -891,6 +891,7 @@ export class HomePage {
 				text["processThought"] = ["processThought", "OK"];
 				text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
 				text["assistant"] = ["assistant", "OK"];
+				text["tutorialEnd"] = ["tutorialEnd", "OK"];
 				this.translate.get(text[tutorialPart]).subscribe( translation => {
 			  		let buttons = [];
 			  		buttons["fivetodos"] = [
@@ -898,6 +899,14 @@ export class HomePage {
 					        text: translation["OK"],
 					        handler: () => {
 					        	this.presentAlert("navigateGreen");
+					        }
+				      	}
+				    ];
+				    buttons["tutorialEnd"] = [
+				      	{
+					        text: translation["OK"],
+					        handler: () => {
+					        	this.db.finishTutorial(this.auth.userid, "tutorialEnd");
 					        }
 				      	}
 				    ];

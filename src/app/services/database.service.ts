@@ -37,7 +37,8 @@ export class DatabaseService {
                 'processTodo': false,
                 'processThought': false,
                 'assistant': true,
-                'createThought': false
+                'createThought': false,
+                'tutorialEnd': true
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
