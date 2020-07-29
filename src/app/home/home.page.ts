@@ -543,7 +543,7 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	if(this.userProfile.tutorial.processTodo) {
+						        	if(this.userProfile.tutorial.tutorialEnd) {
 						        		this.db.finishTutorial(this.auth.userid, "assistant", "thoughts");
 						        	} else {
 						        		this.db.finishTutorial(this.auth.userid, "assistant");
