@@ -36,7 +36,8 @@ export class DatabaseService {
                 'process': false,
                 'processTodo': false,
                 'processThought': false,
-                'assistant': true
+                'assistant': true,
+                'createThought': false
             },
             timezoneOffset: new Date().getTimezoneOffset()
         }
@@ -74,6 +75,13 @@ export class DatabaseService {
         if(nextTutorialPart3) {
             tutorial[nextTutorialPart3] = true;
         }
+        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    }
+
+    startTutorial(userid, tutorialPart) {
+        let tutorial = {};
+        tutorial[tutorialPart] = true;
+        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
         return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 

@@ -553,8 +553,31 @@ export class HomePage {
 						        text: translation["OK"],
 						        handler: () => {
 						        	this.db.finishTutorial(this.auth.userid, "thoughts", "thoughtprocessing").then( () => {
+						        		this.db.finishTutorial(this.auth.userid, 'createThought');
 						        		this.goToProcessPage();
 						        	});
+						        }
+					      	}
+					    ];
+  			} else if(alertMessage == 'processTodoEnd') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	if(!this.userProfile.tutorial.processThought) {
+						        		this.presentAlert("tutorialEnd");
+						        	}
+						        }
+					      	}
+					    ];
+  			} else if(alertMessage == 'processThoughtEnd') {
+  				buttons = [
+					      	{
+						        text: translation["OK"],
+						        handler: () => {
+						        	if(!this.userProfile.tutorial.processThought) {
+						        		this.presentAlert("tutorialEnd");
+						        	}
 						        }
 					      	}
 					    ];
@@ -873,6 +896,9 @@ export class HomePage {
 			  		buttons["fivetodos"] = [
 				      	{
 					        text: translation["OK"],
+					        handler: () => {
+					        	this.presentAlert("navigateGreen");
+					        }
 				      	}
 				    ];
 				    buttons["thoughts"] = [
@@ -880,6 +906,7 @@ export class HomePage {
 					        text: translation["OK"],
 					        handler: () => {
 					        	this.presentAlert("thoughtsExplain");
+					        	this.db.startTutorial(this.auth.userid, 'createThought');
 					        }
 				      	}
 				    ];
@@ -1103,6 +1130,8 @@ export class HomePage {
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
     		this.capturePlaceholder = "Define action";
+    		this.showCaptureType = false;
+    		this.showCaptureProject = false;
     	} else if(this.cameFromProjectOverviewPage && this.captureType == 'note') {
     		this.pageTitle = "Define reference";
     		this.capturePlaceholder = "Define reference";

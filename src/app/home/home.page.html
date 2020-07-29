@@ -342,7 +342,7 @@
 
   <div class="height-100 width-100 transparent flex" *ngIf="viewpoint == 'InitPage'">
     <button (click)="startFivetodos()" class="margin-auto font-white transparent">
-      <img src="../../assets/icon/icon_add.png" class="margin-auto-auto" height="150">
+      <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img_green" height="150">
     </button>
   </div>
 
@@ -527,7 +527,7 @@
               autoSelect="false"
               lockSwipes="true"
               [weekviewNormalEventTemplate]="template"
-              scrollToHour="8"
+              scrollToHour="6"
               [locale]="translate.currentLang"
               formatHourColumn="{{'formatHourColumn' | translate }}"
               startingDayWeek="1"
@@ -657,7 +657,8 @@
       <ion-row class="text-align-right">
         <ion-col>
           <button (click)="goToCapturePage()" float-right class="font-white transparent">
-            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
+            <img *ngIf="userProfile.tutorial.createThought" src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px img_green">
+            <img *ngIf="!userProfile.tutorial.createThought" src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
           </button>
         </ion-col>
       </ion-row>
