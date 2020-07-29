@@ -476,7 +476,6 @@ export class HomePage {
   	}
 
 	changePage(viewpoint: string, pageCtrl?: string) {
-		console.log('hello' + String(viewpoint));
   		this.content.scrollToTop();
   		this.errorMsg = '';
   		if(pageCtrl != undefined) {
@@ -908,7 +907,6 @@ export class HomePage {
 				      	{
 					        text: translation["OK"],
 					        handler: () => {
-					        	console.log('hi');
 					        	this.presentAlert("assistantLearn");
 					        }
 				      	}
@@ -1168,7 +1166,6 @@ export class HomePage {
   	}
 
   	assignAction() {
-  		console.log('asf');
   		this.showTutorial('processTodo');
   		if(this.captureContent) {
   			this.showCaptureDuration = true;
@@ -1183,7 +1180,6 @@ export class HomePage {
   	}
 
   	assignContent(event) {
-  		console.log('aaaaa');
   		if(this.captureContent) {
   			if(this.captureType == 'action') {
 		  		this.showCaptureDuration = true;
