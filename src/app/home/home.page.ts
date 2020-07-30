@@ -445,6 +445,7 @@ export class HomePage {
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.updateTimezoneOffset();
+					this.assistant = this.userProfile.assistant;
 					if(!this.userProfile.learnedSchedule) {
 						this.db.initiateLearnedSchedule(this.auth.userid);
 					}
