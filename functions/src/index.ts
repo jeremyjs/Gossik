@@ -486,9 +486,14 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
    			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 			if(timeNowConverted.getHours() == 0) {
 	   			let randomPushTimes = [];
-	   			randomPushTimes.push(getRandomInteger(8,11));
-	   			randomPushTimes.push(getRandomInteger(13,21));
-	   			randomPushTimes.push(getRandomInteger(13,21));
+	   			let numberPushForAssistant: any = {};
+				numberPushForAssistant['still'] = 0
+				numberPushForAssistant['chiller'] = 1
+				numberPushForAssistant['standard'] = 3
+				numberPushForAssistant['pusher'] = 5
+	   			while(randomPushTimes.length < numberPushForAssistant[user.val().profile.assistant]) {
+	   				randomPushTimes.push(getRandomInteger(8,21));
+	   			}
 	   			admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(0);
 				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
    			}
