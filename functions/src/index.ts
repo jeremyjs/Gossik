@@ -485,7 +485,7 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
    		users.forEach(function(user) {
    			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 			if(timeNowConverted.getHours() == 0) {
-	   			let randomPushTimes = [];
+	   			let randomPushTimes: number[] = [];
 	   			let numberPushForAssistant: any = {};
 				numberPushForAssistant['still'] = 0
 				numberPushForAssistant['chiller'] = 1
@@ -710,11 +710,11 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 
 
 // Modifying the database manually for each user
-/*
+
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-			let tutorial = {
+			/*let tutorial = {
 				tutorial: {
 		                'fivetodos': true,
 		                'thoughtprocessing': false,
@@ -731,12 +731,13 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
 		            }
 		    };
    			admin.database().ref('/users/' + user.key + '/profile').update(tutorial);
+   			*/
    			// update just one specific value
-   			//admin.database().ref('/users/' + user.key + '/profile').child('timezoneOffset').set(-120);
+   			admin.database().ref('/users/' + user.key + '/profile/tutorial').child('assistant').set(true);
    		})
    });
    return null;
      }
 );
-*/
+
 
