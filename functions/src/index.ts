@@ -581,7 +581,7 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 					if(user.val().nextActions) {
 						let todos = [];
 						for(let key in user.val().nextActions) {
-							if(user.val().nextActions[key].active != false) {
+							if(user.val().nextActions[key].active != false && user.val().nextActions[key].time <= 30) {
 								let todo = user.val().nextActions[key]
 								todo['todoid'] = key;
 								todos.push(todo);
