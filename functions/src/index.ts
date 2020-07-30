@@ -710,11 +710,11 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 
 
 // Modifying the database manually for each user
-
+/*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
-			/*let tutorial = {
+			let tutorial = {
 				tutorial: {
 		                'fivetodos': true,
 		                'thoughtprocessing': false,
@@ -731,7 +731,6 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
 		            }
 		    };
    			admin.database().ref('/users/' + user.key + '/profile').update(tutorial);
-   			*/
    			// update just one specific value
    			admin.database().ref('/users/' + user.key + '/profile/tutorial').child('assistant').set(true);
    		})
@@ -739,5 +738,5 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
    return null;
      }
 );
-
+*/
 
