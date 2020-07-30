@@ -492,7 +492,10 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
 				numberPushForAssistant['standard'] = 3
 				numberPushForAssistant['pusher'] = 5
 	   			while(randomPushTimes.length < numberPushForAssistant[user.val().profile.assistant]) {
-	   				randomPushTimes.push(getRandomInteger(8,21));
+	   				let nextNumber = getRandomInteger(8,21);
+	   				if(randomPushTimes.indexOf(nextNumber) == -1) {
+	   					randomPushTimes.push();
+	   				}
 	   			}
 	   			admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(0);
 				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
