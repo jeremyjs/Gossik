@@ -446,7 +446,7 @@
   <!-- Mobile AssistantPage -->
   <div class="height-100-minus-70px width-90 overflow-scroll no-scrollbar margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
     <ion-row class="margin-auto margin-top-20 width-90">
-      <ion-radio-group class="font-gray font-size-20px display-block width-100" [(ngModel)]="userProfile.assistant">
+      <ion-radio-group class="font-gray font-size-20px display-block width-100" [(ngModel)]="assistant" (ionChange)="assignAssistant()">
         <ion-row>
           <ion-col size="1" class="padding-left-0 padding-right-0 flex">
             <ion-radio value="silent" class="height-15px width-15px margin-top-auto margin-bottom-auto margin-left-0"></ion-radio>

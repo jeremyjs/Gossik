@@ -177,6 +177,9 @@ export class HomePage {
 	showInfoFocus: boolean = false;
 	showInfoCalendar: boolean = false;
 	showTutorialAlert: boolean = true;
+	showTutorialTypeActionAlert: boolean = true;
+	showTutorialTypeThoughtAlert: boolean = true;
+	assistant: string;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -579,7 +582,7 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	if(!this.userProfile.tutorial.processThought) {
+						        	if(!this.userProfile.tutorial.processTodo) {
 						        		this.showTutorial("tutorialEnd");
 						        	}
 						        }
@@ -772,8 +775,11 @@ export class HomePage {
 		});
     }
 
-    assignAssistant(assistant) {
-    	this.db.updateAssistant(this.auth.userid, assistant);
+    assignAssistant(assistant?: string) {
+    	if(assistant) {
+    		this.assistant = assistant;
+    	}
+    	this.db.updateAssistant(this.auth.userid, this.assistant);
     }
 
     goToShowFeedbackPage() {
@@ -1208,7 +1214,13 @@ export class HomePage {
   	}
 
   	assignAction() {
-  		this.showTutorial('processTodo');
+  		if(this.showTutorialTypeActionAlert) {
+  			this.showTutorial('processTodo');
+  			this.showTutorialTypeActionAlert = false;
+  			setTimeout( () => {
+  				this.showTutorialTypeActionAlert = true;
+  			}, 2000)
+  		}
   		if(this.captureContent) {
   			this.showCaptureDuration = true;
   		}
@@ -1247,7 +1259,13 @@ export class HomePage {
   	}
 
   	assignNote() {
-  		this.showTutorial('processThought');
+  		if(this.showTutorialTypeThoughtAlert) {
+  			this.showTutorial('processThought');
+  			this.showTutorialTypeThoughtAlert = false;
+  			setTimeout( () => {
+  				this.showTutorialTypeThoughtAlert = true;
+  			}, 2000)
+  		}
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
   		this.showCaptureDeadline = false;
