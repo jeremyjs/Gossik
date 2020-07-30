@@ -489,6 +489,7 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
 	   			randomPushTimes.push(getRandomInteger(8,11));
 	   			randomPushTimes.push(getRandomInteger(13,21));
 	   			randomPushTimes.push(getRandomInteger(13,21));
+	   			admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(0);
 				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
    			}
    		})
@@ -576,7 +577,12 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
 			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(user.val().profile.randomPushTimes) {
+			let numberPushForAssistant: any = {};
+			numberPushForAssistant['still'] = 0
+			numberPushForAssistant['chiller'] = 1
+			numberPushForAssistant['standard'] = 3
+			numberPushForAssistant['pusher'] = 5
+			if(user.val().profile.randomPushTimes && user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
 				if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
 					if(user.val().nextActions) {
 						let todos = [];
@@ -620,6 +626,7 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 				    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
 				    			devices.forEach(function(device) {
 							       	admin.messaging().sendToDevice(device.val(), payload);
+									admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
 						    	});
 					    	});
 					    	let pushNotification = {
