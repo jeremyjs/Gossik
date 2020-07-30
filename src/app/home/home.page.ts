@@ -572,9 +572,7 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	if(!this.userProfile.tutorial.processThought) {
-						        		this.showTutorial("tutorialEnd");
-						        	}
+						        this.showTutorial("tutorialEnd");
 						        }
 					      	}
 					    ];
@@ -583,9 +581,7 @@ export class HomePage {
 					      	{
 						        text: translation["OK"],
 						        handler: () => {
-						        	if(!this.userProfile.tutorial.processTodo) {
-						        		this.showTutorial("tutorialEnd");
-						        	}
+						        this.showTutorial("tutorialEnd");
 						        }
 					      	}
 					    ];
