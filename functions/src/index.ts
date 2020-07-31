@@ -582,7 +582,8 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('* * * * *').onRun((cont
 );
 
 exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+    return admin.database().ref('/users').once("value", function(users) {
+    	let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
 			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 			let numberPushForAssistant: any = {};
@@ -631,37 +632,41 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
 					                todoid: randomTodo.todoid
 					            }
 					        };
-				    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-				    			devices.forEach(function(device) {
-							       	admin.messaging().sendToDevice(device.val(), payload);
-									admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
-						    	});
-					    	});
+					        Object.values(user.val().devices).forEach( (device) => {
+					        	promises.push(admin.messaging().sendToDevice(String(device), payload));
+					        });
 					    	let pushNotification = {
 					    		message: msg,
 					    		todoid: randomTodo.todoid,
 					    		createDate: new Date().toISOString()
 					    	}
 					    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
+					    	if(user.val().profile.randomPushTodosReceived) {
+					    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
+					    	} else {
+					    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(1);
+					    	}
 						}
 					}
 				}
-			} else {
-				let randomPushTimes = [];
-	   			randomPushTimes.push(getRandomInteger(8,11));
-	   			randomPushTimes.push(getRandomInteger(13,21));
-	   			randomPushTimes.push(getRandomInteger(13,21));
-				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
 			}
-   		})
-   });
-   return null;
-     }
-);
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
 
-/*exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
-	console.log('Bun');
-    admin.database().ref('/users/R1CFRqnvsmdJtxIJZIvgF1Md0lr1').once("value", function(user) {
+/*
+exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
+	let promises: Promise<any>[] = [];
+    return admin.database().ref('/users/R1CFRqnvsmdJtxIJZIvgF1Md0lr1').once("value")
+    .then( user => {
 		let todos = [];
 		for(let key in user.val().nextActions) {
 			if(user.val().nextActions[key].active != false) {
@@ -677,35 +682,42 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((cont
    			let payload = {
 	            notification: {
 	                title: "Gossik",
-	                body: "Hoiiiii"
+	                body: "Hoiiiii " + new Date().toISOString()
 	            },
 	            data: {
 	              	title: "Gossik",
-	                body: "Hoiiiii",
+	                body: "Hoiiiii " + new Date().toISOString(),
 	                target: 'todo',
 	                todoid: randomTodo.todoid
 	            }
 	        };
-    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-    			devices.forEach(function(device) {
-			       	admin.messaging().sendToDevice(device.val(), payload)
-			       	.catch(err => {
-			       		console.log('caaaatchiiiiiing');
-			       		console.log(err);
-			       	});
-		    	});
-	    	});
+	        Object.values(user.val().devices).forEach( (device) => {
+	        	promises.push(admin.messaging().sendToDevice(String(device), payload));
+	        });
 	    	let pushNotification = {
-	    		message: "Hoiiiii",
+	    		message: "Hoiiiii " + new Date().toISOString(),
 	    		todoid: randomTodo.todoid,
 	    		createDate: new Date().toISOString()
 	    	}
+	    	if(user.val().profile.randomPushTodosReceived) {
+	    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
+	    	} else {
+	    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(1);
+	    	}
 	    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
 		}
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
    	});
-   	return null;
 });
 */
+
 
 
 

@@ -204,8 +204,8 @@ export class HomePage {
 		public domCtrl: DomController
 		) {
 		this.isApp = this.platform.is('cordova');
-		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
-		this.isApp = true;
+		//console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
+		//this.isApp = true;
 		this.backButton = this.platform.backButton;
 		this.backButton.subscribe(()=>{
 			this.alertCtrl.getTop().then ( alert => {
