@@ -506,7 +506,7 @@ exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((conte
      }
 );
 
-exports.checkRandomTodoDone = functions.pubsub.schedule('* * * * *').onRun((context) => {
+exports.checkRandomTodoDone = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
    			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
@@ -581,11 +581,11 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('* * * * *').onRun((cont
      }
 );
 
-exports.sendRandomTodoPush = functions.pubsub.schedule('25 * * * *').onRun((context) => {
-    return admin.database().ref('/users').once("value", function(users) {
+exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( users => {
     	let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 			let numberPushForAssistant: any = {};
 			numberPushForAssistant['still'] = 0
 			numberPushForAssistant['chiller'] = 1
