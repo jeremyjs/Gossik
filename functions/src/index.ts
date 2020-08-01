@@ -70,9 +70,9 @@ exports.AnimateThoughtsPush = functions.pubsub.schedule('0 12 * * *').onRun((con
 				let message: any = {};
 				let title: any = {};
 				title['de'] = "Befreie deinen Kopf";
-				message['de'] = "Hey, ich bins. Ich kann dir am besten helfen, wenn du jeden Gedanken jeweils direkt als Post-It bei mir aufschreibst. Versuch das heute doch mal!";
+				message['de'] = "Hey, ich bins. Ich kann dir am besten helfen, wenn du jeden Gedanken jeweils direkt bei mir aufschreibst. Versuch das heute doch mal!";
 				title['en'] = "Free your mind";
-				message['en'] = "Hey, it's me. I can help you best if you write down each thought as a post-it for me. Let's try it today!";
+				message['en'] = "Hey, it's me. I can help you best if you write down each thought. Let's try it today!";
 				
 				let language = 'en';
 	    		if(user.val().profile.language) {
@@ -160,86 +160,89 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
 );
 
 exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+    return admin.database().ref('/users').once("value").then( users => {
+   		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-   			admin.database().ref('/users/' + user.key + '/calendarEvents').once("value", function(calendarEvents) {
-   				calendarEvents.forEach(function(calendarEvent) {
-   					let eventStartTimeMiliseconds = new Date(calendarEvent.val().startTime).getTime();
-   					let eventStartTimeSeconds = eventStartTimeMiliseconds/1000;
-   					let timeNowMiliseconds = new Date().getTime();
-   					let timeNowSeconds = timeNowMiliseconds/1000;
-   					if(!calendarEvent.val().allDay && calendarEvent.val().active != false && eventStartTimeSeconds - timeNowSeconds < 1200 && eventStartTimeSeconds - timeNowSeconds >= 900) {
-   						let ref = admin.database().ref('/users/' + user.key + '/devices');
-					    ref.once("value", function(devices) {
-					    	devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-					   			message['de'] = 'Beginnt in Kürze.';
-					   			message['en'] = 'Happens soon.';
-					   			let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: calendarEvent.val().title,
-						                body: msg
-						            },
-						            data: {
-						              	title: calendarEvent.val().title,
-						                body: msg
-						            }
-						        };
-						        admin.messaging().sendToDevice(device.val(), payload);
-						     });});
-   					} else if(calendarEvent.val().allDay && calendarEvent.val().active != false && eventStartTimeSeconds - timeNowSeconds < 259200 && eventStartTimeSeconds - timeNowSeconds >= 0) {
-   						let ref = admin.database().ref('/users/' + user.key + '/devices');
-					    ref.once("value", function(devices) {
-					    	devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-					   			let send: boolean = false;
-							   	if(eventStartTimeSeconds - timeNowSeconds >= 86400 && eventStartTimeSeconds - timeNowSeconds < 86700) {
-		   							send = true;
-		   							message['de'] = "Hey, diese Deadline ist schon bald. Du solltest dich langsam darum kümmern.";
-		   							message['en'] = "Hey, this deadline is approaching. You should soon get this done.";
-		   						} else if(eventStartTimeSeconds - timeNowSeconds >= 0 && eventStartTimeSeconds - timeNowSeconds < 300) {
-		   							send = true;
-		   							message['de'] = "Letzte Chance, diese Aufgabe noch rechtzeitig zu erledigen. Deadline ist heute!";
-		   							message['en'] = "Last chance to get this done in time. Deadline is today!";
-		   						}
-		   						let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: calendarEvent.val().title,
-						                body: msg
-						            },
-						            data: {
-						              	title: calendarEvent.val().title,
-						                body: msg
-						            }
-						        };
-						        if(send) {
-						        	admin.messaging().sendToDevice(device.val(), payload);
-						        }
-						     });});
+   			if(user.val().calendarEvents) {
+	   			Object.values(user.val().calendarEvents).forEach( (calendarEvent: any) => {
+	   				let eventStartTimeMiliseconds = new Date(calendarEvent.startTime).getTime();
+					let eventStartTimeSeconds = eventStartTimeMiliseconds/1000;
+					let timeNowMiliseconds = new Date().getTime();
+					let timeNowSeconds = timeNowMiliseconds/1000;
+					if(!calendarEvent.allDay && calendarEvent.active != false && eventStartTimeSeconds - timeNowSeconds < 1200 && eventStartTimeSeconds - timeNowSeconds >= 900) {
+						let language = 'en';
+			    		if(user.val().profile.language) {
+			   				language = user.val().profile.language;
+			   			}
+			   			let message: any = {};
+			   			message['de'] = 'Beginnt in Kürze.';
+			   			message['en'] = 'Happens soon.';
+			   			let msg = message['en'];
+			   			if(message[language]) {
+			   				msg = message[language];
+			   			}
+			    		let payload = {
+				            notification: {
+				                title: calendarEvent.title,
+				                body: msg
+				            },
+				            data: {
+				              	title: calendarEvent.title,
+				                body: msg
+				            }
+				        };
+						Object.values(user.val().devices).forEach( (device) => {
+				        	promises.push(admin.messaging().sendToDevice(String(device), payload));
+				        });
+					} else if(calendarEvent.allDay && calendarEvent.active != false && eventStartTimeSeconds - timeNowSeconds < 259200 && eventStartTimeSeconds - timeNowSeconds >= 0) {
+						let language = 'en';
+			    		if(user.val().profile.language) {
+			   				language = user.val().profile.language;
+			   			}
+			   			let message: any = {};
+			   			let send: boolean = false;
+					   	if(eventStartTimeSeconds - timeNowSeconds >= 86400 && eventStartTimeSeconds - timeNowSeconds < 86700) {
+								send = true;
+								message['de'] = "Hey, diese Deadline ist schon bald. Du solltest dich langsam darum kümmern.";
+								message['en'] = "Hey, this deadline is approaching. You should soon get this done.";
+							} else if(eventStartTimeSeconds - timeNowSeconds >= 0 && eventStartTimeSeconds - timeNowSeconds < 300) {
+								send = true;
+								message['de'] = "Letzte Chance, diese Aufgabe noch rechtzeitig zu erledigen. Deadline ist heute!";
+								message['en'] = "Last chance to get this done in time. Deadline is today!";
+							}
+							let msg = message['en'];
+			   			if(message[language]) {
+			   				msg = message[language];
+			   			}
+			    		let payload = {
+				            notification: {
+				                title: calendarEvent.title,
+				                body: msg
+				            },
+				            data: {
+				              	title: calendarEvent.title,
+				                body: msg
+				            }
+				        };
+				        if(send) {
+				        	Object.values(user.val().devices).forEach( (device) => {
+					        	promises.push(admin.messaging().sendToDevice(String(device), payload));
+					        });
+				        }
 					}
-   				});
-   			});
-   		})
-   });
-   return null;
-     }
-);
+				});
+	   		}
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
 
 exports.getToKnowPush = functions.pubsub.schedule('0 6 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
@@ -274,154 +277,6 @@ exports.getToKnowPush = functions.pubsub.schedule('0 6 * * *').onRun((context) =
 				    });
 			    });
 		    }
-   		})
-   });
-   return null;
-     }
-);
-
-exports.tutorialThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			let timeNowMiliseconds = new Date().getTime();
-			let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
-			if(user.val().profile.tutorial.next == 'thoughts' && timeNowMiliseconds - triggerDateMiliseconds >= 3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 2*3600*1000) {
-		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    	devices.forEach(function(device) {
-			    		let language = 'en';
-			    		if(user.val().profile.language) {
-			   				language = user.val().profile.language;
-			   			}
-			   			let message: any = {};
-						message['de'] = "Hey, ich bins nochmal. Während dem Abarbeiten deiner ersten eigenen ToDos, möchte ich dich noch zusätzlich herausfordern. Die 'Gedanken' Seite wurde soeben freigeschaltet, öffne mich und besuch diese mal.";
-						message['en'] = "Hey, it's me again. I want to additionally challenge you while working on your first own todos. The 'Thoughts' page has just been unlocked, open me and visit it.";
-						let msg = message['en'];
-			   			if(message[language]) {
-			   				msg = message[language];
-			   			}
-			    		let payload = {
-				            notification: {
-				                title: "Gossik",
-				                body: msg
-				            },
-				            data: {
-				              	title: "Gossik",
-				                body: msg
-				            }
-				        };
-				       	admin.messaging().sendToDevice(device.val(), payload);
-			     	});
-			    });
-		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughts').set(true);
-		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
-		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');  
-		  	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('tutorialProgress').set(1);  
-			}
-   		})
-   });
-   return null;
-     }
-);
-
-exports.tutorialThoughtprocessingPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			let timeNowMiliseconds = new Date().getTime();
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
-			if(user.val().profile.tutorial.next == 'thoughtprocessing' && timeNowMiliseconds - triggerDateMiliseconds >= 24*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 48*3600*1000 && timeNowConverted.getHours() == 20) {
-				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
-		    		let numberThoughts: number = 0;
-		    		thoughts.forEach(function(thought) {
-		    			numberThoughts += 1;
-		    		});
-		    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    		devices.forEach(function(device) {
-				    		let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-				   			if(numberThoughts >= 1) {
-   								message['de'] = "Hey, hier bin ich wieder. Sehr interessant, was du so für Gedanken hast. Spass, Datenschutz ist uns sehr wichtig und niemand wird je deine Daten anschauen. Einzig ich werde von deinen Daten lernen, um dich besser unterstützen zu können, wenn du mir das erlaubst. Öffne mich und besuche die 'Organisieren' Seite.";
-   								message['en'] = "Hey, here I am again. You really do have interesting thoughts. Joke, we take data privacy very seriously and nobody will ever read your data. Only I will learn from you to better support you, if you allow me that. Open me and visit the 'Thoughts' page.";
-	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');
-	   						} else {
-	   							message['de'] = "Hey, ich sehe du hast noch keine Gedanken gespeichert. Sehr schade, das würde nämlich richtig gut helfen. Versuch es doch einmal und wir schauen morgen nochmals. Für den nächsten Teil der Einleitung benötigen wir mindestens einen gespeicherten Gedanken.";
-	   							message['en'] = "Hey, I see you haven't any thoughts saved. It's a pity, because it would help you really well. Why don't you try it and we'll see us again tomorrow. For the next part of the tutorial, we need at least one saved thought.";
-	   							let newTriggerDate = new Date();
-	   							newTriggerDate.setHours(newTriggerDate.getHours() -3);
-	   							admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set(newTriggerDate.toISOString());
-	   						}
-	   						let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg
-					            }
-					        };
-					       	admin.messaging().sendToDevice(device.val(), payload);
-					    });
-				    });
-				    if(numberThoughts >= 1) {
-				    	admin.database().ref('/users/' + user.key + '/profile/tutorial').child('thoughtprocessing').set('true');	
-				    }
-		    	});
-			}
-   		})
-   });
-   return null;
-     }
-);
-
-exports.tutorialProjectsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			if(user.val().profile.tutorial.next == 'projects') {
-				let timeNowMiliseconds = new Date().getTime();
-				let triggerDateMiliseconds = new Date(user.val().profile.tutorial.triggerDate).getTime();
-				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-				//previous tutorial is finished after 8pm, therefore if we set it 24h+ later, it will be after 2 days becaus next day 8pm won't be 24h+ after the trigger.
-				//Thus, setting it to between 12 and 36h
-				if(timeNowMiliseconds - triggerDateMiliseconds >= 12*3600*1000 && timeNowMiliseconds - triggerDateMiliseconds < 36*3600*1000 && timeNowConverted.getHours() == 20) {
-			    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    		devices.forEach(function(device) {
-				    		let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-   							message['de'] = "Hey, schon wieder ich. Bereit für den letzten Teil der Einleitung? Öffne mich und besuche die 'Anschauen' Seite, um das Gruppieren von ToDos zu Projekten mit mir anzuschauen.";
-   							message['en'] = "Hey, it's me again. Are you ready for the last part of the tutorial? Open me and visit the 'View' page to have a look on the grouping of todos into projects with me.";
-	   						let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg
-					            }
-					        };
-					       	admin.messaging().sendToDevice(device.val(), payload);
-					    });
-				    });
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('projects').set(true);
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('next').set('');
-				    admin.database().ref('/users/' + user.key + '/profile/tutorial').child('triggerDate').set('');
-				}
-			}
    		})
    });
    return null;
@@ -480,31 +335,38 @@ function getRandomInteger(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-exports.setRandomPushTimes = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+exports.setRandomPushTimes = functions.pubsub.schedule('50 * * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( users => {
+   		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
    			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 0) {
+			if(timeNowConverted.getHours() == 23) {
 	   			let randomPushTimes: number[] = [];
 	   			let numberPushForAssistant: any = {};
-				numberPushForAssistant['still'] = 0
-				numberPushForAssistant['chiller'] = 1
-				numberPushForAssistant['standard'] = 3
-				numberPushForAssistant['pusher'] = 5
-	   			while(randomPushTimes.length < numberPushForAssistant[user.val().profile.assistant]) {
+				numberPushForAssistant['still'] = 0;
+				numberPushForAssistant['chiller'] = 1;
+				numberPushForAssistant['standard'] = 3;
+				numberPushForAssistant['pusher'] = 5;
+				while(randomPushTimes.length < numberPushForAssistant[user.val().profile.assistant]) {
 	   				let nextNumber = getRandomInteger(8,21);
 	   				if(randomPushTimes.indexOf(nextNumber) == -1) {
-	   					randomPushTimes.push();
+	   					randomPushTimes.push(nextNumber);
 	   				}
 	   			}
-	   			admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(0);
-				admin.database().ref('/users/' + user.key + '/profile').child('randomPushTimes').set(randomPushTimes);
+	   			promises.push(admin.database().ref('/users/' + user.key + '/profile/randomPushTodosReceived').set(0));
+				promises.push(admin.database().ref('/users/' + user.key + '/profile/randomPushTimes').set(randomPushTimes));
    			}
-   		})
-   });
-   return null;
-     }
-);
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
 
 exports.checkRandomTodoDone = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
@@ -587,10 +449,10 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
    		users.forEach(function(user) {
    			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 			let numberPushForAssistant: any = {};
-			numberPushForAssistant['still'] = 0
-			numberPushForAssistant['chiller'] = 1
-			numberPushForAssistant['standard'] = 3
-			numberPushForAssistant['pusher'] = 5
+			numberPushForAssistant['still'] = 0;
+			numberPushForAssistant['chiller'] = 1;
+			numberPushForAssistant['standard'] = 3;
+			numberPushForAssistant['pusher'] = 5;
 			if(user.val().profile.randomPushTimes && user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
 				if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
 					if(user.val().nextActions) {
