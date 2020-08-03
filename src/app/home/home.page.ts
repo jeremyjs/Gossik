@@ -777,10 +777,16 @@ export class HomePage {
     }
 
     assignAssistant(assistant?: string) {
-    	if(assistant) {
-    		this.assistant = assistant;
-    	}
-    	this.db.updateAssistant(this.auth.userid, this.assistant);
+		if(this.userProfile.subscription == 'assistant' && !this.userProfile.subscriptionPaid) {
+			this.presentAlert("unpaidAssistantSubscription");
+			this.assistant = 'silent';
+			this.db.updateAssistant(this.auth.userid, this.assistant);
+		} else {
+			if(assistant) {
+				this.assistant = assistant;
+			}
+			this.db.updateAssistant(this.auth.userid, this.assistant);
+		}
     }
 
     goToShowFeedbackPage() {
