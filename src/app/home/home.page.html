@@ -1371,7 +1371,7 @@
           <p class="font-gray margin-0 margin-left-10 margin-bottom-3 font-size-15px">- {{nextAction.content}}</p>
         </button>
       </ion-card>
-      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent">
+      <ion-card class="margin-0 padding-10 margin-bottom-10 width-100 transparent" *ngIf="userProfile.subscription != 'thoughtsFeature' || userProfile.subscription == 'thoughtsFeature' && userProfile.subscriptionPaid">
         <ion-row>
           <ion-col size="9">
             <h1 class="display-inline-block font-white margin-0 margin-right-10 font-size-30px">{{"References" | translate }}</h1>

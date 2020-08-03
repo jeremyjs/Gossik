@@ -1053,30 +1053,34 @@ export class HomePage {
   	}
 
   	goToProcessPage() {
-  		this.pageTitle = "Thoughts";
-  		this.showTutorial('thoughts');
-  		this.showTutorial('thoughtprocessing');
-  		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
-		.snapshotChanges()
-		.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let capture: Capture = { 
-							key: c.payload.key, ...c.payload.val()
-						};
-						return capture;
-				});}));
-		this.captureList.subscribe( captureArray => {
-			this.captureArray = []
-			for(let capture of captureArray) {
-				if(capture.active != false){
-					this.captureArray.push(capture);
+		if(this.userProfile.subscription == 'thoughtsFeature' && !this.userProfile.subscriptionPaid) {
+			this.presentAlert("unpaidFeatureSubscription");
+		} else {
+			this.pageTitle = "Thoughts";
+			this.showTutorial('thoughts');
+			this.showTutorial('thoughtprocessing');
+			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
+			.snapshotChanges()
+			.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let capture: Capture = { 
+								key: c.payload.key, ...c.payload.val()
+							};
+							return capture;
+					});}));
+			this.captureList.subscribe( captureArray => {
+				this.captureArray = []
+				for(let capture of captureArray) {
+					if(capture.active != false){
+						this.captureArray.push(capture);
+					}
 				}
-			}
-			this.captureListNotEmpty = (this.captureArray.length > 0);
-		});
-		this.changePage('ProcessPage');
+				this.captureListNotEmpty = (this.captureArray.length > 0);
+			});
+			this.changePage('ProcessPage');
+		}
   	}
 
   	stopFollowUp() {
