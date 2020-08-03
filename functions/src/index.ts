@@ -586,7 +586,8 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 // Modifying the database manually for each user
 /*
 exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+    return admin.database().ref('/users').once("value", function(users) {
+		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
 			let tutorial = {
 				tutorial: {
@@ -604,13 +605,16 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
 		                'tutorialTodoPageTime': false
 		            }
 		    };
-   			admin.database().ref('/users/' + user.key + '/profile').update(tutorial);
+			   promises.push(admin.database().ref('/users/' + user.key + '/profile').update(tutorial));
    			// update just one specific value
-   			admin.database().ref('/users/' + user.key + '/profile/tutorial').child('assistant').set(true);
-   		})
+   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscription').set('freeUser'));
+   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(true));
+		   })
+		   return Promise.all(promises);
    });
    return null;
      }
 );
 */
+
 

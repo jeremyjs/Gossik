@@ -449,6 +449,10 @@ export class HomePage {
 					if(!this.userProfile.learnedSchedule) {
 						this.db.initiateLearnedSchedule(this.auth.userid);
 					}
+					if(this.userProfile.subscription == 'completeApp' && !this.userProfile.subscriptionPaid) {
+						this.presentAlert("unpaidCompleteAppSubscription");
+						this.logout();
+					}
 				});
 				if(this.isApp) {
 					this.calendar.mode = 'month'
