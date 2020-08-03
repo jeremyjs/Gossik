@@ -514,10 +514,16 @@
         {{"Learned schedule" | translate}}
       </h1>
     </ion-row>
-    <ng-template #template let-displayEvent="displayEvent" >
+    <ion-row *ngIf="userProfile.subscription == 'learnedSchedule' && !userProfile.subscriptionPaid" class="margin-auto font-size-20px width-90">
+      <p>
+      {{"unpaidLearnedScheduleSubscription" | translate }}
+      </p>
+    </ion-row>
+    <ng-template #template let-displayEvent="displayEvent" *ngIf="userProfile.subscription != 'learnedSchedule' || userProfile.subscription == 'learnedSchedule' && userProfile.subscriptionPaid">
       <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
     </ng-template>
-    <calendar [eventSource]="eventSource"
+    <calendar *ngIf="userProfile.subscription != 'learnedSchedule' || userProfile.subscription == 'learnedSchedule' && userProfile.subscriptionPaid"
+              [eventSource]="eventSource"
               [calendarMode]="'week'"
               [currentDate]="calendar.currentDate"
               (onEventSelected)="onEventSelected($event, 'assistant')"
