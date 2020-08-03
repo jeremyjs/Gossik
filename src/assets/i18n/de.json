@@ -212,7 +212,7 @@
   "tutorialEnd": "<p>Gratuliere, du hast die Einleitung erfolgreich abgeschlossen!</p><p>Sollte dir in Zukunft etwas unklar sein, findest du unter Einstellungen die Seite 'App Beschreib'. Ansonsten, kontaktiere uns oder sende uns dein Feedback, ebenfalls unter Einstellungen.</p>",
   "Type": "Typ",
   "Unassigned todos": "Nicht zugeteilte ToDos",
-  "unpaidCompleteAppSubscription": "Deine gratis Testversion ist abgelaufen. Wenn du Gossik weiterhin nutzen möchtest, besuche <a href="www.gossik.ch">www.gossik.ch</a> und schliesse ein Premiumabonnement ab.",
+  "unpaidCompleteAppSubscription": "Deine gratis Testversion ist abgelaufen. Wenn du Gossik weiterhin nutzen möchtest, besuche <a href=\"www.gossik.ch\">www.gossik.ch</a> und schliesse ein Premiumabonnement ab.",
   "Overview": "Übersicht",
   "Wed": "Mi",
   "Week": "Woche",
