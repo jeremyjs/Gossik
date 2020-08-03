@@ -2663,21 +2663,25 @@ export class HomePage {
 	}
 
 	filterToDos() {
-  		this.modalCtrl.create({ 
-			component: ToDoFilterModalPage,
-			componentProps: {goalArray: this.goalArray,
-							goalKeyArray: this.goalKeyArray}
-		}).then( modal => {
-			modal.present();
-			modal.onDidDismiss().then( data => {
-				if(data.data) {
-					this.goalKeyArray = data.data;
-					let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
-					this.db.learnLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
-					this.showDoableActions();
-				}
+		if(this.userProfile.subscription == 'filterAndDurationFeature' && !this.userProfile.subscriptionPaid) {
+			this.presentAlert("unpaidFeatureSubscription");
+		} else {
+			this.modalCtrl.create({ 
+				component: ToDoFilterModalPage,
+				componentProps: {goalArray: this.goalArray,
+								goalKeyArray: this.goalKeyArray}
+			}).then( modal => {
+				modal.present();
+				modal.onDidDismiss().then( data => {
+					if(data.data) {
+						this.goalKeyArray = data.data;
+						let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
+						this.db.learnLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
+						this.showDoableActions();
+					}
+				});
 			});
-		});
+		}
   	}
 
   	chooseGoal(event) {
@@ -2688,46 +2692,50 @@ export class HomePage {
   	}
 
   	openPicker(pickerName) {
-  		this.translate.get(["Done", "Cancel"]).subscribe( translation => {
-    		let columnNames = [];
-	  		let columnOptions = [[]];
-	  		let selectedIndices = [0]
-	  		if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration' || pickerName == 'StopActionPageDuration') {
-	  			columnNames = ['duration'];
-	  			for(let i = 0; i <= 80; i++) {
-	  				columnOptions[0].push(5*i);
-	  			}
-	  			if(this.duration) {
-	  				selectedIndices[0] = columnOptions[0].findIndex(option => option == this.duration);
-	  			}
-	  		}
-			this.pickerCtrl.create({
-		        columns: this.getColumns(columnNames, columnOptions, selectedIndices),
-		        buttons: [
-		          {
-		            text: translation["Cancel"],
-		            role: 'cancel'
-		          },
-		          {
-		            text: translation["Done"],
-		            handler: (value) => {
-		            	if(pickerName == 'ToDoPageDuration') {
-		              		this.duration = value.duration.value;
-		              		this.showDoableActions();
-		              	} else if(pickerName == 'ProcessCapturePageDuration') {
-		              		this.duration = value.duration.value;
-		              		this.timeSet();
-		              	} else if(pickerName == 'StopActionPageDuration') {
-		              		this.duration = value.duration.value;
-		              		this.updateStartedActionTime();
-		              	}
-		            }
-		          }
-		        ]
-		    }).then( picker => {
-		    	picker.present();
-		    });	
-	    })
+		if(pickerName == 'ToDoPageDuration' && this.userProfile.subscription == 'filterAndDurationFeature' && !this.userProfile.subscriptionPaid) {
+			this.presentAlert("unpaidFeatureSubscription");
+		} else {
+			this.translate.get(["Done", "Cancel"]).subscribe( translation => {
+				let columnNames = [];
+				let columnOptions = [[]];
+				let selectedIndices = [0]
+				if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration' || pickerName == 'StopActionPageDuration') {
+					columnNames = ['duration'];
+					for(let i = 0; i <= 80; i++) {
+						columnOptions[0].push(5*i);
+					}
+					if(this.duration) {
+						selectedIndices[0] = columnOptions[0].findIndex(option => option == this.duration);
+					}
+				}
+				this.pickerCtrl.create({
+					columns: this.getColumns(columnNames, columnOptions, selectedIndices),
+					buttons: [
+					{
+						text: translation["Cancel"],
+						role: 'cancel'
+					},
+					{
+						text: translation["Done"],
+						handler: (value) => {
+							if(pickerName == 'ToDoPageDuration') {
+								this.duration = value.duration.value;
+								this.showDoableActions();
+							} else if(pickerName == 'ProcessCapturePageDuration') {
+								this.duration = value.duration.value;
+								this.timeSet();
+							} else if(pickerName == 'StopActionPageDuration') {
+								this.duration = value.duration.value;
+								this.updateStartedActionTime();
+							}
+						}
+					}
+					]
+				}).then( picker => {
+					picker.present();
+				});	
+			})
+		}
     }
 
     getColumns(columnNames, columnOptions, selectedIndices) {
