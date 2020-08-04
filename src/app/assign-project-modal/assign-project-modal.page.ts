@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Goal } from '../../model/goal/goal.model';
 import { DatabaseService } from '../services/database.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assign-project-modal',
@@ -32,6 +33,22 @@ export class AssignProjectModalPage implements OnInit {
   	this.projectColors = this.navParams.get('projectColors');
   }
 
+  presentAlert(alertMessage) {
+	this.translate.get([alertMessage, "OK"]).subscribe( translation => {
+		let buttons = [
+						{
+						  text: translation["OK"]
+						}
+				  ];
+		this.alertCtrl.create({
+		  message: translation[alertMessage],
+		  buttons: buttons
+	  }).then( alert => {
+		  alert.present();
+	  });
+	})
+}
+
   chooseGoal(goal) {
   	this.modalCtrl.dismiss(goal);
   }
@@ -41,7 +58,13 @@ export class AssignProjectModalPage implements OnInit {
   }
 
   addProject() {
-  	this.addingProject = true;
+	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( (userProfile: any) => {
+		if(userProfile.subscription == 'limitedFeatures' && !userProfile.subscriptionPaid && this.goalArray.length >= 3) {
+			this.presentAlert("unpaidLimitedFeaturesSubscription");
+		} else {
+			this.addingProject = true;
+		}
+	});
   }
 
   createProject(project) {

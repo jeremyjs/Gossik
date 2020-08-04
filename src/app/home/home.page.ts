@@ -1015,51 +1015,55 @@ export class HomePage {
   	}
 
   	goToCapturePage() {
-  		this.pageTitle = "Create new thought";
-  		if(!this.capturePageStarted) {
-	  		this.capturePageStarted = true;
-	  	}
-	  	this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
-		.snapshotChanges()
-		.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let capture: Capture = { 
-							key: c.payload.key, ...c.payload.val()
-						};
-						return capture;
-				});}));
-		this.captureList.subscribe( captureArray => {
-			this.captureArray = []
-			for(let capture of captureArray) {
-				if(capture.active != false){
-					this.captureArray.push(capture);
-				}
+		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.captureArray.length >= 10) {
+			this.presentAlert("unpaidLimitedFeaturesSubscription")
+		} else {
+			this.pageTitle = "Create new thought";
+			if(!this.capturePageStarted) {
+				this.capturePageStarted = true;
 			}
-			this.captureListNotEmpty = (this.captureArray.length > 0);
-		});
-		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
-		.snapshotChanges()
-		.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let action: Action = { 
-							key: c.payload.key, ...c.payload.val()
+			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
+			.snapshotChanges()
+			.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let capture: Capture = { 
+								key: c.payload.key, ...c.payload.val()
 							};
-						return action;
-				});}));
-		this.takenActionList.subscribe( takenActionArray => {
-			this.takenActionArray = [];
-			for(let action of takenActionArray) {
-				if(action.active != false){
-					this.takenActionArray.push(action);
+							return capture;
+					});}));
+			this.captureList.subscribe( captureArray => {
+				this.captureArray = []
+				for(let capture of captureArray) {
+					if(capture.active != false){
+						this.captureArray.push(capture);
+					}
 				}
-			}
-			this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
-		});
-		this.changePage('CapturePage');
+				this.captureListNotEmpty = (this.captureArray.length > 0);
+			});
+			this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+			.snapshotChanges()
+			.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let action: Action = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return action;
+					});}));
+			this.takenActionList.subscribe( takenActionArray => {
+				this.takenActionArray = [];
+				for(let action of takenActionArray) {
+					if(action.active != false){
+						this.takenActionArray.push(action);
+					}
+				}
+				this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+			});
+			this.changePage('CapturePage');
+		}
   	}
 
   	goToProcessPage() {
@@ -1098,7 +1102,7 @@ export class HomePage {
   	}
 
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
-  		this.capture = capture;
+		this.capture = capture;
   		this.captureContent = capture.content;
   		this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
@@ -1399,14 +1403,8 @@ export class HomePage {
   	processCapture() {
   		if(this.captureType == 'action') {
   			this.addActionFromCapture();
-  			this.translate.get(["Todo saved"]).subscribe( translation => {
-		  		this.presentToast(translation["Todo saved"]);
-			});
   		} else if(this.captureType == 'note'){
   			this.addNoteFromCapture();
-  			this.translate.get(["Thought saved"]).subscribe( translation => {
-		  		this.presentToast(translation["Thought saved"]);
-			});
   		}
   		if(this.cameFromProjectOverviewPage) {
   			this.reviewGoal(this.captureProject);
@@ -1423,135 +1421,156 @@ export class HomePage {
   	}
 
   	addActionFromCapture() {
-  		let action: Action = {
-		    userid: this.auth.userid,
-		    goalid: this.captureProject.key,
-		    content: this.captureContent,
-		    priority: this.capturePriority,
-		    time: this.captureDuration,
-		    taken: false,
-		    active: true
-  		};
-  		if(this.userProfile.tutorial.processTodo) {
-  			this.presentAlert("processTodoEnd");
-  			this.db.finishTutorial(this.auth.userid, 'processTodo');
-  		}
-  		if(this.captureDeadline) {
-  			action.deadline = this.captureDeadline.toISOString();
-			let deadlineStartTime = new Date (action.deadline).setHours(2);
-			let deadlineEndTime = new Date (action.deadline).setHours(5);
-			if(!this.captureProject.color) {
-				this.captureProject.color = "#C0C0C0";
-			}
-			let eventData: CalendarEvent = {
-				userid: this.auth.userid,
-				goalid: action.goalid,
-				startTime: new Date(deadlineStartTime).toISOString(),
-				endTime: new Date (deadlineEndTime).toISOString(),
-				title: 'Deadline: ' + action.content,
-				allDay: true,
-				active: true,
-				color: this.captureProject.color
-			};
-			if(this.platform.is('cordova')) {
-				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-					if(hasReadWritePermission) {
-						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-							eventData.event_id = event_id;
-							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-				            	action.deadlineid = event.key;
-				            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
-				            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
-				            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
-				            				calendarEvent.key = event.key;
-				            				calendarEvent.actionid = actionAddedkey.key;
-				            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
-				            			});
-				            		});
-				            	});
-				            });
+		this.nextActionList = this.db.getNextActionListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(take(1),
+			map(
+				changes => { 
+					return changes.map( c => {
+						let action: Action = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return action;
+		});}));
+		this.nextActionList.subscribe( nextActionArray => {
+			nextActionArray = nextActionArray.filter(action => action.active != false);
+			if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && nextActionArray.length >= 10) {
+				this.presentAlert("unpaidLimitedFeaturesSubscription");
+			} else {
+				let action: Action = {
+					userid: this.auth.userid,
+					goalid: this.captureProject.key,
+					content: this.captureContent,
+					priority: this.capturePriority,
+					time: this.captureDuration,
+					taken: false,
+					active: true
+				};
+				if(this.userProfile.tutorial.processTodo) {
+					this.presentAlert("processTodoEnd");
+					this.db.finishTutorial(this.auth.userid, 'processTodo');
+				}
+				if(this.captureDeadline) {
+					action.deadline = this.captureDeadline.toISOString();
+					let deadlineStartTime = new Date (action.deadline).setHours(2);
+					let deadlineEndTime = new Date (action.deadline).setHours(5);
+					if(!this.captureProject.color) {
+						this.captureProject.color = "#C0C0C0";
+					}
+					let eventData: CalendarEvent = {
+						userid: this.auth.userid,
+						goalid: action.goalid,
+						startTime: new Date(deadlineStartTime).toISOString(),
+						endTime: new Date (deadlineEndTime).toISOString(),
+						title: 'Deadline: ' + action.content,
+						allDay: true,
+						active: true,
+						color: this.captureProject.color
+					};
+					if(this.platform.is('cordova')) {
+						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+							if(hasReadWritePermission) {
+								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+									eventData.event_id = event_id;
+									this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+										action.deadlineid = event.key;
+										this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+											this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+												this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+													calendarEvent.key = event.key;
+													calendarEvent.actionid = actionAddedkey.key;
+													this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+												});
+											});
+										});
+									});
+								});
+							} else {
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									action.deadlineid = event.key;
+									this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+										this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+											this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+												calendarEvent.key = event.key;
+												calendarEvent.actionid = actionAddedkey.key;
+												this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+											});
+										});
+									});
+								});
+							}
 						});
 					} else {
 						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-			            	action.deadlineid = event.key;
-			            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
-			            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
-			            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
-			            				calendarEvent.key = event.key;
-			            				calendarEvent.actionid = actionAddedkey.key;
-			            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
-			            			});
-			            		});
-			            	});
-			            });
-					}
-				});
-			} else {
-				this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-	            	action.deadlineid = event.key;
-	            	this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
-	            		this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
-	            			this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
-	            				calendarEvent.key = event.key;
-	            				calendarEvent.actionid = actionAddedkey.key;
-	            				this.db.editCalendarEvent(calendarEvent, this.auth.userid);
-	            			});
-	            		});
-	            	});
-	            });
-			}
-        } else {
-			this.db.addAction(action, this.capture, this.auth.userid);
-		}
-		if(this.captureSchedule) {
-			let eventData: CalendarEvent = {
-				userid: this.auth.userid,
-				allDay: false,
-				active: true,
-				startTime: this.captureSchedule.toISOString(),
-				endTime: new Date(this.captureSchedule.getTime() + this.captureDuration*60*1000).toISOString(),
-				title: this.captureContent,
-				goalid: ''
-			}
-			if(this.captureProject.key == 'unassigned') {
-				eventData.color = "#C0C0C0";
-				eventData.goalid = '';
-			} else {
-			    eventData.color = this.captureProject.color;
-			    eventData.goalid = this.captureProject.key;
-				let dates = [new Date(eventData.startTime)];
-				let minute = 0;
-				let hourUpdated = new Date(eventData.startTime).getHours();
-				while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
-					if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
-						dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
-						hourUpdated++;
-					}
-					minute++;
-				}
-				this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
-			}
-			if(this.platform.is('cordova')) {
-				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-					if(hasReadWritePermission) {
-						this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-							eventData.event_id = event_id;
-							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-								eventData.key = event.key;
+							action.deadlineid = event.key;
+							this.db.addAction(action, this.capture, this.auth.userid).then( actionAddedkey => {
+								this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+									this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+										calendarEvent.key = event.key;
+										calendarEvent.actionid = actionAddedkey.key;
+										this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+									});
+								});
 							});
+						});
+					}
+				} else {
+					this.db.addAction(action, this.capture, this.auth.userid);
+				}
+				this.translate.get(["Todo saved"]).subscribe( translation => {
+					this.presentToast(translation["Todo saved"]);
+			  	});
+				if(this.captureSchedule) {
+					let eventData: CalendarEvent = {
+						userid: this.auth.userid,
+						allDay: false,
+						active: true,
+						startTime: this.captureSchedule.toISOString(),
+						endTime: new Date(this.captureSchedule.getTime() + this.captureDuration*60*1000).toISOString(),
+						title: this.captureContent,
+						goalid: ''
+					}
+					if(this.captureProject.key == 'unassigned') {
+						eventData.color = "#C0C0C0";
+						eventData.goalid = '';
+					} else {
+						eventData.color = this.captureProject.color;
+						eventData.goalid = this.captureProject.key;
+						let dates = [new Date(eventData.startTime)];
+						let minute = 0;
+						let hourUpdated = new Date(eventData.startTime).getHours();
+						while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
+							if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+								dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
+								hourUpdated++;
+							}
+							minute++;
+						}
+						this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+					}
+					if(this.platform.is('cordova')) {
+						this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+							if(hasReadWritePermission) {
+								this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+									eventData.event_id = event_id;
+									this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+										eventData.key = event.key;
+									});
+								});
+							} else {
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									eventData.key = event.key;
+								});
+							}
 						});
 					} else {
 						this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 							eventData.key = event.key;
 						});
 					}
-				});
-			} else {
-				this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-					eventData.key = event.key;
-				});
+				}
 			}
-		}
+		});
   	}
 
   	addNoteFromCapture() {
@@ -1564,7 +1583,10 @@ export class HomePage {
   		if(this.userProfile.tutorial.processThought) {
   			this.presentAlert("processThoughtEnd");
   			this.db.finishTutorial(this.auth.userid, 'processThought');
-  		}
+		  }
+		this.translate.get(["Thought saved"]).subscribe( translation => {
+			this.presentToast(translation["Thought saved"]);
+	  	});
 		this.db.addReference(reference, this.capture, this.auth.userid);
   	}
 
@@ -1900,7 +1922,8 @@ export class HomePage {
 	// ProjectsPage functions
 	goToProjectsPage() {
 		this.pageTitle = "Overview";
-  		this.goal.name = '';
+		this.goal.name = '';
+		this.addingProject = false;  
 	    this.goalList = this.db.getGoalList(this.auth.userid)
 		.snapshotChanges()
 		.pipe(
@@ -1946,7 +1969,11 @@ export class HomePage {
   	}
 
   	addProject() {
-  		this.addingProject = true;
+		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.goalArray.length >= 3) {
+			this.presentAlert("unpaidLimitedFeaturesSubscription");
+		} else {
+			  this.addingProject = true;
+		}
   	}
 	
 	reviewGoal(goal: Goal) {
