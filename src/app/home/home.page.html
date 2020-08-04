@@ -517,31 +517,33 @@
         {{"Learned schedule" | translate}}
       </h1>
     </ion-row>
-    <ion-row *ngIf="userProfile.subscription == 'learnedSchedule' && !userProfile.subscriptionPaid" class="margin-auto font-size-20px width-90">
+    <ion-row *ngIf="userProfile.subscription == 'learnedScheduleFeature' && !userProfile.subscriptionPaid" class="margin-auto font-size-20px width-90">
       <p>
       {{"unpaidLearnedScheduleSubscription" | translate }}
       </p>
     </ion-row>
-    <ng-template #template let-displayEvent="displayEvent" *ngIf="userProfile.subscription != 'learnedSchedule' || userProfile.subscription == 'learnedSchedule' && userProfile.subscriptionPaid">
-      <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
-    </ng-template>
-    <calendar *ngIf="userProfile.subscription != 'learnedSchedule' || userProfile.subscription == 'learnedSchedule' && userProfile.subscriptionPaid"
-              [eventSource]="eventSource"
-              [calendarMode]="'week'"
-              [currentDate]="calendar.currentDate"
-              (onEventSelected)="onEventSelected($event, 'assistant')"
-              formatWeekViewDayHeader="EEE"
-              step="5"
-              class="calendar padding-10 noAllDay"
-              autoSelect="false"
-              lockSwipes="true"
-              [weekviewNormalEventTemplate]="template"
-              scrollToHour="6"
-              [locale]="translate.currentLang"
-              formatHourColumn="{{'formatHourColumn' | translate }}"
-              startingDayWeek="1"
-              allDayLabel="{{'Deadlines' | translate }}">
-    </calendar>
+    <ion-row *ngIf="userProfile.subscription != 'learnedScheduleFeature' || (userProfile.subscription == 'learnedScheduleFeature' && userProfile.subscriptionPaid)" class="margin-auto font-size-20px widt-90">
+      <ng-template #template let-displayEvent="displayEvent">
+        <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color, 'opacity': displayEvent.event.opacity}">{{displayEvent.event.title}}</div>
+      </ng-template>
+      <calendar 
+                [eventSource]="eventSource"
+                [calendarMode]="'week'"
+                [currentDate]="calendar.currentDate"
+                (onEventSelected)="onEventSelected($event, 'assistant')"
+                formatWeekViewDayHeader="EEE"
+                step="5"
+                class="calendar padding-10 noAllDay width-100"
+                autoSelect="false"
+                lockSwipes="true"
+                [weekviewNormalEventTemplate]="template"
+                scrollToHour="6"
+                [locale]="translate.currentLang"
+                formatHourColumn="{{'formatHourColumn' | translate }}"
+                startingDayWeek="1"
+                allDayLabel="{{'Deadlines' | translate }}">
+      </calendar>
+    </ion-row>
   </div>
 
   <!-- FeedbackPage -->
@@ -1456,6 +1458,11 @@
       </ion-row>
     </ion-grid>
     <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
+      <ion-row>
+        <button *ngIf="userProfile.subscription == 'syncCalendarFeature'" class="button-design margin-auto font-size-20px" (click)="syncNativeCalendar()">
+          {{"Sync phone calendar" | translate}}
+        </button>
+      </ion-row>
       <ion-row class="width-100 text-align-right">
         <ion-col size="5" class="text-align-center">
           <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('day')">

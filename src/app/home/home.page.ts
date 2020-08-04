@@ -247,7 +247,7 @@ export class HomePage {
 		        	this.calendarEvents.push(calendarEvent);
 		        }
 	        };
-	        if(this.platform.is('cordova')) {
+	        if(this.platform.is('cordova') && (this.userProfile.subscription != 'syncCalendarFeature' || this.userProfile.subscription == 'syncCalendarFeature' && this.userProfile.subscriptionPaid)) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
 						this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
@@ -436,7 +436,6 @@ export class HomePage {
 				}
 				this.getStartedAction();
 				this.getGoals();
-				this.getCalendarEvents();
 				this.content.getScrollElement().then(innerScroll => {
 					this.domCtrl.write(() => {
 						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
@@ -453,6 +452,7 @@ export class HomePage {
 						this.presentAlert("unpaidCompleteAppSubscription");
 						this.logout();
 					}
+					this.getCalendarEvents();
 				});
 				if(this.isApp) {
 					this.calendar.mode = 'month'
@@ -2140,7 +2140,25 @@ export class HomePage {
 		});
 		this.pageTitle = "Calendar";
 		this.changePage('CalendarPage');
-  	}
+	}
+	  
+	syncNativeCalendar() {
+		if(this.userProfile.subscriptionPaid) {
+			this.eventSource = [];
+			for(let calendarEvent of this.calendarEvents) {
+				if(calendarEvent.active != false) {
+					this.eventSource.push(calendarEvent);
+				}
+			};
+			let events = this.eventSource;
+			this.eventSource = [];
+			setTimeout(() => {
+				this.eventSource = events;
+			});
+		} else {
+			this.presentAlert("unpaidFeatureSubscription");
+		}
+	}
   	
   	addEvent(){
   		this.goalArray = [];
