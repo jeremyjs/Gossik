@@ -447,67 +447,69 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
     return admin.database().ref('/users').once("value").then( users => {
     	let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			let numberPushForAssistant: any = {};
-			numberPushForAssistant['still'] = 0;
-			numberPushForAssistant['chiller'] = 1;
-			numberPushForAssistant['standard'] = 3;
-			numberPushForAssistant['pusher'] = 5;
-			if(user.val().profile.randomPushTimes && user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
-				if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
-					if(user.val().nextActions) {
-						let todos = [];
-						for(let key in user.val().nextActions) {
-							if(user.val().nextActions[key].active != false && user.val().nextActions[key].time <= 30) {
-								let todo = user.val().nextActions[key]
-								todo['todoid'] = key;
-								todos.push(todo);
+			if(user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
+				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+				let numberPushForAssistant: any = {};
+				numberPushForAssistant['still'] = 0;
+				numberPushForAssistant['chiller'] = 1;
+				numberPushForAssistant['standard'] = 3;
+				numberPushForAssistant['pusher'] = 5;
+				if(user.val().profile.randomPushTimes && user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
+					if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
+						if(user.val().nextActions) {
+							let todos = [];
+							for(let key in user.val().nextActions) {
+								if(user.val().nextActions[key].active != false && user.val().nextActions[key].time <= 30) {
+									let todo = user.val().nextActions[key]
+									todo['todoid'] = key;
+									todos.push(todo);
+								}
 							}
-						}
-						if(todos.length > 0) {
-							//currently we pick a random todo, later on the one with the highest priority
-							//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-							let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
-							let language = 'en';
-				    		if(user.val().profile.language) {
-				   				language = user.val().profile.language;
-				   			}
-				   			let message: any = {};
-				   			let title: any = {};
-							message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
-							message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
-							title['de'] = "Lass uns das erledigen";
-							title['en'] = "Let's get this done";
-							let msg = message['en'];
-				   			if(message[language]) {
-				   				msg = message[language];
-				   			}
-				    		let payload = {
-					            notification: {
-					                title: "Gossik",
-					                body: msg
-					            },
-					            data: {
-					              	title: "Gossik",
-					                body: msg,
-					                target: 'todo',
-					                todoid: randomTodo.todoid
-					            }
-					        };
-					        Object.values(user.val().devices).forEach( (device) => {
-					        	promises.push(admin.messaging().sendToDevice(String(device), payload));
-					        });
-					    	let pushNotification = {
-					    		message: msg,
-					    		todoid: randomTodo.todoid,
-					    		createDate: new Date().toISOString()
-					    	}
-					    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
-					    	if(user.val().profile.randomPushTodosReceived) {
-					    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
-					    	} else {
-					    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(1);
-					    	}
+							if(todos.length > 0) {
+								//currently we pick a random todo, later on the one with the highest priority
+								//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+								let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
+								let language = 'en';
+								if(user.val().profile.language) {
+									language = user.val().profile.language;
+								}
+								let message: any = {};
+								let title: any = {};
+								message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
+								message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
+								title['de'] = "Lass uns das erledigen";
+								title['en'] = "Let's get this done";
+								let msg = message['en'];
+								if(message[language]) {
+									msg = message[language];
+								}
+								let payload = {
+									notification: {
+										title: "Gossik",
+										body: msg
+									},
+									data: {
+										title: "Gossik",
+										body: msg,
+										target: 'todo',
+										todoid: randomTodo.todoid
+									}
+								};
+								Object.values(user.val().devices).forEach( (device) => {
+									promises.push(admin.messaging().sendToDevice(String(device), payload));
+								});
+								let pushNotification = {
+									message: msg,
+									todoid: randomTodo.todoid,
+									createDate: new Date().toISOString()
+								}
+								admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
+								if(user.val().profile.randomPushTodosReceived) {
+									admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
+								} else {
+									admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(1);
+								}
+							}
 						}
 					}
 				}

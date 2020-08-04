@@ -787,7 +787,7 @@ export class HomePage {
     }
 
     assignAssistant(assistant?: string) {
-		if(this.userProfile.subscription == 'assistant' && !this.userProfile.subscriptionPaid) {
+		if(this.userProfile.subscription == 'assistantFeature' && !this.userProfile.subscriptionPaid) {
 			this.presentAlert("unpaidAssistantSubscription");
 			this.assistant = 'silent';
 			this.db.updateAssistant(this.auth.userid, this.assistant);
