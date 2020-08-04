@@ -527,6 +527,22 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 });
 
 /*
+exports.countWeeklyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( users => {
+		let count: number = 0;
+		let today = new Date();
+		let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+   		users.forEach(function(user) {
+			if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
+				count ++;
+			}
+		});
+		console.log('We have ' + String(count) + ' weekly active users.');
+   	});
+});
+*/
+
+/*
 exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
 	let promises: Promise<any>[] = [];
     return admin.database().ref('/users/R1CFRqnvsmdJtxIJZIvgF1Md0lr1').once("value")
