@@ -368,6 +368,21 @@ exports.setRandomPushTimes = functions.pubsub.schedule('50 * * * *').onRun((cont
    	});
 });
 
+exports.setLoggedInToday = functions.pubsub.schedule('50 * * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( users => {
+		let today = new Date();
+		let yesterday = new Date(today.getTime() - 24*3600*1000);
+   		users.forEach(function(user) {
+   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() == 23) {
+				if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime()) {
+	   				admin.database().ref('/users/' + user.key + '/loginDays').push(timeNowConverted.toISOString());
+				}
+   			}
+   		});
+   	});
+});
+
 exports.checkRandomTodoDone = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
     admin.database().ref('/users').once("value", function(users) {
    		users.forEach(function(user) {
