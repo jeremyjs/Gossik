@@ -703,7 +703,17 @@ export class HomePage {
     	} else if(info == 'Calendar') {
     		this.showInfoCalendar = !this.showInfoCalendar;
     	}
-    }
+	}
+	
+	goToThemesPage() {
+		if(this.userProfile.subscription != 'themesFeature' || this.userProfile.subscription == 'themesFeature' && this.userProfile.subscriptionPaid) {
+			this.presentAlert("paidFeatureMissingSubscription");
+		} else if(this.userProfile.subscription == 'themesFeature' && !this.userProfile.subscriptionPaid) {
+			this.presentAlert("unpaidFeatureSubscription");
+		} else {
+			this.presentAlert("featureMissing");
+		}
+	}
 
     goToAssistantPage() {
     	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {

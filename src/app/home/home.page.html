@@ -379,6 +379,9 @@
         <button *ngIf="userProfile.tutorial.assistant" class="button-design font-size-20px margin-top-10 green" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
         <button *ngIf="!userProfile.tutorial.assistant" class="button-design font-size-20px margin-top-10" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
       </ion-row>
+      <ion-row>
+        <button *ngIf="userProfile.subscription == 'themesFeature'" class="button-design font-size-20px margin-top-10" (click)="goToThemesPage()">{{"Themes" | translate}}</button>
+      </ion-row>
     </ion-grid>
   </div>
 
