@@ -22,6 +22,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireFunctionsModule, FUNCTIONS_REGION } from '@angular/fire/functions';
 
 
 // Modal pages
@@ -86,14 +87,16 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     FivetodosModalPageModule,
     TutorialProjectsModalPageModule,
     DatePickerModule,
-    NgCalendarModule
+    NgCalendarModule,
+    AngularFireFunctionsModule
   	],
   providers: [
     Calendar,
     FirebaseX,
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: FUNCTIONS_REGION, useValue: 'us-central1' }
   ],
   bootstrap: [AppComponent]
 })

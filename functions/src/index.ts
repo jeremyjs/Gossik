@@ -541,6 +541,31 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
    	});
 });
 
+export const loginStats = functions.https.onCall((data, context) => {
+	return admin.database().ref('/users').once("value").then( users => {
+		let count: number = 0;
+		let today = new Date();
+		let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+   		users.forEach(function(user) {
+			if(user.val().profile) {
+				if(user.val().profile.lastLogin) {
+					if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
+						count ++;
+					}
+				} else {
+					console.log('no lastLogin');
+				}
+			} else {
+				console.log('no profile');
+			}
+		});
+		console.log('count ' + String(count));
+		return { loggedIn7Days: count };
+   	}).catch((error) => {
+		throw new functions.https.HttpsError('unknown',error.message,error);
+	})
+});
+
 /*
 exports.countWeeklyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {

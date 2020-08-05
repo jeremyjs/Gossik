@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime, PickerController, DomController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -201,7 +202,8 @@ export class HomePage {
 		private nativeCalendar: NativeCalendarService,
 		public toastCtrl: ToastController,
 		public pickerCtrl: PickerController,
-		public domCtrl: DomController
+		public domCtrl: DomController,
+		private functions: AngularFireFunctions
 		) {
 		this.isApp = this.platform.is('cordova');
 		console.log('for developing, this.isApp is set to true always because otherwhise, cannot test on desktop using --lab flag.');
@@ -716,6 +718,7 @@ export class HomePage {
 	}
 
     goToAssistantPage() {
+		this.showLoggedIn7Days();
     	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			if(!this.userProfile['assistant']) {
 				this.db.initiateAssistant(this.auth.userid);
@@ -797,7 +800,13 @@ export class HomePage {
 			}
 			this.db.updateAssistant(this.auth.userid, this.assistant);
 		}
-    }
+	}
+	
+	showLoggedIn7Days() {
+		let call = this.functions.httpsCallable('loginStats')({}).subscribe( loginStats => {
+			console.log(loginStats.loggedIn7Days);
+		});
+	}
 
     goToShowFeedbackPage() {
     	this.feedbackList = this.db.getFeedbackList()
