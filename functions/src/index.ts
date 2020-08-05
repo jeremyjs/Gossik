@@ -552,14 +552,9 @@ export const loginStats = functions.https.onCall((data, context) => {
 					if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
 						count ++;
 					}
-				} else {
-					console.log('no lastLogin');
 				}
-			} else {
-				console.log('no profile');
 			}
 		});
-		console.log('count ' + String(count));
 		return { loggedIn7Days: count };
    	}).catch((error) => {
 		throw new functions.https.HttpsError('unknown',error.message,error);
