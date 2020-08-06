@@ -383,80 +383,73 @@ exports.setLoggedInToday = functions.pubsub.schedule('50 * * * *').onRun((contex
    	});
 });
 
-exports.checkRandomTodoDone = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 23) {
-	   			admin.database().ref('/users/' + user.key + '/pushNotifications').once("value", function(pushNotifications) {
-	   				pushNotifications.forEach(function(pushNotification) {
-	   					admin.database().ref('/users/' + user.key + '/nextActions/' + pushNotification.val().todoid).once("value", function(todo) {
-	   						if(todo.val().startDate && todo.val().goalid) {
-								let startDate = new Date(todo.val().startDate);
-								let randomPushTimeDate = new Date(pushNotification.val().createDate);
-								if(startDate.getTime() - randomPushTimeDate.getTime() <= 3600*1000 && startDate.getTime() - randomPushTimeDate.getTime() >= 0) {
-									admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
-										let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
-										let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
-										let weekDay = localeDate.getDay() - 1;
-				                        if(weekDay == -1) {
-				                            weekDay = 6;
-				                        }
-				                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
-				                        //to get back users local hour, we here also need to use localeDate
-				                        let hour = localeDate.getHours();
-				                        let row = weekDay * 24 + hour;
-				                        learnedScheduleObject[row][todo.val().goalid] += 1;
-										admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
-									});
-								} else {
-									let randomPushTimeDate = new Date(pushNotification.val().createDate);
-									admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
-										let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
-										let localeDate = convertDateToLocaleDate(randomPushTimeDate, user.val().profile.timezoneOffset);
-										let weekDay = localeDate.getDay() - 1;
-				                        if(weekDay == -1) {
-				                            weekDay = 6;
-				                        }
-				                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
-				                        //to get back users local hour, we here also need to use localeDate
-				                        let hour = localeDate.getHours();
-				                        let row = weekDay * 24 + hour;
-				                        for(let goalid in learnedScheduleObject[row]) {
-											learnedScheduleObject[row][goalid] -= 0.1;
-										}
-										admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
-									});
+exports.checkRandomTodoDone = functions.pubsub.schedule('0 * * * *').onRun(async (context) => {
+	return admin.database().ref('/users').once("value", function(users) {
+		let promises: Promise<any>[] = [];
+		users.forEach(function(user) {
+			//let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			//if(timeNowConverted.getHours() == 23) {
+				if(user.val().pushNotifications) {
+					for(let key in user.val().pushNotifications) {
+						if(user.val().nextActions && user.val().pushNotifications[key] && user.val().nextActions[user.val().pushNotifications[key].todoid]) {
+							let pushNotification = user.val().pushNotifications[key];
+							let todo = user.val().nextActions[pushNotification.todoid];
+							console.log('checking push ' + String(pushNotification.message));
+							if(todo.startDate && todo.goalid) {
+								let startDate = new Date(todo.startDate);
+								let randomPushTimeDate = new Date(pushNotification.createDate);
+								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
+								let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
+								let weekDay = localeDate.getDay() - 1;
+								if(weekDay == -1) {
+									weekDay = 6;
 								}
-							} else {
-								let randomPushTimeDate = new Date(pushNotification.val().createDate);
-								admin.database().ref('/users/' + user.key + '/profile/learnedSchedule').once("value", function(learnedSchedule) {
-									let learnedScheduleObject = JSON.parse(learnedSchedule.val().toString());
-									let localeDate = convertDateToLocaleDate(randomPushTimeDate, user.val().profile.timezoneOffset);
-									let weekDay = localeDate.getDay() - 1;
-			                        if(weekDay == -1) {
-			                            weekDay = 6;
-			                        }
-			                        //getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
-			                        //to get back users local hour, we here also need to use localeDate
-			                        let hour = localeDate.getHours();
-			                        let row = weekDay * 24 + hour;
-				                    for(let goalid in learnedScheduleObject[row]) {
+								//getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
+								//to get back users local hour, we here also need to use localeDate
+								let hour = localeDate.getHours();
+								let row = weekDay * 24 + hour;
+								if(startDate.getTime() - randomPushTimeDate.getTime() <= 3600*1000 && startDate.getTime() - randomPushTimeDate.getTime() >= 0) {
+									learnedScheduleObject[row][todo.goalid] += 1;
+									promises.push(admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject)));	
+								} else {
+									for(let goalid in learnedScheduleObject[row]) {
 										learnedScheduleObject[row][goalid] -= 0.1;
 									}
-									admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject));
-								});
+									promises.push(admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject)));
+								}
+							} else if(!todo.startDate) {
+								let startDate = new Date(todo.startDate);
+								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
+								let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
+								let weekDay = localeDate.getDay() - 1;
+								if(weekDay == -1) {
+									weekDay = 6;
+								}
+								//getHours() uses local date, so here in cloud it uses us-central1 locale date which has timezoneOffset 0
+								//to get back users local hour, we here also need to use localeDate
+								let hour = localeDate.getHours();
+								let row = weekDay * 24 + hour;
+								for(let goalid in learnedScheduleObject[row]) {
+									learnedScheduleObject[row][goalid] -= 0.1;
+								}
+								promises.push(admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject)));
 							}
-							admin.database().ref('/users/' + user.key + '/pushNotifications/' + pushNotification.key).remove();
-	   					})
-	   				});
-	   			});
-   			}
-   		});
-   });
-   return null;
-     }
-);
+						}
+						promises.push(admin.database().ref('/users/' + user.key + '/pushNotifications/' + key).remove());
+					}
+				}
+			//}
+		});
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+	});
+});
 
 exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {

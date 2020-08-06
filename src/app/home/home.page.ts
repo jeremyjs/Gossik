@@ -725,6 +725,8 @@ export class HomePage {
 			}
 			this.showTutorial('assistant');
 			let learnedSchedule = JSON.parse(userProfile['learnedSchedule'].toString());
+			console.log(Math.max(learnedSchedule));
+			console.log(learnedSchedule);
 			this.calendar.currentDate = new Date();
 	  		this.goalList = this.db.getGoalList(this.auth.userid)
 			  	.snapshotChanges()
