@@ -14,103 +14,58 @@ function convertDateToLocaleDate(date: Date, offset: number) {
 	return convertedDate;
 }
 
-
 exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((newPush, context) => {
 	let push = newPush.val();
-	admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-   			if(user.val().profile.language == 'de') {
-   				let payload = {
-		            notification: {
-		                title: 'Tipp des Tages',
-		                body: push.DE
-		            },
-		            data: {
-		              	title: 'Tipp des Tages',
-		                body: push.DE
-		            }
-		        };
-		        let ref = admin.database().ref('/users/' + user.key + '/devices');
-			    ref.once("value", function(devices) {
-			    	devices.forEach(function(device) {
-		        		admin.messaging().sendToDevice(device.val(), payload);
-		        	});
-			    });
-   			} else {
-   				let payload = {
-		            notification: {
-		                title: 'Tip of the day',
-		                body: push.EN
-		            },
-		            data: {
-		              	title: 'Tip of the day',
-		                body: push.EN
-		            }
-		        };
-		        let ref = admin.database().ref('/users/' + user.key + '/devices');
-			    ref.once("value", function(devices) {
-			    	devices.forEach(function(device) {
-		        		admin.messaging().sendToDevice(device.val(), payload);
-		        	});
-			    });
-   			}
-   		});
+	return admin.database().ref('/users').once("value", function(users) {
+		let promises: Promise<any>[] = [];
+		users.forEach(function(user) {
+			if(user.val().devices) {
+				if(user.val().profile.language == 'de') {
+					let payload = {
+						notification: {
+							title: 'Gossik Info',
+							body: push.DE
+						},
+						data: {
+							title: 'Gossik Info',
+							body: push.DE
+						}
+					};
+					Object.values(user.val().devices).forEach( (device) => {
+						promises.push(admin.messaging().sendToDevice(String(device), payload));
+					});
+				} else {
+					let payload = {
+						notification: {
+							title: 'Gossik Info',
+							body: push.EN
+						},
+						data: {
+							title: 'Gossik Info',
+							body: push.EN
+						}
+					};
+					Object.values(user.val().devices).forEach( (device) => {
+						promises.push(admin.messaging().sendToDevice(String(device), payload));
+					});
+				}
+			}
+		});
+		promises.push(admin.database().ref('/push/' + newPush.key + '/done').set(true));
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
    	});
-   	return null;
 });
 
-exports.AnimateThoughtsPush = functions.pubsub.schedule('0 12 * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-   			let timeNowMiliseconds = new Date().getTime();
-   			let timeNowSeconds = timeNowMiliseconds/1000;
-   			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
-   			let signUpDateTimeSeconds = signUpDateTimeMiliseconds/1000;
-   			if(timeNowSeconds - signUpDateTimeSeconds >= 86400 && timeNowSeconds - signUpDateTimeSeconds < 86700) {
-				let message: any = {};
-				let title: any = {};
-				title['de'] = "Befreie deinen Kopf";
-				message['de'] = "Hey, ich bins. Ich kann dir am besten helfen, wenn du jeden Gedanken jeweils direkt bei mir aufschreibst. Versuch das heute doch mal!";
-				title['en'] = "Free your mind";
-				message['en'] = "Hey, it's me. I can help you best if you write down each thought. Let's try it today!";
-				
-				let language = 'en';
-	    		if(user.val().profile.language) {
-	   				language = user.val().profile.language;
-	   			}
-				let msg = message['en'];
-				let ttl = title['en'];
-	   			if(message[language]) {
-	   				msg = message[language];
-	   			}
-	   			if(title[language]) {
-	   				ttl = title[language];
-	   			}
-	    		let payload = {
-		            notification: {
-		                title: ttl,
-		                body: msg
-		            },
-		            data: {
-		              	title: ttl,
-		                body: msg
-		            }
-		        };
-		        let ref = admin.database().ref('/users/' + user.key + '/devices');
-			    ref.once("value", function(devices) {
-			    	devices.forEach(function(device) {
-		        		admin.messaging().sendToDevice(device.val(), payload);
-		        	});
-			    });
-			}
-		})
-   });
-   return null;
-     }
-);
-
 exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+    return admin.database().ref('/users').once("value").then( users => {
+		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
    			let timeNowMiliseconds = new Date().getTime();
    			let timeNowSeconds = timeNowMiliseconds/1000;
@@ -123,7 +78,6 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
 				message['de'] = "Hey, ich habe schon lange nichts mehr von dir gehört. Alles okay? Ich würde dir liebend gerne helfen, nutze mich doch für ein Projekt um dich davon zu überzeugen!";
 				title['en'] = "Everything okay?";
 				message['en'] = "Hey, I haven't heard from you in a while. Everything okay? I'd love to help you, use me for a project to convince you!";
-				
 				let language = 'en';
 	    		if(user.val().profile.language) {
 	   				language = user.val().profile.language;
@@ -146,18 +100,21 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
 		                body: msg
 		            }
 		        };
-		        let ref = admin.database().ref('/users/' + user.key + '/devices');
-			    ref.once("value", function(devices) {
-			    	devices.forEach(function(device) {
-		        		admin.messaging().sendToDevice(device.val(), payload);
-		        	});
-			    });
+		        Object.values(user.val().devices).forEach( (device) => {
+					promises.push(admin.messaging().sendToDevice(String(device), payload));
+				});
 			}
-		})
+		});
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
    });
-   return null;
-     }
-);
+});
 
 exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
@@ -244,90 +201,60 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
    	});
 });
 
-exports.getToKnowPush = functions.pubsub.schedule('0 6 * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
-   		users.forEach(function(user) {
-			let timeNowMiliseconds = new Date().getTime();
-			let signUpDateTimeMiliseconds = new Date(user.val().profile.signUpDate).getTime();
-			if(timeNowMiliseconds - signUpDateTimeMiliseconds >= 5*3600*1000 && timeNowMiliseconds - signUpDateTimeMiliseconds < 29*3600*1000) {
-		    	admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-		    		devices.forEach(function(device) {
-			    		let language = 'en';
-			    		if(user.val().profile.language) {
-			   				language = user.val().profile.language;
-			   			}
-			   			let message: any = {};
-							message['de'] = "Hey, ich bins nochmals. Da wir noch in der Kennenlernphase sind, werde ich dir hin und wieder Benachrichtigungen schicken, um zu lernen, wann du was machen willst - oder gar nichts machen willst. So lerne ich dich und deinen Tagesablauf kennen und kann dich dann aktiv unterstützen.";
-							message['en'] = "Hey, it's me again. We are still in the process of getting to know each other. Therefore I will send you push notifications once in a while to learn when you want to do what - or do nothing at all. Like this, I can get to know you and your daily schedule and then actively support you.";
-   						let msg = message['en'];
-			   			if(message[language]) {
-			   				msg = message[language];
-			   			}
-			    		let payload = {
-				            notification: {
-				                title: "Gossik",
-				                body: msg
-				            },
-				            data: {
-				              	title: "Gossik",
-				                body: msg
-				            }
-				        };
-				       	admin.messaging().sendToDevice(device.val(), payload);
-				    });
-			    });
-		    }
-   		})
-   });
-   return null;
-     }
-);
-
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
-    admin.database().ref('/users').once("value", function(users) {
+    return admin.database().ref('/users').once("value").then( users => {
+		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 20) {
-				let numberThoughts: number = 0;
-				admin.database().ref('/users/' + user.key + '/captures').orderByChild('active').equalTo(true).once("value", function(thoughts) {
-		    		thoughts.forEach(function(thought) {
-		    			numberThoughts += 1;
-		    		});
-		    		if(numberThoughts >= 20) {
-			    		admin.database().ref('/users/' + user.key + '/devices').once("value", function(devices) {
-			    			devices.forEach(function(device) {
-					    		let language = 'en';
-					    		if(user.val().profile.language) {
-					   				language = user.val().profile.language;
-					   			}
-					   			let message: any = {};
-								message['de'] = "Hey, deine gespeicherten Gedanken häufen sich an. Ich kann dir besser helfen, wenn du diese regelmässig zu ToDos verarbeitest. Nutze doch 20 Minuten, um deine aktuellen Gedanken zu verarbeiten, das befreit enorm.";
-								message['en'] = "Hey, your saved thoughts are becoming more and more. I can better help you, if you regularly process them to todos. Why don't you use 20 minutes to process your current thoughts, it frees your mind.";
-	   							let msg = message['en'];
-					   			if(message[language]) {
-					   				msg = message[language];
-					   			}
-					    		let payload = {
-						            notification: {
-						                title: "Gossik",
-						                body: msg
-						            },
-						            data: {
-						              	title: "Gossik",
-						                body: msg
-						            }
-						        };
-						       	admin.messaging().sendToDevice(device.val(), payload);
-					    	});
-				    	});
-			    	}
-			    });
+			if(user.val().profile && user.val().profile.timezoneOffset) {
+				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+				if(timeNowConverted.getHours() == 20 && user.val().captures) {
+					let numberThoughts: number = 0;
+					Object.values(user.val().captures).forEach( (thought:any) => {
+						if(thought.active) {
+							numberThoughts++;
+						}
+					});
+					if(numberThoughts >= 20) {
+						let language = 'en';
+						if(user.val().profile.language) {
+							language = user.val().profile.language;
+						}
+						let message: any = {};
+						message['de'] = "Hey, deine gespeicherten Gedanken häufen sich an. Ich kann dir besser helfen, wenn du diese regelmässig zu ToDos verarbeitest. Nutze doch 20 Minuten, um deine aktuellen Gedanken zu verarbeiten, das befreit enorm.";
+						message['en'] = "Hey, your saved thoughts are becoming more and more. I can better help you, if you regularly process them to todos. Why don't you use 20 minutes to process your current thoughts, it frees your mind.";
+						let msg = message['en'];
+						if(message[language]) {
+							msg = message[language];
+						}
+						let payload = {
+							notification: {
+								title: "Gossik",
+								body: msg
+							},
+							data: {
+								title: "Gossik",
+								body: msg
+							}
+						};
+						Object.values(user.val().devices).forEach( (device) => {
+							promises.push(admin.messaging().sendToDevice(String(device), payload));
+						});
+					}
+				}
+			} else {
+				console.log('no timezoneoffset or profile for user ' + String(user.key));
 			}
-   		})
-   });
-   return null;
-     }
-);
+		});
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
 
 function getRandomInteger(min: number, max: number) {
     min = Math.ceil(min);
