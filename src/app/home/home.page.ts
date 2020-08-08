@@ -761,7 +761,9 @@ export class HomePage {
 					let maxKey = undefined;
 					let sum: number = 0;
 					for(let projectid in learnedSchedule[hour]) {
-						sum += learnedSchedule[hour][projectid];
+						if(learnedSchedule[hour][projectid] > 0) {
+							sum += learnedSchedule[hour][projectid];
+						}
 						if(learnedSchedule[hour][projectid] > max) {
 							max = learnedSchedule[hour][projectid];
 							maxKey = projectid;

@@ -310,19 +310,19 @@ exports.setLoggedInToday = functions.pubsub.schedule('50 * * * *').onRun((contex
    	});
 });
 
-exports.checkRandomTodoDone = functions.pubsub.schedule('0 * * * *').onRun(async (context) => {
+exports.checkRandomTodoDone = functions.pubsub.schedule('50 * * * *').onRun(async (context) => {
 	return admin.database().ref('/users').once("value", function(users) {
 		let promises: Promise<any>[] = [];
 		users.forEach(function(user) {
-			//let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			//if(timeNowConverted.getHours() == 23) {
+			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(timeNowConverted.getHours() != 23) {
 				if(user.val().pushNotifications) {
 					for(let key in user.val().pushNotifications) {
 						if(user.val().nextActions && user.val().pushNotifications[key] && user.val().nextActions[user.val().pushNotifications[key].todoid]) {
 							let pushNotification = user.val().pushNotifications[key];
 							let todo = user.val().nextActions[pushNotification.todoid];
-							console.log('checking push ' + String(pushNotification.message));
 							if(todo.startDate && todo.goalid) {
+								console.log('action started and has a goal');
 								let startDate = new Date(todo.startDate);
 								let randomPushTimeDate = new Date(pushNotification.createDate);
 								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
@@ -345,7 +345,7 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('0 * * * *').onRun(async
 									promises.push(admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject)));
 								}
 							} else if(!todo.startDate) {
-								let startDate = new Date(todo.startDate);
+								let startDate = new Date(pushNotification.createDate);
 								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
 								let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
 								let weekDay = localeDate.getDay() - 1;
@@ -365,7 +365,7 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('0 * * * *').onRun(async
 						promises.push(admin.database().ref('/users/' + user.key + '/pushNotifications/' + key).remove());
 					}
 				}
-			//}
+			}
 		});
 		return Promise.all(promises)
 	   	.then( () => {

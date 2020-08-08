@@ -144,7 +144,7 @@ export class DatabaseService {
                         let hour = date.getHours();
                         let row = weekDay * 24 + hour;
                         for(let projectid of projectids) {
-                            if(learnedScheduleObject[row][projectid]) {
+                            if(learnedScheduleObject[row][projectid] != undefined) {
                                 learnedScheduleObject[row][projectid] += value;
                             } else {
                                 for(let hour = 0; hour <= 167; hour ++) {
