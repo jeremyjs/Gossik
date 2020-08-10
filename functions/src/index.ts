@@ -462,23 +462,102 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 });
 
 export const loginStats = functions.https.onCall((data, context) => {
+	console.log(data);
+	let startDate = data.startDate;
+	let endDate = data.endDate;
+	let numberDays = data.numberDays;
 	return admin.database().ref('/users').once("value").then( users => {
-		let count: number = 0;
-		let today = new Date();
-		let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+		let countActiveUsers: number = 0;
    		users.forEach(function(user) {
-			if(user.val().profile) {
-				if(user.val().profile.lastLogin) {
-					if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
-						count ++;
+			let countActiveDays: number = 0;
+			if(user.val().loginDays) {
+				Object.values(user.val().loginDays).forEach( loginDay => {
+					if(new Date(startDate).getTime() <= new Date(String(loginDay)).getTime() && new Date(endDate).getTime() >= new Date(String(loginDay)).getTime()) {
+						countActiveDays++;
 					}
-				}
+				});
+			}
+			if(countActiveDays >= numberDays) {
+				countActiveUsers++;
 			}
 		});
-		return { loggedIn7Days: count };
+		return { activeUsers: countActiveUsers };
    	}).catch((error) => {
-		throw new functions.https.HttpsError('unknown',error.message,error);
+		throw new functions.https.HttpsError('unknown', error.message,error);
 	})
+});
+
+async function getAllUsers() {
+	return admin.database().ref('/users').once("value")
+}
+
+export const trackingSystem = functions.https.onCall(async (data, context) => {
+	let numberRegisteredUsers: number = 0;
+	let numberUsersWith5Todos: number = 0;
+	let numberUsersWith5TodosWithin3Days: number = 0;
+	let numberUsersWith5TodosWithin7Days: number = 0;
+	let users = await getAllUsers();
+	let checkDate = new Date(data.checkDate);
+	users.forEach( user => {
+		if(user.val().profile?.signUpDate) {
+			let signUpDate = new Date(user.val().profile.signUpDate);
+			if(checkDate.getDate() == signUpDate.getDate() && checkDate.getMonth() == signUpDate.getMonth() && checkDate.getFullYear() == signUpDate.getFullYear()) {
+				numberRegisteredUsers++;
+				if(user.val().nextActions) {
+					let numberTodos: number = 0;
+					let numberTodosWithin3Days: number = 0;
+					let numberTodosWithin7Days: number = 0;
+					Object.values(user.val().nextActions).forEach( (todo:any) => {
+						numberTodos++;
+						if(todo.createDate) {
+							let createDate = new Date(todo.createDate);
+							if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+								numberTodosWithin3Days++;
+							}
+							if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+								numberTodosWithin7Days++;
+							}
+						}
+					});
+					if(numberTodos >= 5) {
+						numberUsersWith5Todos++;
+					}
+					if(numberTodosWithin3Days >= 5) {
+						numberUsersWith5TodosWithin3Days++;
+					}
+					if(numberTodosWithin7Days >= 5) {
+						numberUsersWith5TodosWithin7Days++;
+					}
+				}			
+			}
+		}
+	});
+	console.log('On the ' + checkDate.toISOString() + ' we got ' + String(numberRegisteredUsers) + ' new users of which ' + String(numberUsersWith5Todos) + ' got at least 5 to-dos in total and ' + String(numberUsersWith5TodosWithin7Days) + ' of them are created in the first 7 days and ' + String(numberUsersWith5TodosWithin3Days) + ' in the first 3 days.');
+	/*
+	console.log(data);
+	let startDate = data.startDate;
+	let endDate = data.endDate;
+	let numberDays = data.numberDays;
+	return admin.database().ref('/users').once("value").then( users => {
+		let countActiveUsers: number = 0;
+   		users.forEach(function(user) {
+			let countActiveDays: number = 0;
+			if(user.val().loginDays) {
+				Object.values(user.val().loginDays).forEach( loginDay => {
+					if(new Date(startDate).getTime() <= new Date(String(loginDay)).getTime() && new Date(endDate).getTime() >= new Date(String(loginDay)).getTime()) {
+						countActiveDays++;
+					}
+				});
+			}
+			if(countActiveDays >= numberDays) {
+				countActiveUsers++;
+			}
+		});
+		return { activeUsers: countActiveUsers };
+   	}).catch((error) => {
+		throw new functions.https.HttpsError('unknown', error.message,error);
+	})
+	*/
 });
 
 /*

@@ -718,7 +718,7 @@ export class HomePage {
 	}
 
     goToAssistantPage() {
-		this.showLoggedIn7Days();
+		this.checkUserTracking();
     	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			if(!this.userProfile['assistant']) {
 				this.db.initiateAssistant(this.auth.userid);
@@ -805,11 +805,21 @@ export class HomePage {
 			this.db.updateAssistant(this.auth.userid, this.assistant);
 		}
 	}
+
+	checkUserTracking() {
+		this.functions.httpsCallable('trackingSystem')({checkDate: new Date("2020-07-07T13:53:36.138Z").toISOString()}).subscribe( data => {
+			console.log('got data');
+			console.log(data);
+		})
+	}
 	
 	showLoggedIn7Days() {
-		let call = this.functions.httpsCallable('loginStats')({}).subscribe( loginStats => {
-			console.log(loginStats.loggedIn7Days);
-		});
+		let sevenDaysAgo = new Date(new Date().getTime() - 7*24*3600*1000).toISOString();
+		for(let numberDays of [1,2,3,4,5,6]) {
+			this.functions.httpsCallable('loginStats')({startDate: sevenDaysAgo, endDate: new Date().toISOString(), numberDays: numberDays}).subscribe( loginStats => {
+				console.log(String(numberDays) + ' or more days logged in: ' + String(loginStats.activeUsers) + ' users');
+			});
+		}
 	}
 
     goToShowFeedbackPage() {
