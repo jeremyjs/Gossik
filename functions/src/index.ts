@@ -382,7 +382,7 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
     return admin.database().ref('/users').once("value").then( users => {
     	let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			if(user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
+			if(user.val().devices && user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				let numberPushForAssistant: any = {};
 				numberPushForAssistant['still'] = 0;
