@@ -496,17 +496,42 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let numberUsersWith5Todos: number = 0;
 	let numberUsersWith5TodosWithin3Days: number = 0;
 	let numberUsersWith5TodosWithin7Days: number = 0;
+	let numberUsersWith5TodosDone: number = 0;
+	let numberUsersWith5TodosDoneWithin3Days: number = 0;
+	let numberUsersWith5TodosDoneWithin7Days: number = 0;
+	let numberUsersWith5ThoughtsWithin3Days: number = 0;
+	let numberUsersWith5ThoughtsWithin7Days: number = 0;
+	let loginCounts: any = {};
+	let numberUsersWith5Thoughts: number = 0;
 	let users = await getAllUsers();
-	let checkDate = new Date(data.checkDate);
+	let startDate = new Date(data.startDate);
+	let after3Days = new Date(data.startDate);
+	after3Days.setDate(after3Days.getDate() + 3);
+	let after7Days = new Date(data.startDate);
+	after7Days.setDate(after7Days.getDate() + 7);
+	let checkDates: Date[] = [
+		new Date(data.startDate),
+		after3Days,
+		after7Days
+	];
+	let today = new Date();
+	let checkDate = new Date(checkDates[2]);
+	while(today.getTime() >= checkDate.getTime()) {
+		checkDate.setDate(checkDate.getDate() + 7);
+		checkDates.push(new Date(checkDate));
+	}
 	users.forEach( user => {
 		if(user.val().profile?.signUpDate) {
 			let signUpDate = new Date(user.val().profile.signUpDate);
-			if(checkDate.getDate() == signUpDate.getDate() && checkDate.getMonth() == signUpDate.getMonth() && checkDate.getFullYear() == signUpDate.getFullYear()) {
+			if(startDate.getDate() == signUpDate.getDate() && startDate.getMonth() == signUpDate.getMonth() && startDate.getFullYear() == signUpDate.getFullYear()) {
 				numberRegisteredUsers++;
 				if(user.val().nextActions) {
 					let numberTodos: number = 0;
 					let numberTodosWithin3Days: number = 0;
 					let numberTodosWithin7Days: number = 0;
+					let numberTodosDone: number = 0;
+					let numberTodosDoneWithin3Days: number = 0;
+					let numberTodosDoneWithin7Days: number = 0;
 					Object.values(user.val().nextActions).forEach( (todo:any) => {
 						numberTodos++;
 						if(todo.createDate) {
@@ -516,6 +541,16 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 							}
 							if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
 								numberTodosWithin7Days++;
+							}
+						}
+						if(todo.taken && todo.deleteDate) {
+							numberTodosDone++;
+							let deleteDate = new Date(todo.deleteDate);
+							if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 3*24*3600*1000) {
+								numberTodosDoneWithin3Days++;
+							}
+							if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 7*24*3600*1000) {
+								numberTodosDoneWithin7Days++;
 							}
 						}
 					});
@@ -528,11 +563,69 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 					if(numberTodosWithin7Days >= 5) {
 						numberUsersWith5TodosWithin7Days++;
 					}
-				}			
+					if(numberTodosDone >= 5) {
+						numberUsersWith5TodosDone++;
+					}
+					if(numberTodosDoneWithin3Days >= 5) {
+						numberUsersWith5TodosDoneWithin3Days++;
+					}
+					if(numberTodosDoneWithin7Days >= 5) {
+						numberUsersWith5TodosDoneWithin7Days++;
+					}
+				}
+				if(user.val().captures) {
+					let numberThoughts: number = 0;
+					let numberThoughtsWithin3Days: number = 0;
+					let numberThoughtsWithin7Days: number = 0;
+					Object.values(user.val().captures).forEach( (thought:any) => {
+						numberThoughts++;
+						if(thought.createDate) {
+							let createDate = new Date(thought.createDate);
+							if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+								numberThoughtsWithin3Days++;
+							}
+							if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+								numberThoughtsWithin7Days++;
+							}
+						}
+					});
+					if(numberThoughts >= 5) {
+						numberUsersWith5Thoughts++;
+					}
+					if(numberThoughtsWithin3Days >= 5) {
+						numberUsersWith5ThoughtsWithin3Days++;
+					}
+					if(numberThoughtsWithin7Days >= 5) {
+						numberUsersWith5ThoughtsWithin7Days++;
+					}
+				}
+				for(let iter = 1; iter < checkDates.length; iter++) {
+					loginCounts[checkDates[iter].toISOString()] = 0;
+					if(user.val().loginDays) {
+						Object.values(user.val().loginDays).forEach( loginDay => {
+							if(checkDates[iter-1].getTime() <= new Date(String(loginDay)).getTime() &&  checkDates[iter].getTime() >= new Date(String(loginDay)).getTime()) {
+								loginCounts[checkDates[iter].toISOString()]++;
+							}
+						});
+					}
+				}		
 			}
 		}
 	});
-	console.log('On the ' + checkDate.toISOString() + ' we got ' + String(numberRegisteredUsers) + ' new users of which ' + String(numberUsersWith5Todos) + ' got at least 5 to-dos in total and ' + String(numberUsersWith5TodosWithin7Days) + ' of them are created in the first 7 days and ' + String(numberUsersWith5TodosWithin3Days) + ' in the first 3 days.');
+	return {
+		signUpDate: startDate.toISOString(),
+		numberRegisteredUsers: numberRegisteredUsers,
+		numberUsersWith5Todos: numberUsersWith5Todos,
+		numberUsersWith5TodosWithin7Days: numberUsersWith5TodosWithin7Days,
+		numberUsersWith5TodosWithin3Days: numberUsersWith5TodosWithin3Days,
+		numberUsersWith5TodosDone: numberUsersWith5TodosDone,
+		numberUsersWith5TodosDoneWithin7Days: numberUsersWith5TodosDoneWithin7Days,
+		numberUsersWith5TodosDoneWithin3Days: numberUsersWith5TodosDoneWithin3Days,
+		numberUsersWith5Thoughts: numberUsersWith5Thoughts,
+		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
+		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
+		loginCounts: loginCounts
+	}
 	/*
 	console.log(data);
 	let startDate = data.startDate;
@@ -657,16 +750,14 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
 		                'tutorialTodoPageTime': false
 		            }
 		    };
-			   promises.push(admin.database().ref('/users/' + user.key + '/profile').update(tutorial));
+			promises.push(admin.database().ref('/users/' + user.key + '/profile').update(tutorial));
    			// update just one specific value
-   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscription').set('freeUser'));
-   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(true));
+   			//promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscription').set('freeUser'));
+   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(false));
 		   })
 		   return Promise.all(promises);
    });
-   return null;
-     }
-);
+});
 */
 
 
