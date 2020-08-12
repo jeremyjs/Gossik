@@ -807,7 +807,6 @@ export class HomePage {
 
 	checkUserTracking() {
 		this.functions.httpsCallable('trackingSystem')({startDate: new Date("2020-08-04T13:53:36.138Z").toISOString()}).subscribe( data => {
-			//console.log('On the ' + data.signUpDate + ' we got ' + String(data.numberRegisteredUsers) + ' new users of which ' + String(data.numberUsersWith5Todos) + ' got at least 5 to-dos in total and ' + String(data.numberUsersWith5TodosWithin7Days) + ' of them are created in the first 7 days and ' + String(data.numberUsersWith5TodosWithin3Days) + ' in the first 3 days.');
 			console.log(data);
 		})
 	}
@@ -816,7 +815,7 @@ export class HomePage {
 		let sevenDaysAgo = new Date(new Date().getTime() - 7*24*3600*1000).toISOString();
 		for(let numberDays of [1,2,3,4,5,6]) {
 			this.functions.httpsCallable('loginStats')({startDate: sevenDaysAgo, endDate: new Date().toISOString(), numberDays: numberDays}).subscribe( loginStats => {
-				//console.log(String(numberDays) + ' or more days logged in: ' + String(loginStats.activeUsers) + ' users');
+				console.log(String(numberDays) + ' or more days logged in: ' + String(loginStats.activeUsers) + ' users');
 			});
 		}
 	}

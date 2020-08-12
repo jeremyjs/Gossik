@@ -496,9 +496,9 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let numberUsersWith5Todos: number = 0;
 	let numberUsersWith5TodosWithin3Days: number = 0;
 	let numberUsersWith5TodosWithin7Days: number = 0;
-	let numberUsersWith5TodosDone: number = 0;
-	let numberUsersWith5TodosDoneWithin3Days: number = 0;
-	let numberUsersWith5TodosDoneWithin7Days: number = 0;
+	let numberUsersWith3TodosDone: number = 0;
+	let numberUsersWith3TodosDoneWithin3Days: number = 0;
+	let numberUsersWith3TodosDoneWithin7Days: number = 0;
 	let numberUsersWith5ThoughtsWithin3Days: number = 0;
 	let numberUsersWith5ThoughtsWithin7Days: number = 0;
 	let loginCounts: any = {};
@@ -519,6 +519,9 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	while(today.getTime() >= checkDate.getTime()) {
 		checkDate.setDate(checkDate.getDate() + 7);
 		checkDates.push(new Date(checkDate));
+	}
+	for(let iter: number = 1; iter < checkDates.length; iter++) {
+		loginCounts[checkDates[iter].toISOString()] = 0;
 	}
 	users.forEach( user => {
 		if(user.val().profile?.signUpDate) {
@@ -563,14 +566,14 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 					if(numberTodosWithin7Days >= 5) {
 						numberUsersWith5TodosWithin7Days++;
 					}
-					if(numberTodosDone >= 5) {
-						numberUsersWith5TodosDone++;
+					if(numberTodosDone >= 3) {
+						numberUsersWith3TodosDone++;
 					}
-					if(numberTodosDoneWithin3Days >= 5) {
-						numberUsersWith5TodosDoneWithin3Days++;
+					if(numberTodosDoneWithin3Days >= 3) {
+						numberUsersWith3TodosDoneWithin3Days++;
 					}
-					if(numberTodosDoneWithin7Days >= 5) {
-						numberUsersWith5TodosDoneWithin7Days++;
+					if(numberTodosDoneWithin7Days >= 3) {
+						numberUsersWith3TodosDoneWithin7Days++;
 					}
 				}
 				if(user.val().captures) {
@@ -600,13 +603,18 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 					}
 				}
 				for(let iter = 1; iter < checkDates.length; iter++) {
-					loginCounts[checkDates[iter].toISOString()] = 0;
 					if(user.val().loginDays) {
-						Object.values(user.val().loginDays).forEach( loginDay => {
+						let loggedInInRange: boolean = false;
+						let loginDays = Object.values(user.val().loginDays);
+						loginDays.shift();
+						loginDays.forEach( loginDay => {
 							if(checkDates[iter-1].getTime() <= new Date(String(loginDay)).getTime() &&  checkDates[iter].getTime() >= new Date(String(loginDay)).getTime()) {
-								loginCounts[checkDates[iter].toISOString()]++;
+								loggedInInRange = true;
 							}
 						});
+						if(loggedInInRange) {
+							loginCounts[checkDates[iter].toISOString()]++;
+						}
 					}
 				}		
 			}
@@ -618,9 +626,9 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5Todos: numberUsersWith5Todos,
 		numberUsersWith5TodosWithin7Days: numberUsersWith5TodosWithin7Days,
 		numberUsersWith5TodosWithin3Days: numberUsersWith5TodosWithin3Days,
-		numberUsersWith5TodosDone: numberUsersWith5TodosDone,
-		numberUsersWith5TodosDoneWithin7Days: numberUsersWith5TodosDoneWithin7Days,
-		numberUsersWith5TodosDoneWithin3Days: numberUsersWith5TodosDoneWithin3Days,
+		numberUsersWith3TodosDone: numberUsersWith3TodosDone,
+		numberUsersWith3TodosDoneWithin7Days: numberUsersWith3TodosDoneWithin7Days,
+		numberUsersWith3TodosDoneWithin3Days: numberUsersWith3TodosDoneWithin3Days,
 		numberUsersWith5Thoughts: numberUsersWith5Thoughts,
 		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
