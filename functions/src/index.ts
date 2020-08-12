@@ -502,6 +502,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let numberUsersWith5ThoughtsWithin3Days: number = 0;
 	let numberUsersWith5ThoughtsWithin7Days: number = 0;
 	let loginCounts: any = {};
+	let activeCounts: any = {};
 	let numberUsersWith5Thoughts: number = 0;
 	let users = await getAllUsers();
 	let startDate = new Date(data.startDate);
@@ -512,6 +513,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let checkDates: Date[] = [
 		new Date(data.startDate),
 		after3Days,
+		new Date(data.startDate),
 		after7Days
 	];
 	let today = new Date();
@@ -522,6 +524,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	}
 	for(let iter: number = 1; iter < checkDates.length; iter++) {
 		loginCounts[checkDates[iter].toISOString()] = 0;
+		activeCounts[checkDates[iter].toISOString()] = 0;
 	}
 	users.forEach( user => {
 		if(user.val().profile?.signUpDate) {
@@ -604,16 +607,19 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 				}
 				for(let iter = 1; iter < checkDates.length; iter++) {
 					if(user.val().loginDays) {
-						let loggedInInRange: boolean = false;
+						let loggedInInRange: number = 0;
 						let loginDays = Object.values(user.val().loginDays);
 						loginDays.shift();
 						loginDays.forEach( loginDay => {
 							if(checkDates[iter-1].getTime() <= new Date(String(loginDay)).getTime() &&  checkDates[iter].getTime() >= new Date(String(loginDay)).getTime()) {
-								loggedInInRange = true;
+								loggedInInRange++;
 							}
 						});
-						if(loggedInInRange) {
+						if(loggedInInRange > 0) {
 							loginCounts[checkDates[iter].toISOString()]++;
+						}
+						if(loggedInInRange >= 3) {
+							activeCounts[checkDates[iter].toISOString()]++;
 						}
 					}
 				}		
@@ -632,7 +638,8 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5Thoughts: numberUsersWith5Thoughts,
 		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
-		loginCounts: loginCounts
+		loginCounts: loginCounts,
+		activeCounts: activeCounts
 	}
 	/*
 	console.log(data);
