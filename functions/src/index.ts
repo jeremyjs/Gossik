@@ -462,7 +462,6 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 });
 
 export const loginStats = functions.https.onCall((data, context) => {
-	console.log(data);
 	let startDate = data.startDate;
 	let endDate = data.endDate;
 	let numberDays = data.numberDays;
@@ -517,6 +516,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		after7Days
 	];
 	let today = new Date();
+	let yesterday = new Date(today.getTime() - 24*3600*1000);
 	let checkDate = new Date(checkDates[2]);
 	while(today.getTime() >= checkDate.getTime()) {
 		checkDate.setDate(checkDate.getDate() + 7);
@@ -526,7 +526,31 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		loginCounts[checkDates[iter].toISOString()] = 0;
 		activeCounts[checkDates[iter].toISOString()] = 0;
 	}
+	let countUsersToday: number = 0;
+	let countUsersThisWeek: number = 0;
+	let countActiveUsers: number = 0;
+	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
 	users.forEach( user => {
+		if(user.val().loginDays) {
+			let activeDays: number = 0;
+			let userLoginDays = Object.values(user.val().loginDays);
+			userLoginDays.forEach( loginDay => {
+				if(new Date(String(loginDay)).getTime() >= oneWeekAgo.getTime()) {
+					activeDays++;
+				}
+			});
+			if(activeDays >= 3) {
+				countActiveUsers++;
+			}
+		}
+		if(user.val().profile.lastLogin) {
+			if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime()) {
+				countUsersToday++;
+			}
+			if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
+				countUsersThisWeek++;
+			}
+		}
 		if(user.val().profile?.signUpDate) {
 			let signUpDate = new Date(user.val().profile.signUpDate);
 			if(startDate.getDate() == signUpDate.getDate() && startDate.getMonth() == signUpDate.getMonth() && startDate.getFullYear() == signUpDate.getFullYear()) {
@@ -639,7 +663,10 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginCounts: loginCounts,
-		activeCounts: activeCounts
+		activeCounts: activeCounts,
+		countUsersToday: countUsersToday,
+		countUsersThisWeek: countUsersThisWeek,
+		countActiveUsers: countActiveUsers
 	}
 	/*
 	console.log(data);

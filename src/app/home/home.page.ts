@@ -806,7 +806,7 @@ export class HomePage {
 	}
 
 	checkUserTracking() {
-		this.functions.httpsCallable('trackingSystem')({startDate: new Date("2020-08-11T13:53:36.138Z").toISOString()}).subscribe( data => {
+		this.functions.httpsCallable('trackingSystem')({startDate: new Date("2020-08-12T13:53:36.138Z").toISOString()}).subscribe( data => {
 			console.log(data);
 		})
 	}
