@@ -2003,26 +2003,6 @@ export class HomePage {
   	// CalendarPage functions
   	goToCalendarPage() {
   		this.calendar.currentDate = new Date();
-  		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let data: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return data;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
   		this.eventSource = [];
         for(let calendarEvent of this.calendarEvents) {
         	if(calendarEvent.active != false) {
@@ -2057,26 +2037,6 @@ export class HomePage {
 	}
   	
   	addEvent(){
-  		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let goal: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return goal;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
 	    if(!this.selectedDay) {
   			this.selectedDay = new Date();
 	    }
@@ -2172,26 +2132,6 @@ export class HomePage {
 	}
 
 	editCalendarEvent(calendarEvent) {
-		this.goalArray = [];
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-	  	.snapshotChanges()
-	  	.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let goal: Goal = { 
-							key: c.payload.key, ...c.payload.val()
-							};
-						return goal;
-		});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    });
 		let modal = this.modalCtrl.create({
 			component: CalendarEventModalPage,
 			componentProps: {calendarEvent: calendarEvent}
@@ -2236,71 +2176,69 @@ export class HomePage {
 	}
 
 	onEventSelected(event, origin?: string){
-		this.db.getGoalFromGoalid(event.goalid, this.auth.userid).valueChanges().subscribe( data => {
-			let goal = '';
-			let time = '';
-			this.translate.get(["Goal", "Time", "Ok", "Delete", "Edit"]).subscribe( alertMessage => {
-				if(data) {
-					goal = alertMessage["Goal"] + ': ' + data.name + '<br>';
-				}
-				if(!event.allDay) {
-					let start = moment(event.startTime).format('HH:mm');
-					let end = moment(event.endTime).format('HH:mm');
-					time = alertMessage["Time"] + ': ' + start + ' - ' + end;
-				}
-				let buttons = [];
-				if(origin) {
-					buttons = [
-				    	{
-					        text: alertMessage['Ok']
-				      	}
-			      	]
-			    } else {
-					buttons = [
-				    	{
-					        text: alertMessage['Ok']
-				      	},
-				      	{
-					        text: alertMessage['Delete'],
-					        handler: () => {
-					        	this.translate.get(["Event deleted"]).subscribe( translation => {
-							      this.presentToast(translation["Event deleted"]);
-							    });
-					          	this.db.deleteCalendarEvent(event.key, this.auth.userid);
-					          	if(event.event_id && this.platform.is('cordova')) {
-					          		this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-					          			if(hasReadWritePermission) {
-					          				this.nativeCalendar.deleteEvent(event.event_id);
-					          			}
-					          		});
-					          	}
-					          	let events = this.eventSource;
-					          	let index = events.indexOf(event);
-								events.splice(index,1);
-								let calendarEventsIndex = this.calendarEvents.indexOf(event);
-								this.calendarEvents.splice(calendarEventsIndex,1);
-								this.eventSource = [];
-								setTimeout(() => {
-									this.eventSource = events;
+		let goal = '';
+		let time = '';
+		this.translate.get(["Goal", "Time", "Ok", "Delete", "Edit"]).subscribe( alertMessage => {
+			if(this.goalDict[event.goalid]) {
+				goal = alertMessage["Goal"] + ': ' + this.goalDict[event.goalid].name + '<br>';
+			}
+			if(!event.allDay) {
+				let start = moment(event.startTime).format('HH:mm');
+				let end = moment(event.endTime).format('HH:mm');
+				time = alertMessage["Time"] + ': ' + start + ' - ' + end;
+			}
+			let buttons = [];
+			if(origin) {
+				buttons = [
+					{
+						text: alertMessage['Ok']
+					}
+				]
+			} else {
+				buttons = [
+					{
+						text: alertMessage['Ok']
+					},
+					{
+						text: alertMessage['Delete'],
+						handler: () => {
+							this.translate.get(["Event deleted"]).subscribe( translation => {
+								this.presentToast(translation["Event deleted"]);
+							});
+							this.db.deleteCalendarEvent(event.key, this.auth.userid);
+							if(event.event_id && this.platform.is('cordova')) {
+								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+									if(hasReadWritePermission) {
+										this.nativeCalendar.deleteEvent(event.event_id);
+									}
 								});
-					        }
-				      	}
-				    ]
-				}
-			    if(!event.native && !origin) {
-			    	buttons.push({
-				        text: alertMessage['Edit'],
-				        handler: () => {
-				          	this.editCalendarEvent(event);
-				        }
-			      	});
-			    }
-				this.alertCtrl.create({
-						message: event.title + '<br>' + goal + time,
-						buttons: buttons
-				}).then ( alert => {
-					alert.present();
+							}
+							let events = this.eventSource;
+							let index = events.indexOf(event);
+							events.splice(index,1);
+							let calendarEventsIndex = this.calendarEvents.indexOf(event);
+							this.calendarEvents.splice(calendarEventsIndex,1);
+							this.eventSource = [];
+							setTimeout(() => {
+								this.eventSource = events;
+							});
+						}
+					}
+				]
+			}
+			if(!event.native && !origin) {
+				buttons.push({
+					text: alertMessage['Edit'],
+					handler: () => {
+						this.editCalendarEvent(event);
+					}
 				});
+			}
+			this.alertCtrl.create({
+					message: event.title + '<br>' + goal + time,
+					buttons: buttons
+			}).then ( alert => {
+				alert.present();
 			});
 		});
 	}
@@ -2308,26 +2246,6 @@ export class HomePage {
 	onTimeSelected(event) {
 		this.selectedDay = event.selectedTime;
 		if(this.calendar.mode == 'day' || this.calendar.mode == 'week') {
-			this.goalArray = [];
-	  		this.goalList = this.db.getGoalList(this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let goal: Goal = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return goal;
-			});}));
-		    this.goalList.subscribe(
-		      goalArray => {
-		        for(let goal of goalArray) {
-		        	if(goal.active != false) {
-		        		this.goalArray.push(goal);
-		        	}
-		        }
-		    });
 			if(event.events == undefined || event.events.length == 0) {
 				let modal = this.modalCtrl.create({
 					component: CalendarEventModalPage,
@@ -2476,44 +2394,29 @@ export class HomePage {
 					this.doableActionArray = [];
 					this.duration = 0;
 					this.goalKeyArray = [];
-					this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-						.snapshotChanges()
-						.pipe(take(1),
-							map(
-								changes => { 
-									return changes.map( c => {
-										let action: Action = { 
-											key: c.payload.key, ...c.payload.val()
-											};
-										return action;
-						});}));
-					this.actionList.subscribe(
-						actionArray => {
-						this.doableActionArray = [];
-						let targetTodo = undefined;
-						for(let action of actionArray) {
-							if(action.active != false) {
-								if(!action.taken) {
-									this.doableActionArray.push(action);
-									if(todoid && action.key == todoid) {
-										this.todoview = 'task';
-										targetTodo = action;
-									}
+					this.doableActionArray = [];
+					let targetTodo = undefined;
+					for(let action of this.actionArray) {
+						if(action.active != false) {
+							if(!action.taken) {
+								this.doableActionArray.push(action);
+								if(todoid && action.key == todoid) {
+									this.todoview = 'task';
+									targetTodo = action;
 								}
 							}
 						}
-						this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-						if(todoid) {
-							this.doableActionArray.unshift(targetTodo);
-						}
-						this.changePage('ToDoPage');
-						if(this.timeAvailable) {
-							setTimeout(() => {
-								this.timeAvailable.setFocus();
-							}, 400);
-						}
-						}
-					);
+					}
+					this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+					if(todoid) {
+						this.doableActionArray.unshift(targetTodo);
+					}
+					this.changePage('ToDoPage');
+					if(this.timeAvailable) {
+						setTimeout(() => {
+							this.timeAvailable.setFocus();
+						}, 400);
+					}
 				}
 			}
 		});
@@ -2646,65 +2549,35 @@ export class HomePage {
   	showDoableActions() {
   		this.skippedAllToDos = false;
   		if(this.duration > 0) {
-			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(take(1),
-					map(
-						changes => { 
-							return changes.map( c => {
-								let action: Action = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return action;
-				});}));
-		    this.actionList.subscribe(
-		      actionArray => {
-		      	this.doableActionArray = [];
-		        for(let action of actionArray) {
-		        	if(action.active != false) {
-						if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
-						this.doableActionArray.push(action);
-						}
+			this.doableActionArray = [];
+			for(let action of this.actionArray) {
+				if(action.active != false) {
+					if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+					this.doableActionArray.push(action);
 					}
-		        }
-		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-		        if(this.doableActionArray.length == 0) {
-		        	this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
-		        		this.presentToast(translation["There is no doable action for that time."]);
-		        	})
-		        }
-		      }
-		    );
+				}
+			}
+			this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+			if(this.doableActionArray.length == 0) {
+				this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
+					this.presentToast(translation["There is no doable action for that time."]);
+				})
+			}
 		} else if(this.duration == 0) {
-			this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-			  	.snapshotChanges()
-			  	.pipe(take(1),
-					map(
-						changes => { 
-							return changes.map( c => {
-								let action: Action = { 
-									key: c.payload.key, ...c.payload.val()
-									};
-								return action;
-				});}));
-		    this.actionList.subscribe(
-		      actionArray => {
-		      	this.doableActionArray = [];
-		        for(let action of actionArray) {
-		        	if(action.active != false) {
-						if(!action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
-						this.doableActionArray.push(action);
-						}
+			this.doableActionArray = [];
+			for(let action of this.actionArray) {
+				if(action.active != false) {
+					if(!action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+					this.doableActionArray.push(action);
 					}
-		        }
-		        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-		        if(this.doableActionArray.length == 0) {
-		        	this.translate.get(["There is no action for that filter."]).subscribe( translation => {
-		        		this.presentToast(translation["There is no action for that filter."]);
-		        	})
-		        }
-		      }
-		    );
+				}
+			}
+			this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+			if(this.doableActionArray.length == 0) {
+				this.translate.get(["There is no action for that filter."]).subscribe( translation => {
+					this.presentToast(translation["There is no action for that filter."]);
+				})
+			}
 		}
   	}
 
