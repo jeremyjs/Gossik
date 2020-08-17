@@ -351,7 +351,6 @@ export class HomePage {
 					this.goalDict[goal.key] = goal;
 				}
 			}
-			console.log(this.goalArray);
 		});
 	}
 
@@ -939,83 +938,80 @@ export class HomePage {
   	}
 
   	showTutorial(tutorialPart) {
-  		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
-			this.userProfile = userProfile;
-			if(this.userProfile.tutorial[tutorialPart]) {
-				this.db.setTutorialStartdate(this.auth.userid, tutorialPart);
-				let text = [];
-				text["fivetodos"] = ["fivetodos", "OK"];
-				text["thoughts"] = ["thoughts", "OK"];
-				text["process"] = ["process", "OK"];
-				text["processTodo"] = ["processTodo", "OK"];
-				text["processThought"] = ["processThought", "OK"];
-				text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
-				text["assistant"] = ["assistant", "OK"];
-				text["tutorialEnd"] = ["tutorialEnd", "OK"];
-				this.translate.get(text[tutorialPart]).subscribe( translation => {
-			  		let buttons = [];
-			  		buttons["fivetodos"] = [
-				      	{
-					        text: translation["OK"],
-					        handler: () => {
-					        	this.presentAlert("navigateGreen");
-					        }
-				      	}
-				    ];
-				    buttons["tutorialEnd"] = [
-				      	{
-					        text: translation["OK"],
-					        handler: () => {
-					        	this.db.finishTutorial(this.auth.userid, "tutorialEnd");
-					        }
-				      	}
-				    ];
-				    buttons["thoughts"] = [
-				      	{
-					        text: translation["OK"],
-					        handler: () => {
-					        	this.presentAlert("thoughtsExplain");
-					        	this.db.startTutorial(this.auth.userid, 'createThought');
-					        }
-				      	}
-				    ];
-				    buttons["thoughtprocessing"] = [
-				      	{
-					        text: translation["OK"]
-				      	}
-				    ];
-				    buttons["process"] = [
-				      	{
-					        text: translation["OK"]
-				      	}
-				    ];
-				    buttons["processTodo"] = [
-				      	{
-					        text: translation["OK"]
-				      	}
-				    ];
-				    buttons["processThought"] = [
-				      	{
-					        text: translation["OK"]
-				      	}
-				    ];
-				    buttons["assistant"] = [
-				      	{
-					        text: translation["OK"],
-					        handler: () => {
-					        	this.presentAlert("assistantLearn");
-					        }
-				      	}
-				    ];
-			  		this.alertCtrl.create({
-						message: translation[tutorialPart],
-						buttons: buttons[tutorialPart]
-					}).then( alert => {
-						alert.present();
-					});
+		if(this.userProfile.tutorial[tutorialPart]) {
+			this.db.setTutorialStartdate(this.auth.userid, tutorialPart);
+			let text = [];
+			text["fivetodos"] = ["fivetodos", "OK"];
+			text["thoughts"] = ["thoughts", "OK"];
+			text["process"] = ["process", "OK"];
+			text["processTodo"] = ["processTodo", "OK"];
+			text["processThought"] = ["processThought", "OK"];
+			text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
+			text["assistant"] = ["assistant", "OK"];
+			text["tutorialEnd"] = ["tutorialEnd", "OK"];
+			this.translate.get(text[tutorialPart]).subscribe( translation => {
+				let buttons = [];
+				buttons["fivetodos"] = [
+					{
+						text: translation["OK"],
+						handler: () => {
+							this.presentAlert("navigateGreen");
+						}
+					}
+				];
+				buttons["tutorialEnd"] = [
+					{
+						text: translation["OK"],
+						handler: () => {
+							this.db.finishTutorial(this.auth.userid, "tutorialEnd");
+						}
+					}
+				];
+				buttons["thoughts"] = [
+					{
+						text: translation["OK"],
+						handler: () => {
+							this.presentAlert("thoughtsExplain");
+							this.db.startTutorial(this.auth.userid, 'createThought');
+						}
+					}
+				];
+				buttons["thoughtprocessing"] = [
+					{
+						text: translation["OK"]
+					}
+				];
+				buttons["process"] = [
+					{
+						text: translation["OK"]
+					}
+				];
+				buttons["processTodo"] = [
+					{
+						text: translation["OK"]
+					}
+				];
+				buttons["processThought"] = [
+					{
+						text: translation["OK"]
+					}
+				];
+				buttons["assistant"] = [
+					{
+						text: translation["OK"],
+						handler: () => {
+							this.presentAlert("assistantLearn");
+						}
+					}
+				];
+				this.alertCtrl.create({
+					message: translation[tutorialPart],
+					buttons: buttons[tutorialPart]
+				}).then( alert => {
+					alert.present();
 				});
-			}
-		});
+			});
+		}
   	}
 
   	startFivetodos() {
