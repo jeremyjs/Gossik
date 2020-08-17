@@ -1329,7 +1329,6 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then(data => {
 				if(data.data) {
-					console.log(data.data);
 					this.captureDeadline = data.data;
 					this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
 				}
@@ -2377,7 +2376,6 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage(todoid?: string) {
-		console.log(this.goalDict);
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
