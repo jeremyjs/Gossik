@@ -322,7 +322,6 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('50 * * * *').onRun(asyn
 							let pushNotification = user.val().pushNotifications[key];
 							let todo = user.val().nextActions[pushNotification.todoid];
 							if(todo.startDate && todo.goalid) {
-								console.log('action started and has a goal');
 								let startDate = new Date(todo.startDate);
 								let randomPushTimeDate = new Date(pushNotification.createDate);
 								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
@@ -516,6 +515,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		after7Days
 	];
 	let today = new Date();
+	today.setHours(0,0,0);
 	let yesterday = new Date(today.getTime() - 24*3600*1000);
 	let checkDate = new Date(checkDates[2]);
 	while(today.getTime() >= checkDate.getTime()) {
@@ -526,8 +526,8 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		loginCounts[checkDates[iter].toISOString()] = 0;
 		activeCounts[checkDates[iter].toISOString()] = 0;
 	}
-	let countUsersToday: number = 0;
-	let countUsersThisWeek: number = 0;
+	let countUsersYesterday: number = 0;
+	let countUsersLast7Days: number = 0;
 	let countActiveUsers: number = 0;
 	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
 	users.forEach( user => {
@@ -535,7 +535,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 			let activeDays: number = 0;
 			let userLoginDays = Object.values(user.val().loginDays);
 			userLoginDays.forEach( loginDay => {
-				if(new Date(String(loginDay)).getTime() >= oneWeekAgo.getTime()) {
+				if(new Date(String(loginDay)).getTime() >= oneWeekAgo.getTime() && new Date(String(loginDay)).getTime() <= today.getTime()) {
 					activeDays++;
 				}
 			});
@@ -544,11 +544,11 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 			}
 		}
 		if(user.val().profile.lastLogin) {
-			if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime()) {
-				countUsersToday++;
+			if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime() && new Date(user.val().profile.lastLogin).getTime() <= today.getTime()) {
+				countUsersYesterday++;
 			}
-			if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime()) {
-				countUsersThisWeek++;
+			if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime() && new Date(user.val().profile.lastLogin).getTime() <= today.getTime()) {
+				countUsersLast7Days++;
 			}
 		}
 		if(user.val().profile?.signUpDate) {
@@ -664,8 +664,8 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginCounts: loginCounts,
 		activeCounts: activeCounts,
-		countUsersToday: countUsersToday,
-		countUsersThisWeek: countUsersThisWeek,
+		countUsersYesterday: countUsersYesterday,
+		countUsersLast7Days: countUsersLast7Days,
 		countActiveUsers: countActiveUsers
 	}
 	/*
