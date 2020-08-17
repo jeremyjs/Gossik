@@ -1372,7 +1372,7 @@
             </button>
           </ion-col>
         </ion-row>
-        <button class="block width-100 no-padding transparent margin-bottom-3" *ngFor="let nextAction of actionArray" (click)="reviewAction(nextAction)">
+        <button class="block width-100 no-padding transparent margin-bottom-3" *ngFor="let nextAction of actions[goal.key]" (click)="reviewAction(nextAction)">
           <p class="font-gray margin-0 margin-left-10 margin-bottom-3 font-size-15px">- {{nextAction.content}}</p>
         </button>
       </ion-card>

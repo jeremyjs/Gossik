@@ -371,6 +371,7 @@ export class HomePage {
 			)
 		);
 		this.nextActionList.subscribe( actionArray => {
+			this.actionArray = actionArray;
 			this.actions = {};
 			for(let action of actionArray) {
 				if(action.active != false) {
@@ -2000,25 +2001,6 @@ export class HomePage {
 			for( let reference of referenceArray) {
 				if(reference.active != false) {
 					this.referenceArray.push(reference);
-				}
-			}
-		});
-	    this.nextActionList = this.db.getNextActionListFromGoal(goal.key, this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let action: Action = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return action;
-			});}));
-		this.nextActionList.subscribe( actionArray => {
-			this.actionArray = [];
-			for( let action of actionArray) {
-				if(action.active != false) {
-					this.actionArray.push(action);
 				}
 			}
 		});
