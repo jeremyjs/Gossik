@@ -1086,26 +1086,6 @@ export class HomePage {
 			this.pageTitle = "Thoughts";
 			this.showTutorial('thoughts');
 			this.showTutorial('thoughtprocessing');
-			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
-			.snapshotChanges()
-			.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let capture: Capture = { 
-								key: c.payload.key, ...c.payload.val()
-							};
-							return capture;
-					});}));
-			this.captureList.subscribe( captureArray => {
-				this.captureArray = []
-				for(let capture of captureArray) {
-					if(capture.active != false){
-						this.captureArray.push(capture);
-					}
-				}
-				this.captureListNotEmpty = (this.captureArray.length > 0);
-			});
 			this.changePage('ProcessPage');
 		}
   	}
@@ -1117,26 +1097,6 @@ export class HomePage {
   	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
 		this.capture = capture;
   		this.captureContent = capture.content;
-  		this.goalList = this.db.getGoalList(this.auth.userid)
-		.snapshotChanges()
-		.pipe(take(1),
-			map(
-				changes => { 
-					return changes.map( c => {
-						let goal: Goal = { 
-							key: c.payload.key, ...c.payload.val()
-							};
-						return goal;
-				});}));
-		this.goalList.subscribe( goalArray => {
-			this.goalArray = [];
-			goalArray.sort((a, b) => a.name.localeCompare(b.name));
-			for(let goal of goalArray) {
-				if(goal.active != false) {
-					this.goalArray.push(goal);
-				}
-			}
-		})
 	  	this.newGoalForm = this.fb.group({
   			newGoal: ['', Validators.required]
     	});
