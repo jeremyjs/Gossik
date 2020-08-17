@@ -422,8 +422,7 @@ export class HomePage {
 		.subscribe(
 			user => {
 			  if (user) {
-				this.isAdmin = (this.auth.userid == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1' || this.auth.userid == 'PWM3MEhECQMxmYzOtXCJbH2Rx083');
-			  	if(this.isApp && this.platform.is('cordova')) {
+				if(this.isApp && this.platform.is('cordova')) {
 			  		this.firebase.hasPermission().then( hasPermission => {
 			  			if(hasPermission) {
 			  				this.initPushNotifications();
@@ -445,6 +444,7 @@ export class HomePage {
 				});
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					this.isAdmin = this.userProfile.isAdmin;
 					this.updateTimezoneOffset();
 					this.assistant = this.userProfile.assistant;
 					if(!this.userProfile.learnedSchedule) {
