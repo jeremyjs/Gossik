@@ -37,18 +37,13 @@ export class NativeCalendarService {
   async loadEventsFromNativeCalendar() {
   	let events = [];
   	let calendarEvents: CalendarEvent[] = [];
-  	if(this.platform.is('ios')) {
-  		for(let calendar of this.calendars) {
-  			let nativeEvents = await this.calendar.findAllEventsInNamedCalendar(calendar.name);
-  			events.push(...nativeEvents);
-  		}
-  	} else if(this.platform.is('android')) {
-  		let start = new Date();
-  		let end = new Date();
-  		start.setDate(start.getDate() - 7);
-  		end.setDate(end.getDate() + 5 * 365);
-		let nativeEvents = await this.calendar.listEventsInRange(start, end);
-		events.push(...nativeEvents);
+  	if(this.platform.is('ios') || this.platform.is('android')) {
+		let start = new Date();
+		let end = new Date();
+		start.setDate(start.getDate() - 365);
+		end.setDate(end.getDate() + 5 * 365);
+	  	let nativeEvents = await this.calendar.listEventsInRange(start, end);
+	  	events.push(...nativeEvents);
   	}
   	for (let event of events) {
   		let calendarEvent = {
