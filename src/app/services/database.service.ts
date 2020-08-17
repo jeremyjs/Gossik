@@ -315,6 +315,10 @@ export class DatabaseService {
         return this.db.list<Reference>('/users/' + userid + '/references', ref => ref.orderByChild('goalid').equalTo(goalid));
     }
 
+    getReferenceListFromUser(userid) {
+        return this.db.list<Reference>('/users/' + userid + '/references');
+    }
+
     getNextActionListFromGoal(goalid, userid) {
         return this.db.list<Action>('/users/' + userid + '/nextActions', ref => ref.orderByChild('goalid').equalTo(goalid));
     }

@@ -181,6 +181,7 @@ export class HomePage {
 	showTutorialTypeActionAlert: boolean = true;
 	showTutorialTypeThoughtAlert: boolean = true;
 	assistant: string;
+	references: any;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -397,13 +398,41 @@ export class HomePage {
 						return capture;
 				});}));
 		this.captureList.subscribe( captureArray => {
-			this.captureArray = []
+			this.captureArray = [];
 			for(let capture of captureArray) {
 				if(capture.active != false){
 					this.captureArray.push(capture);
 				}
 			}
 			this.captureListNotEmpty = (this.captureArray.length > 0);
+		});
+	}
+
+	getReferences() {
+		this.referenceList = this.db.getReferenceListFromUser(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let reference: Reference = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return reference;
+			});}));
+		this.referenceList.subscribe( referenceArray => {
+			this.referenceArray = [];
+			this.references = {};
+			for( let reference of referenceArray) {
+				if(reference.active != false) {
+					this.referenceArray.push(reference);
+					if(this.references[reference.goalid]) {
+						this.references[reference.goalid].push(reference);
+					} else {
+						this.references[reference.goalid] = [reference];
+					}
+				}
+			}
 		});
 	}
 
@@ -493,6 +522,7 @@ export class HomePage {
 				this.getGoals();
 				this.getActions();
 				this.getCaptures();
+				this.getReferences();
 				this.content.getScrollElement().then(innerScroll => {
 					this.domCtrl.write(() => {
 						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
@@ -1811,36 +1841,31 @@ export class HomePage {
 	}
 
 	defineFollowUpTodoLater() {
-		this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
-			this.translate.get("Action finished").subscribe( translation => {
-				let capture = {} as Capture;
-				let stringInit = '';
-				if(data) {
-					stringInit = data.name + ': ';
-				}
-				capture.content =  stringInit + translation + ': ' + this.startedAction.content;
-				capture.userid = this.auth.userid;
-				capture.active = true;
-				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-					this.db.addCapture(capture, this.auth.userid);
-					this.startedAction = {} as Action;
-					this.goToToDoPage();
-				});
+		this.translate.get("Action finished").subscribe( translation => {
+			let capture = {} as Capture;
+			let stringInit = '';
+			if(this.goalDict[this.startedAction.goalid]) {
+				stringInit = this.goalDict[this.startedAction.goalid].name + ': ';
+			}
+			capture.content =  stringInit + translation + ': ' + this.startedAction.content;
+			capture.userid = this.auth.userid;
+			capture.active = true;
+			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+				this.db.addCapture(capture, this.auth.userid);
+				this.startedAction = {} as Action;
+				this.goToToDoPage();
 			});
-			this.translate.get(["One less, congrats!"]).subscribe( translation => {
-        		this.presentToast(translation["One less, congrats!"]);
-        	});
+		});
+		this.translate.get(["One less, congrats!"]).subscribe( translation => {
+			this.presentToast(translation["One less, congrats!"]);
 		});
 	}
 
 	defineFollowUpTodoNow() {
 		if(this.startedAction.goalid != 'unassigned') {
-			this.db.getGoalFromGoalid(this.startedAction.goalid, this.auth.userid).valueChanges().subscribe( data => {
-				let capture = {} as Capture;
-				data.key = this.startedAction.goalid;
-				capture.content = this.startedAction.content;
-				this.goToProcessCapturePage(capture, data, 'action', 'FinishActionPage');
-			});
+			let capture = {} as Capture;
+			capture.content = this.startedAction.content;
+			this.goToProcessCapturePage(capture, this.goalDict[this.startedAction.goalid], 'action', 'FinishActionPage');
 		} else {
 			let capture = {} as Capture;
 			capture.content = this.startedAction.content;
@@ -1864,7 +1889,7 @@ export class HomePage {
 	// ProjectsPage functions
 	goToProjectsPage() {
 		this.pageTitle = "Overview";
-		this.goal.name = '';
+		this.goal = {name: ''} as Goal;
 		this.addingProject = false;  
 	    this.changePage('ProjectsPage');
   	}
@@ -1890,45 +1915,7 @@ export class HomePage {
 		    }
         };
 	    this.pageCtrl = 'ProjectOverview';
-	    this.goal = goal;
-	    this.referenceList = this.db.getReferenceListFromGoal(goal.key, this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let reference: Reference = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return reference;
-			});}));
-		this.referenceList.subscribe( referenceArray => {
-			this.referenceArray = [];
-			for( let reference of referenceArray) {
-				if(reference.active != false) {
-					this.referenceArray.push(reference);
-				}
-			}
-		});
-	    this.delegationList = this.db.getDelegationListFromGoal(goal.key, this.auth.userid)
-		  	.snapshotChanges()
-		  	.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let delegation: Delegation = { 
-								key: c.payload.key, ...c.payload.val()
-								};
-							return delegation;
-			});}));
-		this.delegationList.subscribe( delegationArray => {
-			this.delegationArray = [];
-			for( let delegation of delegationArray) {
-				if(delegation.active != false) {
-					this.delegationArray.push(delegation);
-				}
-			}
-		});
+		this.goal = goal;
 	}
 
   	reviewAction(action: Action) {
@@ -2472,6 +2459,7 @@ export class HomePage {
 
   	// ToDoPage functions
 	goToToDoPage(todoid?: string) {
+		console.log(this.goalDict);
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;

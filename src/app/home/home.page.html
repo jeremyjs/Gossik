@@ -1387,7 +1387,7 @@
             </button>
           </ion-col>
         </ion-row>
-        <button class="block width-100 no-padding transparent font-size-15px margin-bottom-3" *ngFor="let reference of referenceArray" (click)="reviewReference(reference)">
+        <button class="block width-100 no-padding transparent font-size-15px margin-bottom-3" *ngFor="let reference of references[goal.key]" (click)="reviewReference(reference)">
           <p class="font-gray margin-0 margin-left-10 margin-bottom-3">- {{reference.content}}</p>
         </button>
       </ion-card>
