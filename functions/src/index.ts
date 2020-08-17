@@ -695,31 +695,6 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		countActiveUsers: countActiveUsers
 		//activeUserEmails: activeUserEmails
 	}
-	/*
-	console.log(data);
-	let startDate = data.startDate;
-	let endDate = data.endDate;
-	let numberDays = data.numberDays;
-	return admin.database().ref('/users').once("value").then( users => {
-		let countActiveUsers: number = 0;
-   		users.forEach(function(user) {
-			let countActiveDays: number = 0;
-			if(user.val().loginDays) {
-				Object.values(user.val().loginDays).forEach( loginDay => {
-					if(new Date(startDate).getTime() <= new Date(String(loginDay)).getTime() && new Date(endDate).getTime() >= new Date(String(loginDay)).getTime()) {
-						countActiveDays++;
-					}
-				});
-			}
-			if(countActiveDays >= numberDays) {
-				countActiveUsers++;
-			}
-		});
-		return { activeUsers: countActiveUsers };
-   	}).catch((error) => {
-		throw new functions.https.HttpsError('unknown', error.message,error);
-	})
-	*/
 });
 
 /*
@@ -755,7 +730,7 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 			//currently we pick a random todo, later on the one with the highest priority
 			//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
 			let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
-   			let payload = {
+   			let payload: any = {
 	            notification: {
 	                title: "Gossik",
 	                body: "Hoiiiii " + new Date().toISOString()
@@ -764,23 +739,12 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 	              	title: "Gossik",
 	                body: "Hoiiiii " + new Date().toISOString(),
 	                target: 'todo',
-	                todoid: randomTodo.todoid
+					todoid: randomTodo.todoid
 	            }
 	        };
 	        Object.values(user.val().devices).forEach( (device) => {
 	        	promises.push(admin.messaging().sendToDevice(String(device), payload));
 	        });
-	    	let pushNotification = {
-	    		message: "Hoiiiii " + new Date().toISOString(),
-	    		todoid: randomTodo.todoid,
-	    		createDate: new Date().toISOString()
-	    	}
-	    	if(user.val().profile.randomPushTodosReceived) {
-	    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(user.val().profile.randomPushTodosReceived + 1);
-	    	} else {
-	    		admin.database().ref('/users/' + user.key + '/profile').child('randomPushTodosReceived').set(1);
-	    	}
-	    	admin.database().ref('/users/' + user.key + '/pushNotifications').push(pushNotification);
 		}
 		return Promise.all(promises)
 	   	.then( () => {
@@ -793,6 +757,7 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
    	});
 });
 */
+
 
 
 

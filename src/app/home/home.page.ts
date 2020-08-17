@@ -341,21 +341,52 @@ export class HomePage {
 								};
 							return data;
 			});}));
-		this.goalList.subscribe(
-	      goalArray => {
-  			this.goalArray = [];
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-	        		this.goalDict[goal.key] = goal;
-	        		this.goalArray.push(goal);
-	        	}
-	        }
-	    })
+		this.goalList.subscribe( goalArray => {
+			this.goalArray = [];
+			goalArray.sort((a, b) => a.name.localeCompare(b.name));
+			goalArray.unshift({key: 'unassigned'} as Goal);
+			for(let goal of goalArray) {
+				if(goal.active != false) {
+					this.goalArray.push(goal);
+					this.goalDict[goal.key] = goal;
+				}
+			}
+			console.log(this.goalArray);
+		});
+	}
+
+	getActions() {
+		this.nextActionList = this.db.getNextActionListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let action: Action = { 
+							key: c.payload.key, ...c.payload.val()
+							};
+						return action;
+					});
+				}
+			)
+		);
+		this.nextActionList.subscribe( actionArray => {
+			this.actions = {};
+			for(let action of actionArray) {
+				if(action.active != false) {
+					if(this.actions[action.goalid]) {
+						this.actions[action.goalid].push(action);
+					} else {
+						this.actions[action.goalid] = [action];
+					}
+				}
+			}
+		});
 	}
 
 	initPushNotifications() {
 		this.firebase.getToken().then(token => {
-		this.db.saveDeviceToken(this.auth.userid, token);
+			this.db.saveDeviceToken(this.auth.userid, token);
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
 			if(!data.target) {
@@ -437,6 +468,7 @@ export class HomePage {
 				}
 				this.getStartedAction();
 				this.getGoals();
+				this.getActions();
 				this.content.getScrollElement().then(innerScroll => {
 					this.domCtrl.write(() => {
 						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
@@ -1943,50 +1975,10 @@ export class HomePage {
 
 	// ProjectsPage functions
 	goToProjectsPage() {
+		console.log(this.goalArray);
 		this.pageTitle = "Overview";
 		this.goal.name = '';
 		this.addingProject = false;  
-	    this.goalList = this.db.getGoalList(this.auth.userid)
-		.snapshotChanges()
-		.pipe(
-			map(
-				changes => { 
-					return changes.map( c => {
-						let goal: Goal = { 
-							key: c.payload.key, ...c.payload.val()
-							};
-						return goal;
-			});}));
-	    this.goalList.subscribe(
-	      goalArray => {
-  			this.goalArray = [];
-  			goalArray.sort((a, b) => a.name.localeCompare(b.name));
-  			goalArray.unshift({key: 'unassigned'} as Goal);
-	        for(let goal of goalArray) {
-	        	if(goal.active != false) {
-		        	this.goalArray.push(goal);
-			    	this.actionList = this.db.getNextActionListFromGoal(goal.key, this.auth.userid)
-					.snapshotChanges()
-					.pipe(
-						map(
-							changes => { 
-								return changes.map( c => {
-									let action: Action = { 
-										key: c.payload.key, ...c.payload.val()
-										};
-									return action;
-					});}));
-				    this.actionList.subscribe( actionArray => {
-				    	this.actions[goal.key] = [];
-				    	for(let action of actionArray) {
-				    		if(action.active != false) {
-				      			this.actions[goal.key].push(action);
-				      		}
-				      	}
-				    });
-				}
-			}
-	    });
 	    this.changePage('ProjectsPage');
   	}
 
@@ -2620,100 +2612,78 @@ export class HomePage {
 				this.goToInitPage();
 			} else {
 				this.duration = 0;
-				this.goalList = this.db.getGoalList(this.auth.userid)
-				  	.snapshotChanges()
-				  	.pipe(
-						map(
-							changes => { 
-								return changes.map( c => {
-									let data: Goal = { 
-										key: c.payload.key, ...c.payload.val()
-										};
-									return data;
-					});}));
-				this.goalList.pipe(take(1)).subscribe(
-			      goalArray => {
-			      	goalArray.sort((a, b) => a.name.localeCompare(b.name));
-		  			this.goalArray = [];
-			        for(let goal of goalArray) {
-			        	if(goal.active != false) {
-			        		this.goalDict[goal.key] = goal;
-			        		this.goalArray.push(goal);
-			        	}
-			        }
-			        this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
-					.snapshotChanges()
-					.pipe(take(1),
-						map(
-							changes => { 
-								return changes.map( c => {
-									let action: Action = { 
-										key: c.payload.key, ...c.payload.val()
-										};
-									return action;
+				this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)
+				.snapshotChanges()
+				.pipe(take(1),
+					map(
+						changes => { 
+							return changes.map( c => {
+								let action: Action = { 
+									key: c.payload.key, ...c.payload.val()
+									};
+								return action;
+						});}));
+				this.takenActionList.subscribe( takenActionArray => {
+					this.takenActionArray = [];
+					for(let action of takenActionArray) {
+						if(action.active != false){
+							this.takenActionArray.push(action);
+						}
+					}
+					this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
+					if(this.takenActionListNotEmpty) {
+						this.startedAction = this.takenActionArray[0];
+					} else {
+						this.startedAction = {} as Action;
+					}
+					if(this.startedAction.key) {
+						this.pageTitle = "Focus";
+						this.changePage('ActionPage');
+					} else {
+						this.pageTitle = "Do";
+						this.doableActionArray = [];
+						this.duration = 0;
+						this.goalKeyArray = [];
+						this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
+							.snapshotChanges()
+							.pipe(take(1),
+								map(
+									changes => { 
+										return changes.map( c => {
+											let action: Action = { 
+												key: c.payload.key, ...c.payload.val()
+												};
+											return action;
 							});}));
-					this.takenActionList.subscribe( takenActionArray => {
-						this.takenActionArray = [];
-						for(let action of takenActionArray) {
-							if(action.active != false){
-								this.takenActionArray.push(action);
-							}
-						}
-						this.takenActionListNotEmpty = (this.takenActionArray.length > 0);
-						if(this.takenActionListNotEmpty) {
-							this.startedAction = this.takenActionArray[0];
-						} else {
-							this.startedAction = {} as Action;
-						}
-						if(this.startedAction.key) {
-							this.pageTitle = "Focus";
-							this.changePage('ActionPage');
-						} else {
-							this.pageTitle = "Do";
+						this.actionList.subscribe(
+							actionArray => {
 							this.doableActionArray = [];
-							this.duration = 0;
-							this.goalKeyArray = [];
-					    	this.actionList = this.db.getNextActionListFromUser(this.auth.userid)
-							  	.snapshotChanges()
-							  	.pipe(take(1),
-									map(
-										changes => { 
-											return changes.map( c => {
-												let action: Action = { 
-													key: c.payload.key, ...c.payload.val()
-													};
-												return action;
-								});}));
-						    this.actionList.subscribe(
-						      actionArray => {
-						      	this.doableActionArray = [];
-						      	let targetTodo = undefined;
-						        for(let action of actionArray) {
-						        	if(action.active != false) {
-										if(!action.taken) {
-											this.doableActionArray.push(action);
-											if(todoid && action.key == todoid) {
-												this.todoview = 'task';
-												targetTodo = action;
-											}
+							let targetTodo = undefined;
+							for(let action of actionArray) {
+								if(action.active != false) {
+									if(!action.taken) {
+										this.doableActionArray.push(action);
+										if(todoid && action.key == todoid) {
+											this.todoview = 'task';
+											targetTodo = action;
 										}
 									}
-						        }
-						        this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-						        if(todoid) {
-						        	this.doableActionArray.unshift(targetTodo);
-						        }
-						        this.changePage('ToDoPage');
-						        if(this.timeAvailable) {
-						    		setTimeout(() => {
-							         this.timeAvailable.setFocus();
-							    	}, 400);
-						    	}
-						      }
-						    );
-						}
-					});
-			    });
+								}
+							}
+							this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+							if(todoid) {
+								this.doableActionArray.unshift(targetTodo);
+							}
+							this.changePage('ToDoPage');
+							if(this.timeAvailable) {
+								setTimeout(() => {
+									this.timeAvailable.setFocus();
+								}, 400);
+							}
+							}
+						);
+					}
+				});
 			}
 		});
 	}
