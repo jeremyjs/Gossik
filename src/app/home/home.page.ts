@@ -384,6 +384,29 @@ export class HomePage {
 		});
 	}
 
+	getCaptures() {
+		this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
+		.snapshotChanges()
+		.pipe(
+			map(
+				changes => { 
+					return changes.map( c => {
+						let capture: Capture = { 
+							key: c.payload.key, ...c.payload.val()
+						};
+						return capture;
+				});}));
+		this.captureList.subscribe( captureArray => {
+			this.captureArray = []
+			for(let capture of captureArray) {
+				if(capture.active != false){
+					this.captureArray.push(capture);
+				}
+			}
+			this.captureListNotEmpty = (this.captureArray.length > 0);
+		});
+	}
+
 	initPushNotifications() {
 		this.firebase.getToken().then(token => {
 			this.db.saveDeviceToken(this.auth.userid, token);
@@ -469,6 +492,7 @@ export class HomePage {
 				this.getStartedAction();
 				this.getGoals();
 				this.getActions();
+				this.getCaptures();
 				this.content.getScrollElement().then(innerScroll => {
 					this.domCtrl.write(() => {
 						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
@@ -1051,26 +1075,6 @@ export class HomePage {
 			if(!this.capturePageStarted) {
 				this.capturePageStarted = true;
 			}
-			this.captureList = this.db.getCaptureListFromUser(this.auth.userid)
-			.snapshotChanges()
-			.pipe(
-				map(
-					changes => { 
-						return changes.map( c => {
-							let capture: Capture = { 
-								key: c.payload.key, ...c.payload.val()
-							};
-							return capture;
-					});}));
-			this.captureList.subscribe( captureArray => {
-				this.captureArray = []
-				for(let capture of captureArray) {
-					if(capture.active != false){
-						this.captureArray.push(capture);
-					}
-				}
-				this.captureListNotEmpty = (this.captureArray.length > 0);
-			});
 			this.changePage('CapturePage');
 		}
   	}
@@ -1931,7 +1935,6 @@ export class HomePage {
 
 	// ProjectsPage functions
 	goToProjectsPage() {
-		console.log(this.goalArray);
 		this.pageTitle = "Overview";
 		this.goal.name = '';
 		this.addingProject = false;  
