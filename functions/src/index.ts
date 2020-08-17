@@ -151,41 +151,61 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 						Object.values(user.val().devices).forEach( (device) => {
 				        	promises.push(admin.messaging().sendToDevice(String(device), payload));
 				        });
-					} else if(calendarEvent.allDay && calendarEvent.active != false && eventStartTimeSeconds - timeNowSeconds < 259200 && eventStartTimeSeconds - timeNowSeconds >= 0) {
-						let language = 'en';
-			    		if(user.val().profile.language) {
-			   				language = user.val().profile.language;
-			   			}
-			   			let message: any = {};
-			   			let send: boolean = false;
-					   	if(eventStartTimeSeconds - timeNowSeconds >= 86400 && eventStartTimeSeconds - timeNowSeconds < 86700) {
-								send = true;
-								message['de'] = "Hey, diese Deadline ist schon bald. Du solltest dich langsam darum kümmern.";
-								message['en'] = "Hey, this deadline is approaching. You should soon get this done.";
-							} else if(eventStartTimeSeconds - timeNowSeconds >= 0 && eventStartTimeSeconds - timeNowSeconds < 300) {
-								send = true;
-								message['de'] = "Letzte Chance, diese Aufgabe noch rechtzeitig zu erledigen. Deadline ist heute!";
-								message['en'] = "Last chance to get this done in time. Deadline is today!";
-							}
-							let msg = message['en'];
-			   			if(message[language]) {
-			   				msg = message[language];
-			   			}
-			    		let payload = {
-				            notification: {
-				                title: calendarEvent.title,
-				                body: msg
-				            },
-				            data: {
-				              	title: calendarEvent.title,
-				                body: msg
-				            }
-				        };
-				        if(send) {
-				        	Object.values(user.val().devices).forEach( (device) => {
-					        	promises.push(admin.messaging().sendToDevice(String(device), payload));
-					        });
-				        }
+					}
+				});
+	   		}
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
+
+exports.deadlinePush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( users => {
+		let promises: Promise<any>[] = [];
+		let message: any = {};
+   		users.forEach(function(user) {
+			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			let language = 'en';
+			if(user.val().profile.language) {
+				language = user.val().profile.language;
+			}
+   			if(user.val().calendarEvents && timeNowConverted.getHours() == 6) {
+	   			Object.values(user.val().calendarEvents).forEach( (calendarEvent: any) => {
+					let send: boolean = false;
+					if(calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() - new Date().getTime() <= 24*3600*1000 && new Date(calendarEvent.startTime).getTime() - new Date().getTime() >= 0) {
+						message['de'] = "Hey, diese Deadline ist schon bald. Du solltest dich langsam darum kümmern.";
+						message['en'] = "Hey, this deadline is approaching. You should soon get this done.";
+						send = true;
+					} else if(calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() - new Date().getTime() <= 0 && new Date(calendarEvent.startTime).getTime() - new Date().getTime() >= -24*3600*1000) {
+						message['de'] = "Letzte Chance, diese Aufgabe noch rechtzeitig zu erledigen. Deadline ist heute!";
+						message['en'] = "Last chance to get this done in time. Deadline is today!";
+						send = true;
+					}
+					let msg = message['en'];
+					if(message[language]) {
+						msg = message[language];
+					}
+					let payload = {
+						notification: {
+							title: calendarEvent.title,
+							body: msg
+						},
+						data: {
+							title: calendarEvent.title,
+							body: msg
+						}
+					};
+					if(send) {
+						Object.values(user.val().devices).forEach( (device) => {
+							promises.push(admin.messaging().sendToDevice(String(device), payload));
+						});
 					}
 				});
 	   		}
@@ -530,6 +550,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let countUsersLast7Days: number = 0;
 	let countActiveUsers: number = 0;
 	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+	let activeUserEmails: any = [];
 	users.forEach( user => {
 		if(user.val().loginDays) {
 			let activeDays: number = 0;
@@ -541,6 +562,11 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 			});
 			if(activeDays >= 3) {
 				countActiveUsers++;
+				if(user.val().profile.email) {
+					activeUserEmails.push(user.val().profile.email);
+				} else if(user.val().email) {
+					activeUserEmails.push(user.val().email);
+				}
 			}
 		}
 		if(user.val().profile.lastLogin) {
@@ -667,6 +693,7 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		countUsersYesterday: countUsersYesterday,
 		countUsersLast7Days: countUsersLast7Days,
 		countActiveUsers: countActiveUsers
+		//activeUserEmails: activeUserEmails
 	}
 	/*
 	console.log(data);

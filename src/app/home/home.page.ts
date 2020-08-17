@@ -1347,6 +1347,7 @@ export class HomePage {
 			modal.present();
 			modal.onDidDismiss().then(data => {
 				if(data.data) {
+					console.log(data.data);
 					this.captureDeadline = data.data;
 					this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
 				}
