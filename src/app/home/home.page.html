@@ -1479,20 +1479,20 @@
         </ion-col>
       </ion-row>
       <ion-row class="width-100 height-45px text-align-center">
-        <span class="margin-auto">
+        <span class="margin-auto flex">
           <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(-1)">
             <img src="../../assets/icon/icon_arrow_left.png" height="30">
           </button>
-          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(-31)">
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding margin-auto" (click)="changeDay(-31)">
             <img src="../../assets/icon/icon_arrow_left.png" height="30">
           </button>
           <button class="background-transparent font-white no-padding line-height-1" (click)="changeDate()">
-            <h3 class="display-inline-block margin-0 font-size-30px">{{ viewTitle }}</h3>
+            <h3 class="display-inline-block margin-0 margin-left-5 margin-right-5 font-size-30px">{{ viewTitle }}</h3>
           </button>
           <button *ngIf="calendar.mode == 'day'" class="transparent no-padding" (click)="changeDay(1)">
             <img src="../../assets/icon/icon_arrow_right.png" height="30">
           </button>
-          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding" (click)="changeDay(31)">
+          <button *ngIf="calendar.mode == 'month'" class="transparent no-padding margin-auto" (click)="changeDay(31)">
             <img src="../../assets/icon/icon_arrow_right.png" height="30">
           </button>
         </span>
