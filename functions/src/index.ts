@@ -524,11 +524,18 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	let numberUsersWith5Thoughts: number = 0;
 	let users = await getAllUsers();
 	let startDate = new Date(data.startDate);
+	let before1Day = new Date(data.startDate);
+	before1Day.setDate(before1Day.getDate() -1);
+	let before7Days = new Date(data.startDate);
+	before7Days.setDate(before7Days.getDate() -7);
 	let after3Days = new Date(data.startDate);
 	after3Days.setDate(after3Days.getDate() + 3);
 	let after7Days = new Date(data.startDate);
 	after7Days.setDate(after7Days.getDate() + 7);
 	let checkDates: Date[] = [
+		before7Days,
+		new Date(data.startDate),
+		before1Day,
 		new Date(data.startDate),
 		after3Days,
 		new Date(data.startDate),
@@ -536,47 +543,22 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 	];
 	let today = new Date();
 	today.setHours(0,0,0);
-	let yesterday = new Date(today.getTime() - 24*3600*1000);
-	let checkDate = new Date(checkDates[2]);
+	let checkDate = new Date(checkDates[6]);
 	while(today.getTime() >= checkDate.getTime()) {
 		checkDate.setDate(checkDate.getDate() + 7);
 		checkDates.push(new Date(checkDate));
 	}
-	for(let iter: number = 1; iter < checkDates.length; iter++) {
-		loginCounts[checkDates[iter].toISOString()] = 0;
-		activeCounts[checkDates[iter].toISOString()] = 0;
+	console.log('checkDates');
+	console.log(checkDates);
+	let counter = 0;
+	for(let date of checkDates) {
+		loginCounts[String(counter) + '_' + date.toISOString()] = 0;
+		activeCounts[String(counter) + '_' + date.toISOString()] = 0;
+		counter++;
 	}
-	let countUsersYesterday: number = 0;
-	let countUsersLast7Days: number = 0;
-	let countActiveUsers: number = 0;
-	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
-	let activeUserEmails: any = [];
+	console.log('loginCounts');
+	console.log(loginCounts);
 	users.forEach( user => {
-		if(user.val().loginDays) {
-			let activeDays: number = 0;
-			let userLoginDays = Object.values(user.val().loginDays);
-			userLoginDays.forEach( loginDay => {
-				if(new Date(String(loginDay)).getTime() >= oneWeekAgo.getTime() && new Date(String(loginDay)).getTime() <= today.getTime()) {
-					activeDays++;
-				}
-			});
-			if(activeDays >= 3) {
-				countActiveUsers++;
-				if(user.val().profile.email) {
-					activeUserEmails.push(user.val().profile.email);
-				} else if(user.val().email) {
-					activeUserEmails.push(user.val().email);
-				}
-			}
-		}
-		if(user.val().profile.lastLogin) {
-			if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime() && new Date(user.val().profile.lastLogin).getTime() <= today.getTime()) {
-				countUsersYesterday++;
-			}
-			if(new Date(user.val().profile.lastLogin).getTime() >= oneWeekAgo.getTime() && new Date(user.val().profile.lastLogin).getTime() <= today.getTime()) {
-				countUsersLast7Days++;
-			}
-		}
 		if(user.val().profile?.signUpDate) {
 			let signUpDate = new Date(user.val().profile.signUpDate);
 			if(startDate.getDate() == signUpDate.getDate() && startDate.getMonth() == signUpDate.getMonth() && startDate.getFullYear() == signUpDate.getFullYear()) {
@@ -657,14 +639,23 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 				}
 				for(let iter = 1; iter < checkDates.length; iter++) {
 					if(user.val().loginDays) {
+						console.log('ho');
 						let loggedInInRange: number = 0;
 						let loginDays = Object.values(user.val().loginDays);
 						loginDays.shift();
 						loginDays.forEach( loginDay => {
+							console.log('hi');
+							if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+								console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkDates[iter-1].toISOString() + ' and ' + checkDates[iter].toISOString());
+							}
 							if(checkDates[iter-1].getTime() <= new Date(String(loginDay)).getTime() &&  checkDates[iter].getTime() >= new Date(String(loginDay)).getTime()) {
 								loggedInInRange++;
+								console.log('yup');
 							}
 						});
+						if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+							console.log('loggedInInRange ' + String(loggedInInRange));
+						}
 						if(loggedInInRange > 0) {
 							loginCounts[checkDates[iter].toISOString()]++;
 						}
@@ -689,13 +680,190 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginCounts: loginCounts,
-		activeCounts: activeCounts,
-		countUsersYesterday: countUsersYesterday,
-		countUsersLast7Days: countUsersLast7Days,
-		countActiveUsers: countActiveUsers
+		activeCounts: activeCounts
 		//activeUserEmails: activeUserEmails
 	}
 });
+
+
+export const trackingSystemNew = functions.https.onCall(async (data, context) => {
+	let numberRegisteredUsers: number = 0;
+	let numberUsersWith5TodosWithin3Days: number = 0;
+	let numberUsersWith5TodosWithin7Days: number = 0;
+	let numberUsersWith3TodosDoneWithin3Days: number = 0;
+	let numberUsersWith3TodosDoneWithin7Days: number = 0;
+	let numberUsersWith5ThoughtsWithin3Days: number = 0;
+	let numberUsersWith5ThoughtsWithin7Days: number = 0;
+	let users = await getAllUsers();
+	let startDate = new Date(data.startDate);
+	console.log(new Date(data.startDate));
+	let checkRanges: any = [];
+	checkRanges.push([new Date(new Date(data.startDate).setDate(new Date(data.startDate).getDate() - 6)), new Date(new Date(data.startDate).setDate(new Date(data.startDate).getDate() + 1)), 0, 0]);
+	checkRanges.push([new Date(data.startDate), new Date(new Date(data.startDate).setDate(new Date(data.startDate).getDate() + 1)), 0, 0]);
+	checkRanges.push([new Date(data.startDate), new Date(new Date(data.startDate).setDate(new Date(data.startDate).getDate() + 3)), 0, 0]);
+	checkRanges.push([new Date(data.startDate), new Date(new Date(data.startDate).setDate(new Date(data.startDate).getDate() + 7)), 0, 0]);
+	let today = new Date();
+	today.setHours(0,0,0);
+	let checkDate = new Date(data.startDate)
+	checkDate.setDate(new Date(data.startDate).getDate() + 7);
+	
+	console.log('ha');
+	while(today.getTime() >= checkDate.getTime()) {
+		checkDate.setDate(checkDate.getDate() + 7);
+		checkRanges.push([checkRanges[checkRanges.length -1][1], new Date(checkDate), 0, 0]);
+	}
+	console.log('ho');
+
+	while(checkRanges[checkRanges.length - 1][1].getTime() >= today.getTime()) {
+		checkRanges.pop();
+	}
+	console.log('hi');
+	users.forEach( user => {
+		if(user.val().profile?.signUpDate) {
+			let signUpDate = new Date(user.val().profile.signUpDate);
+			if(startDate.getDate() == signUpDate.getDate() && startDate.getMonth() == signUpDate.getMonth() && startDate.getFullYear() == signUpDate.getFullYear()) {
+				numberRegisteredUsers++;
+				if(user.val().nextActions) {
+					let numberTodosWithin3Days: number = 0;
+					let numberTodosWithin7Days: number = 0;
+					let numberTodosDoneWithin3Days: number = 0;
+					let numberTodosDoneWithin7Days: number = 0;
+					Object.values(user.val().nextActions).forEach( (todo:any) => {
+						if(todo.createDate) {
+							let createDate = new Date(todo.createDate);
+							if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+								numberTodosWithin3Days++;
+							}
+							if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+								numberTodosWithin7Days++;
+							}
+						}
+						if(todo.taken && todo.deleteDate) {
+							let deleteDate = new Date(todo.deleteDate);
+							if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 3*24*3600*1000) {
+								numberTodosDoneWithin3Days++;
+							}
+							if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 7*24*3600*1000) {
+								numberTodosDoneWithin7Days++;
+							}
+						}
+					});
+					if(numberTodosWithin3Days >= 5) {
+						numberUsersWith5TodosWithin3Days++;
+					}
+					if(numberTodosWithin7Days >= 5) {
+						numberUsersWith5TodosWithin7Days++;
+					}
+					if(numberTodosDoneWithin3Days >= 3) {
+						numberUsersWith3TodosDoneWithin3Days++;
+					}
+					if(numberTodosDoneWithin7Days >= 3) {
+						numberUsersWith3TodosDoneWithin7Days++;
+					}
+				}
+				if(user.val().captures) {
+					let numberThoughtsWithin3Days: number = 0;
+					let numberThoughtsWithin7Days: number = 0;
+					Object.values(user.val().captures).forEach( (thought:any) => {
+						if(thought.createDate) {
+							let createDate = new Date(thought.createDate);
+							if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+								numberThoughtsWithin3Days++;
+							}
+							if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+								numberThoughtsWithin7Days++;
+							}
+						}
+					});
+					if(numberThoughtsWithin3Days >= 5) {
+						numberUsersWith5ThoughtsWithin3Days++;
+					}
+					if(numberThoughtsWithin7Days >= 5) {
+						numberUsersWith5ThoughtsWithin7Days++;
+					}
+				}
+				if(checkRanges.length >= 3) {
+					for(let iter = 2; iter < checkRanges.length; iter++) {
+						if(user.val().loginDays) {
+							let loggedInInRange: number = 0;
+							let loginDays = Object.values(user.val().loginDays);
+							loginDays.shift();
+							loginDays.forEach( loginDay => {
+								if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+									console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkRanges[iter][0].toISOString() + ' and ' + checkRanges[iter][1].toISOString());
+								}
+								if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
+									loggedInInRange++;
+									console.log('yup');
+								}
+							});
+							if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+								console.log('loggedInInRange ' + String(loggedInInRange));
+							}
+							if(loggedInInRange > 0) {
+								checkRanges[iter][2]++;
+							}
+							if(loggedInInRange >= 3) {
+								checkRanges[iter][3]++;
+							}
+						}
+					}
+				}		
+			}
+			for(let iter = 0; iter < 2; iter++) {
+				if(user.val().loginDays) {
+					let loggedInInRange: number = 0;
+					let loginDays = Object.values(user.val().loginDays);
+					loginDays.shift();
+					loginDays.forEach( loginDay => {
+						if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+							console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkRanges[iter][0].toISOString() + ' and ' + checkRanges[iter][1].toISOString());
+						}
+						if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
+							loggedInInRange++;
+						}
+					});
+					if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
+						console.log('loggedInInRange ' + String(loggedInInRange));
+					}
+					if(loggedInInRange > 0) {
+						checkRanges[iter][2]++;
+					}
+					if(loggedInInRange >= 3) {
+						checkRanges[iter][3]++;
+					}
+				}
+			}
+		}
+	});
+	let loginAndActiveCounts: any = {};
+	for(let row of checkRanges) {
+		if(row[0].getTime() <= new Date("2020-08-04T00:00:00.138Z")) {
+			continue;
+		}
+		if(row == checkRanges[0]) {
+			loginAndActiveCounts['last7Days'] = [row[2], row[3]];
+		} else if(row == checkRanges[1]) {
+			loginAndActiveCounts['yesterday'] = [row[2], row[3]];
+		} else {
+			let numberDaysSinceStartDate: Number = (row[1].getTime() - startDate.getTime())/(24*3600*1000);
+			loginAndActiveCounts['after' + String(numberDaysSinceStartDate) + 'Days'] = [row[2], row[3]];
+		}
+	}
+	return {
+		signUpDate: startDate.toISOString(),
+		numberRegisteredUsers: numberRegisteredUsers,
+		numberUsersWith5TodosWithin7Days: numberUsersWith5TodosWithin7Days,
+		numberUsersWith5TodosWithin3Days: numberUsersWith5TodosWithin3Days,
+		numberUsersWith3TodosDoneWithin7Days: numberUsersWith3TodosDoneWithin7Days,
+		numberUsersWith3TodosDoneWithin3Days: numberUsersWith3TodosDoneWithin3Days,
+		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
+		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
+		loginAndActiveCounts: loginAndActiveCounts
+		//activeUserEmails: activeUserEmails
+	}
+});
+
 
 /*
 exports.countWeeklyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => {
@@ -739,7 +907,11 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 	              	title: "Gossik",
 	                body: "Hoiiiii " + new Date().toISOString(),
 	                target: 'todo',
-					todoid: randomTodo.todoid
+					todoid: randomTodo.todoid,
+					"actions": [
+						{ "icon": "approve_icon", "title": "APPROVE", "callback": "AppComponent.approve", "foreground": true},
+						{ "icon": "reject_icon", "title": "REJECT", "callback": "AppComponent.reject", "foreground": true}
+					]
 	            }
 	        };
 	        Object.values(user.val().devices).forEach( (device) => {
@@ -756,7 +928,6 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 	   	});
    	});
 });
-*/
 
 
 
