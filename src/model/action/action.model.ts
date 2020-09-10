@@ -5,6 +5,7 @@ export interface Action {
     previousAction?: string;
     nextAction?: string;
     content: string;
+    attributes?: string[];
     priority: number;
     deadline?: any;
     deadlineid?: string;

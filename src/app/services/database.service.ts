@@ -351,6 +351,14 @@ export class DatabaseService {
         return this.db.list('users/' + userid + '/nextActions').push(action);
     }
 
+    addAttribute(attribute, userid) {
+        return this.db.list('users/' + userid + '/attributes').push(attribute);
+    }
+
+    getAttributeListFromUser(userid) {
+        return this.db.list('users/' + userid + '/attributes');
+    }
+
     getActionFromActionid(actionid: string, userid) {
         return this.db.object<Action>('/users/' + userid + '/nextActions/' + actionid);
     }

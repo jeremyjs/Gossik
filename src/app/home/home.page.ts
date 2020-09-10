@@ -17,6 +17,7 @@ import { Capture } from '../../model/capture/capture.model';
 import { Goal } from '../../model/goal/goal.model';
 import { User } from '../../model/user/user.model';
 import { Action } from '../../model/action/action.model';
+import { Attribute } from '../../model/attribute/attribute.model';
 import { Reference } from '../../model/reference/reference.model';
 import { Delegation } from '../../model/delegation/delegation.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
@@ -182,6 +183,7 @@ export class HomePage {
 	showTutorialTypeThoughtAlert: boolean = true;
 	assistant: string;
 	references: any;
+	attributeArray: any[];
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -436,6 +438,29 @@ export class HomePage {
 		});
 	}
 
+	getAttributes() {
+		this.db.getAttributeListFromUser(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let attribute: Attribute = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return attribute;
+			});
+		}))
+		.subscribe( attributeArray => {
+			this.attributeArray = [];
+			for( let attribute of attributeArray) {
+				if(attribute.active != false) {
+					this.attributeArray.push(attribute);
+				}
+			}
+		});
+	}
+
 	initPushNotifications() {
 		this.firebase.getToken().then(token => {
 			this.db.saveDeviceToken(this.auth.userid, token);
@@ -523,6 +548,7 @@ export class HomePage {
 				this.getActions();
 				this.getCaptures();
 				this.getReferences();
+				this.getAttributes();
 				this.content.getScrollElement().then(innerScroll => {
 					this.domCtrl.write(() => {
 						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
@@ -874,13 +900,14 @@ export class HomePage {
 		let dates = [];
 		let firstOne = new Date("2020-08-05T00:00:00.138Z");
 		let today = new Date();
+		/*
 		while(today.getTime() >= firstOne.getTime()) {
-			console.log('asf');
 			firstOne.setDate(firstOne.getDate() + 1);
 			this.functions.httpsCallable('trackingSystemNew')({startDate: firstOne.toISOString()}).subscribe( data => {
 				console.log(data);
 			})
 		}
+		*/
 		this.functions.httpsCallable('trackingSystemNew')({startDate: new Date("2020-08-05T00:00:00.138Z").toISOString()}).subscribe( data => {
 			console.log(data);
 		})
@@ -1437,15 +1464,40 @@ export class HomePage {
 		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.actionArray.length >= 10) {
 			this.presentAlert("unpaidLimitedFeaturesSubscription");
 		} else {
+			let captureContentParts = this.captureContent.split('#');
+			for(let iter= 0; iter < captureContentParts.length; iter++) {
+				if(/\s$/.test(captureContentParts[iter])) {
+					captureContentParts[iter] = captureContentParts[iter].slice(0,-1);
+				}
+			}
 			let action: Action = {
 				userid: this.auth.userid,
 				goalid: this.captureProject.key,
-				content: this.captureContent,
+				content: captureContentParts.shift(),
+				attributes: captureContentParts,
 				priority: this.capturePriority,
 				time: this.captureDuration,
 				taken: false,
 				active: true
 			};
+			let captureAttributes = [...captureContentParts];
+			while(captureAttributes.length > 0) {
+				let checkAttribute: Attribute = {
+					userid: this.auth.userid,
+					active: true,
+					createDate: new Date().toISOString(),
+					content: captureAttributes.pop()
+				}
+				let saveAttribute: boolean = true;
+				for(let attribute of this.attributeArray) {
+					if(attribute.content == checkAttribute.content) {
+						saveAttribute = false;
+					}
+				}
+				if(saveAttribute) {
+					this.db.addAttribute(checkAttribute, this.auth.userid);
+				}
+			}
 			if(this.userProfile.tutorial.processTodo) {
 				this.presentAlert("processTodoEnd");
 				this.db.finishTutorial(this.auth.userid, 'processTodo');
