@@ -33,13 +33,21 @@ export class ToDoFilterModalPage implements OnInit {
     this.view = view;
   }
 
-  selectAll() {
-    this.chosenGoalArray = this.goalArray.map(goal => goal.key);
-    this.chosenGoalArray.push('unassigned');
+  selectAll(view) {
+    if(view == 'projects') {
+      this.chosenGoalArray = this.goalArray.map(goal => goal.key);
+      this.chosenGoalArray.push('unassigned');
+    } else if(view == 'attributes') {
+      this.chosenAttributeArray = this.attributeArray.map(attribute => attribute.content);
+    }
   }
 
-  clearAll() {
-    this.chosenGoalArray = [];
+  clearAll(view) {
+    if(view == 'projects') {
+      this.chosenGoalArray = [];
+    } else if(view == 'attributes') {
+      this.chosenAttributeArray = [];
+    }
   }
 
   chooseGoal(goalkey) {
@@ -55,7 +63,7 @@ export class ToDoFilterModalPage implements OnInit {
   		this.chosenAttributeArray.push(attribute)
   	} else {
   		this.chosenAttributeArray.splice(this.chosenAttributeArray.indexOf(attribute), 1);
-  	}
+    }
   }
 
   cancel() {
@@ -63,7 +71,7 @@ export class ToDoFilterModalPage implements OnInit {
   }
 
   filter() {
-  	this.modalCtrl.dismiss(this.chosenGoalArray);
+  	this.modalCtrl.dismiss({chosenGoalArray: this.chosenGoalArray, chosenAttributeArray: this.chosenAttributeArray});
   }
 
 }

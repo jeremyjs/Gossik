@@ -2523,7 +2523,9 @@ export class HomePage {
 				modal.present();
 				modal.onDidDismiss().then( data => {
 					if(data.data) {
-						this.goalKeyArray = data.data;
+						console.log(data);
+						this.goalKeyArray = data.data.chosenGoalArray;
+						this.chosenAttributeArray = data.data.chosenAttributeArray;
 						let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
 						this.db.learnLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
 						this.showDoableActions();
@@ -2616,7 +2618,23 @@ export class HomePage {
 			this.doableActionArray = [];
 			for(let action of this.actionArray) {
 				if(action.active != false) {
-					if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+					let attributeCheck: boolean = true;
+					if(this.chosenAttributeArray.length > 0) {
+						console.log('checking action ' + action.content);
+						if(action.attributes) {
+							for(let filterAttribute of this.chosenAttributeArray) {
+								if(action.attributes.indexOf(filterAttribute) == -1) {
+									attributeCheck = false;
+									console.log('attribute ' + filterAttribute + ' not found');
+								} else {
+									console.log('attribute ' + filterAttribute + ' found');
+								}
+							}
+						} else {
+							attributeCheck = false;
+						}
+					}
+					if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
 					this.doableActionArray.push(action);
 					}
 				}
@@ -2631,7 +2649,23 @@ export class HomePage {
 			this.doableActionArray = [];
 			for(let action of this.actionArray) {
 				if(action.active != false) {
-					if(!action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 )) {
+					let attributeCheck: boolean = true;
+					if(this.chosenAttributeArray.length > 0) {
+						console.log('checking action ' + action.content);
+						if(action.attributes) {
+							for(let filterAttribute of this.chosenAttributeArray) {
+								if(action.attributes.indexOf(filterAttribute) == -1) {
+									attributeCheck = false;
+									console.log('attribute ' + filterAttribute + ' not found');
+								} else {
+									console.log('attribute ' + filterAttribute + ' found');
+								}
+							}
+						} else {
+							attributeCheck = false;
+						}
+					}
+					if(!action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
 					this.doableActionArray.push(action);
 					}
 				}
