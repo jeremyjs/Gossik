@@ -14,7 +14,12 @@
 </ion-header>
 
 <ion-content class="background-gray">
-	<ion-grid class="width-100 height-100-minus-70px overflow-scroll">
+	<ion-grid *ngIf="view == 'projects'" class="width-100 height-100-minus-70px overflow-scroll">
+		<ion-row>
+			<button class="button-design font-size-20px" (click)="changeView('attributes')">
+				{{"Attributes" | translate}}
+			</button>
+		</ion-row>
 		<ion-row class="font-white margin-left-30 margin-bottom-10 margin-top-45">
 			<ion-col>
 				<button class="button-design font-size-20px" (click)="selectAll()">
@@ -37,6 +42,31 @@
 			<button class="transparent font-white width-100 text-align-left" (click)="chooseGoal(goal.key)">
 				<span *ngIf="chosenGoalArray.indexOf(goal.key) != -1" class="font-size-20px">{{goal.name}}</span>
 				<span *ngIf="chosenGoalArray.indexOf(goal.key) == -1" class="font-gray font-size-20px">{{goal.name}}</span>
+			</button>
+		</ion-row>
+	</ion-grid>
+	<ion-grid *ngIf="view == 'attributes'" class="width-100 height-100-minus-70px overflow-scroll">
+		<ion-row>
+			<button class="button-design font-size-20px" (click)="changeView('projects')">
+				{{"Projects" | translate}}
+			</button>
+		</ion-row>
+		<ion-row class="font-white margin-left-30 margin-bottom-10 margin-top-45">
+			<ion-col>
+				<button class="button-design font-size-20px" (click)="selectAll()">
+					{{"Select all" | translate}}
+				</button>
+			</ion-col>
+			<ion-col class="font-white margin-left-30 margin-bottom-10">
+				<button class="button-design font-size-20px" (click)="clearAll()">
+					{{"Clear all" | translate}}
+				</button>
+			</ion-col>
+		</ion-row>
+		<ion-row class="font-white margin-left-30 margin-bottom-10" *ngFor="let attribute of attributeArray">
+			<button class="transparent font-white width-100 text-align-left" (click)="chooseAttribute(attribute.content)">
+				<span *ngIf="chosenAttributeArray.indexOf(attribute.content) != -1" class="font-size-20px">{{attribute.content}}</span>
+				<span *ngIf="chosenAttributeArray.indexOf(attribute.content) == -1" class="font-gray font-size-20px">{{attribute.content}}</span>
 			</button>
 		</ion-row>
 	</ion-grid>

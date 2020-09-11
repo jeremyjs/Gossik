@@ -10,7 +10,10 @@ import { Goal } from '../../model/goal/goal.model';
 })
 export class ToDoFilterModalPage implements OnInit {
 	goalArray = [];
-	chosenGoalArray = [];
+  chosenGoalArray = [];
+  attributeArray = [];
+  chosenAttributeArray = [];
+  view: string = 'projects';
 
   constructor(
   	public navParams: NavParams,
@@ -21,7 +24,13 @@ export class ToDoFilterModalPage implements OnInit {
 
   ngOnInit() {
   	this.goalArray = this.navParams.get('goalArray');
-  	this.chosenGoalArray = this.navParams.get('goalKeyArray');
+    this.chosenGoalArray = this.navParams.get('goalKeyArray');
+    this.attributeArray = this.navParams.get('attributeArray');
+    this.chosenAttributeArray = this.navParams.get('chosenAttributeArray');
+  }
+
+  changeView(view) {
+    this.view = view;
   }
 
   selectAll() {
@@ -38,6 +47,14 @@ export class ToDoFilterModalPage implements OnInit {
   		this.chosenGoalArray.push(goalkey)
   	} else {
   		this.chosenGoalArray.splice(this.chosenGoalArray.indexOf(goalkey), 1);
+  	}
+  }
+
+  chooseAttribute(attribute) {
+  	if(this.chosenAttributeArray.indexOf(attribute) == -1) {
+  		this.chosenAttributeArray.push(attribute)
+  	} else {
+  		this.chosenAttributeArray.splice(this.chosenAttributeArray.indexOf(attribute), 1);
   	}
   }
 
