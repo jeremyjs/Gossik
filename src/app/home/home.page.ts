@@ -2625,9 +2625,6 @@ export class HomePage {
 							for(let filterAttribute of this.chosenAttributeArray) {
 								if(action.attributes.indexOf(filterAttribute) == -1) {
 									attributeCheck = false;
-									console.log('attribute ' + filterAttribute + ' not found');
-								} else {
-									console.log('attribute ' + filterAttribute + ' found');
 								}
 							}
 						} else {
@@ -2656,9 +2653,6 @@ export class HomePage {
 							for(let filterAttribute of this.chosenAttributeArray) {
 								if(action.attributes.indexOf(filterAttribute) == -1) {
 									attributeCheck = false;
-									console.log('attribute ' + filterAttribute + ' not found');
-								} else {
-									console.log('attribute ' + filterAttribute + ' found');
 								}
 							}
 						} else {
