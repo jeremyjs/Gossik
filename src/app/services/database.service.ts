@@ -7,6 +7,7 @@ import { Action } from '../../model/action/action.model';
 import { Reference } from '../../model/reference/reference.model';
 import { Delegation } from '../../model/delegation/delegation.model';
 import { CalendarEvent } from '../../model/calendarEvent/calendarEvent.model';
+import { Attribute } from '../../model/attribute/attribute.model';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -356,7 +357,7 @@ export class DatabaseService {
     }
 
     getAttributeListFromUser(userid) {
-        return this.db.list('users/' + userid + '/attributes');
+        return this.db.list<Attribute>('users/' + userid + '/attributes');
     }
 
     getActionFromActionid(actionid: string, userid) {
