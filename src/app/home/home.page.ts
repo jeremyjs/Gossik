@@ -2613,63 +2613,36 @@ export class HomePage {
     }
 
   	showDoableActions() {
-  		this.skippedAllToDos = false;
-  		if(this.duration > 0) {
-			this.doableActionArray = [];
-			for(let action of this.actionArray) {
-				if(action.active != false) {
-					let attributeCheck: boolean = true;
-					if(this.chosenAttributeArray.length > 0) {
-						console.log('checking action ' + action.content);
-						if(action.attributes) {
-							for(let filterAttribute of this.chosenAttributeArray) {
-								if(action.attributes.indexOf(filterAttribute) == -1) {
-									attributeCheck = false;
-								}
+		  this.skippedAllToDos = false;
+		let duration: number = 100000;
+		if(this.duration > 0) {
+			duration = this.duration;
+		}
+		this.doableActionArray = [];
+		for(let action of this.actionArray) {
+			if(action.active != false) {
+				let attributeCheck: boolean = true;
+				if(this.chosenAttributeArray.length > 0) {
+					if(action.attributes) {
+						for(let filterAttribute of this.chosenAttributeArray) {
+							if(action.attributes.indexOf(filterAttribute) == -1) {
+								attributeCheck = false;
 							}
-						} else {
-							attributeCheck = false;
 						}
-					}
-					if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
-					this.doableActionArray.push(action);
+					} else {
+						attributeCheck = false;
 					}
 				}
-			}
-			this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-			if(this.doableActionArray.length == 0) {
-				this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
-					this.presentToast(translation["There is no doable action for that time."]);
-				})
-			}
-		} else if(this.duration == 0) {
-			this.doableActionArray = [];
-			for(let action of this.actionArray) {
-				if(action.active != false) {
-					let attributeCheck: boolean = true;
-					if(this.chosenAttributeArray.length > 0) {
-						console.log('checking action ' + action.content);
-						if(action.attributes) {
-							for(let filterAttribute of this.chosenAttributeArray) {
-								if(action.attributes.indexOf(filterAttribute) == -1) {
-									attributeCheck = false;
-								}
-							}
-						} else {
-							attributeCheck = false;
-						}
-					}
-					if(!action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
-					this.doableActionArray.push(action);
-					}
+				if(action.time/1 <= this.duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
+				this.doableActionArray.push(action);
 				}
 			}
-			this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-			if(this.doableActionArray.length == 0) {
-				this.translate.get(["There is no action for that filter."]).subscribe( translation => {
-					this.presentToast(translation["There is no action for that filter."]);
-				})
-			}
+		}
+		this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+		if(this.doableActionArray.length == 0) {
+			this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
+				this.presentToast(translation["There is no doable action for that time."]);
+			})
 		}
   	}
 
