@@ -2646,7 +2646,6 @@ export class HomePage {
 				this.presentToast(translation["There is no doable action for that time."]);
 			})
 		}
-		this.computeDynamicPriority(this.doableActionArray[0]);
 	}
 
 	computeDynamicPriority(action: Action): number {
@@ -2686,14 +2685,10 @@ export class HomePage {
 				scoreDict[projectid] = learnedSchedule[learnedScheduleHour][projectid];
 			}
 		}
-		console.log('hour ' + String(learnedScheduleHour));
-		console.log(learnedSchedule[learnedScheduleHour]);
-		console.log(scoreDict);
 		if(max > 0 && scoreDict[action.goalid]) {
 			priorityInfluenceSchedule = scoreDict[action.goalid] / max * 20;
 		}
 		let priorityInfluencePriority: number = 10 * action.priority;
-		console.log('action ' + action.content + ' got a score of ' + String(priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule) + ' daysUntilDeadline ' + String(daysUntilDeadline) + ' priorityInfluenceDeadline ' + String(priorityInfluenceDeadlie) + ' daysSinceCreated ' + String(daysSinceCreated) + ' priorityInfluenceProcrastination ' + String(priorityInfluenceProcastination) + ' project score ' + String(scoreDict[action.goalid]) + ' max score ' + String(max) + ' priorityInfluenceSchedule ' + String(priorityInfluenceSchedule) + ' priorityInfluencePriority ' + String(priorityInfluencePriority));
 		return priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule;
 	}
 
