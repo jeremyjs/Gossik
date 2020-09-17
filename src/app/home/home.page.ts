@@ -2640,7 +2640,7 @@ export class HomePage {
 				}
 			}
 		}
-		this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+		this.doableActionArray.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
 		if(this.doableActionArray.length == 0) {
 			this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
 				this.presentToast(translation["There is no doable action for that time."]);
@@ -2649,17 +2649,19 @@ export class HomePage {
 		this.computeDynamicPriority(this.doableActionArray[0]);
 	}
 
-	computeDynamicPriority(action: Action) {
+	computeDynamicPriority(action: Action): number {
 		let priorityInfluenceDeadlie: number = 0;
+		let daysUntilDeadline: number;
 		if(action.deadline) {
-			let daysUntilDeadline = Math.round((new Date(action.deadline).getTime() - new Date().getTime())/(24*3600*1000));
+			daysUntilDeadline = Math.round((new Date(action.deadline).getTime() - new Date().getTime())/(24*3600*1000));
 			if(daysUntilDeadline < 5) {
 				priorityInfluenceDeadlie = (5-daysUntilDeadline)*10;
 			}
 		}
 		let priorityInfluenceProcastination: number = 0;
+		let daysSinceCreated: number;
 		if(action.createDate) {
-			let daysSinceCreated: number = Math.round((new Date().getTime() - new Date(action.createDate).getTime())/(24*3600*1000));
+			daysSinceCreated = Math.round((new Date().getTime() - new Date(action.createDate).getTime())/(24*3600*1000));
 			priorityInfluenceProcastination = daysSinceCreated / 6;
 		}
 		let priorityInfluenceSchedule: number = 0;
@@ -2684,9 +2686,15 @@ export class HomePage {
 				scoreDict[projectid] = learnedSchedule[learnedScheduleHour][projectid];
 			}
 		}
+		console.log('hour ' + String(learnedScheduleHour));
+		console.log(learnedSchedule[learnedScheduleHour]);
+		console.log(scoreDict);
 		if(max > 0 && scoreDict[action.goalid]) {
 			priorityInfluenceSchedule = scoreDict[action.goalid] / max * 20;
 		}
+		let priorityInfluencePriority: number = 10 * action.priority;
+		console.log('action ' + action.content + ' got a score of ' + String(priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule) + ' daysUntilDeadline ' + String(daysUntilDeadline) + ' priorityInfluenceDeadline ' + String(priorityInfluenceDeadlie) + ' daysSinceCreated ' + String(daysSinceCreated) + ' priorityInfluenceProcrastination ' + String(priorityInfluenceProcastination) + ' project score ' + String(scoreDict[action.goalid]) + ' max score ' + String(max) + ' priorityInfluenceSchedule ' + String(priorityInfluenceSchedule) + ' priorityInfluencePriority ' + String(priorityInfluencePriority));
+		return priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule;
 	}
 
   	skipAction() {
