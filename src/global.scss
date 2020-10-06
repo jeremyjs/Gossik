@@ -25,10 +25,6 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-toolbar {
-    --ion-text-color: var(--ion-color-white) !important;
-}
-
 .toolbar-title {
   padding: auto !important;
 }
@@ -162,14 +158,6 @@ ion-button {
 
 .display-block {
   display: block;
-}
-
-.background-gray {
-  --background: url('/assets/imgs/background_gray.png') 0 0/100% 100% no-repeat;
-}
-
-.background-color-gray {
-  background-color: rgba(102,102,102,0.2);
 }
 
 .picker-md, .picker-wrapper {
@@ -321,7 +309,7 @@ ion-item {
 }
 
 ion-toolbar {
-    --color: var(--ion-color-white) !important;
+    font-weight: bold;
 }
 
 .item-md.item-block .item-inner {
@@ -332,6 +320,10 @@ ion-toolbar {
   background-color: var(--ion-color-primary);
   padding-left: 20px;
   height: 110px;
+}
+
+.font-activated {
+  color: #2F80ED;
 }
 
 .header-logo {
@@ -656,8 +648,8 @@ ion-input {
   height: 30px;
 }
 
-.height-70px {
-  height: 70px;
+.height-80px {
+  height: 80px;
 }
 
 .height-auto {
@@ -729,8 +721,8 @@ ion-input {
   height: 100%;
 }
 
-.height-100-minus-70px {
-  height: calc(100% - 70px);
+.height-100-minus-80px {
+  height: calc(100% - 80px);
 }
 
 .height-100-minus-85px {

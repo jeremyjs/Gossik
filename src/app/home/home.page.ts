@@ -550,11 +550,6 @@ export class HomePage {
 				this.getCaptures();
 				this.getReferences();
 				this.getAttributes();
-				this.content.getScrollElement().then(innerScroll => {
-					this.domCtrl.write(() => {
-						innerScroll.setAttribute('style', 'background: url("../../assets/imgs/background_gray.png") 0 0/100% 100% no-repeat');
-					});
-				});
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.isAdmin = this.userProfile.isAdmin;
