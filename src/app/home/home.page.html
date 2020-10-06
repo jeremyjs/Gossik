@@ -1328,45 +1328,61 @@
         </button>
       </ion-col>
       <ion-col class="no-padding">
-        <button class="  no-padding margin-auto width-100 height-100" (click)="goToProcessPage()">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToItemsPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'ProcessPage' && !userProfile.tutorial.thoughts" src="../../assets/icon/icon_organize.png" height="40" class="margin-auto">
+          <img *ngIf="viewpoint == 'ItemsPage'" src="../../assets/icon/icon_items_activated.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'ItemsPage'" src="../../assets/icon/icon_items.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
-            <span *ngIf="viewpoint == 'ProcessPage' && !userProfile.tutorial.thoughts" class="margin-auto  ">
-              {{"Thoughts" | translate}}
+            <span *ngIf="viewpoint == 'ItemsPage'" class="margin-auto font-activated">
+              {{"Items" | translate}}!
+            </span>
+            <span *ngIf="viewpoint != 'ItemsPage'" class="margin-auto font-gray">
+              {{"Items" | translate}}!
             </span>
           </ion-row>
         </button>
       </ion-col>
       <ion-col class="no-padding">
-        <button class="  no-padding margin-auto width-100 height-100" (click)="goToProjectsPage()">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="add()">
           <ion-row>
-          <img *ngIf="viewpoint == 'ProjectsPage'" src="../../assets/icon/icon_overview.png" height="40" class="margin-auto">
-          <img *ngIf="viewpoint != 'ProjectsPage'" src="../../assets/icon/icon_overview_gray.png" height="40" class="margin-auto">
+          <img src="../../assets/icon/icon_add.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
-            <span *ngIf="viewpoint == 'ProjectsPage'" class="margin-auto  ">
-              {{"Overview" | translate}}
-            </span>
-            <span *ngIf="viewpoint != 'ProjectsPage'" class="margin-auto font-gray">
-              {{"Overview" | translate}}
+            <span class="margin-auto font-gray">
+              {{"Add" | translate}}!
             </span>
           </ion-row>
         </button>
       </ion-col>
       <ion-col class="no-padding">
-        <button class="  no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToAssistantPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'ToDoPage'" src="../../assets/icon/icon_todo.png" height="40" class="margin-auto">
-          <img *ngIf="viewpoint != 'ToDoPage'" src="../../assets/icon/icon_todo_gray.png" height="40" class="margin-auto">
+          <img *ngIf="viewpoint == 'AssistantPage'" src="../../assets/icon/icon_assistant_activated.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'AssistantPage'" src="../../assets/icon/icon_assistant.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
-            <span *ngIf="viewpoint == 'ToDoPage'" class="margin-auto  ">
-              {{"Do" | translate}}
+            <span *ngIf="viewpoint == 'AssistantPage'" class="margin-auto font-activated">
+              {{"Assistant" | translate}}!
             </span>
-            <span *ngIf="viewpoint != 'ToDoPage'" class="margin-auto font-gray">
-              {{"Do" | translate}}
+            <span *ngIf="viewpoint != 'AssistantPage'" class="margin-auto font-gray">
+              {{"Assistant" | translate}}!
+            </span>
+          </ion-row>
+        </button>
+      </ion-col>
+      <ion-col class="no-padding">
+        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToCalendarPage()">
+          <ion-row>
+          <img *ngIf="viewpoint == 'CalendarPage'" src="../../assets/icon/icon_calendar_activated.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'CalendarPage'" src="../../assets/icon/icon_calendar.svg" height="24" class="margin-auto">
+          </ion-row>
+          <ion-row>
+            <span *ngIf="viewpoint == 'CalendarPage'" class="margin-auto font-activated">
+              {{"Calendar" | translate}}!
+            </span>
+            <span *ngIf="viewpoint != 'CalendarPage'" class="margin-auto font-gray">
+              {{"Calendar" | translate}}!
             </span>
           </ion-row>
         </button>
