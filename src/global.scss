@@ -247,9 +247,25 @@ ion-button {
   width: 100px !important;
 }
 
+.margin-bottom-0-auto {
+  margin: auto auto 0 auto;
+}
 
+.margin-top-7-auto {
+  margin: 7px auto auto auto;
+}
 
+.margin-left-0-auto {
+  margin: auto auto auto 0;
+}
 
+.margin-left-7-auto {
+  margin: auto auto auto 7px;
+}
+
+.margin-horizontal-auto {
+  margin: auto 0 auto 0;
+}
 
 .weekview-allday-content-table td, {
   border: 1px solid #FFFFFF !important;
@@ -1029,6 +1045,10 @@ p {
   width: 90%;
 }
 
+.width-95 {
+  width: 95%;
+}
+
 .margin-right-0 {
   margin-right: 0px;
 }
@@ -1049,7 +1069,13 @@ p {
   text-align: left !important;
 }
 
+.height-25 {
+  height: 25%;
+}
 
+.height-65 {
+  height: 65%;
+}
 
 .height-90 {
   height: 90%;

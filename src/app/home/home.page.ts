@@ -185,6 +185,7 @@ export class HomePage {
 	references: any;
 	attributeArray: any[];
 	chosenAttributeArray: any[] = [];
+	smartAssistantToggle: boolean;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -2446,7 +2447,7 @@ export class HomePage {
 					this.pageTitle = "Focus";
 					this.changePage('ActionPage');
 				} else {
-					this.pageTitle = "Do";
+					this.pageTitle = "Do!";
 					this.doableActionArray = [];
 					this.duration = 0;
 					this.goalKeyArray = [];
