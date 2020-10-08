@@ -2075,24 +2075,6 @@ export class HomePage {
 		this.pageTitle = "Calendar";
 		this.changePage('CalendarPage');
 	}
-	  
-	syncNativeCalendar() {
-		if(this.userProfile.subscriptionPaid) {
-			this.eventSource = [];
-			for(let calendarEvent of this.calendarEvents) {
-				if(calendarEvent.active != false) {
-					this.eventSource.push(calendarEvent);
-				}
-			};
-			let events = this.eventSource;
-			this.eventSource = [];
-			setTimeout(() => {
-				this.eventSource = events;
-			});
-		} else {
-			this.presentAlert("unpaidFeatureSubscription");
-		}
-	}
   	
   	addEvent(){
 	    if(!this.selectedDay) {
@@ -2389,7 +2371,9 @@ export class HomePage {
 		}
 	}
 
-	changeCalendarMode(calendarMode) {
+	changeCalendarMode(event) {
+		console.log(event);
+		let calendarMode = event.detail.value;
 		if(calendarMode == 'month') {
 			this.selectedDay = this.calendar.currentDate;
 		} else if(calendarMode == 'day') {

@@ -1100,53 +1100,23 @@
   </div>
   <!-- Mobile CalendarPage -->
   <div class="height-100-minus-80px width-100" *ngIf="viewpoint == 'CalendarPage' && isApp">
-    <ion-grid class="width-90">
-      <ion-row class="text-align-right">
-        <ion-col>
-          <button (click)="addEvent()" float-right class="   ">
-            <img src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
     <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
-      <ion-row>
-        <button *ngIf="userProfile.subscription == 'syncCalendarFeature'" class="button-design margin-auto font-size-20px" (click)="syncNativeCalendar()">
-          {{"Sync phone calendar" | translate}}
-        </button>
-      </ion-row>
       <ion-row class="width-100 text-align-right">
-        <ion-col size="5" class="text-align-center">
-          <button *ngIf="calendar.mode == 'month'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('day')">
-            {{"Day view" | translate}}
-          </button>
-          <button *ngIf="calendar.mode == 'day'" class="button-design margin-auto margin-bottom-10 font-size-20px" (click)="changeCalendarMode('month')">
-            {{"Month view" | translate}}
-          </button>
-        </ion-col>
-        <ion-col size="5" class="text-align-center">
-          <button class="button-design margin-auto font-size-20px" (click)="changeDateToday()">
-            {{"Today" | translate}}
-          </button>
-        </ion-col>
+        <ion-segment (ionChange)="changeCalendarMode($event)" color="tertiary">
+          <ion-segment-button value="month">
+            <ion-label>{{"Month" | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="week">
+            <ion-label>{{"Week" | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="day">
+            <ion-label>{{"Day" | translate}}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
       </ion-row>
       <ion-row class="width-100 height-45px text-align-center">
-        <span class="margin-auto flex">
-          <button *ngIf="calendar.mode == 'day'" class="  no-padding margin-auto" (click)="changeDay(-1)">
-            <img src="../../assets/icon/icon_arrow_left.png" height="30">
-          </button>
-          <button *ngIf="calendar.mode == 'month'" class="  no-padding margin-auto" (click)="changeDay(-31)">
-            <img src="../../assets/icon/icon_arrow_left.png" height="30">
-          </button>
-          <button class="background-    no-padding line-height-1" (click)="changeDate()">
-            <h3 class="display-inline-block margin-0 margin-left-5 margin-right-5 font-size-30px">{{ viewTitle }}</h3>
-          </button>
-          <button *ngIf="calendar.mode == 'day'" class="  no-padding margin-auto" (click)="changeDay(1)">
-            <img src="../../assets/icon/icon_arrow_right.png" height="30">
-          </button>
-          <button *ngIf="calendar.mode == 'month'" class="  no-padding margin-auto" (click)="changeDay(31)">
-            <img src="../../assets/icon/icon_arrow_right.png" height="30">
-          </button>
+        <span class="flex">
+          <h3 class="display-inline-block font-size-25px">{{ viewTitle }}</h3>
         </span>
       </ion-row>
       <ion-row class="width-100 height-85">
