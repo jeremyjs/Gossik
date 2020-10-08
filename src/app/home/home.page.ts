@@ -2529,7 +2529,11 @@ export class HomePage {
 				});
 			});
 		}
-  	}
+	  }
+	  
+	dateFormated(date) {
+		return new Date(date).toLocaleDateString();
+	}
 
   	chooseGoal(event) {
   		if(event.detail.value.length == 0) {

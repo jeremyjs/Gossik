@@ -694,7 +694,7 @@
       </ion-row>
       <ion-row class="height-10">
         <span class="margin-auto flex">
-        <ion-toggle [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()"></ion-toggle>
+        <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()"></ion-toggle>
         <span class="margin-horizontal-auto">{{"Smart assistant" | translate}}</span>
         <button (click)="showInfo('smartAssistant')" class="transparent">
           <img src="../../assets/icon/icon_info.svg" class="margin-left-7-auto" height="24">
@@ -702,59 +702,29 @@
         </span>
       </ion-row>
       <ion-row class="height-65 overflow-scroll no-scrollbar width-95">
-        <ion-card *ngIf="todoview == 'task'" class="margin-top-45">
-          <ion-row *ngIf="doableActionArray[0]" class="margin-auto   font-size-1-5rem text-align-center">
-            <span class="margin-auto">
-              {{doableActionArray[0].content}}
-            </span>
-          </ion-row>
-          <ion-row *ngIf="doableActionArray[0]" class="margin-auto font-gray text-align-center">
-            <span class="margin-auto">
-              {{doableActionArray[0].time}}{{"min" | translate }}
-            </span>
-          </ion-row>
-          <ion-row *ngIf="doableActionArray[0] && doableActionArray[0].goalid != 'unassigned'" class="margin-auto font-gray text-align-center">
-            <span class="margin-auto">
-              {{goalDict[doableActionArray[0].goalid].name}}
-            </span>
-          </ion-row>
-          <ion-row *ngIf="doableActionArray[0]" class="margin-top-45 margin-right-auto margin-left-auto">
-            <ion-col class="flex text-align-center">
-              <button class="button-design margin-auto font-size-20px" (click)="skipAction()">
-                {{"Skip" | translate}}
-              </button>
-            </ion-col>
-            <ion-col class="flex text-align-center">
-              <button class="button-design margin-auto font-size-20px" (click)="startAction(doableActionArray[0])">
-                {{"Start" | translate}}
-              </button>
-            </ion-col>
-          </ion-row>
-          <ion-row *ngIf="skippedAllToDos" class="margin-top-45">
-            <button class="button-design margin-auto" (click)="showDoableActions()">
-              {{"Refresh ToDos" | translate}}
-            </button>
-          </ion-row>
-        </ion-card>
-        <ion-card *ngIf="todoview == 'list'" class="margin-0 margin-top-45">
-          <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="border-radius-20px border-1 margin-top-10 background-102">
-            <ion-row class="  font-size-1-5rem text-align-left">
+        <div *ngIf="!smartAssistantToggle">
+          <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="margin-top-10">
+            <ion-row class="font-size-16px text-align-left">
               <span>
                 {{todo.content}}
               </span>
             </ion-row>
-            <ion-row class="font-gray text-align-left">
-              <span>
+            <ion-row class="font-gray text-align-left font-size-14px">
+              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3">
+                {{goalDict[todo.goalid].name}}
+              </span>
+              <span *ngIf="todo.deadline" class="margin-right-3">
+                <img src="../../assets/icon/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
+              </span>
+              <span *ngIf="todo.priority" class="margin-right-3">
+                <img src="../../assets/icon/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{todo.priority}}
+              </span>
+              <span *ngIf="todo.time" class="margin-right-3">
                 {{todo.time}}{{"min" | translate }}
               </span>
             </ion-row>
-            <ion-row *ngIf="todo.goalid != 'unassigned'" class="font-gray text-align-left">
-              <span>
-                {{goalDict[todo.goalid].name}}
-              </span>
-            </ion-row>
           </ion-grid>
-        </ion-card>
+        </div>
       </ion-row>
     </ion-grid>
   </div>

@@ -6,7 +6,7 @@ export interface Action {
     nextAction?: string;
     content: string;
     attributes?: string[];
-    priority: number;
+    priority: any;
     deadline?: any;
     deadlineid?: string;
     time: number;
