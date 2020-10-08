@@ -2372,7 +2372,6 @@ export class HomePage {
 	}
 
 	changeCalendarMode(event) {
-		console.log(event);
 		let calendarMode = event.detail.value;
 		if(calendarMode == 'month') {
 			this.selectedDay = this.calendar.currentDate;

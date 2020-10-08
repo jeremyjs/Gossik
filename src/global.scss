@@ -239,10 +239,6 @@ ion-button {
   padding: 2px !important;
 }
 
-.calendar {
-  color: rgb(255,255,255) !important;
-}
-
 .calendar-hour-column, .weekview-allday-label, .dayview-allday-label {
   width: 100px !important;
 }
@@ -474,15 +470,16 @@ ion-toolbar {
 }
 
 .monthview-primary-with-event, .monthview-secondary-with-event {
-  background-color: #666666 !important;
+  background-color: var(--ion-color-tertiary) !important;
+  color: #ffffff !important;
 }
 
 .monthview-current {
-  background-color: #038a0c !important;
+  background-color: var(--ion-color-tertiary) !important;
+  color: #ffffff !important;
 }
 
 .monthview-selected {
-  background-color: #FFFFFF !important;
   color: #000000 !important
 }
 
