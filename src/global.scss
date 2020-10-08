@@ -467,7 +467,6 @@ ion-toolbar {
 }
 
 .monthview-current {
-  background-color: var(--ion-color-tertiary) !important;
   color: #ffffff !important;
 }
 
@@ -649,6 +648,14 @@ ion-input {
 
 .margin-right-3 {
   margin-right: 3px;
+}
+
+.margin-right-3-left-0-auto {
+  margin: auto 3px auto 0;
+}
+
+.padding-5-auto-5-auto {
+  padding: 5px 0 5px 0;
 }
 
 .margin-right-5 {

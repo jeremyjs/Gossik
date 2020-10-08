@@ -1141,7 +1141,26 @@ export class HomePage {
 			}
 			this.changePage('CapturePage');
 		}
-  	}
+	  }
+	
+	goToItemsPage() {
+		this.changePage('ItemsPage');
+		this.pageTitle = "Items";
+		this.pageCtrl = 'thoughts';
+		if(this.userProfile.subscription == 'thoughtsFeature' && !this.userProfile.subscriptionPaid) {
+			this.switchItems({detail: { value: 'projects'}});
+		} else {
+			this.switchItems({detail: { value: 'thoughts'}});
+		}
+	}
+
+	switchItems(event) {
+		if(this.userProfile.subscription == 'thoughtsFeature' && !this.userProfile.subscriptionPaid && event.detail.value == 'thoughts') {
+			this.presentAlert("unpaidFeatureSubscription");
+		} else {
+			this.pageCtrl = event.detail.value;
+		}
+	}
 
   	goToProcessPage() {
 		if(this.userProfile.subscription == 'thoughtsFeature' && !this.userProfile.subscriptionPaid) {

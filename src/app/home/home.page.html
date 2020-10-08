@@ -322,8 +322,8 @@
       </ion-card>
   </div>
 
-  <!-- ProcessPage -->
-  <div *ngIf="viewpoint == 'ProcessPage' && !isApp">
+  <!-- ItemsPage -->
+  <div *ngIf="viewpoint == 'ItemsPage' && !isApp">
     <div *ngIf="captureListNotEmpty">
       <h3 class="padding-left-20">{{"Thoughts captured and ready for processing" | translate}}:</h3>
       <ion-grid>
@@ -339,40 +339,34 @@
       </ion-grid>
     </div>
   </div>
-  <!-- Mobile ProcessPage -->
-  <div *ngIf="viewpoint == 'ProcessPage' && isApp" class="no-scrollbar height-100-minus-80px width-100">
-    <ion-grid class="width-90">
-      <ion-row class="text-align-right">
-        <ion-col>
-          <button (click)="goToCapturePage()" float-right class="   ">
-            <img *ngIf="userProfile.tutorial.createThought" src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px img_green">
-            <img *ngIf="!userProfile.tutorial.createThought" src="../../assets/icon/icon_add.png" class="margin-auto-auto img-height-60px img-width-60px">
-          </button>
-        </ion-col>
+  <!-- Mobile ItemsPage -->
+  <div *ngIf="viewpoint == 'ItemsPage' && isApp" class="no-scrollbar height-100-minus-80px width-100">
+    <ion-grid class="height-100-minus-80px overflow-scroll no-scrollbar width-100">
+      <ion-row class="width-100 text-align-right height-25px">
+        <ion-segment (ionChange)="switchItems($event)" color="tertiary">
+          <ion-segment-button value="thoughts">
+            <ion-label>{{"Unassigned Thoughts" | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="projects">
+            <ion-label>{{"Projects" | translate}}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
       </ion-row>
-    </ion-grid>
-    <ion-grid class="height-100-minus-85px overflow-scroll no-scrollbar width-90">
-      <ion-row class="  width-90 margin-auto margin-bottom-3 one-line overflow-x-hidden" *ngFor="let capture of captureArray">
-        <ion-col size="1" class="no-padding flex">
-          <img *ngIf="!userProfile.tutorial.thoughtprocessing" src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto">
-          <img *ngIf="userProfile.tutorial.thoughtprocessing" src="../../assets/imgs/circle_white.png" height="15" class="margin-auto-auto img_green">
-        </ion-col>
-        <ion-col size="9.5" class="text-align-left overflow-x-hidden flex">
-          <button  class="    text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
-            <span *ngIf="!(userProfile.tutorial.thoughtprocessing || userProfile.tutorial.process)" class="font-size-20px">
-              {{capture.content}}
-            </span>
-            <span *ngIf="userProfile.tutorial.thoughtprocessing || userProfile.tutorial.process" class="font-size-20px green">
-              {{capture.content}}
-            </span>
-          </button>
-        </ion-col>
-        <ion-col size="1.5" class="no-padding flex">
-          <button class="  no-padding" (click)="deleteCapture(capture)">
-            <img src="../../assets/icon/icon_delete.png">
-          </button>
-        </ion-col>
-      </ion-row>
+      <div *ngIf="pageCtrl == 'thoughts'">
+        <ion-row class="width-90 padding-5-auto-5-auto margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let capture of captureArray">
+          <ion-col class="text-align-left overflow-x-hidden flex no-padding">
+            <img src="../../assets/icon/icon_thought.svg" height="15" class="margin-right-3-left-0-auto">
+            <button  class="transparent text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
+              <span *ngIf="!(userProfile.tutorial.thoughtprocessing || userProfile.tutorial.process)" class="font-size-20px">
+                {{capture.content}}
+              </span>
+              <span *ngIf="userProfile.tutorial.thoughtprocessing || userProfile.tutorial.process" class="font-size-20px green">
+                {{capture.content}}
+              </span>
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
     </ion-grid>
   </div>
 
