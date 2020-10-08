@@ -670,7 +670,7 @@
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-80px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-95 height-100">
-      <ion-row class="text-align-right height-25">
+      <ion-row class="text-align-right height-25 seperating-border-bottom">
         <ion-col (click)="setAvailabletime()" class="flex no-padding">
           <ion-grid class="no-padding">
             <ion-row class="height-50">
@@ -681,6 +681,7 @@
             </ion-row>
           </ion-grid>
         </ion-col>
+        <ion-col size="0" class="seperating-border-right height-80 margin-auto flex no-padding"></ion-col>
         <ion-col (click)="filterToDos()" class="flex no-padding">
           <ion-grid class="no-padding">
             <ion-row class="height-50">
@@ -692,7 +693,7 @@
           </ion-grid>
         </ion-col>
       </ion-row>
-      <ion-row class="height-10">
+      <ion-row class="height-10 seperating-border-bottom">
         <span class="margin-auto flex">
         <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()"></ion-toggle>
         <span class="margin-horizontal-auto">{{"Smart assistant" | translate}}</span>
@@ -701,9 +702,9 @@
           </button>
         </span>
       </ion-row>
-      <ion-row class="height-65 overflow-scroll no-scrollbar width-95">
+      <ion-row class="height-65 overflow-scroll no-scrollbar">
         <div *ngIf="!smartAssistantToggle">
-          <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="margin-top-10">
+          <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="margin-top-10 seperating-border-bottom">
             <ion-row class="font-size-16px text-align-left">
               <span>
                 {{todo.content}}
