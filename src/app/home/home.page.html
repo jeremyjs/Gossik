@@ -1100,8 +1100,8 @@
   </div>
   <!-- Mobile CalendarPage -->
   <div class="height-100-minus-80px width-100 overflow-scroll no-scrollbar" *ngIf="viewpoint == 'CalendarPage' && isApp">
-    <ion-grid class="width-90">
-      <ion-row class="width-100 text-align-right">
+    <ion-grid class="width-90 height-100">
+      <ion-row class="width-100 text-align-right height-25px">
         <ion-segment (ionChange)="changeCalendarMode($event)" color="tertiary">
           <ion-segment-button value="month">
             <ion-label>{{"Month" | translate}}</ion-label>
@@ -1119,7 +1119,7 @@
           <h3 class="display-inline-block font-size-25px">{{ viewTitle }}</h3>
         </span>
       </ion-row>
-      <ion-row class="width-100">
+      <ion-row class="width-100 height-100-minus-70px">
         <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'month'">
           <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
             <ion-grid class="event-detail-container" *ngIf="showEventDetail">
@@ -1160,7 +1160,7 @@
                     allDayLabel="{{'Deadlines' | translate }}">
           </calendar>
         </div>
-        <div class="width-100 padding-10 height-90" *ngIf="calendar.mode == 'day'">
+        <div class="width-100 padding-10 height-100" *ngIf="calendar.mode == 'day'">
           <ng-template #template let-displayEvent="displayEvent" >
             <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
           </ng-template>
@@ -1185,6 +1185,31 @@
                     formatDayTitle="{{'formatDayTitle' | translate }}"
                     startingDayWeek="1"
                     startingDayMonth="1"
+                    allDayLabel="{{'Deadlines' | translate }}">
+          </calendar>
+        </div>
+        <div class="width-100 padding-10 height-100" *ngIf="calendar.mode == 'week'">
+          <ng-template #headerTemplate let-viewDate="viewDate"> 
+            <div class="custom-day-header"> {{ viewDate.dayHeader }} hi </div> 
+          </ng-template>
+          <ng-template #weekviewEventTemplate let-displayEvent="displayEvent">
+            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+          </ng-template>
+          <calendar [eventSource]="eventSource"
+                    [calendarMode]="calendar.mode"
+                    [currentDate]="calendar.currentDate"
+                    (onEventSelected)="onEventSelected($event)"
+                    (onTitleChanged)="onViewTitleChanged($event)"
+                    (onTimeSelected)="onTimeSelected($event)"
+                    class="calendar height-100"
+                    autoSelect="false"
+                    [weekviewHeaderTemplate]="headerTemplate"
+                    [weekviewNormalEventTemplate]="weekviewEventTemplate"
+                    [weekviewAllDayEventTemplate]="template"
+                    [locale]="translate.currentLang"
+                    formatHourColumn="{{'formatHourColumn' | translate }}"
+                    formatWeekTitle="{{'formatWeekTitle' | translate }}"
+                    startingDayWeek="1"
                     allDayLabel="{{'Deadlines' | translate }}">
           </calendar>
         </div>

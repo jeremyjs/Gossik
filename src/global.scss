@@ -434,17 +434,9 @@ ion-toolbar {
   font-size: 20px;
 }
 
-.calendar-event-wrap, .dayview-allday-content-table {
-  border: 0px !important;
-}
 
-.dayview-allday-content-table td {
-  border: 0px !important;
-}
 
-.dayview-allday-label {
-  border: 0px !important;
-}
+
 
 .dayview-allday-table {
   border: 1px solid #FFFFFF !important;
@@ -750,6 +742,10 @@ ion-input {
   height: 100%;
 }
 
+.height-100-minus-70px {
+  height: calc(100% - 70px);
+}
+
 .height-100-minus-80px {
   height: calc(100% - 80px);
 }
@@ -800,6 +796,10 @@ ion-input {
 
 .height-20 {
   height: 20%;
+}
+
+.height-25px {
+  height: 25px;
 }
 
 .height-45px {
