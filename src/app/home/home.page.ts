@@ -186,6 +186,7 @@ export class HomePage {
 	attributeArray: any[];
 	chosenAttributeArray: any[] = [];
 	smartAssistantToggle: boolean;
+	calendarEventsToday: CalendarEvent[] = [];
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -257,54 +258,77 @@ export class HomePage {
 	        if(this.platform.is('cordova') && (this.userProfile.subscription != 'syncCalendarFeature' || this.userProfile.subscription == 'syncCalendarFeature' && this.userProfile.subscriptionPaid)) {
 				this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 					if(hasReadWritePermission) {
-						this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
-							if(this.calendarEvents.length > 0) {
-								for(let calendarEvent of this.calendarEvents) {
-									if(calendarEvent.event_id) {
-											let nativeEventFromGossik = nativeEvents.findIndex(nativeEvent => nativeEvent.event_id == calendarEvent.event_id);
-											if(nativeEventFromGossik != -1) {
-												nativeEvents.splice(nativeEventFromGossik,1);
-											}
-									}
-								}
-							}
-							if(this.platform.is('ios')) {
-								for(let nativeEvent of nativeEvents) {
-									nativeEvent.startTime.setHours(nativeEvent.startTime.getHours() + this.userProfile.timezoneOffset/60);
-									nativeEvent.endTime.setHours(nativeEvent.endTime.getHours() + this.userProfile.timezoneOffset/60);
-								}
-							}
-							this.calendarEvents.push(...nativeEvents);
-						});
+						this.loadNativeCalendarEvents();
 					} else {
 						this.nativeCalendar.requestReadWritePermission().then( hasReadWritePermission => {
 							if(hasReadWritePermission) {
-								this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
-									if(this.calendarEvents.length > 0) {
-										for(let calendarEvent of this.calendarEvents) {
-											if(calendarEvent.event_id) {
-												let nativeEventFromGossik = nativeEvents.findIndex(nativeEvent => nativeEvent.event_id == calendarEvent.event_id);
-												if(nativeEventFromGossik != -1) {
-													nativeEvents.splice(nativeEventFromGossik,1);
-												}
-											}
-										}
-									}
-									if(this.platform.is('ios')) {
-										for(let nativeEvent of nativeEvents) {
-											nativeEvent.startTime.setHours(nativeEvent.startTime.getHours() + this.userProfile.timezoneOffset/60);
-											nativeEvent.endTime.setHours(nativeEvent.endTime.getHours() + this.userProfile.timezoneOffset/60);
-										}
-									}
-									this.calendarEvents.push(...nativeEvents);
-								});
+								this.loadNativeCalendarEvents();
 							}
 						});
 					}
 				});
+			} else {
+				this.loadCalendarEventsToday();
 			}
 	    });
 	}
+
+	loadNativeCalendarEvents() {
+		this.nativeCalendar.loadEventsFromNativeCalendar().then(nativeEvents => {
+			if(this.calendarEvents.length > 0) {
+				for(let calendarEvent of this.calendarEvents) {
+					if(calendarEvent.event_id) {
+							let nativeEventFromGossik = nativeEvents.findIndex(nativeEvent => nativeEvent.event_id == calendarEvent.event_id);
+							if(nativeEventFromGossik != -1) {
+								nativeEvents.splice(nativeEventFromGossik,1);
+							}
+					}
+				}
+			}
+			if(this.platform.is('ios')) {
+				for(let nativeEvent of nativeEvents) {
+					nativeEvent.startTime.setHours(nativeEvent.startTime.getHours() + this.userProfile.timezoneOffset/60);
+					nativeEvent.endTime.setHours(nativeEvent.endTime.getHours() + this.userProfile.timezoneOffset/60);
+				}
+			}
+			this.calendarEvents.push(...nativeEvents);
+			this.loadCalendarEventsToday();
+		});
+	}
+
+	loadCalendarEventsToday() {
+		this.calendarEventsToday = [];
+		for(let calendarEvent of this.calendarEvents) {
+			let startDate = new Date(calendarEvent.startTime);
+			if(this.isDateToday(startDate)) {
+				calendarEvent.startTimeString = this.dateToTimeString(new Date(calendarEvent.startTime));
+				this.calendarEventsToday.push(calendarEvent);
+			}
+		}
+	}
+
+	dateToTimeString(date: Date) {
+		let result: string;
+		if(date.getHours() > 9) { 
+			result = String(date.getHours());
+		} else {
+			result = '0' + String(date.getHours());
+		}
+		result += ':';
+		if(date.getMinutes() > 9) { 
+			result += String(date.getMinutes());
+		} else {
+			result += '0' + String(date.getMinutes());
+		}
+		return result;
+	}
+
+	isDateToday = (date) => {
+		const today = new Date()
+		return date.getDate() === today.getDate() &&
+			date.getMonth() === today.getMonth() &&
+			date.getFullYear() === today.getFullYear();
+	};
 
 	getStartedAction() {
 		this.takenActionList = this.db.getTakenActionListFromUser(this.auth.userid)

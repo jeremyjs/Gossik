@@ -15,4 +15,5 @@ export interface CalendarEvent {
     createDate?: any;
     deleteDate?: any;
     native?: boolean;
+    startTimeString?: string;
 }
