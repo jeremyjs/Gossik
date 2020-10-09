@@ -1980,18 +1980,10 @@ export class HomePage {
   	}
 	
 	reviewGoal(goal: Goal) {
-		this.pageTitle = "Project overview";
-		this.viewpoint = "ProjectsPage";
+		this.pageTitle = goal.name;
+		this.viewpoint = "ProjectOverviewPage";
 		this.content.scrollToTop();
 		this.eventSource = [];
-        for(let calendarEvent of this.calendarEvents) {
-        	if(calendarEvent.active != false) {
-	        	if(calendarEvent.goalid == goal.key) {
-		        	this.eventSource.push(calendarEvent);
-		        }
-		    }
-        };
-	    this.pageCtrl = 'ProjectOverview';
 		this.goal = goal;
 	}
 
