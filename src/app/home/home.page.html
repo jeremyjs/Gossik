@@ -124,16 +124,34 @@
   </div>
 
   <!-- Mobile AssistantPage -->
-  <div class="height-100-minus-80px width-90 overflow-scroll no-scrollbar margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
-    <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let calendarEvent of calendarEventsToday">
+  <div class="height-100-minus-80px overflow-scroll no-scrollbar margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
+    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden font-size-20px font-weight-bold">
+      {{"Appointments & Meetings" | translate}}
+    </ion-row>
+    <ion-row class="width-90 padding-8-0-8-8 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let calendarEvent of calendarEventsToday">
       <ion-col class="text-align-left overflow-x-hidden flex no-padding">
-        <button  class="transparent text-align-left" (click)="onEventSelected(calendarEvent)">
+        <button  class="transparent text-align-left no-padding" (click)="onEventSelected(calendarEvent)">
           <span class="font-size-16px">
             {{calendarEvent.startTimeString}} {{calendarEvent.title}}
           </span>
         </button>
       </ion-col>
     </ion-row>
+    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden font-size-20px font-weight-bold">
+      {{"Critical Tasks" | translate}}
+    </ion-row>
+    <ion-row>TBD</ion-row>
+    <!--
+    <ion-row class="width-90 padding-8-0-8-8 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let calendarEvent of calendarEventsToday">
+      <ion-col class="text-align-left overflow-x-hidden flex no-padding">
+        <button  class="transparent text-align-left no-padding" (click)="onEventSelected(calendarEvent)">
+          <span class="font-size-16px">
+            {{calendarEvent.startTimeString}} {{calendarEvent.title}}
+          </span>
+        </button>
+      </ion-col>
+    </ion-row>
+    -->
     <ion-row class="margin-auto margin-top-20 width-90">
       <ion-radio-group class="font-gray font-size-20px display-block width-100" [(ngModel)]="assistant" (ionChange)="assignAssistant()">
         <ion-row>
@@ -362,7 +380,7 @@
         </ion-segment>
       </ion-row>
       <div *ngIf="pageCtrl == 'thoughts'" class="height-100-minus-25px overflow-scroll no-scrollbar">
-        <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let capture of captureArray">
+        <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let capture of captureArray">
           <ion-col class="text-align-left overflow-x-hidden flex no-padding">
             <img src="../../assets/icon/icon_thought.svg" height="15" class="margin-right-3-left-0-auto">
             <button  class="transparent text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
@@ -374,19 +392,19 @@
         </ion-row>
       </div>
       <div *ngIf="pageCtrl == 'projects'" class="height-100-minus-25px overflow-scroll no-scrollbar">
-        <ion-row (click)="reviewGoal(goal)" class="width-90 padding-8-auto-8-auto margin-auto" no-lines *ngFor="let goal of goalArray">
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-auto-8-auto seperating-border-bottom">
+        <ion-row (click)="reviewGoal(goal)" class="width-90 padding-8-0-8-0 margin-auto" no-lines *ngFor="let goal of goalArray">
+          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0 seperating-border-bottom">
             <ion-card class="project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
             <span class="font-size-20px margin-left-7 font-weight-bold width-100-minus-20px one-line overflow-x-hidden">
               {{goal.name}}
             </span>
           </ion-row>
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-auto-8-auto">
+          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0">
             <span class="font-size-16px margin-left-17 font-weight-bold">
               X {{"Assigned thoughts" | translate}}
             </span>
           </ion-row>
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-auto-8-auto">
+          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0">
             <span class="font-size-16px margin-left-17 font-weight-bold">
               Y {{"Assigned to-dos" | translate}}
             </span>
@@ -399,16 +417,16 @@
   <!-- ProjectOverviewPage -->
   <!-- Mobile ProjectOverviewPage -->
   <div *ngIf="viewpoint == 'ProjectOverviewPage' && isApp" class="no-scrollbar height-100-minus-80px width-100">
-    <ion-row class="width-100 padding-8-auto-8-auto seperating-border-bottom height-25px">
+    <ion-row class="width-100 padding-8-0-8-0 seperating-border-bottom height-25px">
       <button class="transparent font-weight-bold" (click)="editGoal(goal)">
         {{"Edit Project" | translate}}
       </button>
     </ion-row>
-    <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom font-weight-bold">
+    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom font-weight-bold">
       {{"Assigned thoughts"}}
     </ion-row>
     <ion-row class="height-150px overflow-scroll no-scrollbar">
-      <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let reference of references[goal.key]">
+      <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let reference of references[goal.key]">
         <ion-col class="text-align-left overflow-x-hidden flex no-padding">
           <img src="../../assets/icon/icon_thought.svg" height="15" class="margin-right-3-left-0-auto">
           <button  class="transparent text-align-left" (click)="reviewThought(reference)">
@@ -419,11 +437,11 @@
         </ion-col>
       </ion-row>
     </ion-row>
-    <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom font-weight-bold">
+    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom font-weight-bold">
       {{"Assigned to-dos"}}
     </ion-row>
     <ion-row class="height-150px overflow-scroll no-scrollbar">
-      <ion-row class="width-90 padding-8-auto-8-auto margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let nextAction of actions[goal.key]">
+      <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let nextAction of actions[goal.key]">
         <ion-col class="text-align-left overflow-x-hidden flex no-padding">
           <img src="../../assets/icon/icon_do.svg" height="15" class="margin-right-3-left-0-auto">
           <button  class="transparent text-align-left" (click)="reviewAction(nextAction)">
