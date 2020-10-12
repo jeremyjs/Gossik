@@ -426,7 +426,7 @@
       {{"Assigned thoughts"}}
     </ion-row>
     <ion-row class="height-150px overflow-scroll no-scrollbar">
-      <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let reference of references[goal.key]">
+      <ion-row class="width-90 padding-8-0-8-0 height-33px margin-0-auto-0-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let reference of references[goal.key]">
         <ion-col class="text-align-left overflow-x-hidden flex no-padding">
           <img src="../../assets/icon/icon_thought.svg" height="15" class="margin-right-3-left-0-auto">
           <button  class="transparent text-align-left" (click)="reviewThought(reference)">
@@ -441,7 +441,7 @@
       {{"Assigned to-dos"}}
     </ion-row>
     <ion-row class="height-150px overflow-scroll no-scrollbar">
-      <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let nextAction of actions[goal.key]">
+      <ion-row class="width-90 padding-8-0-8-0 height-33px margin-0-auto-0-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let nextAction of actions[goal.key]">
         <ion-col class="text-align-left overflow-x-hidden flex no-padding">
           <img src="../../assets/icon/icon_do.svg" height="15" class="margin-right-3-left-0-auto">
           <button  class="transparent text-align-left" (click)="reviewAction(nextAction)">
