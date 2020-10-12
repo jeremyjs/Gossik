@@ -1180,7 +1180,7 @@
   <div class="height-100-minus-80px width-100 overflow-scroll no-scrollbar" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-grid class="width-90 height-100">
       <ion-row class="width-100 text-align-right height-25px">
-        <ion-segment (ionChange)="changeCalendarMode($event)" color="tertiary" value="month">
+        <ion-segment (ionChange)="changeCalendarMode($event)" color="tertiary" value="{{calendar.mode}}">
           <ion-segment-button value="month">
             <ion-label>{{"Month" | translate}}</ion-label>
           </ion-segment-button>
