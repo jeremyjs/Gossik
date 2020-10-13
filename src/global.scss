@@ -48,10 +48,6 @@ p::first-letter, button::first-letter, ion-col::first-letter {
   --background: rgb(0,0,0) !important;
 }
 
-ion-content {
-    overflow: auto !important;
-}
-
 .noAllDay .weekview-allday-table{
     display: none;
 }
@@ -1229,10 +1225,17 @@ p {
   opacity: 80%;
 }
 
-.popover-add .popover-content .popover-viewport{
+
+
+.popover-add-project .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
   --width: 100%;
-  --height: 100%;
+  --height: 40%;
 }
+
+
 
 .height-100px {
   height: 100px;

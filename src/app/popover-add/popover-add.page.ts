@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-popover-add',
@@ -7,13 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopoverAddPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    public popoverCtrl: PopoverController
+  ) { }
 
   ngOnInit() {
   }
 
   addProject() {
-
+    this.popoverCtrl.dismiss('project');
   }
 
   addToDo() {
@@ -25,7 +28,7 @@ export class PopoverAddPage implements OnInit {
   }
 
   addCalendarEvent() {
-    
+
   }
 
 }

@@ -68,6 +68,10 @@ const routes: Routes = [
     path: 'popover-add',
     loadChildren: () => import('./popover-add/popover-add.module').then( m => m.PopoverAddPageModule)
   },
+  {
+    path: 'popover-add-project',
+    loadChildren: () => import('./popover-add-project/popover-add-project.module').then( m => m.PopoverAddProjectPageModule)
+  },
 
 ];
 

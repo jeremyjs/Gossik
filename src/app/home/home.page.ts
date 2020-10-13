@@ -35,6 +35,7 @@ import { AssignProjectModalPage } from '../assign-project-modal/assign-project-m
 import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
 import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
 import { PopoverAddPage } from '../popover-add/popover-add.page';
+import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
 
 
 import * as moment from 'moment';
@@ -742,7 +743,21 @@ export class HomePage {
 			component: PopoverAddPage,
 			cssClass: 'popover-add'
 			});
-			return await popover.present();
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data == 'project') {
+					this.presentPopover('addProject');
+				}
+			});
+		} else if(name == 'addProject') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddProjectPage,
+			cssClass: 'popover-add-project'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				
+			});
 		}
 	  }
 
