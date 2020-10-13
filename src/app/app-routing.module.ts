@@ -64,7 +64,11 @@ const routes: Routes = [
   {
     path: 'tutorial-projects-modal',
     loadChildren: () => import('./tutorial-projects-modal/tutorial-projects-modal.module').then( m => m.TutorialProjectsModalPageModule)
+  },  {
+    path: 'popover-add',
+    loadChildren: () => import('./popover-add/popover-add.module').then( m => m.PopoverAddPageModule)
   },
+
 ];
 
 @NgModule({

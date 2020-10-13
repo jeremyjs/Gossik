@@ -40,6 +40,9 @@ import { ToDoFilterModalPageModule } from './to-do-filter-modal/to-do-filter-mod
 import { FivetodosModalPageModule } from './fivetodos-modal/fivetodos-modal.module';
 import { TutorialProjectsModalPageModule } from './tutorial-projects-modal/tutorial-projects-modal.module';
 
+// Popover pages
+import { PopoverAddPageModule } from './popover-add/popover-add.module';
+
 import { DatePickerModule } from 'ionic4-date-picker';
 
 import { NgCalendarModule  } from 'ionic2-calendar';
@@ -88,7 +91,8 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     TutorialProjectsModalPageModule,
     DatePickerModule,
     NgCalendarModule,
-    AngularFireFunctionsModule
+    AngularFireFunctionsModule,
+    PopoverAddPageModule
   	],
   providers: [
     Calendar,

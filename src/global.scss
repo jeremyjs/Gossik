@@ -597,6 +597,10 @@ ion-input {
   overflow: scroll;
 }
 
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }
@@ -914,6 +918,10 @@ p {
   margin-top: 20px !important;
 }
 
+.margin-top-26 {
+  margin-top: 26px;
+}
+
 .margin-top-85 {
   margin-top: 85px !important;
 }
@@ -1210,4 +1218,22 @@ p {
 
 .max-width-80 {
   max-width: 80%;
+}
+
+.popover-add .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: 20%;
+  opacity: 80%;
+}
+
+.popover-add .popover-content .popover-viewport{
+  --width: 100%;
+  --height: 100%;
+}
+
+.height-100px {
+  height: 100px;
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, IonDatetime, PickerController, DomController } from '@ionic/angular';
+import { IonContent, Platform, ModalController, AlertController, IonInput, MenuController, ToastController, PickerController, DomController, PopoverController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AngularFireFunctions } from '@angular/fire/functions';
@@ -34,6 +34,7 @@ import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page
 import { AssignProjectModalPage } from '../assign-project-modal/assign-project-modal.page';
 import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.page';
 import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
+import { PopoverAddPage } from '../popover-add/popover-add.page';
 
 
 import * as moment from 'moment';
@@ -209,6 +210,7 @@ export class HomePage {
 		public toastCtrl: ToastController,
 		public pickerCtrl: PickerController,
 		public domCtrl: DomController,
+		public popoverCtrl: PopoverController,
 		private functions: AngularFireFunctions
 		) {
 		this.isApp = this.platform.is('cordova');
@@ -732,7 +734,17 @@ export class HomePage {
 				alert.present();
 			});
   		})
-  	}
+	  }
+	  
+	  async presentPopover(name) {
+		if(name == 'add') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddPage,
+			cssClass: 'popover-add'
+			});
+			return await popover.present();
+		}
+	  }
 
   	goToPrivacyPolicyPage() {
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
