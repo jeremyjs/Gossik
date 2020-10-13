@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-popover-add-project',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopoverAddProjectPage implements OnInit {
 
-  constructor() { }
+  projectName: string;
+
+  constructor(
+    public popoverCtrl: PopoverController,
+    public translate: TranslateService
+  ) { }
 
   ngOnInit() {
+  }
+
+  cancel() {
+    this.popoverCtrl.dismiss();
+  }
+
+  save() {
+    this.popoverCtrl.dismiss(this.projectName);
   }
 
 }

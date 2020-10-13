@@ -15,7 +15,6 @@ import { NativeCalendarService } from '../services/native-calendar.service';
 
 import { Capture } from '../../model/capture/capture.model';
 import { Goal } from '../../model/goal/goal.model';
-import { User } from '../../model/user/user.model';
 import { Action } from '../../model/action/action.model';
 import { Attribute } from '../../model/attribute/attribute.model';
 import { Reference } from '../../model/reference/reference.model';
@@ -756,7 +755,10 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				
+				if(data.data) {
+					console.log(data.data);
+					this.addGoal(data.data);
+				}
 			});
 		}
 	  }
@@ -1686,7 +1688,6 @@ export class HomePage {
 			this.newGoal.userid = this.auth.userid;
 			this.newGoal.name = goalname;
 			this.newGoal.active = true;
-			let numberGoals = this.goalArray.length;
 			let colorFound = false;
 			while(!colorFound) {
 				for(let color of this.projectColors) {
