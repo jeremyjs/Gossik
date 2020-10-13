@@ -1224,6 +1224,10 @@ p {
   color: var(--ion-color-tertiary);
 }
 
+ion-backdrop {
+  opacity: 0.4 !important;
+}
+
 .font-black {
   color: #000000;
 }
