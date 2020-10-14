@@ -1,0 +1,23 @@
+<ion-content class="height-100 width-100">
+  <ion-row>
+    <ion-col>
+      <button class="transparent font-tertiary" (click)="cancel()">
+        {{"Cancel" | translate}}
+      </button>
+    </ion-col>
+    <ion-col class="text-align-center">
+      {{"Add Thought" | translate}}
+    </ion-col>
+    <ion-col class="text-align-right">
+      <button class="transparent font-tertiary" (click)="save()" color="tertiary">
+        {{"Save" | translate}}
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <div class="width-80 border-1 border-radius-5px margin-top-10-auto flex">
+      <img src="../../assets/icon/icon_thought.svg" height="24" class="margin-left-5-auto">
+      <ion-input [(ngModel)]="thought.content" placeholder="{{'Thought' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+    </div>
+  </ion-row>
+  </ion-content>

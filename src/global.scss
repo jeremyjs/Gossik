@@ -1248,7 +1248,13 @@ ion-backdrop {
   --height: 20%;
 }
 
-
+.popover-add-thought .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: 40%;
+}
 
 .popover-add-project .popover-content {
   top: auto !important;

@@ -16,7 +16,7 @@ export class PopoverAddPage implements OnInit {
   }
 
   addProject() {
-    this.popoverCtrl.dismiss('project');
+    this.popoverCtrl.dismiss('addProject');
   }
 
   addToDo() {
@@ -24,7 +24,7 @@ export class PopoverAddPage implements OnInit {
   }
 
   addThought() {
-
+    this.popoverCtrl.dismiss('addThought');
   }
 
   addCalendarEvent() {

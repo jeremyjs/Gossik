@@ -35,6 +35,7 @@ import { ToDoFilterModalPage } from '../to-do-filter-modal/to-do-filter-modal.pa
 import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
 import { PopoverAddPage } from '../popover-add/popover-add.page';
 import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
+import { PopoverAddThoughtPage } from '../popover-add-thought/popover-add-thought.page';
 
 
 import * as moment from 'moment';
@@ -744,8 +745,8 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				if(data.data == 'project') {
-					this.presentPopover('addProject');
+				if(data.data) {
+					this.presentPopover(data.data);
 				}
 			});
 		} else if(name == 'addProject') {
@@ -756,8 +757,19 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
 					this.addGoal(data.data);
+				}
+			});
+		} else if(name == 'addThought') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddThoughtPage,
+			cssClass: 'popover-add-thought'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					console.log(data.data);
+					this.addCapture(data.data);
 				}
 			});
 		}
