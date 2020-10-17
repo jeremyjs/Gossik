@@ -36,6 +36,7 @@ import { FivetodosModalPage } from '../fivetodos-modal/fivetodos-modal.page';
 import { PopoverAddPage } from '../popover-add/popover-add.page';
 import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
 import { PopoverAddThoughtPage } from '../popover-add-thought/popover-add-thought.page';
+import { PopoverAddToDoPage } from '../popover-add-to-do/popover-add-to-do.page';
 
 
 import * as moment from 'moment';
@@ -772,6 +773,18 @@ export class HomePage {
 					this.addCapture(data.data);
 				}
 			});
+		} else if(name == 'addToDo') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddToDoPage,
+			cssClass: 'popover-add-to-do'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					console.log(data.data);
+					this.addToDo(data.data);
+				}
+			});
 		}
 	  }
 
@@ -1495,6 +1508,156 @@ export class HomePage {
   		} else {
   			this.goToProcessPage();
   		}
+	  }
+	  
+	addToDo(todo: Action, capture: Capture = {} as Capture) {
+		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.actionArray.length >= 10) {
+			this.presentAlert("unpaidLimitedFeaturesSubscription");
+		} else {
+			/*let captureContentParts = this.captureContent.split('#');
+			for(let iter= 0; iter < captureContentParts.length; iter++) {
+				if(/\s$/.test(captureContentParts[iter])) {
+					captureContentParts[iter] = captureContentParts[iter].slice(0,-1);
+				}
+			}
+			let captureAttributes = [...captureContentParts];
+			while(captureAttributes.length > 0) {
+				let checkAttribute: Attribute = {
+					userid: this.auth.userid,
+					active: true,
+					createDate: new Date().toISOString(),
+					content: captureAttributes.pop()
+				}
+				let saveAttribute: boolean = true;
+				for(let attribute of this.attributeArray) {
+					if(attribute.content == checkAttribute.content) {
+						saveAttribute = false;
+					}
+				}
+				if(saveAttribute) {
+					this.db.addAttribute(checkAttribute, this.auth.userid);
+				}
+			}
+			*/
+			todo.userid = this.auth.userid;
+			todo.active = true;
+			todo.taken = false;
+			if(todo.deadline) {
+				let eventData: CalendarEvent = {
+					userid: this.auth.userid,
+					goalid: todo.goalid,
+					startTime: new Date(todo.deadline).toISOString(),
+					endTime: new Date (todo.deadline).toISOString(),
+					title: 'Deadline: ' + todo.content,
+					allDay: true,
+					active: true,
+					color: this.captureProject.color
+				};
+				if(this.platform.is('cordova')) {
+					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+						if(hasReadWritePermission) {
+							this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+								eventData.event_id = event_id;
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									todo.deadlineid = event.key;
+									this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+										this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+											this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+												calendarEvent.key = event.key;
+												calendarEvent.actionid = actionAddedkey.key;
+												this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+											});
+										});
+									});
+								});
+							});
+						} else {
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+								todo.deadlineid = event.key;
+								this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+									this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+										this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+											calendarEvent.key = event.key;
+											calendarEvent.actionid = actionAddedkey.key;
+											this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+										});
+									});
+								});
+							});
+						}
+					});
+				} else {
+					this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+						todo.deadlineid = event.key;
+						this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+							this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
+								this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
+									calendarEvent.key = event.key;
+									calendarEvent.actionid = actionAddedkey.key;
+									this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+								});
+							});
+						});
+					});
+				}
+			} else {
+				this.db.addAction(todo, capture, this.auth.userid);
+			}
+			this.translate.get(["Todo saved"]).subscribe( translation => {
+				this.presentToast(translation["Todo saved"]);
+			});
+			/*
+			if(this.captureSchedule) {
+				let eventData: CalendarEvent = {
+					userid: this.auth.userid,
+					allDay: false,
+					active: true,
+					startTime: this.captureSchedule.toISOString(),
+					endTime: new Date(this.captureSchedule.getTime() + this.captureDuration*60*1000).toISOString(),
+					title: this.captureContent,
+					goalid: ''
+				}
+				if(this.captureProject.key == 'unassigned') {
+					eventData.color = "#C0C0C0";
+					eventData.goalid = '';
+				} else {
+					eventData.color = this.captureProject.color;
+					eventData.goalid = this.captureProject.key;
+					let dates = [new Date(eventData.startTime)];
+					let minute = 0;
+					let hourUpdated = new Date(eventData.startTime).getHours();
+					while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
+						if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+							dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
+							hourUpdated++;
+						}
+						minute++;
+					}
+					this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
+				}
+				if(this.platform.is('cordova')) {
+					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+						if(hasReadWritePermission) {
+							this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
+								eventData.event_id = event_id;
+								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+									eventData.key = event.key;
+								});
+							});
+						} else {
+							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+								eventData.key = event.key;
+							});
+						}
+					});
+				} else {
+					this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
+						eventData.key = event.key;
+					});
+				}
+			}
+			*/
+		}
   	}
 
   	addActionFromCapture() {

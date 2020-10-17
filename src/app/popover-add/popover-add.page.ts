@@ -20,7 +20,7 @@ export class PopoverAddPage implements OnInit {
   }
 
   addToDo() {
-
+    this.popoverCtrl.dismiss('addToDo');
   }
 
   addThought() {
@@ -28,7 +28,7 @@ export class PopoverAddPage implements OnInit {
   }
 
   addCalendarEvent() {
-
+    this.popoverCtrl.dismiss('addCalendarEvent');
   }
 
 }

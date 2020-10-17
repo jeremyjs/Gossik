@@ -44,6 +44,7 @@ import { TutorialProjectsModalPageModule } from './tutorial-projects-modal/tutor
 import { PopoverAddPageModule } from './popover-add/popover-add.module';
 import { PopoverAddProjectPageModule } from './popover-add-project/popover-add-project.module';
 import { PopoverAddThoughtPageModule } from './popover-add-thought/popover-add-thought.module';
+import { PopoverAddToDoPageModule } from './popover-add-to-do/popover-add-to-do.module';
 
 import { DatePickerModule } from 'ionic4-date-picker';
 
@@ -96,7 +97,8 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     AngularFireFunctionsModule,
     PopoverAddPageModule,
     PopoverAddProjectPageModule,
-    PopoverAddThoughtPageModule
+    PopoverAddThoughtPageModule,
+    PopoverAddToDoPageModule
   	],
   providers: [
     Calendar,

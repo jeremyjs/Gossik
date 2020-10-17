@@ -76,6 +76,10 @@ const routes: Routes = [
     path: 'popover-add-thought',
     loadChildren: () => import('./popover-add-thought/popover-add-thought.module').then( m => m.PopoverAddThoughtPageModule)
   },
+  {
+    path: 'popover-add-to-do',
+    loadChildren: () => import('./popover-add-to-do/popover-add-to-do.module').then( m => m.PopoverAddToDoPageModule)
+  },
 
 ];
 
