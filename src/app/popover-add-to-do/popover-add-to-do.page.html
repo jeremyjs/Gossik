@@ -23,8 +23,8 @@
   <ion-row>
     <div class="margin-top-10-auto flex">
       <img src="../../assets/icon/icon_clock.svg" height="24" class="margin-left-5-auto">
-      <ion-input size="2" [(ngModel)]="todo.duration" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
-      <span *ngIf="todo.duration" class="margin-left-5-auto">{{"Minutes" | translate}}</span>
+      <ion-input size="2" [(ngModel)]="todo.time" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <span *ngIf="todo.time" class="margin-left-5-auto">{{"Minutes" | translate}}</span>
     </div>
   </ion-row>
   <ion-row>
@@ -43,6 +43,15 @@
       {{goalDict[todo.goalid].name}}
     </span>
     <span *ngIf="!todo.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div class="margin-top-10-auto flex">
+      <img src="../../assets/icon/icon_deadline.svg" height="24" class="margin-left-5-auto">
+      <button *ngIf="!todo.deadline" class="font-size-16px transparent no-padding text-align-left display-inline-block" (click)="assignDeadline()">{{"Deadline" | translate}}
+      </button>
+      <button *ngIf="todo.deadline" class="font-size-16px transparent no-padding text-align-left display-inline-block" (click)="assignDeadline()">{{deadlineText}}
+      </button>
     </div>
   </ion-row>
   </ion-content>

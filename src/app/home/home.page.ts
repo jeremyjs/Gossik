@@ -1552,7 +1552,7 @@ export class HomePage {
 					title: 'Deadline: ' + todo.content,
 					allDay: true,
 					active: true,
-					color: this.captureProject.color
+					color: this.goalDict[todo.goalid].color
 				};
 				if(this.platform.is('cordova')) {
 					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
@@ -1561,7 +1561,7 @@ export class HomePage {
 								eventData.event_id = event_id;
 								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 									todo.deadlineid = event.key;
-									this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+									this.db.addAction(todo, capture, this.auth.userid).then( actionAddedkey => {
 										this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
 											this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
 												calendarEvent.key = event.key;
@@ -1575,7 +1575,7 @@ export class HomePage {
 						} else {
 							this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 								todo.deadlineid = event.key;
-								this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+								this.db.addAction(todo, capture, this.auth.userid).then( actionAddedkey => {
 									this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
 										this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
 											calendarEvent.key = event.key;
@@ -1590,7 +1590,7 @@ export class HomePage {
 				} else {
 					this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
 						todo.deadlineid = event.key;
-						this.db.addAction(todo, this.capture, this.auth.userid).then( actionAddedkey => {
+						this.db.addAction(todo, capture, this.auth.userid).then( actionAddedkey => {
 							this.db.getActionFromActionid(actionAddedkey.key, this.auth.userid).snapshotChanges().pipe(take(1)).subscribe( actionAdded => {
 								this.db.getCalendarEventFromCalendarEventId(event.key, this.auth.userid).valueChanges().subscribe( calendarEvent => {
 									calendarEvent.key = event.key;

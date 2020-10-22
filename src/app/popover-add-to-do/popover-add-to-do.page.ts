@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, PickerController, NavParams } from '@ionic/angular';
+import { PopoverController, PickerController, NavParams, ModalController } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Action } from 'src/model/action/action.model';
+import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 
 @Component({
   selector: 'app-popover-add-to-do',
@@ -13,12 +14,15 @@ export class PopoverAddToDoPage implements OnInit {
 
   todo: Action = {} as Action;
   goalDict: any;
+  deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  deadlineText: string;
 
   constructor(
     public popoverCtrl: PopoverController,
     public translate: TranslateService,
     public pickerCtrl: PickerController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public modalCtrl: ModalController
   ) { 
     this.goalDict = this.navParams.get('goalDict');
   }
@@ -115,6 +119,20 @@ export class PopoverAddToDoPage implements OnInit {
       }
     }
     return options;
+  }
+
+  assignDeadline() {
+    let modal = this.modalCtrl.create({
+    component: ChangeWeekModalPage
+  }).then (modal => {
+    modal.present();
+    modal.onDidDismiss().then(data => {
+      if(data.data) {
+        this.todo.deadline = data.data.toISOString();
+        this.deadlineText = new Date (this.todo.deadline).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
+      }
+    });
+  });
   }
 
 }
