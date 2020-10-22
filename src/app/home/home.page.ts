@@ -776,6 +776,7 @@ export class HomePage {
 		} else if(name == 'addToDo') {
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddToDoPage,
+			componentProps: {'goalDict': this.goalDict},
 			cssClass: 'popover-add-to-do'
 			});
 			await popover.present();

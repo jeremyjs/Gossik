@@ -1,4 +1,4 @@
-<ion-content class="height-100 width-100">
+<ion-content class="width-100">
 <ion-row>
   <ion-col>
     <button class="transparent font-tertiary" (click)="cancel()">
@@ -14,7 +14,7 @@
     </button>
   </ion-col>
 </ion-row>
-<ion-row>
+<ion-row class="margin-bottom-10">
   <div class="width-80 border-1 border-radius-5px margin-top-10-auto flex">
     <img src="../../assets/icon/icon_project.svg" height="24" class="margin-left-5-auto">
     <ion-input [(ngModel)]="projectName" placeholder="{{'Project name' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>

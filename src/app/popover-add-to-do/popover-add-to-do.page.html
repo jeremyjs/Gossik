@@ -1,4 +1,4 @@
-<ion-content class="height-100 width-100">
+<ion-content class="width-100">
   <ion-row>
     <ion-col>
       <button class="transparent font-tertiary" (click)="cancel()">
@@ -17,11 +17,32 @@
   <ion-row>
     <div class="width-80 border-1 border-radius-5px margin-top-10-auto flex">
       <img src="../../assets/icon/icon_todo.svg" height="24" class="margin-left-5-auto">
-      <ion-input [(ngModel)]="todo.content" placeholder="{{'Thought' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <ion-input [(ngModel)]="todo.content" placeholder="{{'To-Do' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
     </div>
+  </ion-row>
+  <ion-row>
     <div class="margin-top-10-auto flex">
       <img src="../../assets/icon/icon_clock.svg" height="24" class="margin-left-5-auto">
-      <ion-input [(ngModel)]="todo.duration" placeholder="{{'Duration' | translate}}" type="number" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <ion-input size="2" [(ngModel)]="todo.duration" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <span *ngIf="todo.duration" class="margin-left-5-auto">{{"Minutes" | translate}}</span>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div class="margin-top-10-auto flex">
+    <img src="../../assets/icon/icon_priority.svg" height="24" class="margin-left-5-auto">
+    <span *ngIf="todo.priority" (click)="openPicker('priority')">
+      {{todo.priority}}
+    </span>
+    <span *ngIf="!todo.priority" (click)="openPicker('priority')">{{"Priority" | translate}}</span>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div class="margin-top-10-auto flex">
+    <img src="../../assets/icon/icon_project.svg" height="24" class="margin-left-5-auto">
+    <span *ngIf="todo.goalid" (click)="openPicker('project')">
+      {{goalDict[todo.goalid].name}}
+    </span>
+    <span *ngIf="!todo.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
     </div>
   </ion-row>
   </ion-content>
