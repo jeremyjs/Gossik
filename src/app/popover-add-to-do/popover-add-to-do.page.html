@@ -1,15 +1,24 @@
 <ion-content class="width-100">
   <ion-row>
     <ion-col>
-      <button class="transparent font-tertiary" (click)="cancel()">
+      <button *ngIf="type != 'show'" class="transparent font-tertiary" (click)="cancel()">
         {{"Cancel" | translate}}
       </button>
+      <button *ngIf="type == 'show'" class="transparent font-tertiary" (click)="cancel()">
+        {{"Close" | translate}}
+      </button>
     </ion-col>
-    <ion-col class="text-align-center">
+    <ion-col *ngIf="type != 'show'" class="text-align-center">
       {{"Add To-Do" | translate}}
     </ion-col>
+    <ion-col *ngIf="type == 'show'" class="text-align-center">
+      {{"To-Do" | translate}}
+    </ion-col>
     <ion-col class="text-align-right">
-      <button class="transparent font-tertiary" (click)="save()" color="tertiary">
+      <button *ngIf="type != 'show'" class="transparent font-tertiary" (click)="save()" color="tertiary">
+        {{"Save" | translate}}
+      </button>
+      <button *ngIf="type == 'show' && changed" class="transparent font-tertiary" (click)="save()" color="tertiary">
         {{"Save" | translate}}
       </button>
     </ion-col>
@@ -17,13 +26,13 @@
   <ion-row>
     <div class="width-80 border-1 border-radius-5px margin-top-10-auto flex">
       <img src="../../assets/icon/icon_todo.svg" height="24" class="margin-left-5-auto">
-      <ion-input [(ngModel)]="todo.content" placeholder="{{'To-Do' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <ion-input (ionInput)="change()" [(ngModel)]="todo.content" placeholder="{{'To-Do' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
     </div>
   </ion-row>
   <ion-row>
     <div class="margin-top-10-auto flex">
       <img src="../../assets/icon/icon_clock.svg" height="24" class="margin-left-5-auto">
-      <ion-input size="2" [(ngModel)]="todo.time" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+      <ion-input (ionInput)="change()" size="2" [(ngModel)]="todo.time" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
       <span *ngIf="todo.time" class="margin-left-5-auto">{{"Minutes" | translate}}</span>
     </div>
   </ion-row>

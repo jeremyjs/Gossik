@@ -782,7 +782,7 @@
       </ion-row>
       <ion-row class="height-65 overflow-scroll no-scrollbar">
         <div *ngIf="!smartAssistantToggle">
-          <ion-grid *ngFor="let todo of doableActionArray" (click)="askStartTodo(todo)" class="margin-top-10 seperating-border-bottom">
+          <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="margin-top-10 seperating-border-bottom">
             <ion-row class="font-size-16px text-align-left">
               <span>
                 {{todo.content}}

@@ -16,6 +16,8 @@ export class PopoverAddToDoPage implements OnInit {
   goalDict: any;
   deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   deadlineText: string;
+  changed: boolean = false;
+  type: string;
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -24,10 +26,15 @@ export class PopoverAddToDoPage implements OnInit {
     public navParams: NavParams,
     public modalCtrl: ModalController
   ) { 
-    this.goalDict = this.navParams.get('goalDict');
   }
 
   ngOnInit() {
+    this.goalDict = this.navParams.get('goalDict');
+    if(this.navParams.get('todo')) {
+      this.todo = this.navParams.get('todo');
+      this.type = 'show';
+      this.changed = false;
+    }
   }
 
   cancel() {
@@ -85,8 +92,13 @@ export class PopoverAddToDoPage implements OnInit {
         buttons: button
       }).then( picker => {
         picker.present();
+        this.changed = true;
       });	
     })
+  }
+
+  change() {
+    this.changed = true;
   }
 
   getColumns(pickerName, columnNames, columnOptions, selectedIndices) {
@@ -128,6 +140,7 @@ export class PopoverAddToDoPage implements OnInit {
     modal.present();
     modal.onDidDismiss().then(data => {
       if(data.data) {
+        this.changed = true;
         this.todo.deadline = data.data.toISOString();
         this.deadlineText = new Date (this.todo.deadline).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
       }

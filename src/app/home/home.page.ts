@@ -739,7 +739,7 @@ export class HomePage {
   		})
 	  }
 	  
-	  async presentPopover(name) {
+	  async presentPopover(name, params?) {
 		if(name == 'add') {
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddPage,
@@ -798,6 +798,18 @@ export class HomePage {
 				if(data.data) {
 					console.log(data.data);
 					this.addCalendarEvent(data.data);
+				}
+			});
+		} else if(name == 'showToDo') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddToDoPage,
+			componentProps: {'goalDict': this.goalDict, todo: params},
+			cssClass: 'popover-add-calendar-event'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					this.db.editAction(data.data, this.auth.userid);
 				}
 			});
 		}
@@ -2714,7 +2726,6 @@ export class HomePage {
 				} else {
 					this.pageTitle = "Do!";
 					this.doableActionArray = [];
-					this.duration = 0;
 					this.goalKeyArray = [];
 					this.doableActionArray = [];
 					let targetTodo = undefined;
@@ -2746,6 +2757,10 @@ export class HomePage {
 
 	changeTodo(todoview) {
 		this.todoview = todoview;
+	}
+
+	showToDo(todo) {
+		this.presentPopover('showToDo', todo);
 	}
 
 	askStartTodo(todo) {
@@ -2883,8 +2898,6 @@ export class HomePage {
 		if(this.duration > 0) {
 			duration = this.duration;
 		}
-		console.log('duration ' + String(duration));
-		console.log('this.duration ' + String(this.duration));
 		this.doableActionArray = [];
 		for(let action of this.actionArray) {
 			if(action.active != false) {
