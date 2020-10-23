@@ -80,6 +80,10 @@ const routes: Routes = [
     path: 'popover-add-to-do',
     loadChildren: () => import('./popover-add-to-do/popover-add-to-do.module').then( m => m.PopoverAddToDoPageModule)
   },
+  {
+    path: 'popover-add-calendar-event',
+    loadChildren: () => import('./popover-add-calendar-event/popover-add-calendar-event.module').then( m => m.PopoverAddCalendarEventPageModule)
+  },
 
 ];
 

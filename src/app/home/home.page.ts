@@ -37,6 +37,7 @@ import { PopoverAddPage } from '../popover-add/popover-add.page';
 import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
 import { PopoverAddThoughtPage } from '../popover-add-thought/popover-add-thought.page';
 import { PopoverAddToDoPage } from '../popover-add-to-do/popover-add-to-do.page';
+import { PopoverAddCalendarEventPage } from '../popover-add-calendar-event/popover-add-calendar-event.page';
 
 
 import * as moment from 'moment';
@@ -784,6 +785,19 @@ export class HomePage {
 				if(data.data) {
 					console.log(data.data);
 					this.addToDo(data.data);
+				}
+			});
+		} else if(name == 'addCalendarEvent') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddCalendarEventPage,
+			componentProps: {'goalDict': this.goalDict},
+			cssClass: 'popover-add-calendar-event'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					console.log(data.data);
+					this.addCalendarEvent(data.data);
 				}
 			});
 		}
@@ -2363,6 +2377,77 @@ export class HomePage {
 					}
 				}
 			});
+		});
+	}
+
+	addCalendarEvent(calendarEvent: CalendarEvent){
+		if(!calendarEvent.userid) {
+			calendarEvent.userid = this.auth.userid;
+		}
+		if(!calendarEvent.allDay) {
+			calendarEvent.allDay = false;
+		}
+		if(!calendarEvent.active) {
+			calendarEvent.active = true;
+		}
+		if(!calendarEvent.goalid) {
+			calendarEvent.color = "#C0C0C0";
+			calendarEvent.goalid = '';
+		} else {
+			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
+			if(goal) {
+				calendarEvent.color = goal.color;
+			} else {
+				calendarEvent.color = "#C0C0C0";
+			}
+			let dates = [new Date(calendarEvent.startTime)];
+			let minute = 0;
+			let hourUpdated = new Date(calendarEvent.startTime).getHours();
+			while(new Date(new Date(calendarEvent.startTime).getTime() + minute*60*1000).getTime() <= new Date(calendarEvent.endTime).getTime()) {
+				if(new Date(new Date(calendarEvent.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
+					dates.push(new Date(new Date(calendarEvent.startTime).getTime() + minute*60*1000));
+					hourUpdated++;
+				}
+				minute++;
+			}
+			this.db.learnLearnedSchedule(this.auth.userid, [calendarEvent.goalid], dates, 1);
+		}
+		if(this.platform.is('cordova')) {
+			this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+				if(hasReadWritePermission) {
+					this.nativeCalendar.addEvent(calendarEvent.title, calendarEvent.eventLocation, calendarEvent.startTime, calendarEvent.endTime).then( event_id => {
+						calendarEvent.event_id = event_id;
+						this.db.addCalendarEvent(calendarEvent, this.auth.userid).then( event => {
+							calendarEvent.key = event.key;
+						});
+						this.calendarEventSaved(calendarEvent);
+					});
+				} else {
+					this.db.addCalendarEvent(calendarEvent, this.auth.userid).then( event => {
+						calendarEvent.key = event.key;
+					});
+					this.calendarEventSaved(calendarEvent);
+				}
+			});
+		} else {
+			this.db.addCalendarEvent(calendarEvent, this.auth.userid).then( event => {
+				calendarEvent.key = event.key;
+			});
+			this.calendarEventSaved(calendarEvent);
+		}
+	}
+
+	calendarEventSaved(calendarEvent: CalendarEvent) {
+		this.translate.get(["Event saved"]).subscribe( translation => {
+			this.presentToast(translation["Event saved"]);
+		});
+		calendarEvent.startTime = new Date(calendarEvent.startTime);
+		calendarEvent.endTime = new Date(calendarEvent.endTime);
+		let events = this.eventSource;
+		events.push(calendarEvent);
+		this.eventSource = [];
+		setTimeout(() => {
+			this.eventSource = events;
 		});
 	}
 

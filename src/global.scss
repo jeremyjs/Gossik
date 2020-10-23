@@ -1244,6 +1244,15 @@ ion-backdrop {
   overflow: hidden !important;
 }
 
+.popover-add-calendar-event .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: auto !important;
+  overflow: hidden !important;
+}
+
 
 
 .height-100px {

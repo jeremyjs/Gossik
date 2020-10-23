@@ -45,7 +45,7 @@
     <span *ngIf="!todo.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
     </div>
   </ion-row>
-  <ion-row>
+  <ion-row class="margin-bottom-10">
     <div class="margin-top-10-auto flex">
       <img src="../../assets/icon/icon_deadline.svg" height="24" class="margin-left-5-auto">
       <button *ngIf="!todo.deadline" class="font-size-16px transparent no-padding text-align-left display-inline-block" (click)="assignDeadline()">{{"Deadline" | translate}}
