@@ -808,8 +808,14 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
+				console.log(data.data);
 				if(data.data) {
-					this.db.editAction(data.data, this.auth.userid);
+					if(data.data != 'delete') {
+						this.db.editAction(data.data, this.auth.userid);
+					} else if(data.data == 'delete') {
+						console.log('hi');
+						this.db.deleteAction(params, this.auth.userid);
+					}
 				}
 			});
 		}
@@ -1569,6 +1575,15 @@ export class HomePage {
 			todo.userid = this.auth.userid;
 			todo.active = true;
 			todo.taken = false;
+			if(!todo.goalid) {
+				todo.goalid = 'unassigned';
+			}
+			if(!todo.time) {
+				todo.time = 0;
+			}
+			if(!todo.priority) {
+				todo.priority = 1;
+			}
 			if(todo.deadline) {
 				let eventData: CalendarEvent = {
 					userid: this.auth.userid,

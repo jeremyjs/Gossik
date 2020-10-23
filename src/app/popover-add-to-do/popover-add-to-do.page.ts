@@ -45,6 +45,10 @@ export class PopoverAddToDoPage implements OnInit {
     this.popoverCtrl.dismiss(this.todo);
   }
 
+  deleteToDo() {
+    this.popoverCtrl.dismiss('delete');
+  }
+
   openPicker(pickerName) {
     this.translate.get(["Done", "Cancel"]).subscribe( translation => {
       let columnNames = [];
@@ -113,13 +117,14 @@ export class PopoverAddToDoPage implements OnInit {
     return columns;
   }
 
-  getColumnOptions(pickerName, columnOptions) {
+  getColumnOptions(pickerName, columnOptions: string[]) {
     let options = [];
     if(pickerName == 'priority') {
+      console.log(columnOptions);
       for (let i of columnOptions) {
         options.push({
           text: i,
-          value: i
+          value: columnOptions.findIndex((element) => element == i)+1
         })
       }
     } else if (pickerName == 'project') {
