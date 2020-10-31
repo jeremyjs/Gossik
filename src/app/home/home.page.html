@@ -22,7 +22,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="background-FCFDFF">
 
 
   <!-- LoginPage -->
@@ -748,28 +748,15 @@
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-80px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-95 height-100">
-      <ion-row class="text-align-right height-25 seperating-border-bottom">
-        <ion-col (click)="setAvailabletime()" class="flex no-padding">
-          <ion-grid class="no-padding">
-            <ion-row class="height-50">
-              <img src="../../assets/icon/icon_clock.svg" class="margin-bottom-0-auto" height="24">
-            </ion-row>
-            <ion-row class="height-50">
-              <span class="margin-top-7-auto text-align-center">{{"Set available time" | translate}}</span>
-            </ion-row>
-          </ion-grid>
-        </ion-col>
-        <ion-col size="0" class="seperating-border-right height-80 margin-auto flex no-padding"></ion-col>
-        <ion-col (click)="filterToDos()" class="flex no-padding">
-          <ion-grid class="no-padding">
-            <ion-row class="height-50">
-              <img src="../../assets/icon/icon_filter.svg" class="margin-bottom-0-auto" height="24">
-            </ion-row>
-            <ion-row class="height-50">
-              <span class="margin-top-7-auto text-align-center">{{"Filter tasks" | translate}}</span>
-            </ion-row>
-          </ion-grid>
-        </ion-col>
+      <ion-row class="flex justify-conent-space-evenly">
+        <button (click)="setAvailabletime()" class="flex background-color-EDF2FF border-radius-10px">
+          <img src="../../assets/icon/icon_clock.svg" class="margin-vertical-auto" height="24">
+          <span class="margin-vertical-auto margin-left-5 text-align-center">{{"Set available time" | translate}}</span>
+        </button>
+        <button (click)="filterToDos()" class="flex background-color-EDF2FF border-radius-10px">
+          <img src="../../assets/icon/icon_filter.svg" class="margin-vertical-auto" height="24">
+          <span class="margin-vertical-auto margin-left-5 text-align-center">{{"Filter" | translate}}</span>
+        </button>
       </ion-row>
       <ion-row class="height-10 seperating-border-bottom">
         <span class="margin-auto flex">
