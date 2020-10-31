@@ -172,6 +172,18 @@ ion-button {
   --background: url('/assets/imgs/navigation_right.png') center center/70% 40% no-repeat;
 }
 
+.header-background {
+  --background: url('/assets/imgs/header_background.svg') center center/100% 100% no-repeat;
+}
+
+.height-169px {
+  height: 169px;
+}
+
+.background-color-white {
+  background-color: #ffffff;
+}
+
 .absolute-bottom {
   position: absolute;
   bottom: 0px;
@@ -463,6 +475,10 @@ ion-toolbar {
 
 .margin-top-5 {
   margin-top: 5px;
+}
+
+.margin-top-26 {
+  margin-top: 26px;
 }
 
 .margin-top-auto {

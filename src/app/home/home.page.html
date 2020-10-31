@@ -1,19 +1,19 @@
 <ion-header>
-	<ion-toolbar>
+	<ion-toolbar class="header-background height-169px background-color-white">
     <div *ngIf="loggedin && isApp">
       <ion-grid>
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
-            <button (click)="menu()" class="transparent">
-              <img src="../../assets/icon/icon_menu.svg" height="24">
+            <button (click)="menu()" class="transparent margin-top-26">
+              <img src="../../assets/icon/icon_menu.svg" height="44">
             </button>
           </ion-col>
           <ion-col size="8" class="text-align-center">
             {{pageTitle | translate}}
           </ion-col>
           <ion-col size="2" class="flex text-align-center no-padding">
-            <button (click)="search()" class="transparent">
-              <img src="../../assets/icon/icon_search.svg" height="24" class="margin-auto-auto">
+            <button (click)="search()" class="transparent margin-top-26">
+              <img src="../../assets/icon/icon_search.svg" height="44" class="margin-auto-auto">
             </button>
           </ion-col>
         </ion-row>
