@@ -481,6 +481,10 @@ ion-toolbar {
   margin-top: 26px;
 }
 
+.margin-top-32-auto {
+  margin: 32px auto auto auto;
+}
+
 .margin-top-auto {
   margin-top: auto;
 }
@@ -504,6 +508,17 @@ ion-toolbar {
 .weekview-container {
   width: 95% !important;
   margin: auto;
+}
+
+.page-title {
+  font-family: Nunito;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #ffffff;
 }
 
 .swiper-slide, swiper-slide-active {
