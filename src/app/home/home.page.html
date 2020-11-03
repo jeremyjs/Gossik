@@ -747,45 +747,43 @@
   </div>
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-80px" *ngIf="viewpoint == 'ToDoPage' && isApp">
-    <ion-grid class="width-95 height-100">
-      <ion-row class="flex justify-conent-space-evenly">
-        <button (click)="setAvailabletime()" class="flex background-color-EDF2FF border-radius-10px">
+    <ion-grid class="width-95 height-100 overflow-hidden">
+      <ion-row class="flex justify-conent-space-evenly height-168px">
+        <button (click)="setAvailabletime()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
           <img src="../../assets/icon/icon_clock.svg" class="margin-vertical-auto" height="24">
-          <span class="margin-vertical-auto margin-left-5 text-align-center">{{"Set available time" | translate}}</span>
+          <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Set available time" | translate}}</span>
         </button>
-        <button (click)="filterToDos()" class="flex background-color-EDF2FF border-radius-10px">
+        <button (click)="filterToDos()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
           <img src="../../assets/icon/icon_filter.svg" class="margin-vertical-auto" height="24">
-          <span class="margin-vertical-auto margin-left-5 text-align-center">{{"Filter" | translate}}</span>
+          <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Filter" | translate}}</span>
         </button>
-      </ion-row>
-      <ion-row class="height-10 seperating-border-bottom">
-        <span class="margin-auto flex">
-        <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()"></ion-toggle>
-        <span class="margin-horizontal-auto">{{"Smart assistant" | translate}}</span>
+        <span class="margin-top-20-auto flex background-color-EDF2FF border-radius-10px height-54px color-6049C4">
+        <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()" class="margin-vertical-auto"></ion-toggle>
+        <span class="margin-horizontal-auto font-size-18px">{{"Smart assistant" | translate}}</span>
         <button (click)="showInfo('smartAssistant')" class="transparent">
           <img src="../../assets/icon/icon_info.svg" class="margin-left-7-auto" height="24">
           </button>
         </span>
       </ion-row>
-      <ion-row class="height-65 overflow-scroll no-scrollbar">
+      <ion-row class="height-100-minus-168px overflow-scroll no-scrollbar">
         <div *ngIf="!smartAssistantToggle">
-          <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="margin-top-10 seperating-border-bottom">
-            <ion-row class="font-size-16px text-align-left">
+          <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="color-39297F border-radius-15px margin-top-10 seperating-border-bottom background-F6F7FB">
+            <ion-row class="font-size-18px text-align-left">
               <span>
                 {{todo.content}}
               </span>
             </ion-row>
-            <ion-row class="font-gray text-align-left font-size-14px">
-              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3">
+            <ion-row class="text-align-left font-size-12px">
+              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
                 {{goalDict[todo.goalid].name}}
               </span>
-              <span *ngIf="todo.deadline" class="margin-right-3">
+              <span *ngIf="todo.deadline" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
                 <img src="../../assets/icon/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
               </span>
-              <span *ngIf="todo.priority" class="margin-right-3">
+              <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
                 <img src="../../assets/icon/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{todo.priority}}
               </span>
-              <span *ngIf="todo.time" class="margin-right-3">
+              <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
                 {{todo.time}}{{"min" | translate }}
               </span>
             </ion-row>
