@@ -627,6 +627,10 @@ ion-input {
   border-radius: 5px;
 }
 
+.border-radius-100px {
+  border-radius: 100px;
+}
+
 .overflow-scroll {
   overflow: scroll;
 }
@@ -1300,8 +1304,9 @@ ion-backdrop {
   bottom: 0px !important;
   left: 0px !important;
   --width: 100%;
-  --height: auto !important;
+  --height: 150px !important;
   overflow: hidden !important;
+  border-radius: 250px 250px 0 0;
 }
 
 .popover-add-thought .popover-content {

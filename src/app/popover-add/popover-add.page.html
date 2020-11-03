@@ -1,44 +1,46 @@
-<ion-content>
-  <ion-row class="height-100px width-100 font-size-12px">
-    <ion-col (click)="addProject()">
-      <ion-grid class="margin-top-26">
-        <ion-row>
-          <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
-        </ion-row>
-        <ion-row>
-          {{"Project" | translate}}
-        </ion-row>
-      </ion-grid>
-    </ion-col>
-    <ion-col (click)="addToDo()">
-      <ion-grid class="margin-top-10">
-        <ion-row>
-          <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
-        </ion-row>
-        <ion-row>
-          {{"To-Do" | translate}}
-        </ion-row>
-      </ion-grid>
-    </ion-col>
-    <ion-col (click)="addThought()">
-      <ion-grid class="margin-top-10">
-        <ion-row>
-          <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
-        </ion-row>
-        <ion-row>
-          {{"Thought" | translate}}
-        </ion-row>
-      </ion-grid>
-    </ion-col>
-    <ion-col (click)="addCalendarEvent()">
-      <ion-grid class="margin-top-26">
-        <ion-row>
-          <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
-        </ion-row>
-        <ion-row>
-          {{"Calendar Event" | translate}}
-        </ion-row>
-      </ion-grid>
-    </ion-col>
-  </ion-row>
+<ion-content class="transparent">
+  <div class="border-radius-100px">
+    <ion-row class="height-100px width-100 font-size-12px">
+      <ion-col (click)="addProject()">
+        <ion-grid class="margin-top-26">
+          <ion-row>
+            <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
+          </ion-row>
+          <ion-row>
+            {{"Project" | translate}}
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col (click)="addToDo()">
+        <ion-grid class="margin-top-10">
+          <ion-row>
+            <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
+          </ion-row>
+          <ion-row>
+            {{"To-Do" | translate}}
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col (click)="addThought()">
+        <ion-grid class="margin-top-10">
+          <ion-row>
+            <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
+          </ion-row>
+          <ion-row>
+            {{"Thought" | translate}}
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col (click)="addCalendarEvent()">
+        <ion-grid class="margin-top-26">
+          <ion-row>
+            <img src="../../assets/icon/icon_elipse.svg" height="24" class="margin-auto">
+          </ion-row>
+          <ion-row>
+            {{"Calendar Event" | translate}}
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>
