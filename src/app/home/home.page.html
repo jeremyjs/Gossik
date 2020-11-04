@@ -5,7 +5,7 @@
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
             <button (click)="menu()" class="transparent margin-top-26">
-              <img src="../../assets/icon/icon_menu.svg" height="44">
+              <img src="../../assets/icon/purple/icon_menu.svg" height="44">
             </button>
           </ion-col>
           <ion-col size="8" class="page-title flex no-padding">
@@ -13,7 +13,7 @@
           </ion-col>
           <ion-col size="2" class="flex text-align-center no-padding">
             <button (click)="search()" class="transparent margin-top-26">
-              <img src="../../assets/icon/icon_search.svg" height="44" class="margin-auto-auto">
+              <img src="../../assets/icon/purple/icon_search.svg" height="44" class="margin-auto-auto">
             </button>
           </ion-col>
         </ion-row>
@@ -750,18 +750,18 @@
     <ion-grid class="width-95 height-100 overflow-hidden">
       <ion-row class="flex justify-conent-space-evenly height-168px">
         <button (click)="setAvailabletime()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
-          <img src="../../assets/icon/icon_clock.svg" class="margin-vertical-auto" height="24">
+          <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Set available time" | translate}}</span>
         </button>
         <button (click)="filterToDos()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
-          <img src="../../assets/icon/icon_filter.svg" class="margin-vertical-auto" height="24">
+          <img src="../../assets/icon/purple/icon_filter.svg" class="margin-vertical-auto" height="24">
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Filter" | translate}}</span>
         </button>
         <span class="margin-top-20-auto flex background-color-EDF2FF border-radius-10px height-54px color-6049C4">
         <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()" class="margin-vertical-auto"></ion-toggle>
         <span class="margin-horizontal-auto font-size-18px">{{"Smart assistant" | translate}}</span>
         <button (click)="showInfo('smartAssistant')" class="transparent">
-          <img src="../../assets/icon/icon_info.svg" class="margin-left-7-auto" height="24">
+          <img src="../../assets/icon/purple/icon_info.svg" class="margin-left-7-auto" height="24">
           </button>
         </span>
       </ion-row>
@@ -778,10 +778,10 @@
                 {{goalDict[todo.goalid].name}}
               </span>
               <span *ngIf="todo.deadline" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-                <img src="../../assets/icon/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
+                <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
               </span>
               <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-                <img src="../../assets/icon/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{todo.priority}}
+                <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{todo.priority}}
               </span>
               <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
                 {{todo.time}}{{"min" | translate }}
@@ -1286,8 +1286,8 @@
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'ToDoPage'" src="../../assets/icon/icon_do_activated.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'ToDoPage'" src="../../assets/icon/icon_do.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint == 'ToDoPage'" src="../../assets/icon/purple/icon_todo_active.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'ToDoPage'" src="../../assets/icon/purple/icon_todo.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
             <span *ngIf="viewpoint == 'ToDoPage'" class="margin-auto font-activated">
@@ -1302,8 +1302,8 @@
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToItemsPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'ItemsPage'" src="../../assets/icon/icon_items_activated.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'ItemsPage'" src="../../assets/icon/icon_items.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint == 'ItemsPage'" src="../../assets/icon/purple/icon_items_active.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'ItemsPage'" src="../../assets/icon/purple/icon_items.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
             <span *ngIf="viewpoint == 'ItemsPage'" class="margin-auto font-activated">
@@ -1318,7 +1318,7 @@
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="presentPopover('add')">
           <ion-row>
-          <img src="../../assets/icon/icon_add.svg" height="24" class="margin-auto">
+          <img src="../../assets/icon/purple/icon_add.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
             <span class="margin-auto font-gray">
@@ -1330,8 +1330,8 @@
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToAssistantPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'AssistantPage'" src="../../assets/icon/icon_assistant_activated.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'AssistantPage'" src="../../assets/icon/icon_assistant.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint == 'AssistantPage'" src="../../assets/icon/purple/icon_assistant_active.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'AssistantPage'" src="../../assets/icon/purple/icon_assistant.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
             <span *ngIf="viewpoint == 'AssistantPage'" class="margin-auto font-activated">
@@ -1346,8 +1346,8 @@
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToCalendarPage()">
           <ion-row>
-          <img *ngIf="viewpoint == 'CalendarPage'" src="../../assets/icon/icon_calendar_activated.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'CalendarPage'" src="../../assets/icon/icon_calendar.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint == 'CalendarPage'" src="../../assets/icon/purple/icon_calendar_active.svg" height="24" class="margin-auto">
+          <img *ngIf="viewpoint != 'CalendarPage'" src="../../assets/icon/purple/icon_calendar.svg" height="24" class="margin-auto">
           </ion-row>
           <ion-row>
             <span *ngIf="viewpoint == 'CalendarPage'" class="margin-auto font-activated">
