@@ -1058,7 +1058,6 @@ export class HomePage {
 		  	if(this.userProfile.tutorial.thoughts) {
 		  		this.presentAlert("thoughtsCreated");
 		  	} else {
-				this.goToProcessPage();
 				this.translate.get(["Thought saved"]).subscribe( translation => {
 			  		this.presentToast(translation["Thought saved"]);
 				});
