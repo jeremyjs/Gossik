@@ -749,15 +749,15 @@
   <div class="height-100-minus-80px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-95 height-100 overflow-hidden">
       <ion-row class="flex justify-conent-space-evenly height-168px">
-        <button (click)="setAvailabletime()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
+        <button (click)="setAvailabletime()" class="color-6049C4 flex background-EDF2FF border-radius-10px height-54px">
           <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Set available time" | translate}}</span>
         </button>
-        <button (click)="filterToDos()" class="color-6049C4 flex background-color-EDF2FF border-radius-10px height-54px">
+        <button (click)="filterToDos()" class="color-6049C4 flex background-EDF2FF border-radius-10px height-54px">
           <img src="../../assets/icon/purple/icon_filter.svg" class="margin-vertical-auto" height="24">
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Filter" | translate}}</span>
         </button>
-        <span class="margin-top-20-auto flex background-color-EDF2FF border-radius-10px height-54px color-6049C4">
+        <span class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-54px color-6049C4">
         <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()" class="margin-vertical-auto"></ion-toggle>
         <span class="margin-horizontal-auto font-size-18px">{{"Smart assistant" | translate}}</span>
         <button (click)="showInfo('smartAssistant')" class="transparent">

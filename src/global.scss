@@ -585,12 +585,14 @@ ion-toolbar {
   --background: #FCFDFF;
 }
 
+
 .background-FFFFFF {
   --background: #FFFFFF;
   background-color: #FFFFFF;
 }
 
-.background-color-EDF2FF {
+.background-EDF2FF {
+  --background: #EDF2FF;
   background-color: #EDF2FF !important;
 }
 
@@ -777,6 +779,10 @@ ion-input {
 
 .height-30px {
   height: 30px;
+}
+
+.height-36px {
+  height: 36px;
 }
 
 .height-60px {
@@ -1083,6 +1089,10 @@ p {
 
 .padding-left-5 {
   padding-left: 5px;
+}
+
+.padding-right-5 {
+  padding-right: 5px;
 }
 
 .padding-left-50 {
