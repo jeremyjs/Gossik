@@ -369,7 +369,7 @@
   <!-- Mobile ItemsPage -->
   <div *ngIf="viewpoint == 'ItemsPage' && isApp" class="no-scrollbar height-100-minus-80px width-100">
     <ion-grid class="height-100 width-100">
-      <ion-row class="width-90 text-align-right margin-bottom-20 margin-horizontal-auto">
+      <ion-row class="width-90 height-44px text-align-right margin-bottom-20 margin-horizontal-auto">
         <ion-segment (ionChange)="switchItems($event)" value="thoughts" mode="ios" class="background-EDF2FF border-radius-22px height-44px color-39297F">
           <ion-segment-button value="thoughts">
             <ion-label class="font-size-18px">{{"Unassigned Thoughts" | translate}}</ion-label>
@@ -379,7 +379,7 @@
           </ion-segment-button>
         </ion-segment>
       </ion-row>
-      <div *ngIf="pageCtrl == 'thoughts'" class="height-100-minus-25px overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
+      <div *ngIf="pageCtrl == 'thoughts'" class="height-100-minus-45px overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
         <ion-row class="margin-horizontal-auto margin-bottom-20 height-54px border-radius-15px background-F6F7FB" *ngFor="let capture of captureArray">
           <button  class="transparent text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
             <span class="font-size-18px color-39297F">
@@ -388,23 +388,19 @@
           </button>
         </ion-row>
       </div>
-      <div *ngIf="pageCtrl == 'projects'" class="height-100-minus-25px overflow-scroll no-scrollbar">
-        <ion-row (click)="reviewGoal(goal)" class="width-90 padding-8-0-8-0 margin-auto" no-lines *ngFor="let goal of goalArray">
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0 seperating-border-bottom">
+      <div *ngIf="pageCtrl == 'projects'" class="height-100-minus-45px overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
+        <ion-row (click)="reviewGoal(goal)" class="margin-horizontal-auto margin-bottom-20 border-radius-15px background-F6F7FB padding-15 width-100" *ngFor="let goal of goalArray">
+          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100">
             <ion-card class="project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
-            <span class="font-size-20px margin-left-7 font-weight-bold width-100-minus-20px one-line overflow-x-hidden">
+            <span class="font-size-20px margin-left-7 font-weight-bold width-100-minus-30px one-line overflow-x-hidden color-39297F">
               {{goal.name}}
             </span>
           </ion-row>
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0">
-            <span class="font-size-16px margin-left-17 font-weight-bold">
-              X {{"Assigned thoughts" | translate}}
-            </span>
-          </ion-row>
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 padding-8-0-8-0">
-            <span class="font-size-16px margin-left-17 font-weight-bold">
-              Y {{"Assigned to-dos" | translate}}
-            </span>
+          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 color-39297F margin-top-15">
+            <span class="font-size-18px font-weight-bold">X</span>
+            <span class="font-size-18px margin-left-5">{{"Thoughts" | translate}}</span>
+            <span class="font-size-18px font-weight-bold margin-left-15">Y</span>
+            <span class="font-size-18px margin-left-5">{{"To-dos" | translate}}</span>
           </ion-row>
         </ion-row>
       </div>

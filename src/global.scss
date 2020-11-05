@@ -718,6 +718,10 @@ ion-input {
   margin-left: 10px;
 }
 
+.margin-left-15 {
+  margin-left: 15px;
+}
+
 .margin-left-17 {
   margin-left: 17px;
 }
@@ -895,6 +899,10 @@ ion-input {
   height: calc(100% - 25px);
 }
 
+.height-100-minus-45px {
+  height: calc(100% - 45px);
+}
+
 .height-100-minus-70px {
   height: calc(100% - 70px);
 }
@@ -1028,6 +1036,10 @@ p {
   margin-top: 10px !important;
 }
 
+.margin-top-15 {
+  margin-top: 15px;
+}
+
 .margin-top-10-auto {
   margin: 10px auto auto auto;
 }
@@ -1086,6 +1098,10 @@ p {
 
 .padding-10 {
   padding: 10px;
+}
+
+.padding-15 {
+  padding: 15px;
 }
 
 .padding-20 {
@@ -1244,15 +1260,18 @@ p {
 }
 
 .project-color {
-  width: 10px;
-  height: 20px;
-  border-radius: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
   display: inline-block;
-  margin: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-.width-100-minus-20px {
-  width: calc(100% - 20px);
+.width-100-minus-30px {
+  width: calc(100% - 30px);
 }
 
 .width-15px {
