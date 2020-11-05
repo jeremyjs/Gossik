@@ -606,6 +606,11 @@ ion-toolbar {
   background-color: #6049C4;
 }
 
+.background-F0F3F9 {
+  --background: #F0F3F9;
+  background-color: #F0F3F9;
+}
+
 ion-input {
   scrollbar-width: none;
   text-align: center;
@@ -651,6 +656,10 @@ ion-input {
 
 .border-radius-20px {
   border-radius: 20px;
+}
+
+.border-radius-22px {
+  border-radius: 22px;
 }
 
 .border-radius-30px {
@@ -783,6 +792,10 @@ ion-input {
 
 .height-36px {
   height: 36px;
+}
+
+.height-44px {
+  height: 44px;
 }
 
 .height-60px {
@@ -1101,6 +1114,12 @@ p {
 
 .padding-right-50 {
   padding-right: 50px;
+}
+
+.segment-button-checked {
+  background-color: #705CC4;
+  border-radius: 22px;
+  color: #FFFFFF !important;
 }
 
 .seperating-border-bottom {
