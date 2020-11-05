@@ -1,42 +1,41 @@
 <ion-content class="width-100">
-  <ion-row>
-    <ion-col>
-      <button class="transparent font-tertiary" (click)="cancel()">
+  <ion-row class="margin-top-35 color-39297F">
+    <ion-col size="3">
+      <button class="transparent color-6049C4 font-size-17px" (click)="cancel()">
         {{"Cancel" | translate}}
       </button>
     </ion-col>
-    <ion-col class="text-align-center">
+    <ion-col size="6" class="text-align-center font-size-17px">
       {{"Add Calendar Event" | translate}}
     </ion-col>
-    <ion-col class="text-align-right">
-      <button class="transparent font-tertiary" (click)="save()" color="tertiary">
+    <ion-col size="3" class="text-align-right">
+      <button class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
         {{"Save" | translate}}
       </button>
     </ion-col>
   </ion-row>
   <ion-row class="margin-bottom-10">
-    <div class="width-80 border-1 border-radius-5px margin-top-10-auto flex">
-      <img src="../../assets/icon/icon_calendar.svg" height="24" class="margin-left-5-auto">
-      <ion-input [(ngModel)]="calendarEvent.title" placeholder="{{'Calendar event' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left"></ion-input>
+    <div class="width-90 border-6049C4-50per border-radius-15px margin-top-10-auto flex">
+      <ion-input [(ngModel)]="calendarEvent.title" placeholder="{{'Calendar event' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left color-22194D"></ion-input>
     </div>
   </ion-row>
   <ion-row>
-    <div class="margin-top-10-auto flex">
-      <ion-datetime [(ngModel)]="calendarEvent.startTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5">
+      <ion-datetime max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.startTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
     </div>
   </ion-row>
   <ion-row>
-    <div class="margin-top-10-auto flex">
-      <ion-datetime [(ngModel)]="calendarEvent.endTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5">
+      <ion-datetime max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.endTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
     </div>
   </ion-row>
-  <ion-row>
-    <div class="margin-top-10-auto flex">
-    <img src="../../assets/icon/icon_project.svg" height="24" class="margin-left-5-auto">
-    <span *ngIf="calendarEvent.goalid" (click)="openPicker('project')">
-      {{goalDict[calendarEvent.goalid].name}}
-    </span>
-    <span *ngIf="!calendarEvent.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
+  <ion-row class="margin-bottom-10">
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
+      <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
+      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="calendarEvent.goalid" (click)="openPicker('project')">
+        {{goalDict[calendarEvent.goalid].name}}
+      </span>
+      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="!calendarEvent.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
     </div>
   </ion-row>
   </ion-content>
