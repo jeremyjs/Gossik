@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar class="header-background height-169px background-color-white">
+	<ion-toolbar *ngIf="viewpoint != 'ActionPage'" class="header-background height-169px background-color-white">
     <div *ngIf="loggedin && isApp">
       <ion-grid>
         <ion-row>
@@ -790,25 +790,36 @@
   <!-- No Desktop ActionPage yet -->
   <!-- Mobile ActionPage -->
   <div class="height-100-minus-80px" *ngIf="viewpoint == 'ActionPage' && isApp">
-    <ion-grid class="height-100 width-90">
-      <ion-row class="margin-top-45 margin-auto   font-size-1-5rem text-align-center">
-        <span class="margin-auto">
+    <ion-grid class="height-100 width-90 overflow-scroll no-scrollbar">
+      <ion-row class="margin-top-45 margin-auto font-size-32px text-align-center">
+        <span class="margin-auto color-6049C4">
+          {{"Focus on" | translate}}:
+        </span>
+      </ion-row>
+      <ion-row class="margin-auto font-size-32px text-align-center">
+        <span class="margin-auto color-39297F">
           {{startedAction.content}}
         </span>
       </ion-row>
-      <ion-row class="margin-auto font-gray text-align-center">
+      <ion-row class="margin-auto color-39297F text-align-center">
         <span class="margin-auto" *ngIf="startedAction.goalid != 'unassigned'">
           {{goalDict[startedAction.goalid].name}}
         </span>
       </ion-row>
+      <div class="margin-horizontal-auto margin-top-80 text-align-center width-260px height-260px background-focus-circle flex">
+          <ion-row class="margin-auto color-6049C4 font-size-18px">
+            <span class="margin-horizontal-auto display-block width-100 text-align-center">{{"Elapsed Time" | translate}}</span>
+            <span class="margin-horizontal-auto display-block">{{elapsedTime}} {{"min" | translate}}</span>
+          </ion-row>
+      </div>
       <ion-row class="margin-top-45 margin-right-auto margin-left-auto">
         <ion-col class="flex text-align-center">
-          <button class="button-design margin-auto font-size-20px" (click)="stopAction()">
-            {{"Cancel" | translate}}
+          <button class="font-size-20px height-36px border-radius-20px background-EDF2FF color-6049C4" (click)="stopAction()">
+            {{"Stop To-do" | translate}}
           </button>
         </ion-col>
         <ion-col class="flex text-align-center">
-          <button class="button-design margin-auto font-size-20px" (click)="finishAction()">
+          <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="finishAction()">
             {{"Finish" | translate}}
           </button>
         </ion-col>

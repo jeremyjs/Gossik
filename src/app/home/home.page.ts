@@ -191,6 +191,7 @@ export class HomePage {
 	chosenAttributeArray: any[] = [];
 	smartAssistantToggle: boolean;
 	calendarEventsToday: CalendarEvent[] = [];
+	elapsedTime: number;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -2743,6 +2744,7 @@ export class HomePage {
 				this.duration = 0;
 				if(this.startedAction.key) {
 					this.pageTitle = "Focus";
+					this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
 					this.changePage('ActionPage');
 				} else {
 					this.pageTitle = "Do!";

@@ -172,6 +172,12 @@ ion-button {
   --background: url('/assets/imgs/navigation_right.png') center center/70% 40% no-repeat;
 }
 
+.background-focus-circle {
+  background-image: url('/assets/icon/purple/focus_circle.svg');
+  background-position: center;
+  background-size: cover;
+}
+
 .header-background {
   --background: url('/assets/imgs/header_background.svg') center center/100% 100% no-repeat;
 }
@@ -375,12 +381,20 @@ ion-toolbar {
   font-size: 20px !important;
 }
 
+.font-size-24px {
+  font-size: 24px;
+}
+
 .font-size-25px  {
   font-size: 25px;
 }
 
 .font-size-30px {
   font-size: 30px !important;
+}
+
+.font-size-32px {
+  font-size: 32px;
 }
 
 .font-size-40px {
@@ -839,6 +853,10 @@ ion-input {
   width: 60px;
 }
 
+.width-60 {
+  width: 60%;
+}
+
 .width-70 {
   width: 70%;
 }
@@ -869,6 +887,10 @@ ion-input {
 
 .width-100px {
   width: 100px;
+}
+
+.width-260px {
+  width: 260px;
 }
 
 .text-align-right {
@@ -984,6 +1006,10 @@ ion-input {
   height: 150px;
 }
 
+.height-260px {
+  height: 260px;
+}
+
 .height-450px {
   height: 450px;
 }
@@ -1071,6 +1097,10 @@ p {
 
 .margin-top-26 {
   margin-top: 26px;
+}
+
+.margin-top-80 {
+  margin-top: 80px;
 }
 
 .margin-top-85 {
