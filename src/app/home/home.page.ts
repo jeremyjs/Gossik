@@ -38,6 +38,7 @@ import { PopoverAddProjectPage } from '../popover-add-project/popover-add-projec
 import { PopoverAddThoughtPage } from '../popover-add-thought/popover-add-thought.page';
 import { PopoverAddToDoPage } from '../popover-add-to-do/popover-add-to-do.page';
 import { PopoverAddCalendarEventPage } from '../popover-add-calendar-event/popover-add-calendar-event.page';
+import { PopoverFinishToDoPage } from '../popover-finish-to-do/popover-finish-to-do.page';
 
 
 import * as moment from 'moment';
@@ -820,6 +821,18 @@ export class HomePage {
 					} else {
 						this.db.editAction(data.data, this.auth.userid);
 					}
+				}
+			});
+		} else if(name == 'finishToDo') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverFinishToDoPage,
+			cssClass: 'popover-finish-to-do'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					console.log(data.data);
+					//TODO;
 				}
 			});
 		}
@@ -2125,28 +2138,9 @@ export class HomePage {
 	    });
 	}
 
-	// ProcessTakenActionPage function
-	actionFinished() {
-		if(this.actionArray.length == 1) {
-			this.pageCtrl = 'actionFinished';
-		} else {
-			this.finishAction();
-		}
-	}
-
-	abortAction() {
-		this.takenAction.taken = false;
-		this.db.editAction(this.takenAction, this.auth.userid);
-		this.pageCtrl = 'actionAborted';
-	}
-
 	finishToDo(todo?: Action) {
 		//TODO;
-	}
-
-	finishAction() {
-		this.startedAction.endDate = new Date().toISOString();
-		this.viewpoint = 'FinishActionPage';
+		this.presentPopover('finishToDo');
 	}
 
 	defineFollowUpTodoLater() {

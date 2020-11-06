@@ -1476,6 +1476,15 @@ ion-backdrop {
   overflow: hidden !important;
 }
 
+.popover-finish-to-do .popover-content {
+  top: auto !important;
+  bottom: 15px !important;
+  left: 10px !important;
+  --width: calc(100% - 20px);
+  --height: auto !important;
+  overflow: hidden !important;
+}
+
 .height-200px {
   height: 200px;
 }

@@ -84,6 +84,10 @@ const routes: Routes = [
     path: 'popover-add-calendar-event',
     loadChildren: () => import('./popover-add-calendar-event/popover-add-calendar-event.module').then( m => m.PopoverAddCalendarEventPageModule)
   },
+  {
+    path: 'popover-finish-to-do',
+    loadChildren: () => import('./popover-finish-to-do/popover-finish-to-do.module').then( m => m.PopoverFinishToDoPageModule)
+  },
 
 ];
 
