@@ -8,12 +8,15 @@ import { PopoverFinishToDoPageRoutingModule } from './popover-finish-to-do-routi
 
 import { PopoverFinishToDoPage } from './popover-finish-to-do.page';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PopoverFinishToDoPageRoutingModule
+    PopoverFinishToDoPageRoutingModule,
+    TranslateModule.forChild()
   ],
   declarations: [PopoverFinishToDoPage]
 })
