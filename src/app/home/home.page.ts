@@ -3040,7 +3040,13 @@ export class HomePage {
   		this.startedAction.taken = false;
   		this.db.editAction(this.startedAction, this.auth.userid);
   		this.goToToDoPage();
-  	}
+	  }
+	  
+	  stopToDo() {
+		  this.startedAction.taken = false;
+		  this.db.editAction(this.startedAction, this.auth.userid);
+		  this.goToToDoPage();
+	  }
 
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
