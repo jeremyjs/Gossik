@@ -810,11 +810,14 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				console.log(data.data);
 				if(data.data) {
-					if(data.data != 'delete') {
-						this.db.editAction(data.data, this.auth.userid);
-					} else if(data.data == 'delete') {
-						console.log('hi');
+					if(data.data == 'delete') {
 						this.db.deleteAction(params, this.auth.userid);
+					} else if(data.data == 'start') {
+						this.startAction(params);
+					} else if(data.data == 'markDone') {
+						this.finishToDo(params);
+					} else {
+						this.db.editAction(data.data, this.auth.userid);
 					}
 				}
 			});
@@ -2134,6 +2137,10 @@ export class HomePage {
 		this.takenAction.taken = false;
 		this.db.editAction(this.takenAction, this.auth.userid);
 		this.pageCtrl = 'actionAborted';
+	}
+
+	finishToDo(todo?: Action) {
+		//TODO;
 	}
 
 	finishAction() {

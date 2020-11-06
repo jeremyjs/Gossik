@@ -49,6 +49,14 @@ export class PopoverAddToDoPage implements OnInit {
     this.popoverCtrl.dismiss('delete');
   }
 
+  startToDo() {
+    this.popoverCtrl.dismiss('start');
+  }
+
+  markDoneToDo() {
+    this.popoverCtrl.dismiss('markDone');
+  }
+
   openPicker(pickerName) {
     this.translate.get(["Done", "Cancel"]).subscribe( translation => {
       let columnNames = [];

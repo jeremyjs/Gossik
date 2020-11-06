@@ -642,6 +642,11 @@ ion-input {
   --color: #22194D;
 }
 
+.color-FFFFFF {
+  color: #FFFFFF;
+  --color: #FFFFFF;
+}
+
 .height-54px {
   height: 54px;
 }
@@ -971,8 +976,16 @@ ion-input {
   height: 45px;
 }
 
+.height-98px {
+  height: 98px;
+}
+
 .height-150px {
   height: 150px;
+}
+
+.height-450px {
+  height: 450px;
 }
 
 .min-height-150px {
