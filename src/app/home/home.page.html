@@ -827,24 +827,6 @@
     </ion-grid>
   </div>
 
-  <!-- StopActionPage -->
-  <!-- No Desktop StopActionPage yet -->
-  <!-- Mobile StopActionPage -->
-  <div class="height-100-minus-80px" *ngIf="viewpoint == 'StopActionPage' && isApp">
-    <ion-grid class="height-100 width-90">
-      <ion-row class="margin-auto font-gray text-align-center">
-        <span class="margin-auto">
-          {{"Please update the remaining time for this action" | translate}}
-        </span>
-      </ion-row>
-      <ion-row class="margin-auto font-gray text-align-center width-100">
-        <span class="  margin-top-45 margin-right-auto margin-left-auto flex">
-          <span class="  margin-auto-left-3" (click)="openPicker('StopActionPageDuration')">{{duration}}{{"min" | translate }}</span>
-        </span>
-      </ion-row>
-    </ion-grid>
-  </div>
-
   <!-- ProjectsPage -->
   <div class="height-100" *ngIf="viewpoint == 'ProjectsPage' && !isApp">
     <div *ngIf="pageCtrl == ''">

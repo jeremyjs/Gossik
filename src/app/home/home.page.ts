@@ -2853,7 +2853,7 @@ export class HomePage {
 				let columnNames = [];
 				let columnOptions = [[]];
 				let selectedIndices = [0]
-				if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration' || pickerName == 'StopActionPageDuration') {
+				if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration') {
 					columnNames = ['duration'];
 					for(let i = 0; i <= 80; i++) {
 						columnOptions[0].push(5*i);
@@ -2878,9 +2878,6 @@ export class HomePage {
 							} else if(pickerName == 'ProcessCapturePageDuration') {
 								this.duration = value.duration.value;
 								this.timeSet();
-							} else if(pickerName == 'StopActionPageDuration') {
-								this.duration = value.duration.value;
-								this.updateStartedActionTime();
 							}
 						}
 					}
@@ -3029,24 +3026,12 @@ export class HomePage {
 	  		this.presentToast(translation["Todo started"]);
 		});
   	}
-
-  	stopAction() {
-  		this.duration = this.startedAction.time;
-  		this.changePage('StopActionPage');
-  	}
-
-  	updateStartedActionTime() {
-  		this.startedAction.time = this.duration;
-  		this.startedAction.taken = false;
-  		this.db.editAction(this.startedAction, this.auth.userid);
-  		this.goToToDoPage();
-	  }
 	  
-	  stopToDo() {
-		  this.startedAction.taken = false;
-		  this.db.editAction(this.startedAction, this.auth.userid);
-		  this.goToToDoPage();
-	  }
+	stopToDo() {
+		this.startedAction.taken = false;
+		this.db.editAction(this.startedAction, this.auth.userid);
+		this.goToToDoPage();
+	}
 
   	takeThisAction(action: Action) {
   		this.translate.get(["Do you want to start with this action?", "Start", "No", "Great, have fun while taking Action! Visit the Captures to process this action when you finished it."]).subscribe( alertMessage => {
