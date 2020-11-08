@@ -381,7 +381,7 @@
       </ion-row>
       <div *ngIf="pageCtrl == 'thoughts'" class="height-100-minus-45px overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
         <ion-row class="margin-horizontal-auto margin-bottom-20 height-54px border-radius-15px background-F6F7FB" *ngFor="let capture of captureArray">
-          <button  class="transparent text-align-left" (click)="goToProcessCapturePage(capture, undefined, undefined, 'ProcessPage')">
+          <button  class="transparent text-align-left" (click)="showThought(capture)">
             <span class="font-size-18px color-39297F">
               {{capture.content}}
             </span>

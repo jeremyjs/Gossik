@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { NavParams, PopoverController } from '@ionic/angular';
 
 import { Capture } from '../../model/capture/capture.model';
 
@@ -14,13 +14,20 @@ import { TranslateService } from '@ngx-translate/core';
 export class PopoverAddThoughtPage implements OnInit {
 
   thought = {} as Capture;
+  type: string;
+  changed: boolean = false;
 
   constructor(
     public popoverCtrl: PopoverController,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public navParams: NavParams
     ) { }
 
   ngOnInit() {
+    if(this.navParams.get('thought')) {
+      this.type = 'show';
+      this.thought = this.navParams.get('thought');
+    }
   }
 
   cancel() {
@@ -29,6 +36,18 @@ export class PopoverAddThoughtPage implements OnInit {
 
   save() {
     this.popoverCtrl.dismiss(this.thought);
+  }
+
+  deleteThought() {
+    this.popoverCtrl.dismiss('delete');
+  }
+
+  change() {
+    this.changed = true;
+  }
+
+  createToDo() {
+    this.popoverCtrl.dismiss('createToDo');
   }
 
 }

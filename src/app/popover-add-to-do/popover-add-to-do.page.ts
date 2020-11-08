@@ -35,6 +35,12 @@ export class PopoverAddToDoPage implements OnInit {
       this.type = 'show';
       this.changed = false;
     }
+    if(this.navParams.get('thought')) {
+      this.todo.content = this.navParams.get('thought').content;
+      if(this.navParams.get('thought').goalid) {
+        this.todo.goalid = this.navParams.get('thought').goalid;
+      }
+    }
   }
 
   cancel() {

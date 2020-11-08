@@ -772,21 +772,26 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
 					this.addCapture(data.data);
 				}
 			});
 		} else if(name == 'addToDo') {
+			let componentProps: any = {'goalDict': this.goalDict};
+			if(params) {
+				componentProps['thought'] = params;
+			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddToDoPage,
-			componentProps: {'goalDict': this.goalDict},
+			componentProps: componentProps,
 			cssClass: 'popover-add-to-do'
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
 					this.addToDo(data.data);
+					if(params) {
+						this.deleteCapture(params);
+					}
 				}
 			});
 		} else if(name == 'addCalendarEvent') {
@@ -798,7 +803,6 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
 					this.addCalendarEvent(data.data);
 				}
 			});
@@ -810,7 +814,6 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				console.log(data.data);
 				if(data.data) {
 					if(data.data == 'delete') {
 						this.db.deleteAction(params, this.auth.userid);
@@ -831,8 +834,6 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					console.log(data.data);
-					//TODO;
 					if(data.data == 'createNow') {
 						this.defineFollowUpTodoNow();
 					} else if(data.data == 'createLater') {
@@ -842,8 +843,26 @@ export class HomePage {
 					}
 				}
 			});
+		} else if(name == 'showThought') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddThoughtPage,
+			componentProps: {'thought': params},
+			cssClass: 'popover-add-thought'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					if(data.data == 'delete') {
+						this.deleteCapture(params);
+					} else if(data.data == 'createToDo') {
+						this.presentPopover('addToDo', params);
+					} else if(data.data.content) {
+						this.db.editCapture(data.data, this.auth.userid);
+					}
+				}
+			});
 		}
-	  }
+	}
 
   	goToPrivacyPolicyPage() {
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
@@ -1105,11 +1124,7 @@ export class HomePage {
   	}
 
   	deleteCapture(capture: Capture) {
-  		if(this.viewpoint == 'CapturePage') {
-  			this.db.deleteCapture(capture, this.auth.userid);
-  		} else {
-  			this.db.deleteCapture(capture, this.auth.userid).then( () => this.goToProcessPage())
-  		}
+  		this.db.deleteCapture(capture, this.auth.userid);
   		this.translate.get(["Thought deleted"]).subscribe( translation => {
 	  		this.presentToast(translation["Thought deleted"]);
 		});
@@ -1250,6 +1265,10 @@ export class HomePage {
 		} else {
 			this.pageCtrl = event.detail.value;
 		}
+	}
+
+	showThought(thought: Capture) {
+		this.presentPopover('showThought', thought);
 	}
 
   	goToProcessPage() {
@@ -2146,7 +2165,6 @@ export class HomePage {
 	}
 
 	finishToDo(todo?: Action) {
-		//TODO;
 		this.presentPopover('finishToDo');
 	}
 
