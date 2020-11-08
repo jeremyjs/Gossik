@@ -833,6 +833,13 @@ export class HomePage {
 				if(data.data) {
 					console.log(data.data);
 					//TODO;
+					if(data.data == 'createNow') {
+						this.defineFollowUpTodoNow();
+					} else if(data.data == 'createLater') {
+						this.defineFollowUpTodoLater();
+					} else if(data.data == 'noFollowUp') {
+						this.noFollowUpTodoRequired();
+					}
 				}
 			});
 		}
@@ -2165,15 +2172,11 @@ export class HomePage {
 	}
 
 	defineFollowUpTodoNow() {
-		if(this.startedAction.goalid != 'unassigned') {
-			let capture = {} as Capture;
-			capture.content = this.startedAction.content;
-			this.goToProcessCapturePage(capture, this.goalDict[this.startedAction.goalid], 'action', 'FinishActionPage');
-		} else {
-			let capture = {} as Capture;
-			capture.content = this.startedAction.content;
-			this.goToProcessCapturePage(capture, { key: 'unassigned'} as Goal, 'action', 'FinishActionPage');	
-		}
+		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+			this.startedAction = {} as Action;
+			this.goToToDoPage();
+		});
+		this.presentPopover('addToDo');
 		this.translate.get(["One less, congrats!"]).subscribe( translation => {
     		this.presentToast(translation["One less, congrats!"]);
     	});

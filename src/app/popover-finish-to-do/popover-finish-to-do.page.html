@@ -1,3 +1,17 @@
 <ion-content>
-  <ion-row class="font-size-18px margin-auto margin-top-10">{{"Follow up to-do" | translate }}</ion-row>
+  <ion-row class="font-size-18px margin-horizontal-auto margin-top-20 width-90 color-39297F">
+    <span class="margin-horizontal-auto">{{"Follow up to-do" | translate }}</span>
+  </ion-row>
+  <ion-row class="font-size-14px margin-horizontal-auto margin-bottom-20 width-90 color-39297F">
+    <span class="margin-horizontal-auto">{{"Do you want to create a follow up to-do?" | translate }}</span>
+  </ion-row>
+  <ion-row class="margin-horizontal-auto margin-bottom-20 margin-top-20 width-90">
+    <button class="transparent font-size-18px margin-horizontal-auto color-6049C4 background-EDF2FF border-radius-20px height-36px" (click)="createNow()">{{"Create now" | translate }}</button>
+  </ion-row>
+  <ion-row class="margin-horizontal-auto margin-bottom-20 margin-top-20 width-90">
+    <button class="transparent font-size-18px margin-horizontal-auto color-6049C4 background-EDF2FF border-radius-20px height-36px" (click)="createLater()">{{"Create later" | translate }}</button>
+  </ion-row>
+  <ion-row class="margin-horizontal-auto margin-bottom-20 margin-top-20 width-90">
+    <button class="transparent font-size-18px margin-horizontal-auto color-6049C4 background-EDF2FF border-radius-20px height-36px" (click)="noFollowUp()">{{"No follow-up todo required" | translate }}</button>
+  </ion-row>
 </ion-content>
