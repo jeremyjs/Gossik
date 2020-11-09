@@ -2722,6 +2722,12 @@ export class HomePage {
 		this.calendar.currentDate = nextWeek;
 	}
 
+	changeMonth(direction: number) {
+		let nextMonth = new Date(this.calendar.currentDate);
+		nextMonth.setDate(this.calendar.currentDate.getDate() +  direction * 31);
+		this.calendar.currentDate = nextMonth;
+	}
+
 	changeDay(direction: number) {
 		let nextDay = new Date(this.calendar.currentDate);
 		nextDay.setDate(this.calendar.currentDate.getDate() +  direction);
