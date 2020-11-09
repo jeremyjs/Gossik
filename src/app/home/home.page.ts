@@ -2738,15 +2738,14 @@ export class HomePage {
 		this.calendar.currentDate = new Date();
 	}
 
-	changeDate() {
-		let modal = this.modalCtrl.create({
-				component: ChangeWeekModalPage
-			}).then (modal => {
-				modal.present();
-				modal.onDidDismiss().then(data => {
-					this.calendar.currentDate = data.data;
-				});
-			});
+	changeDate(direction: number) {
+		if(this.calendar.mode == 'day') {
+			this.changeDay(direction);
+		} else if(this.calendar.mode == 'week') {
+			this.changeWeek(direction);
+		} else if(this.calendar.mode == 'month') {
+			this.changeMonth(direction);
+		}
 	}
 
 	goToInitPage() {

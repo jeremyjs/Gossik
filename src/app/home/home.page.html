@@ -910,10 +910,10 @@
           <h3 class="font-size-24px color-39297F margin-vertical-auto">{{ viewTitle }}</h3>
         </span>
         <span class="flex">
-          <button (click)="changeMonth(-1)" class="transparent no-padding width-22px">
+          <button (click)="changeDate(-1)" class="transparent no-padding width-22px">
             <img src="../../assets/icon/purple/icon_arrow_left.svg" height="16">
           </button>
-          <button (click)="changeMonth(-1)" class="transparent no-padding width-22px">
+          <button (click)="changeDate(1)" class="transparent no-padding width-22px">
             <img src="../../assets/icon/purple/icon_arrow_right.svg" height="16">
           </button>
         </span>
@@ -958,7 +958,7 @@
         </div>
         <div class="width-100 padding-10 height-100" *ngIf="calendar.mode == 'day'">
           <ng-template #template let-displayEvent="displayEvent" >
-            <div class="calendar-event-inner font-black" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+            <div class="calendar-event-inner color-39297F border-radius-2px" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
           </ng-template>
           <calendar [eventSource]="eventSource"
                     [calendarMode]="calendar.mode"
@@ -967,7 +967,7 @@
                     (onTitleChanged)="onViewTitleChanged($event)"
                     (onTimeSelected)="onTimeSelected($event)"
                     step="5"
-                    class="calendar height-100"
+                    class="calendar height-100 color-6049C4"
                     autoSelect="false"
                     [weekviewNormalEventTemplate]="template"
                     [weekviewAllDayEventTemplate]="template"
@@ -989,7 +989,7 @@
             <div class="custom-day-header"> {{ viewDate.dayHeader }} hi </div> 
           </ng-template>
           <ng-template #weekviewEventTemplate let-displayEvent="displayEvent">
-            <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
+            <div class="calendar-event-inner color-39297F border-radius-2px font-size-10px" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
           </ng-template>
           <calendar [eventSource]="eventSource"
                     [calendarMode]="calendar.mode"
@@ -997,7 +997,7 @@
                     (onEventSelected)="onEventSelected($event)"
                     (onTitleChanged)="onViewTitleChanged($event)"
                     (onTimeSelected)="onTimeSelected($event)"
-                    class="calendar height-100"
+                    class="calendar height-100 color-6049C4"
                     autoSelect="false"
                     [weekviewHeaderTemplate]="headerTemplate"
                     [weekviewNormalEventTemplate]="weekviewEventTemplate"
