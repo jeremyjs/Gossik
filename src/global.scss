@@ -934,12 +934,16 @@ ion-input {
   height: calc(100% - 45px);
 }
 
+.height-100-minus-64px {
+  height: calc(100% - 64px);
+}
+
 .height-100-minus-70px {
   height: calc(100% - 70px);
 }
 
-.height-100-minus-80px {
-  height: calc(100% - 80px);
+.height-100-minus-95px {
+  height: calc(100% - 95px);
 }
 
 .height-100-minus-85px {
@@ -968,6 +972,10 @@ ion-input {
 
 .margin-bottom-10px {
   margin-bottom: 10px !important;
+}
+
+.margin-bottom-15px {
+  margin-bottom: 15px;
 }
 
 .margin-bottom-45 {
