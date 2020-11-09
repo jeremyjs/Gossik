@@ -1572,7 +1572,7 @@ export class HomePage {
   			this.addNoteFromCapture();
   		}
   		if(this.cameFromProjectOverviewPage) {
-  			this.reviewGoal(this.captureProject);
+  			this.goToProjectOverviewPage(this.captureProject);
   		} else if (this.cameFromToDoPage) {
   			this.goToToDoPage();
   		} else if(this.cameFromFinishActionPage) {
@@ -2226,7 +2226,7 @@ export class HomePage {
 		}
   	}
 	
-	reviewGoal(goal: Goal) {
+	goToProjectOverviewPage(goal: Goal) {
 		this.pageTitle = goal.name;
 		this.viewpoint = "ProjectOverviewPage";
 		this.content.scrollToTop();
@@ -2275,7 +2275,7 @@ export class HomePage {
   		}).then( modal => {
   			modal.present();
   			modal.onDidDismiss().then ( () => {
-  				this.reviewGoal(this.goal);
+  				this.goToProjectOverviewPage(this.goal);
   			})
   		});
   	}
