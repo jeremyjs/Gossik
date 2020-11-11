@@ -405,6 +405,10 @@ ion-toolbar {
   font-size: 40px !important;
 }
 
+.font-size-48px {
+  font-size: 48px;
+}
+
 .font-size-50px {
   font-size: 50px !important;
 }
@@ -533,8 +537,20 @@ ion-toolbar {
   margin-top: 35px;
 }
 
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.margin-top-96 {
+  margin-top: 96px;
+}
+
 .margin-top-104 {
   margin-top: 104px;
+}
+
+.margin-top-115 {
+  margin-top: 115px;
 }
 
 .margin-top-32-auto {
@@ -701,6 +717,10 @@ ion-input {
   border-radius: 35px;
 }
 
+.border-radius-48px {
+  border-radius: 48px;
+}
+
 .border-radius-5px {
   border-radius: 5px;
 }
@@ -835,6 +855,10 @@ ion-input {
 
 .height-44px {
   height: 44px;
+}
+
+.height-48px {
+  height: 48px;
 }
 
 .height-60px {
@@ -1185,6 +1209,11 @@ p {
 
 .padding-5 {
   padding: 5px;
+}
+
+.padding-horizontal-50 {
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .padding-left-5 {
