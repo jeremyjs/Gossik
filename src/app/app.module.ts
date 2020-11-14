@@ -61,6 +61,7 @@ registerLocaleData(localeDe, 'de');
 import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { PrivacyPolicyPageModule } from './privacy-policy/privacy-policy.module';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     PopoverAddThoughtPageModule,
     PopoverAddToDoPageModule,
     PopoverAddCalendarEventPageModule,
-    PopoverFinishToDoPageModule
+    PopoverFinishToDoPageModule,
+    PrivacyPolicyPageModule
   	],
   providers: [
     Calendar,

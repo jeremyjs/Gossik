@@ -9,6 +9,8 @@ const routes: Routes = [
   { path: 'home/projects', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'home/calendar', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'home/settings', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
+  { path: 'home/privacy-policy', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
+  { path: 'home/logout', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   {
     path: 'action-details-modal',
     loadChildren: () => import('./action-details-modal/action-details-modal.module').then( m => m.ActionDetailsModalPageModule)
@@ -64,7 +66,8 @@ const routes: Routes = [
   {
     path: 'tutorial-projects-modal',
     loadChildren: () => import('./tutorial-projects-modal/tutorial-projects-modal.module').then( m => m.TutorialProjectsModalPageModule)
-  },  {
+  },
+  {
     path: 'popover-add',
     loadChildren: () => import('./popover-add/popover-add.module').then( m => m.PopoverAddPageModule)
   },

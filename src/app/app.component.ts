@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { TranslateService } from '@ngx-translate/core';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,16 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
+  loggedin: boolean = false;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private auth: AuthenticationService
   ) {
     this.initializeApp();
   }
@@ -34,6 +39,13 @@ export class AppComponent {
       }
       this.translate.use(language);
       //this.translate.use('en');
+      this.auth.afAuth.authState
+      .subscribe(
+        user => {
+          if (user) {
+            this.loggedin = true;
+          }
+      });
     });
   }
 

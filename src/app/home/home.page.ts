@@ -44,6 +44,7 @@ import { PopoverFinishToDoPage } from '../popover-finish-to-do/popover-finish-to
 import * as moment from 'moment';
 
 import { FirebaseX } from "@ionic-native/firebase-x/ngx";
+import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy.page';
 
 @Component({
   selector: 'app-home',
@@ -545,6 +546,10 @@ export class HomePage {
 				this.goToCalendarPage();
 			} else if(page == 'settings') {
 				this.goToSettingsPage();
+			} else if(page == 'privacy-policy') {
+				this.goToPrivacyPolicyPage();
+			} else if(page == 'logout') {
+				this.logout();
 			}
 		} else {
 			this.goToToDoPage();
@@ -865,8 +870,8 @@ export class HomePage {
 	}
 
   	goToPrivacyPolicyPage() {
-		console.log(this.router);
-  		this.router.navigate(['privacy-policy'], { replaceUrl: true });
+		  this.changePage('PrivacyPolicyPage');
+		  this.pageTitle = 'Privacy Policy';
   	}
 
   	// LoginPage functions
