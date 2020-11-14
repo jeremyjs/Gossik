@@ -37,7 +37,7 @@ export class AppComponent {
     });
   }
 
-  goToPage(page: string) {
-    this.router.navigate(['home/' + page], { replaceUrl: true });
+  goToPage(path: string) {
+    this.router.navigate([path], { replaceUrl: true });
   }
 }

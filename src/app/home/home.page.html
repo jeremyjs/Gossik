@@ -1,6 +1,13 @@
 <ion-header>
+  <ion-toolbar *ngIf="!loggedin">
+    <div class="width-45px">
+      <ion-menu-button class="no-padding">
+        <img src="../../assets/icon/purple/icon_menu.svg" height="44">
+      </ion-menu-button>
+    </div>
+  </ion-toolbar>
 	<ion-toolbar *ngIf="viewpoint != 'ActionPage' && loggedin" class="header-background height-169px background-color-white">
-    <div *ngIf="loggedin && isApp">
+    <div *ngIf="isApp">
       <ion-grid>
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
@@ -28,52 +35,60 @@
 	<div *ngIf="viewpoint == 'LoginPage'" class="height-100 width-100">
     <div class="margin-top-50 margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Login" | translate}}</div>
     <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-96 margin-horizontal-auto display-block" height="244">
-    <div *ngIf="pageCtrl == ''">
-        <ion-input class="margin-top-115 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="loginEmail"></ion-input>
-        <ion-input class="width-90 margin-horizontal-auto margin-top-15 border-6049C4-50per font-size-18px padding-5 border-radius-15px background-FFFFFF" type="password" placeholder="{{'Password' | translate }}" [(ngModel)]="loginPassword"></ion-input>
-      <div padding-horizontal class="text-align-center margin-top-20">
-        <div class="form-error">{{loginError}}</div>
-        <button class="font-size-18px margin-auto padding-horizontal-50 background-6049C4 color-FFFFFF height-48px border-radius-48px" (click)="login()">{{"Log in" | translate }}</button>	
-      </div>
+    <ion-input class="margin-top-115 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="loginEmail"></ion-input>
+    <ion-input class="width-90 margin-horizontal-auto margin-top-15 border-6049C4-50per font-size-18px padding-5 border-radius-15px background-FFFFFF" type="password" placeholder="{{'Password' | translate }}" [(ngModel)]="loginPassword"></ion-input>
+    <div padding-horizontal class="text-align-center margin-top-20">
+      <div class="form-error">{{loginError}}</div>
+      <button class="font-size-18px margin-auto padding-horizontal-50 background-6049C4 color-FFFFFF height-48px border-radius-48px" (click)="login()">{{"Log in" | translate }}</button>	
     </div>
-    <!--
-    <div *ngIf="pageCtrl == 'forgotPassword'">
-      <ion-item no-lines class="show-full-highlight-0 text-align-center">
-        <ion-input class="border-bottom-1 show-full-highlight-0" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="resetPasswordEmail"></ion-input>
-      </ion-item>
-      <div padding-horizontal class="text-align-center">
-        <div class="form-error">{{resetPasswordError}}</div>
-        <button class="font-size-20px" (click)="resetPassword()">{{"Reset password" | translate }}</button>			
-      </div>
-    </div>
-    <div *ngIf="pageCtrl == 'signUp'">
-      <ion-item no-lines class="show-full-highlight-0 border-width-0">
-        <ion-input class="border-bottom-1" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}..." [(ngModel)]="signUpEmail"></ion-input>
-      </ion-item>
-      <ion-item no-lines class="show-full-highlight-0">
-        <ion-input class="border-bottom-1" type="password" placeholder="{{'Password' | translate }}..." [(ngModel)]="signUpPassword"></ion-input>
-      </ion-item>
-      <div padding-horizontal class="text-align-center">
-        <div class="form-error">{{signUpError}}</div>
-        <button class="font-size-20px" (click)="signUp()">{{"Sign up" | translate }}</button>
-      </div>
-    </div>
-    -->
     <ion-list class="margin-top-45">
-      <button *ngIf="pageCtrl != ''" icon-left class="font-size-20px margin-left-20 display-block" (click)="goToLoginPage()">
-        {{"Login" | translate }}
-      </button>
-      <button *ngIf="pageCtrl != 'signUp'" icon-left class="margin-top-10 font-size-20px margin-left-20 display-block" (click)="goToSignUp()">
+      <button class="margin-top-10 font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToSignUp()">
         {{"Sign up" | translate }}
       </button>
-      <button *ngIf="pageCtrl != 'forgotPassword'" icon-left class="margin-top-10 font-size-20px margin-left-20 display-block" (click)="goToForgotPassword()">
+      <button class="margin-top-10 font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToForgotPassword()">
         {{"Forgot password" | translate }}
       </button>
-      <button class="margin-top-10 font-size-20px margin-left-20 display-block" (click)="goToPrivacyPolicyPage()">
-        {{"Privacy Policy" | translate }}
+    </ion-list>
+  </div>
+  
+  <!-- Mobile SignUpPage -->
+	<div *ngIf="viewpoint == 'SignUpPage'" class="height-100 width-100">
+    <div class="margin-top-50 margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Login" | translate}}</div>
+    <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-96 margin-horizontal-auto display-block" height="244">
+    <ion-input class="margin-top-115 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="signUpEmail"></ion-input>
+    <ion-input class="width-90 margin-horizontal-auto margin-top-15 border-6049C4-50per font-size-18px padding-5 border-radius-15px background-FFFFFF" type="password" placeholder="{{'Password' | translate }}" [(ngModel)]="signUpPassword"></ion-input>
+    <div padding-horizontal class="text-align-center margin-top-20">
+      <div class="form-error">{{signUpError}}</div>
+      <button class="font-size-18px margin-auto padding-horizontal-50 background-6049C4 color-FFFFFF height-48px border-radius-48px" (click)="signUp()">{{"Sign up" | translate }}</button>
+    </div>
+    <ion-list class="margin-top-45">
+      <button class="font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToLoginPage()">
+        {{"Login" | translate }}
+      </button>
+      <button class="margin-top-10 font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToForgotPassword()">
+        {{"Forgot password" | translate }}
       </button>
     </ion-list>
-	</div>
+  </div>
+  
+  <!-- Mobile ResetPasswordPage -->
+	<div *ngIf="viewpoint == 'ResetPasswordPage'" class="height-100 width-100">
+    <div class="margin-top-50 margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Login" | translate}}</div>
+    <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-96 margin-horizontal-auto display-block" height="244">
+    <ion-input class="margin-top-115 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="resetPasswordEmail"></ion-input>
+    <div padding-horizontal class="text-align-center margin-top-20">
+      <div class="form-error">{{resetPasswordError}}</div>
+      <button class="font-size-18px margin-auto padding-horizontal-50 background-6049C4 color-FFFFFF height-48px border-radius-48px" (click)="resetPassword()">{{"Reset password" | translate }}</button>			
+    </div>
+    <ion-list class="margin-top-45">
+      <button class="font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToLoginPage()">
+        {{"Login" | translate }}
+      </button>
+      <button class="margin-top-10 font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToSignUp()">
+        {{"Sign up" | translate }}
+      </button>
+    </ion-list>
+  </div>
 
 
   <!-- SettingsPage -->

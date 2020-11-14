@@ -865,6 +865,7 @@ export class HomePage {
 	}
 
   	goToPrivacyPolicyPage() {
+		console.log(this.router);
   		this.router.navigate(['privacy-policy'], { replaceUrl: true });
   	}
 
@@ -893,7 +894,7 @@ export class HomePage {
 
   	goToSignUp(){
   		this.signUpError = undefined;
-		this.pageCtrl = 'signUp';
+		  this.changePage('SignUpPage');
 	}
 
 	signUp() {
@@ -916,7 +917,7 @@ export class HomePage {
 	
 	goToForgotPassword() {
 		this.resetPasswordError = undefined;
-		this.pageCtrl = 'forgotPassword';
+		this.changePage('ResetPasswordPage');
 	}
 
 	resetPassword() {

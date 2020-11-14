@@ -1,20 +1,18 @@
 <ion-app>
-<!--
   <ion-menu contentId="content1" side="start" type="overlay">
   		<ion-header>
-    		<ion-toolbar color="secondary" class="text-align-center">
+    		<ion-toolbar class="text-align-center">
       			<ion-title>Menu</ion-title>
     		</ion-toolbar>
   		</ion-header>
-  		<ion-content color="secondary">
+  		<ion-content>
   			<ion-list class="transparent">
-  				<ion-menu-toggle auto-hide="true">
-    				<ion-item (click)="goToPage('settings')" class="transparent font-white border-bottom-1">{{"Settings" | translate}}</ion-item>
-				  </ion-menu-toggle>
+  				<ion-menu-toggle>
+    				<ion-item (click)="goToPage('privacy-policy')" class="transparent border-bottom-1">{{"Privacy Policy" | translate}}</ion-item>
+				</ion-menu-toggle>
 			 </ion-list>
   		</ion-content>
 	</ion-menu>
--->
 	<ion-router-outlet id="content1" main></ion-router-outlet>
   	<ion-router-outlet></ion-router-outlet>
 </ion-app>
