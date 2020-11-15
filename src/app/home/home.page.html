@@ -6,7 +6,21 @@
       </ion-menu-button>
     </div>
   </ion-toolbar>
-	<ion-toolbar *ngIf="viewpoint != 'ActionPage' && loggedin" class="header-background height-169px background-color-white">
+  <ion-toolbar *ngIf="viewpoint == 'PrivacyPolicyPage'" class="header-background height-169px background-color-white">
+		<ion-grid>
+			<ion-row class="margin-top-32">
+			  <ion-col size="2" class="flex text-align-center no-padding">
+				<button class="transparent margin-auto" (click)="goToToDoPage()">
+					<img src="../../assets/icon/purple/icon_arrow_left.svg" height="24">
+				</button>
+			  </ion-col>
+			  <ion-col size="10" class="page-title flex no-padding">
+				<span class="margin-auto">{{"Privacy Policy" | translate}}</span>
+			  </ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-toolbar>
+	<ion-toolbar *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin" class="header-background height-169px background-color-white">
     <div *ngIf="isApp">
       <ion-grid>
         <ion-row>
@@ -950,7 +964,7 @@
   <div class="height-100-minus-95px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-90 height-100 overflow-hidden no-padding">
       <ion-row class="flex justify-conent-space-evenly height-168px">
-        <button (click)="setAvailabletime()" class="color-6049C4 flex background-EDF2FF border-radius-10px height-54px">
+        <button (click)="setAvailableTime()" class="color-6049C4 flex background-EDF2FF border-radius-10px height-54px">
           <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Set available time" | translate}}</span>
         </button>

@@ -2873,7 +2873,11 @@ export class HomePage {
   			this.goalKeyArray = [];
   		}
   		this.showDoableActions();
-  	}
+	  }
+	  
+	setAvailableTime() {
+		this.openPicker('ToDoPageDuration');
+	}
 
   	openPicker(pickerName) {
 		if(pickerName == 'ToDoPageDuration' && this.userProfile.subscription == 'filterAndDurationFeature' && !this.userProfile.subscriptionPaid) {
