@@ -90,7 +90,11 @@ const routes: Routes = [
   {
     path: 'popover-finish-to-do',
     loadChildren: () => import('./popover-finish-to-do/popover-finish-to-do.module').then( m => m.PopoverFinishToDoPageModule)
+  },  {
+    path: 'popover-filter-to-dos',
+    loadChildren: () => import('./popover-filter-to-dos/popover-filter-to-dos.module').then( m => m.PopoverFilterToDosPageModule)
   },
+
 
 ];
 

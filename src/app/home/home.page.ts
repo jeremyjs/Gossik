@@ -45,6 +45,7 @@ import * as moment from 'moment';
 
 import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy.page';
+import { PopoverFilterToDosPage } from '../popover-filter-to-dos/popover-filter-to-dos.page';
 
 @Component({
   selector: 'app-home',
@@ -134,7 +135,7 @@ export class HomePage {
 	takenActionArray: Action[];
 	goalDict = {};
 	loggedin: boolean;
-	goalKeyArray: string[];
+	chosenGoalArray: string[];
 	backButton: any;
 	capturePageStarted: boolean = false;
 	feedback: string;
@@ -864,6 +865,25 @@ export class HomePage {
 					} else if(data.data.content) {
 						this.db.editCapture(data.data, this.auth.userid);
 					}
+				}
+			});
+		} else if(name == 'filterToDos') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverFilterToDosPage,
+			componentProps: {
+				'attributeArray': this.attributeArray,
+				'chosenAttributeArray': this.chosenAttributeArray,
+				'chosenGoalArray': this.chosenGoalArray,
+				'goalArray': this.goalArray
+			},
+			cssClass: 'popover-filter-to-dos'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					this.chosenGoalArray = data.data.chosenGoalArray;
+					this.chosenAttributeArray = data.data.chosenAttributeArray;
+					this.showDoableActions();
 				}
 			});
 		}
@@ -2779,7 +2799,7 @@ export class HomePage {
 				} else {
 					this.pageTitle = "Do!";
 					this.doableActionArray = [];
-					this.goalKeyArray = [];
+					this.chosenGoalArray = [];
 					this.doableActionArray = [];
 					let targetTodo = undefined;
 					for(let action of this.actionArray) {
@@ -2841,26 +2861,7 @@ export class HomePage {
 		if(this.userProfile.subscription == 'filterAndDurationFeature' && !this.userProfile.subscriptionPaid) {
 			this.presentAlert("unpaidFeatureSubscription");
 		} else {
-			this.modalCtrl.create({ 
-				component: ToDoFilterModalPage,
-				componentProps: {goalArray: this.goalArray,
-								goalKeyArray: this.goalKeyArray,
-								attributeArray: this.attributeArray,
-								chosenAttributeArray: this.chosenAttributeArray
-							}
-			}).then( modal => {
-				modal.present();
-				modal.onDidDismiss().then( data => {
-					if(data.data) {
-						console.log(data);
-						this.goalKeyArray = data.data.chosenGoalArray;
-						this.chosenAttributeArray = data.data.chosenAttributeArray;
-						let goalKeys = this.goalKeyArray.filter( goalKey => goalKey != 'unassigned');
-						this.db.learnLearnedSchedule(this.auth.userid, goalKeys, [new Date()], 1);
-						this.showDoableActions();
-					}
-				});
-			});
+			this.presentPopover('filterToDos');
 		}
 	  }
 	  
@@ -2870,7 +2871,7 @@ export class HomePage {
 
   	chooseGoal(event) {
   		if(event.detail.value.length == 0) {
-  			this.goalKeyArray = [];
+  			this.chosenGoalArray = [];
   		}
   		this.showDoableActions();
 	  }
@@ -2967,7 +2968,7 @@ export class HomePage {
 						attributeCheck = false;
 					}
 				}
-				if(action.time/1 <= duration/1 && !action.taken && (this.goalKeyArray.indexOf(action.goalid) != -1 || this.goalKeyArray.length == 0 ) && attributeCheck) {
+				if(action.time/1 <= duration/1 && !action.taken && (this.chosenGoalArray.indexOf(action.goalid) != -1 || this.chosenGoalArray.length == 0 ) && attributeCheck) {
 				this.doableActionArray.push(action);
 				}
 			}

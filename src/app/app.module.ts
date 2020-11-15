@@ -62,6 +62,7 @@ import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { PrivacyPolicyPageModule } from './privacy-policy/privacy-policy.module';
+import { PopoverFilterToDosPageModule } from './popover-filter-to-dos/popover-filter-to-dos.module';
 
 
 @NgModule({
@@ -104,6 +105,7 @@ import { PrivacyPolicyPageModule } from './privacy-policy/privacy-policy.module'
     PopoverAddToDoPageModule,
     PopoverAddCalendarEventPageModule,
     PopoverFinishToDoPageModule,
+    PopoverFilterToDosPageModule,
     PrivacyPolicyPageModule
   	],
   providers: [

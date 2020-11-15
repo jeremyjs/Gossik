@@ -1,0 +1,62 @@
+<ion-content class="width-100">
+  <ion-row class="margin-top-35 color-39297F">
+    <ion-col size="3">
+      <button class="transparent color-6049C4 font-size-17px" (click)="close()">
+        {{"Close" | translate}}
+      </button>
+    </ion-col>
+    <ion-col size="6" *ngIf="type != 'show'" class="text-align-center font-size-17px">
+      {{"Filter" | translate}}
+    </ion-col>
+  </ion-row>
+  <ion-row class="margin-top-20">
+    <span class="margin-horizontal-auto font-size-17px color-39297F">
+      {{"By Project" | translate}}
+    </span>
+  </ion-row>
+  <ion-row class="width-90 margin-horizontal-auto max-height-150px overflow-scroll no-scrollbar">
+    <div *ngFor="let goal of goalArray" class="margin-right-20 margin-top-20">
+      <div *ngIf="chosenGoalArray.indexOf(goal.key) == -1" class="padding-10 background-EDF2FF border-radius-10px" (click)="chooseGoal(goal.key)">
+        <span *ngIf="goal.key == 'unassigned'" class="font-size-15px color-B4AEE7">
+          <img src="../../assets/icon/purple/icon_checkbox.svg" height="14">
+          {{"Unassigned todos" | translate}}</span>
+        <span *ngIf="goal.key != 'unassigned'" class="font-size-15px color-B4AEE7">
+          <img src="../../assets/icon/purple/icon_checkbox.svg" height="14">
+          {{goal.name}}</span>
+      </div>
+      <div *ngIf="chosenGoalArray.indexOf(goal.key) != -1" class="padding-10 background-6049C4 border-radius-10px" (click)="chooseGoal(goal.key)">
+        <span *ngIf="goal.key == 'unassigned'" class="font-size-15px color-FFFFFF">
+          <img src="../../assets/icon/purple/icon_checkbox_checked.svg" height="14">
+          {{"Unassigned todos" | translate}}</span>
+        <span *ngIf="goal.key != 'unassigned'" class="font-size-15px color-FFFFFF">
+          <img src="../../assets/icon/purple/icon_checkbox_checked.svg" height="14">
+          {{goal.name}}</span>
+      </div>
+    </div>
+  </ion-row>
+  <ion-row class="margin-top-20">
+    <span class="margin-horizontal-auto font-size-17px color-39297F">
+      {{"By Attribute" | translate}}
+    </span>
+  </ion-row>
+  <ion-row class="width-90 margin-horizontal-auto margin-bottom-20 max-height-150px overflow-scroll no-scrollbar">
+    <div *ngFor="let attribute of attributeArray" class="margin-right-20 margin-top-20">
+      <div *ngIf="chosenAttributeArray.indexOf(attribute.key) == -1" class="padding-10 background-EDF2FF border-radius-10px" (click)="chooseAttribute(attribute.key)">
+        <span class="font-size-15px color-B4AEE7">
+          <img src="../../assets/icon/purple/icon_checkbox.svg" height="14">
+          #{{attribute.content}}</span>
+      </div>
+      <div *ngIf="chosenAttributeArray.indexOf(attribute.key) != -1" class="padding-10 background-6049C4 border-radius-10px" (click)="chooseAttribute(attribute.key)">
+        <span class="font-size-15px color-FFFFFF">
+          <img src="../../assets/icon/purple/icon_checkbox_checked.svg" height="14">
+          #{{attribute.content}}</span>
+      </div>
+    </div>
+  </ion-row>
+  <ion-row class="height-98px background-EDF2FF margin-top-20">
+    <span class="margin-auto">
+      <button class="font-size-20px height-36px border-radius-20px background-FFFFFF color-6049C4" (click)="clearAll()">{{"Clear All" | translate}}</button>
+      <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="filter()">{{"Apply Filters" | translate}}</button>
+    </span>
+</ion-row>
+</ion-content>

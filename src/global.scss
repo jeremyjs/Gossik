@@ -703,6 +703,11 @@ ion-input {
   --color: #22194D;
 }
 
+.color-B4AEE7 {
+  color: #B4AEE7;
+  --color: #B4AEE7;
+}
+
 .color-FFFFFF {
   color: #FFFFFF;
   --color: #FFFFFF;
@@ -1347,6 +1352,14 @@ p {
   max-height: 30px;
 }
 
+.max-height-150px {
+  max-height: 150px;
+}
+
+.max-height-250px {
+  max-height: 250px;
+}
+
 .overflow-x-hidden {
   overflow-x: hidden;
 }
@@ -1551,6 +1564,15 @@ ion-backdrop {
 }
 
 .popover-add-to-do .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: auto !important;
+  overflow: hidden !important;
+}
+
+.popover-filter-to-dos .popover-content {
   top: auto !important;
   bottom: 0px !important;
   left: 0px !important;
