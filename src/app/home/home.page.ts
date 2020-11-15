@@ -1665,8 +1665,11 @@ export class HomePage {
 					title: 'Deadline: ' + todo.content,
 					allDay: true,
 					active: true,
-					color: this.goalDict[todo.goalid].color
+					color: "#EDF2FF"
 				};
+				if(this.goalDict[todo.goalid].color) {
+					eventData.color = this.goalDict[todo.goalid].color;
+				}
 				if(this.platform.is('cordova')) {
 					this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
 						if(hasReadWritePermission) {
@@ -2945,7 +2948,19 @@ export class HomePage {
         })
       }
       return options;
-    }
+	}
+	
+	smartAssistant() {
+		this.sortToDosByPriority();
+	}
+
+	sortToDosByPriority() {
+		if(this.smartAssistantToggle) {
+			this.doableActionArray.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
+		} else {
+			this.doableActionArray.sort((a, b) => (a.priority < b.priority) ? 1 : -1);
+		}
+	}
 
   	showDoableActions() {
 		this.skippedAllToDos = false;
@@ -2973,7 +2988,7 @@ export class HomePage {
 				}
 			}
 		}
-		this.doableActionArray.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
+		this.sortToDosByPriority();
 		if(this.doableActionArray.length == 0) {
 			this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
 				this.presentToast(translation["There is no doable action for that time."]);
