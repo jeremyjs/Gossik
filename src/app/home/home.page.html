@@ -533,13 +533,13 @@
   <!-- Mobile ItemsPage -->
   <div *ngIf="viewpoint == 'ItemsPage' && isApp" class="no-scrollbar height-100-minus-95px margin-0 width-100">
     <ion-grid class="height-100 width-100 no-padding">
-      <ion-row class="width-90 height-44px text-align-right margin-bottom-20 margin-horizontal-auto">
-        <ion-segment (ionChange)="switchItems($event)" value="thoughts" mode="ios" class="background-EDF2FF border-radius-22px height-44px color-39297F">
-          <ion-segment-button value="thoughts">
-            <ion-label class="font-size-18px">{{"Unassigned Thoughts" | translate}}</ion-label>
+      <ion-row class="width-90 text-align-right margin-bottom-20 margin-horizontal-auto">
+        <ion-segment (ionChange)="switchItems($event)" value="thoughts" mode="ios" class="background-EDF2FF border-radius-35px height-45px padding-5">
+          <ion-segment-button  value="thoughts" class="border-style-none color-39297F">
+            <ion-label>{{"Unassigned Thoughts" | translate}}</ion-label>
           </ion-segment-button>
-          <ion-segment-button value="projects">
-            <ion-label class="font-size-18px">{{"Projects" | translate}}</ion-label>
+          <ion-segment-button value="projects" class="border-style-none color-39297F">
+            <ion-label>{{"Projects" | translate}}</ion-label>
           </ion-segment-button>
         </ion-segment>
       </ion-row>
@@ -1056,7 +1056,7 @@
   <!-- Mobile CalendarPage -->
   <div class="height-100-minus-95px width-100 overflow-scroll no-scrollbar" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-grid class="width-90 height-100">
-      <ion-row class="width-100 text-align-right height-25px margin-bottom-20">
+      <ion-row class="width-100 text-align-right margin-bottom-20">
         <ion-segment (ionChange)="changeCalendarMode($event)" value="{{calendar.mode}}" class="background-EDF2FF border-radius-35px height-45px padding-5">
           <ion-segment-button value="month" class="border-style-none color-39297F">
             <ion-label>{{"Month" | translate}}</ion-label>
