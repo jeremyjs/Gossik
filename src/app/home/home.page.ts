@@ -1712,7 +1712,7 @@ export class HomePage {
 					goalid: ''
 				}
 				if(this.captureProject.key == 'unassigned') {
-					eventData.color = "#C0C0C0";
+					eventData.color = "#EDF2FF";
 					eventData.goalid = '';
 				} else {
 					eventData.color = this.captureProject.color;
@@ -1801,7 +1801,7 @@ export class HomePage {
 				let deadlineStartTime = new Date (action.deadline).setHours(2);
 				let deadlineEndTime = new Date (action.deadline).setHours(5);
 				if(!this.captureProject.color) {
-					this.captureProject.color = "#C0C0C0";
+					this.captureProject.color = "#EDF2FF";
 				}
 				let eventData: CalendarEvent = {
 					userid: this.auth.userid,
@@ -1877,7 +1877,7 @@ export class HomePage {
 					goalid: ''
 				}
 				if(this.captureProject.key == 'unassigned') {
-					eventData.color = "#C0C0C0";
+					eventData.color = "#EDF2FF";
 					eventData.goalid = '';
 				} else {
 					eventData.color = this.captureProject.color;
@@ -2360,14 +2360,14 @@ export class HomePage {
 					eventData.allDay = false;
 					eventData.active = true;
 					if(!data.data.goalid) {
-						eventData.color = "#C0C0C0";
+						eventData.color = "#EDF2FF";
 						eventData.goalid = '';
 					} else {
 					    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
 					    if(goal) {
 					    	eventData.color = goal.color;
 						} else {
-							eventData.color = "#C0C0C0";
+							eventData.color = "#EDF2FF";
 						}
 						let dates = [new Date(eventData.startTime)];
 						let minute = 0;
@@ -2450,14 +2450,14 @@ export class HomePage {
 			calendarEvent.active = true;
 		}
 		if(!calendarEvent.goalid) {
-			calendarEvent.color = "#C0C0C0";
+			calendarEvent.color = "#EDF2FF";
 			calendarEvent.goalid = '';
 		} else {
 			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
 			if(goal) {
 				calendarEvent.color = goal.color;
 			} else {
-				calendarEvent.color = "#C0C0C0";
+				calendarEvent.color = "#EDF2FF";
 			}
 			let dates = [new Date(calendarEvent.startTime)];
 			let minute = 0;
@@ -2519,14 +2519,14 @@ export class HomePage {
 			modal.onDidDismiss().then(data => {
 				if(data.data) {
 					if(!data.data.goalid) {
-						data.data.color = "#C0C0C0";
+						data.data.color = "#EDF2FF";
 						data.data.goalid = '';
 					} else {
 					    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
 					    if(goal) {
 					    	data.data.color = goal.color;
 						} else {
-							data.data.color = "#C0C0C0";
+							data.data.color = "#EDF2FF";
 						}
 					}
 					let calendarEventkey = data.data.key;
@@ -2638,14 +2638,14 @@ export class HomePage {
 							eventData.allDay = false;
 							eventData.active = true;
 							if(!data.data.goalid) {
-								eventData.color = "#C0C0C0";
+								eventData.color = "#EDF2FF";
 								eventData.goalid = '';
 							} else {
 							    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
 							    if(goal) {
 							    	eventData.color = goal.color;
 								} else {
-									eventData.color = "#C0C0C0";
+									eventData.color = "#EDF2FF";
 								}
 								let dates = [new Date(eventData.startTime)];
 								let minute = 0;
