@@ -993,8 +993,12 @@ export class HomePage {
 			this.db.initiateAssistant(this.auth.userid);
 		}
 		this.pageTitle = "Assistant";
-		this.changePage('AssistantPage');
-    }
+		this.changePage('AssistantPage', 'today');
+	}
+	
+	switchAssistantTab(event) {
+		this.pageCtrl = event.detail.value;
+	}
 
     assignAssistant(assistant?: string) {
 		if(this.userProfile.subscription == 'assistantFeature' && !this.userProfile.subscriptionPaid) {

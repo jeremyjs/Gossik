@@ -288,34 +288,67 @@
   </div>
 
   <!-- Mobile AssistantPage -->
-  <div class="height-100-minus-95px overflow-scroll no-scrollbar margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
-    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden font-size-20px font-weight-bold">
-      {{"Appointments & Meetings" | translate}}
+  <div class="height-100-minus-95px width-90 margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
+    <ion-row class="width-100 text-align-right margin-bottom-20 margin-horizontal-auto">
+      <ion-segment (ionChange)="switchAssistantTab($event)" value="today" mode="ios" class="background-EDF2FF border-radius-35px height-45px padding-5">
+        <ion-segment-button  value="today" class="border-style-none color-39297F">
+          <ion-label>{{"Today" | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="statistics" class="border-style-none color-39297F">
+          <ion-label>{{"Statistics" | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="suggestions" class="border-style-none color-39297F">
+          <ion-label>{{"Suggestions" | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
     </ion-row>
-    <ion-row class="width-90 padding-8-0-8-8 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let calendarEvent of calendarEventsToday">
-      <ion-col class="text-align-left overflow-x-hidden flex no-padding">
-        <button  class="transparent text-align-left no-padding" (click)="onEventSelected(calendarEvent)">
-          <span class="font-size-16px">
-            {{calendarEvent.startTimeString}} {{calendarEvent.title}}
-          </span>
-        </button>
-      </ion-col>
-    </ion-row>
-    <ion-row class="width-90 padding-8-0-8-0 margin-auto one-line overflow-x-hidden font-size-20px font-weight-bold">
-      {{"Critical Tasks" | translate}}
-    </ion-row>
-    <ion-row>TBD</ion-row>
+    <div *ngIf="pageCtrl == 'today'" class="margin-top-25 height-100-minus-45px overflow-scroll no-scrollbar">
+      <ion-row>
+        <ion-col size="4" class="no-padding flex">
+          <img src="../../assets/icon/purple/robot_circle.svg" height="80">
+        </ion-col>
+        <ion-col size="8" class="no-padding flex">
+          <div class="border-radius-15px background-EDF2FF padding-20 width-100">
+            <span class="font-size-18px color-39297F margin-auto">Hello this is a placeholder text for now.</span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="font-size-18px margin-top-25 color-39297F font-weight-bold">
+        {{"Appointments & Meetings" | translate}}
+      </ion-row>
+      <ion-row class="margin-top-20 padding-15 background-F6F7FB seperating-border-bottom border-radius-15px" *ngFor="let calendarEvent of calendarEventsToday">
+          <button  class="transparent text-align-left no-padding" (click)="onEventSelected(calendarEvent)">
+            <span class="font-size-18px color-39297F">
+              {{calendarEvent.startTimeString}} {{calendarEvent.title}}
+            </span>
+          </button>
+      </ion-row>
+      <ion-row class="font-size-18px margin-top-25 color-39297F font-weight-bold">
+        {{"Critical Tasks" | translate}}
+      </ion-row>
+      <ion-row class="margin-top-20 padding-15 background-F6F7FB seperating-border-bottom border-radius-15px">
+        <span class="font-size-18px color-39297F">
+         TBD
+        </span>
+      </ion-row>
+    </div>
+    <div *ngIf="pageCtrl == 'statistics'" class="margin-top-25 height-100-minus-45px overflow-scroll no-scrollbar">
+      <div class="border-radius-15px background-EDF2FF padding-20 width-100">
+        <ion-row class="font-size-18px color-39297F margin-auto display-block width-100 text-align-center">Hello this is a placeholder text for now.</ion-row>
+        <ion-row>
+          <img src="../../assets/icon/purple/empty_state_assistant.svg" height="250" class="margin-horizontal-auto">
+        </ion-row>
+      </div>
+    </div>
+    <div *ngIf="pageCtrl == 'suggestions'" class="margin-top-25 height-100-minus-45px overflow-scroll no-scrollbar">
+      <div class="border-radius-15px background-EDF2FF padding-20 width-100">
+        <ion-row class="font-size-18px color-39297F margin-auto display-block width-100 text-align-center">Hello this is a placeholder text for now.</ion-row>
+        <ion-row>
+          <img src="../../assets/icon/purple/empty_state_assistant.svg" height="250" class="margin-horizontal-auto">
+        </ion-row>
+      </div>
+    </div>
     <!--
-    <ion-row class="width-90 padding-8-0-8-8 margin-auto one-line overflow-x-hidden seperating-border-bottom" *ngFor="let calendarEvent of calendarEventsToday">
-      <ion-col class="text-align-left overflow-x-hidden flex no-padding">
-        <button  class="transparent text-align-left no-padding" (click)="onEventSelected(calendarEvent)">
-          <span class="font-size-16px">
-            {{calendarEvent.startTimeString}} {{calendarEvent.title}}
-          </span>
-        </button>
-      </ion-col>
-    </ion-row>
-    -->
     <ion-row class="margin-auto margin-top-20 width-90">
       <ion-radio-group class="font-gray font-size-20px display-block width-100" [(ngModel)]="assistant" (ionChange)="assignAssistant()">
         <ion-row>
@@ -412,6 +445,7 @@
                 allDayLabel="{{'Deadlines' | translate }}">
       </calendar>
     </ion-row>
+  -->
   </div>
 
   <!-- FeedbackPage -->
