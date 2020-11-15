@@ -190,7 +190,7 @@ ion-button {
 }
 
 .header-background {
-  --background: url('/assets/imgs/header_background.svg') center center/100% 100% no-repeat;
+  --background: url('/assets/imgs/header_background.svg') center center/100% 110% no-repeat;
 }
 
 .header-ios ion-toolbar:last-child {
@@ -1556,7 +1556,7 @@ ion-backdrop {
 
 .popover-add-thought .popover-content {
   top: auto !important;
-  bottom: 15px !important;
+  bottom: 0px !important;
   left: 0px !important;
   --width: 100%;
   --height: auto !important;
