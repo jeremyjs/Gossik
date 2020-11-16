@@ -29,23 +29,12 @@
   padding: auto !important;
 }
 
-
-ion-item {
-   border-radius: 5px;
-   margin-bottom: 1px !important;
-   background-color: var(--ion-color-secondary);
-}
-
 p::first-letter, button::first-letter, ion-col::first-letter {
   text-transform: capitalize !important;
 }
 
 .show-full-highlight-0 {
   --show-full-highlight: 0;
-}
-
-.sc-ion-modal-ios-h {
-  --background: rgb(0,0,0) !important;
 }
 
 .noAllDay .weekview-allday-table{
@@ -320,7 +309,7 @@ ion-button {
 }
 
 ion-item {
-        white-space: pre-line;
+    white-space: pre-line;
 }
 
 .content-container {
@@ -694,8 +683,8 @@ ion-input {
 }
 
 .color-39297F {
-  color: #39297F;
-  --color: #39297F;
+  color: #39297F !important;
+  --color: #39297F !important;
 }
 
 .color-22194D {

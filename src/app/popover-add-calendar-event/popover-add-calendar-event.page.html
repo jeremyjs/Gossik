@@ -5,37 +5,54 @@
         {{"Cancel" | translate}}
       </button>
     </ion-col>
-    <ion-col size="6" class="text-align-center font-size-17px">
+    <ion-col *ngIf="type != 'show'" size="6" class="text-align-center font-size-17px">
       {{"Add Calendar Event" | translate}}
     </ion-col>
+    <ion-col *ngIf="type == 'show'" size="6" class="text-align-center font-size-17px">
+      {{"Calendar Event" | translate}}
+    </ion-col>
     <ion-col size="3" class="text-align-right">
-      <button class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
+      <button *ngIf="type != 'show' || (type == 'show' && changed && !calendarEvent.native)" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
         {{"Save" | translate}}
       </button>
     </ion-col>
   </ion-row>
   <ion-row class="margin-bottom-10">
     <div class="width-90 border-6049C4-50per border-radius-15px margin-top-10-auto flex">
-      <ion-input [(ngModel)]="calendarEvent.title" placeholder="{{'Calendar event' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left color-22194D"></ion-input>
+      <ion-input (ionInput)="change()" [(ngModel)]="calendarEvent.title" placeholder="{{'Calendar event' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left color-22194D"></ion-input>
     </div>
   </ion-row>
   <ion-row>
     <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5">
-      <ion-datetime max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.startTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
+      <ion-datetime (ionChange)="change()" max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.startTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
     </div>
   </ion-row>
   <ion-row>
     <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5">
-      <ion-datetime max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.endTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
+      <ion-datetime (ionChange)="change()" max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.endTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
     </div>
   </ion-row>
-  <ion-row class="margin-bottom-10">
+  <ion-row *ngIf="type != 'show'" class="margin-bottom-10">
     <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
       <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
       <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="calendarEvent.goalid" (click)="openPicker('project')">
         {{goalDict[calendarEvent.goalid].name}}
       </span>
       <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="!calendarEvent.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
+    </div>
+  </ion-row>
+  <ion-row *ngIf="type == 'show'">
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
+      <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
+      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="calendarEvent.goalid" (click)="openPicker('project')">
+        {{goalDict[calendarEvent.goalid].name}}
+      </span>
+      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="!calendarEvent.goalid" (click)="openPicker('project')">{{"Project" | translate}}</span>
+    </div>
+  </ion-row>
+  <ion-row *ngIf="type == 'show'" class="margin-bottom-10">
+    <div class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
+      <button class="font-size-20px transparent font-red border-1px-red border-radius-20px" (click)="delete()">{{"Delete" | translate}}</button>
     </div>
   </ion-row>
   </ion-content>

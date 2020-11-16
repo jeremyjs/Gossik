@@ -801,9 +801,10 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'addCalendarEvent') {
+			let componentProps: any = {'goalDict': this.goalDict};
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddCalendarEventPage,
-			componentProps: {'goalDict': this.goalDict},
+			componentProps: componentProps,
 			cssClass: 'popover-add-calendar-event'
 			});
 			await popover.present();
@@ -884,6 +885,26 @@ export class HomePage {
 					this.chosenGoalArray = data.data.chosenGoalArray;
 					this.chosenAttributeArray = data.data.chosenAttributeArray;
 					this.showDoableActions();
+				}
+			});
+		} else if(name == 'showCalendarEvent') {
+			let componentProps: any = {'goalDict': this.goalDict};
+			if(params) {
+				componentProps['calendarEvent'] = params;
+			}
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddCalendarEventPage,
+			componentProps: componentProps,
+			cssClass: 'popover-add-calendar-event'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					if(data.data == 'delete') {
+						this.deleteCalendarEvent(params);
+					} else {
+						this.editCalendarEvent(data.data);
+					}
 				}
 			});
 		}
@@ -2534,50 +2555,57 @@ export class HomePage {
 	}
 
 	editCalendarEvent(calendarEvent) {
-		let modal = this.modalCtrl.create({
-			component: CalendarEventModalPage,
-			componentProps: {calendarEvent: calendarEvent}
-		}).then( modal => {
-			modal.present();
-			modal.onDidDismiss().then(data => {
-				if(data.data) {
-					if(!data.data.goalid) {
-						data.data.color = "#EDF2FF";
-						data.data.goalid = '';
-					} else {
-					    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
-					    if(goal) {
-					    	data.data.color = goal.color;
-						} else {
-							data.data.color = "#EDF2FF";
-						}
-					}
-					let calendarEventkey = data.data.key;
-					this.db.editCalendarEvent(data.data, this.auth.userid)
-					data.data.key = calendarEventkey;
-					if(data.data.actionid) {
-						this.db.getActionFromActionid(data.data.actionid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( action => {
-							action.key = data.data.actionid;
-							action.deadline = data.data.startTime.toISOString();
-							this.db.editAction(action, this.auth.userid);
-						})
-					}
-					if(data.data.delegationid) {
-						this.db.getDelegationFromDelegationid(data.data.delegationid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( delegation => {
-							delegation.key = data.data.delegationid;
-							delegation.deadline = data.data.startTime.toISOString();
-							this.db.editDelegation(delegation, this.auth.userid);
-						})
-					}
-					data.data.startTime = new Date(data.data.startTime);
-			        data.data.endTime = new Date(data.data.endTime);
+		if(!calendarEvent.goalid) {
+			calendarEvent.color = "#EDF2FF";
+			calendarEvent.goalid = '';
+		} else {
+			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
+			if(goal) {
+				calendarEvent.color = goal.color;
+			} else {
+				calendarEvent.color = "#EDF2FF";
+			}
+		}
+		let calendarEventkey = calendarEvent.key;
+		this.db.editCalendarEvent(calendarEvent, this.auth.userid);
+		calendarEvent.key = calendarEventkey;
+		if(calendarEvent.actionid) {
+			this.db.getActionFromActionid(calendarEvent.actionid, this.auth.userid).valueChanges().pipe(take(1)).subscribe( action => {
+				action.key = calendarEvent.actionid;
+				action.deadline = calendarEvent.startTime.toISOString();
+				this.db.editAction(action, this.auth.userid);
+			})
+		}
+		calendarEvent.startTime = new Date(calendarEvent.startTime);
+		calendarEvent.endTime = new Date(calendarEvent.endTime);
+	}
+
+	deleteCalendarEvent(event: CalendarEvent) {
+		this.translate.get(["Event deleted"]).subscribe( translation => {
+			this.presentToast(translation["Event deleted"]);
+		});
+		this.db.deleteCalendarEvent(event.key, this.auth.userid);
+		if(event.event_id && this.platform.is('cordova')) {
+			this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
+				if(hasReadWritePermission) {
+					this.nativeCalendar.deleteEvent(event.event_id);
 				}
 			});
+		}
+		let events = this.eventSource;
+		let index = events.indexOf(event);
+		events.splice(index,1);
+		let calendarEventsIndex = this.calendarEvents.indexOf(event);
+		this.calendarEvents.splice(calendarEventsIndex,1);
+		this.eventSource = [];
+		setTimeout(() => {
+			this.eventSource = events;
 		});
-
 	}
 
 	onEventSelected(event, origin?: string){
+		this.presentPopover('showCalendarEvent', event);
+		/*
 		let goal = '';
 		let time = '';
 		this.translate.get(["Goal", "Time", "Ok", "Delete", "Edit"]).subscribe( alertMessage => {
@@ -2643,6 +2671,7 @@ export class HomePage {
 				alert.present();
 			});
 		});
+		*/
 	}
 
 	onTimeSelected(event) {

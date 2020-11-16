@@ -1,11 +1,11 @@
 <ion-header>
-	<ion-toolbar color="secondary">
+	<ion-toolbar>
 		<button class="icon-only-button margin-right-20" (click)="cancel()">
-	      <img src="../../assets/icon/icon_arrow_left.png" height="30" class="margin-left-10">
+	      <img src="../../assets/icon/purple/icon_arrow_left.svg" height="30" class="margin-left-10">
 	    </button>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content color="secondary">
-<ionic-calendar-date-picker [backgroundStyle]="{ 'background-color': '#000000' }" class="background-black" [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="dateSelected($event)"></ionic-calendar-date-picker>
+<ion-content>
+<ionic-calendar-date-picker class="color-39297F" [monthLabels]="monthLabels" [dayLabels]="dayLabels" (onSelect)="dateSelected($event)"></ionic-calendar-date-picker>
 </ion-content>

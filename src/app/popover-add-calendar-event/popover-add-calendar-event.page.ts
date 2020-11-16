@@ -13,6 +13,8 @@ export class PopoverAddCalendarEventPage implements OnInit {
 
   calendarEvent = { startTime: new Date().toISOString(), endTime: new Date().toISOString()} as CalendarEvent;
   goalDict: any;
+  type: any;
+  changed: boolean = false;
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -21,9 +23,19 @@ export class PopoverAddCalendarEventPage implements OnInit {
     public navParams: NavParams
   ) { 
     this.goalDict = this.navParams.get('goalDict');
+    if(this.navParams.get('calendarEvent')) {
+      this.calendarEvent = this.navParams.get('calendarEvent');
+      this.calendarEvent.startTime = this.calendarEvent.startTime.toISOString();
+      this.calendarEvent.endTime = this.calendarEvent.endTime.toISOString();
+      this.type = 'show';
+    }
   }
 
   ngOnInit() {
+  }
+
+  change() {
+    this.changed = true;
   }
 
   cancel() {
@@ -34,7 +46,12 @@ export class PopoverAddCalendarEventPage implements OnInit {
     this.popoverCtrl.dismiss(this.calendarEvent);
   }
 
+  delete() {
+    this.popoverCtrl.dismiss('delete');
+  }
+
   openPicker(pickerName) {
+    this.change();
     this.translate.get(["Done", "Cancel"]).subscribe( translation => {
       let columnNames = [];
       let columnOptions = [[]];
