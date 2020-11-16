@@ -94,6 +94,10 @@ const routes: Routes = [
     path: 'popover-filter-to-dos',
     loadChildren: () => import('./popover-filter-to-dos/popover-filter-to-dos.module').then( m => m.PopoverFilterToDosPageModule)
   },
+  {
+    path: 'popover-interaction',
+    loadChildren: () => import('./popover-interaction/popover-interaction.module').then( m => m.PopoverInteractionPageModule)
+  },
 
 
 ];

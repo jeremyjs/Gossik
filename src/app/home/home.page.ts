@@ -46,6 +46,7 @@ import * as moment from 'moment';
 import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy.page';
 import { PopoverFilterToDosPage } from '../popover-filter-to-dos/popover-filter-to-dos.page';
+import { PopoverInteractionPage } from '../popover-interaction/popover-interaction.page';
 
 @Component({
   selector: 'app-home',
@@ -179,12 +180,6 @@ export class HomePage {
 	todoview: string = 'list';
 	showNavigationBar: boolean = true;
 	showOptionals: boolean;
-	showInfoThoughts: boolean = false;
-	showInfoOverview: boolean = false;
-	showInfoProjectOverview: boolean = false;
-	showInfoDo: boolean = false;
-	showInfoFocus: boolean = false;
-	showInfoCalendar: boolean = false;
 	showTutorialAlert: boolean = true;
 	showTutorialTypeActionAlert: boolean = true;
 	showTutorialTypeThoughtAlert: boolean = true;
@@ -564,6 +559,15 @@ export class HomePage {
 		}
 	}
 
+	showInfo(info:string) {
+		if(info == 'smartAssistant') {
+			let text = "I will consider all your deadlines, tasks, projects, and even your behavior and workflow routines to prioritize your to-dos for you. With this, I can show you the tasks that are relevant right now for you and you don’t waste time looking at your complete to-do list.";
+			let buttons = ['Close'];
+			let title = "What is the Smart Assistant?";
+			this.presentPopover('showInteraction', [text, buttons, title]);
+		}
+	}
+
 	ngOnInit() {
   		this.auth.afAuth.authState
 		.subscribe(
@@ -910,6 +914,23 @@ export class HomePage {
 					}
 				}
 			});
+		} else if(name == 'showInteraction') {
+			let componentProps: any = {
+				'text': params[0],
+				'buttons': params[1],
+				'title': params[2]
+			};
+			const popover = await this.popoverCtrl.create({
+			component: PopoverInteractionPage,
+			componentProps: componentProps,
+			cssClass: 'popover-interaction'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					//console.log(data.data);
+				}
+			});
 		}
 	}
 
@@ -998,27 +1019,6 @@ export class HomePage {
     	this.pageTitle = "Feedback";
     	this.changePage('FeedbackPage');
     }
-
-    goToInfoPage() {
-    	this.pageTitle = "Info";
-    	this.changePage('InfoPage');
-    }
-
-    changeShowInfo(info) {
-    	if(info == 'Thoughts') {
-    		this.showInfoThoughts = !this.showInfoThoughts;
-    	} else if(info == 'Overview') {
-    		this.showInfoOverview = !this.showInfoOverview;
-    	} else if(info == 'ProjectOverview') {
-    		this.showInfoProjectOverview = !this.showInfoProjectOverview;
-    	} else if(info == 'Do') {
-    		this.showInfoDo = !this.showInfoDo;
-    	} else if(info == 'Focus') {
-    		this.showInfoFocus = !this.showInfoFocus;
-    	} else if(info == 'Calendar') {
-    		this.showInfoCalendar = !this.showInfoCalendar;
-    	}
-	}
 	
 	goToThemesPage() {
 		if(this.userProfile.subscription != 'themesFeature' || this.userProfile.subscription == 'themesFeature' && this.userProfile.subscriptionPaid) {

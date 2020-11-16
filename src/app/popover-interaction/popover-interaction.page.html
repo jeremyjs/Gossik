@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-row class="margin-top-35 color-39297F">
+    <ion-col class="text-align-center font-size-17px">
+      {{title | translate}}
+    </ion-col>
+  </ion-row>
+  <ion-row class="margin-top-20 width-95 margin-horizontal-auto">
+    <img src="../../assets/icon/purple/robot_circle.svg" height="80">
+    <span class="margin-left-15 width-100-minus-100px background-EDF2FF border-radius-15px color-39297F padding-20 margin-bottom-20 max-height-250px overflow-scroll no-scrollbar">{{text | translate}}</span>
+  </ion-row>
+  <ion-row class="height-98px background-EDF2FF margin-top-20">
+    <span class="margin-auto" *ngFor="let button of buttons">
+      <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="clickButton(button)">{{button | translate}}</button>
+    </span>
+  </ion-row>
+</ion-content>

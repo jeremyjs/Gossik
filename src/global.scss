@@ -1341,6 +1341,10 @@ p {
   width: calc(100% - 45px);
 }
 
+.width-100-minus-100px {
+  width: calc(100% - 100px);
+}
+
 .max-height-30px {
   max-height: 30px;
 }
@@ -1597,6 +1601,15 @@ ion-backdrop {
   bottom: 15px !important;
   left: 10px !important;
   --width: calc(100% - 20px);
+  --height: auto !important;
+  overflow: hidden !important;
+}
+
+.popover-interaction .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
   --height: auto !important;
   overflow: hidden !important;
 }
