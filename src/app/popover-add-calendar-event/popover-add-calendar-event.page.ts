@@ -23,6 +23,10 @@ export class PopoverAddCalendarEventPage implements OnInit {
     public navParams: NavParams
   ) { 
     this.goalDict = this.navParams.get('goalDict');
+    if(this.navParams.get('startTime')) {
+      this.calendarEvent.startTime = this.navParams.get('startTime').toISOString();
+      this.calendarEvent.endTime = this.navParams.get('startTime').toISOString();
+    }
     if(this.navParams.get('calendarEvent')) {
       this.calendarEvent = this.navParams.get('calendarEvent');
       this.calendarEvent.startTime = this.calendarEvent.startTime.toISOString();

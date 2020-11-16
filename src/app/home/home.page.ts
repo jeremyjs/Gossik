@@ -802,6 +802,9 @@ export class HomePage {
 			});
 		} else if(name == 'addCalendarEvent') {
 			let componentProps: any = {'goalDict': this.goalDict};
+			if(params) {
+				componentProps['startTime'] = params;
+			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddCalendarEventPage,
 			componentProps: componentProps,
@@ -2608,96 +2611,16 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
+		console.log(event);
 		this.selectedDay = event.selectedTime;
 		if(this.calendar.mode == 'day' || this.calendar.mode == 'week') {
 			if(event.events == undefined || event.events.length == 0) {
-				let modal = this.modalCtrl.create({
-					component: CalendarEventModalPage,
-					componentProps: {selectedDay: this.selectedDay}
-				}).then (modal => {
-					modal.present();
-					modal.onDidDismiss().then(data => {
-						if(data.data){
-							let eventData: CalendarEvent = data.data;
-							eventData.userid = this.auth.userid;
-							eventData.allDay = false;
-							eventData.active = true;
-							if(!data.data.goalid) {
-								eventData.color = "#EDF2FF";
-								eventData.goalid = '';
-							} else {
-							    let goal = this.goalArray.find(goal => goal.key == data.data.goalid);
-							    if(goal) {
-							    	eventData.color = goal.color;
-								} else {
-									eventData.color = "#EDF2FF";
-								}
-								let dates = [new Date(eventData.startTime)];
-								let minute = 0;
-								let hourUpdated = new Date(eventData.startTime).getHours();
-								while(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getTime() <= new Date(eventData.endTime).getTime()) {
-									if(new Date(new Date(eventData.startTime).getTime() + minute*60*1000).getHours() != hourUpdated) {
-										dates.push(new Date(new Date(eventData.startTime).getTime() + minute*60*1000));
-										hourUpdated++;
-									}
-									minute++;
-								}
-								this.db.learnLearnedSchedule(this.auth.userid, [eventData.goalid], dates, 1);
-							}
-							if(this.platform.is('cordova')) {
-								this.nativeCalendar.hasReadWritePermission().then( hasReadWritePermission => {
-									if(hasReadWritePermission) {
-										this.nativeCalendar.addEvent(eventData.title, eventData.eventLocation, eventData.startTime, eventData.endTime).then( event_id => {
-											eventData.event_id = event_id;
-											this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-												eventData.key = event.key;
-											});
-											eventData.startTime = new Date(eventData.startTime);
-									        eventData.endTime = new Date(eventData.endTime);
-											let events = this.eventSource;
-											events.push(eventData);
-											this.eventSource = [];
-											setTimeout(() => {
-												this.eventSource = events;
-											});
-										});
-									} else {
-										this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-											eventData.key = event.key;
-										});
-										eventData.startTime = new Date(eventData.startTime);
-								        eventData.endTime = new Date(eventData.endTime);
-										let events = this.eventSource;
-										events.push(eventData);
-										this.eventSource = [];
-										setTimeout(() => {
-											this.eventSource = events;
-										});
-									}
-								});
-							} else {
-								this.db.addCalendarEvent(eventData, this.auth.userid).then( event => {
-									eventData.key = event.key;
-								});
-								eventData.startTime = new Date(eventData.startTime);
-						        eventData.endTime = new Date(eventData.endTime);
-								let events = this.eventSource;
-								events.push(eventData);
-								this.eventSource = [];
-								setTimeout(() => {
-									this.eventSource = events;
-								});
-							}
-						}
-					});
-				});
+				this.presentPopover('addCalendarEvent', event.selectedTime);
 			}
 		}
 	}
 
 	changeCalendarMode(event) {
-		console.log(this.eventSource);
-		console.log(this.calendar);
 		let calendarMode = event.detail.value;
 		if(calendarMode == 'month') {
 			this.selectedDay = this.calendar.currentDate;
