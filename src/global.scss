@@ -1268,6 +1268,10 @@ p {
   border-style: none;
 }
 
+.border-50per {
+  border: 0.5px solid #EDF2FF;
+}
+
 .seperating-border-bottom {
   border-bottom: 0.5px solid #CBD2D9;
 }
@@ -1548,7 +1552,7 @@ ion-backdrop {
   --width: calc(100% - 30px);
   --height: auto !important;
   overflow: hidden !important;
-  border-radius: 100px 100px 40px 40px;
+  border-radius: 50% 50% 40px 40px;
 }
 
 .popover-add-thought .popover-content {

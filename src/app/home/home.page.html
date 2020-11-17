@@ -1250,8 +1250,8 @@
   </div>
 
   <!-- Mobile Navigation Footer -->
-  <div class="width-90 height-80px margin-bottom-15 margin-horizontal-auto border-radius-15px" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'CapturePage' && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
-    <ion-row class="width-100 height-100">
+  <div class="width-90 height-80px margin-bottom-15 margin-horizontal-auto flex" *ngIf="loggedin && isApp && viewpoint != 'InitPage' && userProfile && viewpoint != 'CapturePage' && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
+    <ion-row class="width-100 height-90 margin-vertical-auto border-radius-15px border-50per navigation-bar">
       <ion-col class="no-padding">
         <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
           <ion-row>
