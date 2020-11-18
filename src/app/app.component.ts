@@ -7,6 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from './services/authentication.service';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { DatabaseService } from './services/database.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
 
   loggedin: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private platform: Platform,
@@ -23,7 +26,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private translate: TranslateService,
     private router: Router,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private db: DatabaseService
   ) {
     this.initializeApp();
   }
@@ -44,6 +48,11 @@ export class AppComponent {
         user => {
           if (user) {
             this.loggedin = true;
+            this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( (userProfile: any) => {
+              if(userProfile.isAdmin) {
+                this.isAdmin = userProfile.isAdmin;
+              }
+            });
           }
       });
     });

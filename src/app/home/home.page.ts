@@ -532,20 +532,16 @@ export class HomePage {
 	changePageViaMenu() {
 		let page = this.activatedRoute.snapshot.paramMap.get('page');
 		if(page) {
-			if(page == 'capture') {
-				this.goToCapturePage();
-			} else if(page == 'todo') {
-				this.goToToDoPage();
-			} else if(page == 'projects') {
-				this.goToProjectsPage();
-			} else if(page == 'calendar') {
-				this.goToCalendarPage();
-			} else if(page == 'settings') {
+			if(page == 'settings') {
 				this.goToSettingsPage();
 			} else if(page == 'privacy-policy') {
 				this.goToPrivacyPolicyPage();
 			} else if(page == 'logout') {
 				this.logout();
+			} else if(page == 'give-feedback') {
+				this.goToFeedbackPage();
+			} else if(page == 'show-feedback') {
+				this.goToShowFeedbackPage();
 			}
 		} else {
 			this.goToToDoPage();

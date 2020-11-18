@@ -105,38 +105,13 @@
   </div>
 
 
-  <!-- SettingsPage -->
-  <div class="margin-top-10 width-90 padding-10 height-100-minus-95px" *ngIf="viewpoint == 'SettingsPage'">
+  <!-- Mobile SettingsPage -->
+  <div class="margin-top-10 width-90 padding-10 height-100-minus-95px" *ngIf="viewpoint == 'SettingsPage' && isApp">
     <ion-grid>
-      <ion-row>
-        <button class="font-size-20px margin-top-10" (click)="logout()">{{"Logout" | translate}}</button>
-      </ion-row>
-      <ion-row>
-        <button class="font-size-20px margin-top-10" (click)="goToFeedbackPage()">
-          {{"Give feedback" | translate }}
-        </button>
-      </ion-row>
-      <ion-row>
-        <button class="font-size-20px margin-top-10" (click)="goToPrivacyPolicyPage()">
-          {{"Privacy Policy" | translate }}
-        </button>
-      </ion-row>
-      <ion-row>
-        <button class="font-size-20px margin-top-10" (click)="goToShowFeedbackPage()" *ngIf="isAdmin">
-          {{"Show Feedback" | translate }}
-        </button>
-      </ion-row>
       <ion-row>
         <button class="font-size-20px margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
           {{"Send Push" | translate }}
         </button>
-      </ion-row>
-      <ion-row>
-        <button class="font-size-20px margin-top-10" (click)="goToInfoPage()">{{"Info" | translate}}</button>
-      </ion-row>
-      <ion-row>
-        <button *ngIf="userProfile.tutorial.assistant" class="font-size-20px margin-top-10 green" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
-        <button *ngIf="!userProfile.tutorial.assistant" class="font-size-20px margin-top-10" (click)="goToAssistantPage()">{{"Assistant" | translate}}</button>
       </ion-row>
       <ion-row>
         <button *ngIf="userProfile.subscription == 'themesFeature'" class="font-size-20px margin-top-10" (click)="goToThemesPage()">{{"Themes" | translate}}</button>

@@ -20,15 +20,21 @@
 				<ion-row>
 					<span class="margin-auto font-size-32px color-FFFFFF">Gossik</span>
 				</ion-row>
-				<ion-list class="transparent margin-top-50 margin-left-10">
-					<ion-menu-toggle>
-						<span (click)="goToPage('home/settings')" class="transparent margin-top-50 font-size-32px color-FFFFFF width-100 display-block">{{"Settings" | translate}}</span>
+				<ion-list class="transparent margin-top-20 margin-left-10">
+					<ion-menu-toggle *ngIf="loggedin">
+						<span (click)="goToPage('home/settings')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Settings" | translate}}</span>
+					</ion-menu-toggle>
+					<ion-menu-toggle *ngIf="loggedin">
+						<span (click)="goToPage('home/give-feedback')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Give Feedback" | translate}}</span>
+					</ion-menu-toggle>
+					<ion-menu-toggle *ngIf="loggedin && isAdmin">
+						<span (click)="goToPage('home/show-feedback')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Show Feedback" | translate}}</span>
 					</ion-menu-toggle>
 					<ion-menu-toggle>
-						<span (click)="goToPage('home/privacy-policy')" class="transparent margin-top-50 font-size-32px color-FFFFFF width-100 display-block">{{"Privacy Policy" | translate}}</span>
+						<span (click)="goToPage('home/privacy-policy')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Privacy Policy" | translate}}</span>
 					</ion-menu-toggle>
-					<ion-menu-toggle>
-						<span (click)="goToPage('home/logout')" class="transparent margin-top-50 font-size-32px color-FFFFFF width-100 display-block">{{"Log Out" | translate}}</span>
+					<ion-menu-toggle *ngIf="loggedin">
+						<span (click)="goToPage('home/logout')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Log Out" | translate}}</span>
 					</ion-menu-toggle>
 				</ion-list>
 				<img src="../assets/icon/purple/robot_menu.svg" height="300" class="bottom-0 right-0 position-absolute">
