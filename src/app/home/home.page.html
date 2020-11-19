@@ -444,13 +444,15 @@
   </div>
 
   <!-- FeedbackPage -->
-  <div class="margin-top-10 padding-10     text-align-center height-100-minus-95px" *ngIf="viewpoint == 'FeedbackPage'">
+  <div class="margin-top-10 padding-10 width-100 text-align-center height-100-minus-95px" *ngIf="viewpoint == 'FeedbackPage'">
     <ion-grid>
       <ion-row>
-        <ion-textarea class="feedback   border-bottom-1" rows="3" autoGrow="true" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}..."></ion-textarea>
+        <div class="width-90 border-6049C4-50per border-radius-15px margin-top-20-auto flex">
+          <ion-textarea [(ngModel)]="feedback" placeholder="{{'Input feedback'| translate}}" class="display-inline-block width-100-minus-26 margin-left-10 text-align-left color-39297F"></ion-textarea>
+        </div>
       </ion-row>
-      <ion-row>
-        <button class="button-design font-size-20px margin-auto margin-top-10" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
+      <ion-row class="flex margin-top-20">
+        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto" (click)="sendFeedback(feedback)">{{"Send feedback" | translate}}</button>
       </ion-row>
     </ion-grid>
   </div>
