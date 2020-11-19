@@ -190,6 +190,7 @@ export class HomePage {
 	smartAssistantToggle: boolean;
 	calendarEventsToday: CalendarEvent[] = [];
 	elapsedTime: number;
+	gotActions: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -405,6 +406,7 @@ export class HomePage {
 		this.nextActionList.subscribe( actionArray => {
 			this.actionArray = actionArray;
 			this.actions = {};
+			console.log('for loop start');
 			for(let action of actionArray) {
 				if(action.active != false) {
 					if(this.actions[action.goalid]) {
@@ -414,6 +416,8 @@ export class HomePage {
 					}
 				}
 			}
+			this.gotActions = true;
+			console.log('for loop finish');
 		});
 	}
 
@@ -2671,21 +2675,17 @@ export class HomePage {
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
-			if(this.userProfile.tutorial.fivetodos) {
-				this.showTutorial('fivetodos');
-				this.goToInitPage();
+			this.duration = 0;
+			if(this.startedAction.key) {
+				this.pageTitle = "Focus";
+				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
+				this.changePage('ActionPage');
 			} else {
-				this.duration = 0;
-				if(this.startedAction.key) {
-					this.pageTitle = "Focus";
-					this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
-					this.changePage('ActionPage');
-				} else {
-					this.pageTitle = "Do!";
-					this.doableActionArray = [];
-					this.chosenGoalArray = [];
-					this.doableActionArray = [];
-					let targetTodo = undefined;
+				this.pageTitle = "Do!";
+				this.doableActionArray = [];
+				this.chosenGoalArray = [];
+				let targetTodo = undefined;
+				if(this.actionArray) {
 					for(let action of this.actionArray) {
 						if(action.active != false) {
 							if(!action.taken) {
@@ -2707,6 +2707,31 @@ export class HomePage {
 							this.timeAvailable.setFocus();
 						}, 400);
 					}
+				} else {
+					this.nextActionList.subscribe( actionArray => {
+						this.actionArray = actionArray;
+						for(let action of this.actionArray) {
+							if(action.active != false) {
+								if(!action.taken) {
+									this.doableActionArray.push(action);
+									if(todoid && action.key == todoid) {
+										this.todoview = 'task';
+										targetTodo = action;
+									}
+								}
+							}
+						}
+						this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+						if(todoid) {
+							this.doableActionArray.unshift(targetTodo);
+						}
+						this.changePage('ToDoPage');
+						if(this.timeAvailable) {
+							setTimeout(() => {
+								this.timeAvailable.setFocus();
+							}, 400);
+						}
+					});
 				}
 			}
 		});
