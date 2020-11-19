@@ -404,7 +404,6 @@ export class HomePage {
 			)
 		);
 		this.nextActionList.subscribe( actionArray => {
-			console.log('triggereddddd');
 			this.actionArray = actionArray;
 			this.actions = {};
 			for(let action of actionArray) {
@@ -927,7 +926,6 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					//console.log(data.data);
 				}
 			});
 		}
@@ -2613,7 +2611,6 @@ export class HomePage {
 	}
 
 	onTimeSelected(event) {
-		console.log(event);
 		this.selectedDay = event.selectedTime;
 		if(this.calendar.mode == 'day' || this.calendar.mode == 'week') {
 			if(event.events == undefined || event.events.length == 0) {
@@ -2878,7 +2875,6 @@ export class HomePage {
 		}
 		this.doableActionArray = [];
 		this.chosenGoalArray = [];
-		console.log('showdoableActions');
 		for(let action of this.actionArray) {
 			if(action.active != false) {
 				let attributeCheck: boolean = true;
