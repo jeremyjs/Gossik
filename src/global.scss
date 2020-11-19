@@ -1165,6 +1165,10 @@ p {
   margin: 20px auto auto auto;
 }
 
+.margin-left-minus-8 {
+  margin-left: -4px;
+}
+
 .margin-left-5-auto {
   margin: auto auto auto 5px;
 }
@@ -1199,6 +1203,10 @@ p {
 
 .text-align-center {
   text-align: center;
+}
+
+.duration-input>input {
+  padding-left: 0px !important;
 }
 
 .padding-left-0 {

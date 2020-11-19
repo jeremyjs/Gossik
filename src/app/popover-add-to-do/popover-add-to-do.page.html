@@ -32,8 +32,8 @@
     <ion-row>
       <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5">
         <img src="../../assets/icon/purple/icon_duration_active.svg" height="12" class="margin-left-5-auto">
-        <ion-input (ionInput)="change()" size="2" [(ngModel)]="todo.time" placeholder="{{'Duration' | translate}}" type="number" class="no-padding display-inline-block width-100-minus-26 margin-left-5 text-align-left color-6049C4"></ion-input>
-        <span *ngIf="todo.time" class="margin-left-5-auto color-6049C4">{{"Minutes" | translate}}</span>
+        <ion-input (ionInput)="change()" size="2" [ngStyle]="todo.time&&{'width': 13 + todo.time.toString().length * 12 + 'px'}" [(ngModel)]="todo.time" placeholder="{{'Duration' | translate}}" type="number" class="duration-input width-auto no-padding margin-left-5 text-align-center color-6049C4"></ion-input>
+        <span *ngIf="todo.time > 0" class="color-6049C4 margin-left-minus-8 margin-vertical-auto">{{"Minutes" | translate}}</span>
       </div>
     </ion-row>
     <ion-row>
