@@ -404,6 +404,7 @@ export class HomePage {
 			)
 		);
 		this.nextActionList.subscribe( actionArray => {
+			console.log('triggereddddd');
 			this.actionArray = actionArray;
 			this.actions = {};
 			for(let action of actionArray) {
@@ -415,6 +416,7 @@ export class HomePage {
 					}
 				}
 			}
+			this.showDoableActions();
 		});
 	}
 
@@ -827,7 +829,7 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
 					if(data.data == 'delete') {
-						this.db.deleteAction(params, this.auth.userid);
+						this.deleteAction(params);
 					} else if(data.data == 'start') {
 						this.startAction(params);
 					} else if(data.data == 'markDone') {
@@ -2334,8 +2336,11 @@ export class HomePage {
   		});
   	}
 
-  	deleteAction(action: Action, goal) {
-    	this.db.deleteAction(action, this.auth.userid);
+  	deleteAction(action: Action) {
+		this.db.deleteAction(action, this.auth.userid);
+		if(this.doableActionArray.findIndex(element => element.key == action.key) != -1) {
+			this.doableActionArray.splice(this.doableActionArray.findIndex(element => element.key == action.key),1);
+		}
   	}
 
   	deleteDelegation(delegation: Delegation, goal) {
@@ -2872,6 +2877,8 @@ export class HomePage {
 			duration = this.duration;
 		}
 		this.doableActionArray = [];
+		this.chosenGoalArray = [];
+		console.log('showdoableActions');
 		for(let action of this.actionArray) {
 			if(action.active != false) {
 				let attributeCheck: boolean = true;
