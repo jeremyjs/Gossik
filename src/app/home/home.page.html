@@ -113,6 +113,12 @@
           {{"Send Push" | translate }}
         </button>
       </ion-row>
+      <ion-row class="margin-top-20">
+        <span class="font-size-18px color-39297F font-weight-bold">{{"Manage Attributes" | translate}}</span>
+      </ion-row>
+      <ion-row class="margin-top-10">
+        <span class="font-size-15px margin-right-10 color-6049C4 background-EDF2FF padding-10 border-radius-10px margin-bottom-10" *ngFor="let attribute of attributeArray">#{{attribute.content}}</span>
+      </ion-row>
       <ion-row>
         <button *ngIf="userProfile.subscription == 'themesFeature'" class="font-size-20px margin-top-10" (click)="goToThemesPage()">{{"Themes" | translate}}</button>
       </ion-row>

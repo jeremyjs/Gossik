@@ -190,7 +190,6 @@ export class HomePage {
 	smartAssistantToggle: boolean;
 	calendarEventsToday: CalendarEvent[] = [];
 	elapsedTime: number;
-	gotActions: boolean = false;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170']
@@ -406,7 +405,6 @@ export class HomePage {
 		this.nextActionList.subscribe( actionArray => {
 			this.actionArray = actionArray;
 			this.actions = {};
-			console.log('for loop start');
 			for(let action of actionArray) {
 				if(action.active != false) {
 					if(this.actions[action.goalid]) {
@@ -416,8 +414,6 @@ export class HomePage {
 					}
 				}
 			}
-			this.gotActions = true;
-			console.log('for loop finish');
 		});
 	}
 
