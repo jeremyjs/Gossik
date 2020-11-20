@@ -632,7 +632,7 @@ export class HomePage {
 		);
   	}
 
-  	menuOpen() {
+  	openMenu() {
   		this.menuCtrl.toggle();
   	}
 

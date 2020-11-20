@@ -8,17 +8,19 @@
     <ion-grid *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin">
       <ion-row>
         <ion-col size="2" class="flex text-align-center no-padding">
-          <ion-menu-button class="transparent margin-top-26">
+          <button (click)="openMenu()" class="transparent margin-top-26">
             <img src="../../assets/icon/purple/icon_menu.svg" height="44">
-          </ion-menu-button>
+          </button>
         </ion-col>
         <ion-col size="8" class="page-title flex no-padding">
           <span class="margin-top-32-auto">{{pageTitle | translate}}</span>
         </ion-col>
         <ion-col size="2" class="flex text-align-center no-padding">
+          <!--
           <button (click)="search()" class="transparent margin-top-26">
             <img src="../../assets/icon/purple/icon_search.svg" height="44" class="margin-auto-auto">
           </button>
+        -->
         </ion-col>
       </ion-row>
     </ion-grid>
