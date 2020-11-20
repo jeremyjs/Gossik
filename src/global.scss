@@ -178,10 +178,6 @@ ion-button {
   background-size: cover;
 }
 
-.header-background {
-  --background: url('/assets/imgs/header_background.svg') center center/100% 110% no-repeat;
-}
-
 .header-ios ion-toolbar:last-child {
   --border-width: 0 !important;
 }
@@ -243,6 +239,10 @@ ion-button {
 
 .margin-bottom-0-auto {
   margin: auto auto 0 auto;
+}
+
+.margin-top-minus-20 {
+  margin-top: -20px;
 }
 
 .margin-top-7-auto {

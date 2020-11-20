@@ -1,13 +1,28 @@
 <ion-header>
-  <ion-toolbar *ngIf="!loggedin">
-    <div class="width-45px">
+	<ion-toolbar id="headerr" class="height-169px background-color-white">
+    <div *ngIf="!loggedin" class="width-45px">
       <ion-menu-button class="no-padding">
         <img src="../../assets/icon/purple/icon_menu.svg" height="44">
       </ion-menu-button>
     </div>
-  </ion-toolbar>
-  <ion-toolbar *ngIf="viewpoint == 'PrivacyPolicyPage'" class="header-background height-169px background-color-white">
-		<ion-grid>
+    <ion-grid *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin">
+      <ion-row>
+        <ion-col size="2" class="flex text-align-center no-padding">
+          <ion-menu-button class="transparent margin-top-26">
+            <img src="../../assets/icon/purple/icon_menu.svg" height="44">
+          </ion-menu-button>
+        </ion-col>
+        <ion-col size="8" class="page-title flex no-padding">
+          <span class="margin-top-32-auto">{{pageTitle | translate}}</span>
+        </ion-col>
+        <ion-col size="2" class="flex text-align-center no-padding">
+          <button (click)="search()" class="transparent margin-top-26">
+            <img src="../../assets/icon/purple/icon_search.svg" height="44" class="margin-auto-auto">
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="viewpoint == 'PrivacyPolicyPage'">
 			<ion-row class="margin-top-32">
 			  <ion-col size="2" class="flex text-align-center no-padding">
 				<button class="transparent margin-auto" (click)="goToToDoPage()">
@@ -19,27 +34,6 @@
 			  </ion-col>
 			</ion-row>
 		</ion-grid>
-	</ion-toolbar>
-	<ion-toolbar *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin" class="header-background height-169px background-color-white">
-    <div *ngIf="isApp">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="2" class="flex text-align-center no-padding">
-            <ion-menu-button class="transparent margin-top-26">
-              <img src="../../assets/icon/purple/icon_menu.svg" height="44">
-            </ion-menu-button>
-          </ion-col>
-          <ion-col size="8" class="page-title flex no-padding">
-            <span class="margin-top-32-auto">{{pageTitle | translate}}</span>
-          </ion-col>
-          <ion-col size="2" class="flex text-align-center no-padding">
-            <button (click)="search()" class="transparent margin-top-26">
-              <img src="../../assets/icon/purple/icon_search.svg" height="44" class="margin-auto-auto">
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
 	</ion-toolbar>
 </ion-header>
 
