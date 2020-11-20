@@ -277,7 +277,7 @@
   </div>
 
   <!-- Mobile AssistantPage -->
-  <div class="height-100-minus-95px width-90 margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
+  <div class="height-100-minus-95px overflow-scroll no-scrollbar width-90 margin-auto" *ngIf="viewpoint == 'AssistantPage' && isApp">
     <ion-row class="width-100 text-align-right margin-bottom-20 margin-horizontal-auto">
       <ion-segment (ionChange)="switchAssistantTab($event)" value="today" mode="ios" class="background-EDF2FF border-radius-35px height-45px padding-5">
         <ion-segment-button  value="today" class="border-style-none color-39297F">
