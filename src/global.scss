@@ -186,6 +186,10 @@ ion-button {
   display: none;
 }
 
+.header-background {
+  --background: url("/assets/imgs/header_background.svg") center center/100% 110% no-repeat;
+}
+
 .height-169px {
   height: 169px;
 }

@@ -1,10 +1,5 @@
 <ion-header>
-	<ion-toolbar id="headerr" class="height-169px background-color-white">
-    <div *ngIf="!loggedin" class="width-45px">
-      <ion-menu-button class="no-padding">
-        <img src="../../assets/icon/purple/icon_menu.svg" height="44">
-      </ion-menu-button>
-    </div>
+	<ion-toolbar *ngIf="loggedin " id="headerr" class="header-background height-169px background-color-white">
     <ion-grid *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin">
       <ion-row>
         <ion-col size="2" class="flex text-align-center no-padding">
@@ -36,6 +31,13 @@
 			  </ion-col>
 			</ion-row>
 		</ion-grid>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="!loggedin" class="background-color-white">
+    <div *ngIf="!loggedin" class="width-45px">
+      <ion-menu-button class="no-padding">
+        <img src="../../assets/icon/purple/icon_menu.svg" height="44">
+      </ion-menu-button>
+    </div>
 	</ion-toolbar>
 </ion-header>
 
@@ -43,15 +45,15 @@
 
   <!-- Mobile LoginPage -->
 	<div *ngIf="viewpoint == 'LoginPage'" class="height-100 width-100">
-    <div class="margin-top-50 margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Login" | translate}}</div>
-    <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-96 margin-horizontal-auto display-block" height="244">
-    <ion-input class="margin-top-115 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="loginEmail"></ion-input>
+    <div class="margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Login" | translate}}</div>
+    <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-20 margin-horizontal-auto display-block" height="244">
+    <ion-input class="margin-top-20 width-90 margin-horizontal-auto border-6049C4-50per show-full-highlight-0 font-size-18px padding-5 border-radius-15px background-FFFFFF" type="text" (ionFocus)="ionFocus($event)" autocapitalize="on" placeholder="{{'Email' | translate }}" [(ngModel)]="loginEmail"></ion-input>
     <ion-input class="width-90 margin-horizontal-auto margin-top-15 border-6049C4-50per font-size-18px padding-5 border-radius-15px background-FFFFFF" type="password" placeholder="{{'Password' | translate }}" [(ngModel)]="loginPassword"></ion-input>
     <div padding-horizontal class="text-align-center margin-top-20">
       <div class="form-error">{{loginError}}</div>
       <button class="font-size-18px margin-auto padding-horizontal-50 background-6049C4 color-FFFFFF height-48px border-radius-48px" (click)="login()">{{"Log in" | translate }}</button>	
     </div>
-    <ion-list class="margin-top-45">
+    <ion-list>
       <button class="margin-top-10 font-size-20px margin-left-20 color-6049C4 font-size-16px transparent" (click)="goToSignUp()">
         {{"Sign up" | translate }}
       </button>
@@ -102,7 +104,7 @@
 
 
   <!-- Mobile SettingsPage -->
-  <div class="margin-top-10 width-90 padding-10 height-100-minus-95px" *ngIf="viewpoint == 'SettingsPage' && isApp">
+  <div class="width-90 padding-10 height-100-minus-95px overflow-scroll no-scrollbar" *ngIf="viewpoint == 'SettingsPage' && isApp">
     <ion-grid>
       <ion-row>
         <button class="font-size-20px margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
