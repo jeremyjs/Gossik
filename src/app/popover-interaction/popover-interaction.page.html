@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-row class="margin-top-35 color-39297F">
+  <ion-row *ngIf="title != ''" class="margin-top-35 color-39297F">
     <ion-col class="text-align-center font-size-17px">
       {{title | translate}}
     </ion-col>

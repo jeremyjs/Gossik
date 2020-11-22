@@ -64,20 +64,8 @@ export class DatabaseService {
         return this.db.object('users/' + userid + '/profile');
     }
 
-    finishTutorial(userid, tutorialPart, nextTutorialPart?, nextTutorialPart2?, nextTutorialPart3?) {
-        let tutorial = {};
-        tutorial[tutorialPart] = false;
-        tutorial[tutorialPart + 'Enddate'] = new Date().toISOString();
-        if(nextTutorialPart) {
-            tutorial[nextTutorialPart] = true;
-        }
-        if(nextTutorialPart2) {
-            tutorial[nextTutorialPart2] = true;
-        }
-        if(nextTutorialPart3) {
-            tutorial[nextTutorialPart3] = true;
-        }
-        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    finishTutorial(userid) {
+        return this.db.list('users/' + userid).update('profile', {tutorial: false});
     }
 
     startTutorial(userid, tutorialPart) {

@@ -1557,6 +1557,10 @@ ion-backdrop {
   max-width: 80%;
 }
 
+.border-radius-50per-50per-40-40 {
+  border-radius: 50% 50% 40px 40px;
+}
+
 .popover-add .popover-content {
   top: auto !important;
   bottom: 15px !important;
@@ -1565,6 +1569,15 @@ ion-backdrop {
   --height: auto !important;
   overflow: hidden !important;
   border-radius: 50% 50% 40px 40px;
+}
+
+.popover-add-tutorial .popover-content {
+  top: auto !important;
+  bottom: 85px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: auto !important;
+  overflow: hidden !important;
 }
 
 .popover-add-thought .popover-content {
@@ -1623,7 +1636,7 @@ ion-backdrop {
 
 .popover-interaction .popover-content {
   top: auto !important;
-  bottom: 0px !important;
+  bottom: 85px !important;
   left: 0px !important;
   --width: 100%;
   --height: auto !important;

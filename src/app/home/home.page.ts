@@ -180,9 +180,6 @@ export class HomePage {
 	todoview: string = 'list';
 	showNavigationBar: boolean = true;
 	showOptionals: boolean;
-	showTutorialAlert: boolean = true;
-	showTutorialTypeActionAlert: boolean = true;
-	showTutorialTypeThoughtAlert: boolean = true;
 	assistant: string;
 	references: any;
 	attributeArray: any[];
@@ -668,81 +665,6 @@ export class HomePage {
 						        text: translation["OK"]
 					      	}
 					    ];
-  			if(alertMessage == 'fivetodosCreated') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	setTimeout(() => {
-										this.presentAlert('fivetodosDone');
-									}, 100);
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'fivetodosDone') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	this.db.finishTutorial(this.auth.userid, "fivetodos").then( () => {
-						        		this.goToToDoPage();
-						        	});
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'assistantLearn') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	this.presentAlert("assistantDone");
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'assistantDone') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	if(this.userProfile.tutorial.tutorialEnd) {
-						        		this.db.finishTutorial(this.auth.userid, "assistant", "thoughts");
-						        	} else {
-						        		this.db.finishTutorial(this.auth.userid, "assistant");
-						        	}
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'thoughtsCreated') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        	this.db.finishTutorial(this.auth.userid, "thoughts", "thoughtprocessing").then( () => {
-						        		this.db.finishTutorial(this.auth.userid, 'createThought');
-						        		this.goToProcessPage();
-						        	});
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'processTodoEnd') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        this.showTutorial("tutorialEnd");
-						        }
-					      	}
-					    ];
-  			} else if(alertMessage == 'processThoughtEnd') {
-  				buttons = [
-					      	{
-						        text: translation["OK"],
-						        handler: () => {
-						        this.showTutorial("tutorialEnd");
-						        }
-					      	}
-					    ];
-  			}
   			this.alertCtrl.create({
 				message: translation[alertMessage],
 				buttons: buttons
@@ -754,14 +676,28 @@ export class HomePage {
 	  
 	  async presentPopover(name, params?) {
 		if(name == 'add') {
+			let cssClass: string = 'popover-add';
+			let componentProps: any = {};
+			if(this.userProfile.tutorial) {
+				cssClass = 'popover-add-tutorial';
+				componentProps = {'tutorial': true};
+			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddPage,
-			cssClass: 'popover-add'
+			componentProps: componentProps,
+			cssClass: cssClass
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
 					this.presentPopover(data.data);
+				} else {
+					if(this.userProfile.tutorial) {
+						let text = "Here on the Do page, you can work off your to-dos.";
+						let buttons = ["Next"];
+						let title = '';
+						this.presentPopover('showInteraction', [text, buttons, title,1]);
+					}
 				}
 			});
 		} else if(name == 'addProject') {
@@ -928,7 +864,36 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				if(data.data) {
+				if(params[3] == 0) {
+					this.presentPopover('add');
+				} else if(params[3] == 1) {
+					let text = "On the top, you can enter your available time. For example, when you have 20min available, I will only show you to-dos that are doable within 20min.";
+					let buttons = ["Next"];
+					let title = '';
+					this.presentPopover('showInteraction', [text, buttons, title, 2]);
+				} else if(params[3] == 2) {
+					let text = "The smart assistant will prioritize your to-dos for you and show your the most relevant tasks according to your current situation.";
+					let buttons = ["Next"];
+					let title = '';
+					this.presentPopover('showInteraction', [text, buttons, title, 3]);
+				} else if(params[3] == 3) {
+					this.goToAssistantPage();
+					let text = "Here on the Assistant page, I show you statistics and facts that I learned and observed.";
+					let buttons = ["Next"];
+					let title = '';
+					this.presentPopover('showInteraction', [text, buttons, title, 4]);
+				} else if(params[3] == 4) {
+					let text = "You can also change these things to modify how I prioritize and schedule your to-dos for you.";
+					let buttons = ["Next"];
+					let title = '';
+					this.presentPopover('showInteraction', [text, buttons, title, 5]);
+				} else if(params[3] == 5) {
+					let text = "And I give you suggestions that should help you to get everything under control. For example, when a deadline approaches, I will suggest you to increase the priority of this task to avoid stress.";
+					let buttons = ["Close"];
+					let title = '';
+					this.presentPopover('showInteraction', [text, buttons, title, 6]);
+				} else if(params[3] == 6) {
+					this.db.finishTutorial(this.auth.userid);
 				}
 			});
 		}
@@ -1152,13 +1117,9 @@ export class HomePage {
 			this.db.addCapture(capture, this.auth.userid);
 			this.newCapture = {} as Capture;
 		  	this.newCapture.content = '';
-		  	if(this.userProfile.tutorial.thoughts) {
-		  		this.presentAlert("thoughtsCreated");
-		  	} else {
-				this.translate.get(["Thought saved"]).subscribe( translation => {
-			  		this.presentToast(translation["Thought saved"]);
-				});
-			}
+			this.translate.get(["Thought saved"]).subscribe( translation => {
+				this.presentToast(translation["Thought saved"]);
+			});
 	    } else {
 	      this.errorMsg = "You cannot save an empty capture.";
 	    }
@@ -1181,112 +1142,6 @@ export class HomePage {
   		this.db.deleteCapture(capture, this.auth.userid);
   		this.translate.get(["Thought deleted"]).subscribe( translation => {
 	  		this.presentToast(translation["Thought deleted"]);
-		});
-  	}
-
-  	showTutorial(tutorialPart) {
-		if(this.userProfile.tutorial[tutorialPart]) {
-			this.db.setTutorialStartdate(this.auth.userid, tutorialPart);
-			let text = [];
-			text["fivetodos"] = ["fivetodos", "OK"];
-			text["thoughts"] = ["thoughts", "OK"];
-			text["process"] = ["process", "OK"];
-			text["processTodo"] = ["processTodo", "OK"];
-			text["processThought"] = ["processThought", "OK"];
-			text["thoughtprocessing"] = ["thoughtprocessing", "OK"];
-			text["assistant"] = ["assistant", "OK"];
-			text["tutorialEnd"] = ["tutorialEnd", "OK"];
-			this.translate.get(text[tutorialPart]).subscribe( translation => {
-				let buttons = [];
-				buttons["fivetodos"] = [
-					{
-						text: translation["OK"],
-						handler: () => {
-							this.presentAlert("navigateGreen");
-						}
-					}
-				];
-				buttons["tutorialEnd"] = [
-					{
-						text: translation["OK"],
-						handler: () => {
-							this.db.finishTutorial(this.auth.userid, "tutorialEnd");
-						}
-					}
-				];
-				buttons["thoughts"] = [
-					{
-						text: translation["OK"],
-						handler: () => {
-							this.presentAlert("thoughtsExplain");
-							this.db.startTutorial(this.auth.userid, 'createThought');
-						}
-					}
-				];
-				buttons["thoughtprocessing"] = [
-					{
-						text: translation["OK"]
-					}
-				];
-				buttons["process"] = [
-					{
-						text: translation["OK"]
-					}
-				];
-				buttons["processTodo"] = [
-					{
-						text: translation["OK"]
-					}
-				];
-				buttons["processThought"] = [
-					{
-						text: translation["OK"]
-					}
-				];
-				buttons["assistant"] = [
-					{
-						text: translation["OK"],
-						handler: () => {
-							this.presentAlert("assistantLearn");
-						}
-					}
-				];
-				this.alertCtrl.create({
-					message: translation[tutorialPart],
-					buttons: buttons[tutorialPart]
-				}).then( alert => {
-					alert.present();
-				});
-			});
-		}
-  	}
-
-  	startFivetodos() {
-  		this.modalCtrl.create({ 
-			component: FivetodosModalPage
-		}).then( modal => {
-			modal.present();
-			modal.onDidDismiss().then( data => {
-				if(data.data) {
-					for(let action of data.data) {
-						if(action.content) {
-							let todo: Action = {
-							    userid: this.auth.userid,
-							    goalid: 'unassigned',
-							    content: action.content,
-							    priority: 3,
-							    time: 20,
-							    taken: false,
-							    active: true
-							}
-							this.db.addAction(todo, {} as Capture, this.auth.userid);
-						}
-					}
-					if(this.userProfile.tutorial.fivetodos) {
-						this.presentAlert("fivetodosCreated");
-					}
-				}
-			});
 		});
   	}
 
@@ -1330,8 +1185,6 @@ export class HomePage {
 			this.presentAlert("unpaidFeatureSubscription");
 		} else {
 			this.pageTitle = "Thoughts";
-			this.showTutorial('thoughts');
-			this.showTutorial('thoughtprocessing');
 			this.changePage('ProcessPage');
 		}
   	}
@@ -1374,21 +1227,12 @@ export class HomePage {
     	} else {
     		this.captureCheckIfDone();
     	}
-    	if(this.userProfile.tutorial.thoughtprocessing) {
-    		this.db.finishTutorial(this.auth.userid, 'thoughtprocessing', 'process', 'processTodo', 'processThought');
-    	}
     	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
     	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
     	this.cameFromProcessPage = (origin == 'ProcessPage');
     	this.cameFromToDoPage = (origin == 'ToDoPage');
     	if(this.cameFromToDoPage || this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.showCaptureDuration = false;
-    		if(this.userProfile.tutorial.processTodo) {
-    			this.presentAlert("Please input what needs to be done.");
-    		}
-    	} 
-    	if(this.cameFromProcessPage) {
-    		this.showTutorial('process')
     	}
     	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
     		this.pageTitle = "Define action";
@@ -1451,20 +1295,10 @@ export class HomePage {
     		this.pageTitle = "Process thought";
     		this.capturePlaceholder = "Define action or reference";
     	}
-    	if(this.userProfile.tutorial.process) {
-    		this.db.finishTutorial(this.auth.userid, 'process');
-    	}
   		this.captureCheckIfDone();
   	}
 
   	assignAction() {
-  		if(this.showTutorialTypeActionAlert) {
-  			this.showTutorial('processTodo');
-  			this.showTutorialTypeActionAlert = false;
-  			setTimeout( () => {
-  				this.showTutorialTypeActionAlert = true;
-  			}, 2000)
-  		}
   		if(this.captureContent) {
   			this.showCaptureDuration = true;
   		}
@@ -1481,12 +1315,6 @@ export class HomePage {
   		if(this.captureContent) {
   			if(this.captureType == 'action') {
 		  		this.showCaptureDuration = true;
-		  		if(this.showTutorialAlert) {
-		  			this.showTutorialAlert = false;
-			  		setTimeout(() => {
-			         	this.showTutorial('processTodo');
-			    	}, 2000);
-			  	}
 		  	}
   		} else {
   			this.translate.get(["Define action","Define reference", "Define action or reference"]).subscribe( translation => {
@@ -1503,13 +1331,6 @@ export class HomePage {
   	}
 
   	assignNote() {
-  		if(this.showTutorialTypeThoughtAlert) {
-  			this.showTutorial('processThought');
-  			this.showTutorialTypeThoughtAlert = false;
-  			setTimeout( () => {
-  				this.showTutorialTypeThoughtAlert = true;
-  			}, 2000)
-  		}
   		this.showCaptureDuration = false;
   		this.showCapturePriority = false;
   		this.showCaptureDeadline = false;
@@ -1520,9 +1341,6 @@ export class HomePage {
   	timeSet() {
   		this.captureDuration = this.duration;
   		if(this.captureDuration > 0) {
-  			if(this.userProfile.tutorial.processTodo) {
-  				this.presentAlert('processPriority');
-  			}
 			this.showCapturePriority = true;
 	  		this.captureCheckIfDone();
   		}
@@ -1531,9 +1349,6 @@ export class HomePage {
   	assignPriority(priority?) {
   		if(priority) {
   			this.capturePriority = priority;
-  		}
-  		if(this.capturePriority && this.userProfile.tutorial.processTodo) {
-			this.presentAlert('processTodoReady');
   		}
   		this.captureCheckIfDone();
   	}
@@ -1839,10 +1654,6 @@ export class HomePage {
 					this.db.addAttribute(checkAttribute, this.auth.userid);
 				}
 			}
-			if(this.userProfile.tutorial.processTodo) {
-				this.presentAlert("processTodoEnd");
-				this.db.finishTutorial(this.auth.userid, 'processTodo');
-			}
 			if(this.captureDeadline) {
 				action.deadline = this.captureDeadline.toISOString();
 				let deadlineStartTime = new Date (action.deadline).setHours(2);
@@ -1972,10 +1783,6 @@ export class HomePage {
   			goalid: this.captureProject.key,
   			active: true
   		};
-  		if(this.userProfile.tutorial.processThought) {
-  			this.presentAlert("processThoughtEnd");
-  			this.db.finishTutorial(this.auth.userid, 'processThought');
-		  }
 		this.translate.get(["Thought saved"]).subscribe( translation => {
 			this.presentToast(translation["Thought saved"]);
 	  	});
@@ -2677,6 +2484,12 @@ export class HomePage {
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
+			if(this.userProfile.tutorial) {
+				let text = "I am your personal digital assistant. I will get to know you and learn from you to actively help you organize your day and manage your tasks.";						   
+				let buttons = ['Next'];
+				let title = "Welcome to Gossik!";
+				this.presentPopover('showInteraction', [text, buttons, title, 0]);
+			}
 			this.duration = 0;
 			if(this.startedAction.key) {
 				this.pageTitle = "Focus";
