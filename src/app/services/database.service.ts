@@ -30,17 +30,7 @@ export class DatabaseService {
         this.userData.profile = {
             email: email,
             assistant: 'standard',
-            tutorial: {
-                'fivetodos': true,
-                'thoughts': false,
-                'thoughtprocessing': false,
-                'process': false,
-                'processTodo': false,
-                'processThought': false,
-                'assistant': true,
-                'createThought': false,
-                'tutorialEnd': true
-            },
+            tutorial: true,
             timezoneOffset: new Date().getTimezoneOffset()
         }
         this.userData.profile["signUpDate"] = new Date().toISOString();
@@ -56,10 +46,6 @@ export class DatabaseService {
         this.db.database.goOnline();
     }
 
-    getTutorialList(userid) {
-        return this.db.object('users/' + userid + '/tutorial');
-    }
-
     getUserProfile(userid) {
         return this.db.object('users/' + userid + '/profile');
     }
@@ -68,11 +54,8 @@ export class DatabaseService {
         return this.db.list('users/' + userid).update('profile', {tutorial: false});
     }
 
-    startTutorial(userid, tutorialPart) {
-        let tutorial = {};
-        tutorial[tutorialPart] = true;
-        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
-        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
+    startTutorial(userid) {
+        return this.db.list('users/' + userid).update('profile', {tutorial: true});
     }
 
     initiateAssistant(userid) {
@@ -152,12 +135,6 @@ export class DatabaseService {
                 this.initiateLearnedSchedule(userid);
             }
         });
-    }
-
-    setTutorialStartdate(userid, tutorialPart) {
-        let tutorial = {};
-        tutorial[tutorialPart + 'Startdate'] = new Date().toISOString();
-        return this.db.list('users/' + userid + '/profile').update('tutorial', tutorial);
     }
 
     updateTimezoneOffset(userid, timezoneOffset) {
@@ -408,8 +385,6 @@ export class DatabaseService {
         delete goal.key;
         return this.db.database.ref('/users/' + userid + '/goals/' + goalkey).set(goal);
     }
-
-
 
     deleteGoal(goal, userid) {
         let goalkey = goal.key;
