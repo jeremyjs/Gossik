@@ -1641,10 +1641,10 @@ ion-backdrop {
 .popover-interaction .popover-content {
   top: auto !important;
   bottom: 85px !important;
-  left: 0px !important;
-  --width: 100%;
+  --width: 80%;
   --height: auto !important;
   overflow: hidden !important;
+  border-radius: 30px !important;
 }
 
 .popover-privacy-policy .popover-content {
