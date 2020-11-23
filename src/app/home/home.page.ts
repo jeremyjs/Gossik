@@ -674,7 +674,7 @@ export class HomePage {
   		})
 	  }
 	  
-	  async presentPopover(name, params?) {
+	async presentPopover(name, params?) {
 		if(name == 'add') {
 			let cssClass: string = 'popover-add';
 			let componentProps: any = {};
@@ -920,7 +920,7 @@ export class HomePage {
 			.then(
 				() => {
 						this.auth.afAuth.authState.subscribe( user => {
-							this.goToToDoPage();
+							//this.goToToDoPage();
 						});
 				},
 				error => this.loginError = error.message
