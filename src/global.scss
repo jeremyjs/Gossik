@@ -585,6 +585,14 @@ ion-toolbar {
   margin: auto auto;
 }
 
+.padding-end-3 {
+  --padding-end: 3px;
+}
+
+.padding-start-3 {
+  --padding-start: 3px;
+}
+
 .padding-bottom-15 {
   padding-bottom: 15px !important;
 }
@@ -752,6 +760,10 @@ ion-input {
 
 .border-radius-100px {
   border-radius: 100px;
+}
+
+.border-radius-50per {
+  border-radius: 50%;
 }
 
 .overflow-scroll {
