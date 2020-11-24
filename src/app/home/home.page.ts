@@ -2523,30 +2523,7 @@ export class HomePage {
 						}, 400);
 					}
 				} else {
-					this.nextActionList.subscribe( actionArray => {
-						this.actionArray = actionArray;
-						for(let action of this.actionArray) {
-							if(action.active != false) {
-								if(!action.taken) {
-									this.doableActionArray.push(action);
-									if(todoid && action.key == todoid) {
-										this.todoview = 'task';
-										targetTodo = action;
-									}
-								}
-							}
-						}
-						this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-						if(todoid) {
-							this.doableActionArray.unshift(targetTodo);
-						}
-						this.changePage('ToDoPage');
-						if(this.timeAvailable) {
-							setTimeout(() => {
-								this.timeAvailable.setFocus();
-							}, 400);
-						}
-					});
+					this.goToToDoPage();
 				}
 			}
 		});
