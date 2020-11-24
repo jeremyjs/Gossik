@@ -10,6 +10,7 @@ export class PopoverAddPage implements OnInit {
   tutorial: boolean = false;
   viewpoint: string = '';
   text: string = "Here you can add new items of which I will then take care.";
+  number: string = "(1/8)";
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -40,6 +41,7 @@ export class PopoverAddPage implements OnInit {
 
   tutorialNext() {
     if(this.text == "Here you can add new items of which I will then take care.") {
+      this.number = "(2/8)";
       this.text = "You might wonder what thoughts are: Whenever something comes up in your mind but you don’t want to take care of it right now, add it as a thought and process it later. Thoughts can be transformed into to-dos or assigned to a project directly as a thought.";
     } else if(this.text == "You might wonder what thoughts are: Whenever something comes up in your mind but you don’t want to take care of it right now, add it as a thought and process it later. Thoughts can be transformed into to-dos or assigned to a project directly as a thought.") {
       this.popoverCtrl.dismiss();
