@@ -374,6 +374,7 @@ export class HomePage {
 			});}));
 		this.goalList.subscribe( goalArray => {
 			this.goalArray = [];
+			this.goalDict = {};
 			goalArray.sort((a, b) => a.name.localeCompare(b.name));
 			goalArray.unshift({key: 'unassigned'} as Goal);
 			for(let goal of goalArray) {

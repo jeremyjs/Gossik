@@ -1176,7 +1176,7 @@
             </calendar>
           </div>
           <div class="width-100 padding-10 height-100" *ngIf="calendar.mode == 'day'">
-            <ng-template #template let-displayEvent="displayEvent" >
+            <ng-template #dayTemplate let-displayEvent="displayEvent" >
               <div class="calendar-event-inner color-39297F border-radius-2px" [ngStyle]="{'background-color': displayEvent.event.color}">{{displayEvent.event.title}}</div>
             </ng-template>
             <calendar [eventSource]="eventSource"
@@ -1188,11 +1188,8 @@
                       step="5"
                       class="calendar height-100 color-6049C4"
                       autoSelect="false"
-                      [weekviewNormalEventTemplate]="template"
-                      [weekviewAllDayEventTemplate]="template"
-                      [dayviewNormalEventTemplate]="template"
-                      [dayviewAllDayEventTemplate]="template"
-                      [monthviewEventDetailTemplate]="template"
+                      [dayviewNormalEventTemplate]="dayTemplate"
+                      [dayviewAllDayEventTemplate]="dayTemplate"
                       scrollToHour="8"
                       [locale]="translate.currentLang"
                       formatHourColumn="{{'formatHourColumn' | translate }}"
