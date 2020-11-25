@@ -588,9 +588,6 @@ export class HomePage {
 				this.getCaptures();
 				this.getReferences();
 				this.getAttributes();
-				this.domCtrl.write(() => {
-					document.getElementById('headerr').setAttribute('style', '--background: url("/assets/imgs/header_background.svg") center center/100% 110% no-repeat');
-				});
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.isAdmin = this.userProfile.isAdmin;

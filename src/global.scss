@@ -194,6 +194,22 @@ ion-button {
   height: 169px;
 }
 
+.headerr {
+  background-image: url('/assets/imgs/header_background.svg');
+  background-position: center;
+  background-size: cover;
+}
+
+ion-toolbar {
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+  --padding-left: 0 !important;
+  --padding-right: 0 !important;
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  padding: 0 !important;
+}
+
 .background-color-white {
   background-color: #ffffff;
 }
