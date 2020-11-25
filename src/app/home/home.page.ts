@@ -1501,7 +1501,7 @@ export class HomePage {
 					userid: this.auth.userid,
 					goalid: todo.goalid,
 					startTime: new Date(todo.deadline).toISOString(),
-					endTime: new Date (todo.deadline).toISOString(),
+					endTime: new Date (todo.deadline.getTime() + 3600*1000).toISOString(),
 					title: 'Deadline: ' + todo.content,
 					allDay: true,
 					active: true,
