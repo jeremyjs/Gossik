@@ -2357,10 +2357,13 @@ export class HomePage {
 	}
 
   	chooseGoal(event) {
-  		if(event.detail.value.length == 0) {
+		// This function is deprecated, only the desktop version still uses it, therefore I don't delete it.
+		/*  
+		if(event.detail.value.length == 0) {
   			this.chosenGoalArray = [];
   		}
-  		this.showDoableActions();
+		  this.showDoableActions();
+		*/
 	  }
 	  
 	setAvailableTime() {
@@ -2471,7 +2474,7 @@ export class HomePage {
 			}
 		}
 		this.sortToDosByPriority();
-		if(this.doableActionArray.length == 0) {
+		if(this.doableActionArray.length == 0 && this.actionArray.length > 0) {
 			this.translate.get(["There is no doable action for that time."]).subscribe( translation => {
 				this.presentToast(translation["There is no doable action for that time."]);
 			})
