@@ -616,10 +616,10 @@
       {{"Thoughts" | translate}}
     </ion-row>
     <div class="height-50-minus-34px overflow-scroll no-scrollbar width-90 margin-horizontal-auto">
-      <ion-row class="margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let capture of references[goal.key]">
-        <button  class="transparent text-align-left" (click)="showThought(capture)">
+      <ion-row class="margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let reference of references[goal.key]">
+        <button  class="transparent text-align-left" (click)="showThought(reference, reference.goalid)">
           <span class="font-size-18px color-39297F">
-            {{capture.content}}
+            {{reference.content}}
           </span>
         </button>
       </ion-row>

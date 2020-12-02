@@ -712,12 +712,17 @@ export class HomePage {
 		} else if(name == 'addThought') {
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddThoughtPage,
-			cssClass: 'popover-add-thought'
+			cssClass: 'popover-add-thought',
+			componentProps: {'goalDict': this.goalDict}
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					this.addCapture(data.data);
+					if(data.data[1]) {
+						this.addNoteFromCapture(data.data[0], data.data[1]);
+					} else {
+						this.addCapture(data.data[0]);
+					}
 				}
 			});
 		} else if(name == 'addToDo') {
@@ -735,7 +740,11 @@ export class HomePage {
 				if(data.data) {
 					this.addToDo(data.data);
 					if(params) {
-						this.deleteCapture(params);
+						if(!params.goalid) {
+							this.deleteCapture(params);
+						} else {
+							this.deleteReference(params);
+						}
 					}
 				}
 			});
@@ -795,18 +804,24 @@ export class HomePage {
 		} else if(name == 'showThought') {
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddThoughtPage,
-			componentProps: {'thought': params},
+			componentProps: {
+				'thought': params[0],
+				'goalid': params[1],
+				'goalDict': this.goalDict
+			},
 			cssClass: 'popover-add-thought'
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
 					if(data.data == 'delete') {
-						this.deleteCapture(params);
+						this.deleteCapture(params[0]);
 					} else if(data.data == 'createToDo') {
-						this.presentPopover('addToDo', params);
-					} else if(data.data.content) {
-						this.db.editCapture(data.data, this.auth.userid);
+						this.presentPopover('addToDo', params[0]);
+					} else if(!data.data[1]) {
+						this.db.editCapture(data.data[0], this.auth.userid);
+					} else if(data.data[1]) {
+						this.addNoteFromCapture(data.data[0], data.data[1]);
 					}
 				}
 			});
@@ -1174,8 +1189,8 @@ export class HomePage {
 		}
 	}
 
-	showThought(thought: Capture) {
-		this.presentPopover('showThought', thought);
+	showThought(thought, type) {
+		this.presentPopover('showThought', [thought, type]);
 	}
 
   	goToProcessPage() {
@@ -1191,166 +1206,6 @@ export class HomePage {
   		this.defineFollowUpTodoLater();
   	}
 
-  	goToProcessCapturePage(capture: any, project?: Goal, type?: string, origin?: string) {
-		this.capture = capture;
-  		this.captureContent = capture.content;
-	  	this.newGoalForm = this.fb.group({
-  			newGoal: ['', Validators.required]
-    	});
-    	this.duration = 0;
-		this.capturePriority = undefined;
-		this.captureDuration = undefined;
-		this.captureDeadline = undefined;
-		this.captureDeadlineText = undefined;
-		this.showCaptureProject = false;
-		this.showCaptureType = true;
-		this.showCaptureDuration = false;
-		this.showCapturePriority = false;
-		this.showCaptureDeadline = false;
-		this.captureSchedule = undefined;
-		this.captureScheduleISOString = new Date().toISOString();
-		this.showCaptureSchedule = false;
-		this.showCaptureDone = false;
-		this.showOptionals = false;
-		this.captureShowAdd = true;
-    	if(project != undefined && project.key != 'unassigned') {
-    		this.showCaptureProject = true;
-    		this.captureProject = project;
-    	} else {
-    		this.captureProject = { key: 'unassigned'} as Goal;
-    	}
-    	this.captureType = type;
-    	if(this.captureType == 'action') {
-    		this.showCaptureDuration = true;
-    	} else {
-    		this.captureCheckIfDone();
-    	}
-    	this.cameFromProjectOverviewPage = (origin == 'ProjectOverviewPage');
-    	this.cameFromFinishActionPage = (origin == 'FinishActionPage');
-    	this.cameFromProcessPage = (origin == 'ProcessPage');
-    	this.cameFromToDoPage = (origin == 'ToDoPage');
-    	if(this.cameFromToDoPage || this.cameFromProjectOverviewPage && this.captureType == 'action') {
-    		this.showCaptureDuration = false;
-    	}
-    	if(this.cameFromProjectOverviewPage && this.captureType == 'action') {
-    		this.pageTitle = "Define action";
-    		this.capturePlaceholder = "Define action";
-    		this.showCaptureType = false;
-    		this.showCaptureProject = false;
-    	} else if(this.cameFromProjectOverviewPage && this.captureType == 'note') {
-    		this.pageTitle = "Define reference";
-    		this.capturePlaceholder = "Define reference";
-    	} else if(this.cameFromProcessPage){
-    		this.pageTitle = "Process thought";
-    		this.capturePlaceholder = "Define action or reference";
-    	} else if (this.cameFromFinishActionPage) {
-    		this.pageTitle = "Define action";
-    		this.capturePlaceholder = "Define action";
-    	} else if (this.cameFromToDoPage) {
-    		this.pageTitle = "Define action";
-    		this.capturePlaceholder = "Define action";
-    	}
-    	this.changePage('ProcessCapturePage');
-  	}
-
-  	goToProcessTakenActionPage(takenAction: Action) {
-  		this.takenAction = takenAction;
-  		this.changePage('ProcessTakenActionPage');
-  	}
-
-  	// ProcessCapturePage functions
-  	assignProject() {
-  		this.modalCtrl.create({ 
-			component: AssignProjectModalPage,
-			componentProps: {goalArray: this.goalArray, projectColors: this.projectColors}
-		}).then( modal => {
-			modal.present();
-			modal.onDidDismiss().then( data => {
-				if(data.data) {
-					this.captureProject = data.data;
-					this.captureCheckIfDone();
-				}
-			});
-		});
-  	}
-
-  	assignType(type?: string) {
-  		if(type) {
-  			this.captureType = type;
-  		}
-  		if(this.captureType == 'action') {
-  			this.assignAction();
-  		} else if(this.captureType == 'note') {
-  			this.assignNote();
-  		}
-  		if(this.captureType == 'action') {
-    		this.pageTitle = "Define action";
-    		this.capturePlaceholder = "Define action";
-    	} else if(this.captureType == 'note') {
-    		this.pageTitle = "Define reference";
-    		this.capturePlaceholder = "Define reference";
-    	} else if(this.cameFromProcessPage){
-    		this.pageTitle = "Process thought";
-    		this.capturePlaceholder = "Define action or reference";
-    	}
-  		this.captureCheckIfDone();
-  	}
-
-  	assignAction() {
-  		if(this.captureContent) {
-  			this.showCaptureDuration = true;
-  		}
-  		if(this.captureContent && this.captureDuration) {
-  			this.showCapturePriority = true;
-  		}
-  		if(this.captureProject.key == 'unassigned') {
-  			this.showCaptureProject = false;
-  		}
-  		this.captureCheckIfDone();
-  	}
-
-  	assignContent(event) {
-  		if(this.captureContent) {
-  			if(this.captureType == 'action') {
-		  		this.showCaptureDuration = true;
-		  	}
-  		} else {
-  			this.translate.get(["Define action","Define reference", "Define action or reference"]).subscribe( translation => {
-	  			if(this.captureType == 'action') {
-	  				event.target.firstChild.placeholder = translation["Define action"] + "...";
-	  			} else if(this.captureType == 'note') {
-	  				event.target.firstChild.placeholder = translation["Define reference"] + "...";
-	  			} else {
-	  				event.target.firstChild.placeholder = translation["Define action or reference"] + "...";
-	  			}
-	  		});
-  		}
-  		this.captureCheckIfDone();
-  	}
-
-  	assignNote() {
-  		this.showCaptureDuration = false;
-  		this.showCapturePriority = false;
-  		this.showCaptureDeadline = false;
-  		this.showCaptureProject = true;
-  		this.captureCheckIfDone();
-  	}
-
-  	timeSet() {
-  		this.captureDuration = this.duration;
-  		if(this.captureDuration > 0) {
-			this.showCapturePriority = true;
-	  		this.captureCheckIfDone();
-  		}
-  	}
-
-  	assignPriority(priority?) {
-  		if(priority) {
-  			this.capturePriority = priority;
-  		}
-  		this.captureCheckIfDone();
-  	}
-
   	assignDeadline() {
   		let modal = this.modalCtrl.create({
 			component: ChangeWeekModalPage
@@ -1361,7 +1216,6 @@ export class HomePage {
 					this.captureDeadline = data.data;
 					this.captureDeadlineText = new Date (this.captureDeadline).toLocaleDateString(this.translate.currentLang, this.formatOptions);
 				}
-				this.captureCheckIfDone();
 			});
 		});
   	}
@@ -1373,84 +1227,6 @@ export class HomePage {
   			this.captureSchedule = undefined;
   		}
   	}
-
-  	captureCheckIfDone() {
-  		if(this.captureType == 'action') {
-  			if(this.captureContent && this.captureDuration && this.capturePriority) {
-	  			this.showCaptureDone = true;
-	  		} else if(!this.captureContent && this.captureDuration && this.capturePriority) {
-	  			this.presentAlert("You still need to define what exactly needs to be done.");
-	  		} else {
-	  			this.showCaptureDone = false
-	  		}
-  		} else if (this.captureType == 'note') {
-  			if(this.captureContent && this.captureProject.key != 'unassigned') {
-	  			this.showCaptureDone = true;
-	  		} else if(this.captureContent && this.captureProject.key != 'unassigned') { 
-	  			this.presentAlert("You still need to define what exactly needs to be done.");
-	  		} else{
-	  			this.showCaptureDone = false
-	  		}
-  		}
-  	}
-
-  	checkOptional() {
-  		this.showOptionals = true;
-  	}
-
-  	addOptional(optional) {
-  		if(optional == 'project') {
-  			this.showCaptureProject = true;
-  		} else if(optional == 'deadline') {
-  			this.showCaptureDeadline = true;
-  		} else if(optional == 'schedule') {
-  			this.showCaptureSchedule = true;
-  		}
-  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule) {
-  			this.captureShowAdd = false;
-  		}
-  		this.showOptionals = false;
-  	}
-
-  	deleteOptional(optional) {
-  		if(optional == 'project') {
-  			this.captureProject = {key: 'unassigned'} as Goal;
-  			this.showCaptureProject = false;
-  		} else if(optional == 'deadline') {
-  			this.captureDeadline = undefined;
-  			this.captureDeadlineText = undefined;
-  			this.showCaptureDeadline = false;
-  		} else if(optional == 'schedule') {
-  			this.captureSchedule = undefined;
-  			this.captureScheduleISOString = new Date().toISOString();
-  			this.showCaptureSchedule = false;
-  		}
-  		if(this.showCaptureProject && this.showCaptureDeadline && this.showCaptureSchedule) {
-  			this.captureShowAdd = false;
-  		} else {
-  			this.captureShowAdd = true;
-  		}
-  	}
-
-  	processCapture() {
-  		if(this.captureType == 'action') {
-  			this.addActionFromCapture();
-  		} else if(this.captureType == 'note'){
-  			this.addNoteFromCapture();
-  		}
-  		if(this.cameFromProjectOverviewPage) {
-  			this.goToProjectOverviewPage(this.captureProject);
-  		} else if (this.cameFromToDoPage) {
-  			this.goToToDoPage();
-  		} else if(this.cameFromFinishActionPage) {
-  			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-				this.startedAction = {} as Action;
-				this.goToToDoPage();
-			});
-  		} else {
-  			this.goToProcessPage();
-  		}
-	  }
 	  
 	addToDo(todo: Action, capture: Capture = {} as Capture) {
 		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.actionArray.length >= 10) {
@@ -1774,17 +1550,17 @@ export class HomePage {
 		}
   	}
 
-  	addNoteFromCapture() {
+  	addNoteFromCapture(capture: Capture, goalid: string) {
   		let reference: Reference = {
-  			content: this.captureContent,
+  			content: capture.content,
   			userid: this.auth.userid,
-  			goalid: this.captureProject.key,
+  			goalid: goalid,
   			active: true
   		};
 		this.translate.get(["Thought saved"]).subscribe( translation => {
 			this.presentToast(translation["Thought saved"]);
 	  	});
-		this.db.addReference(reference, this.capture, this.auth.userid);
+		this.db.addReference(reference, capture, this.auth.userid);
   	}
 
   	addGoal(goalname) {
@@ -2153,7 +1929,7 @@ export class HomePage {
     	this.db.deleteDelegation(delegation, this.auth.userid);
   	}
 
-  	deleteReference(reference: Reference, goal) {
+  	deleteReference(reference: Reference) {
     	this.db.deleteReference(reference, this.auth.userid);
   	}
 
@@ -2610,9 +2386,6 @@ export class HomePage {
 							if(pickerName == 'ToDoPageDuration') {
 								this.duration = value.duration.value;
 								this.showDoableActions();
-							} else if(pickerName == 'ProcessCapturePageDuration') {
-								this.duration = value.duration.value;
-								this.timeSet();
 							}
 						}
 					}
