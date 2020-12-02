@@ -40,7 +40,7 @@
       <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5 height-36px">
         <img src="../../assets/icon/purple/icon_priority.svg" height="12" class="margin-left-5-auto">
         <span *ngIf="todo.priority" (click)="openPicker('priority')" class="color-6049C4 font-size-15px margin-vertical-auto margin-left-5">
-          {{todo.priority}}
+          {{priorities[todo.priority] | translate}}
         </span>
         <span *ngIf="!todo.priority" (click)="openPicker('priority')" class="color-6049C4 margin-vertical-auto margin-left-5">{{"Priority" | translate}}</span>
       </div>

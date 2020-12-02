@@ -18,6 +18,7 @@ export class PopoverAddToDoPage implements OnInit {
   deadlineText: string;
   changed: boolean = false;
   type: string;
+  priorities: string[] = ["", "Low", "Medium", "High"];
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -41,6 +42,9 @@ export class PopoverAddToDoPage implements OnInit {
         this.todo.goalid = this.navParams.get('thought').goalid;
       }
     }
+    this.translate.get(this.priorities).subscribe( translation => {
+      this.priorities = ["", translation["Low"], translation["Medium"], translation["High"]];
+    })
   }
 
   cancel() {
@@ -71,9 +75,7 @@ export class PopoverAddToDoPage implements OnInit {
       let button = [];
       if(pickerName == 'priority') {
         columnNames = ['priority'];
-        columnOptions[0].push("low");
-        columnOptions[0].push("mid");
-        columnOptions[0].push("high");
+        columnOptions[0] = this.priorities;
         button = [
           {
             text: translation["Cancel"],
@@ -111,6 +113,8 @@ export class PopoverAddToDoPage implements OnInit {
       }).then( picker => {
         picker.present();
         this.changed = true;
+        console.log(this.todo.priority);
+        console.log(this.priorities[this.todo.priority]);
       });	
     })
   }
@@ -138,7 +142,7 @@ export class PopoverAddToDoPage implements OnInit {
       for (let i of columnOptions) {
         options.push({
           text: i,
-          value: columnOptions.findIndex((element) => element == i)+1
+          value: columnOptions.findIndex((element) => element == i)
         })
       }
     } else if (pickerName == 'project') {

@@ -641,7 +641,7 @@
             <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
           </span>
           <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-            <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{todo.priority}}
+            <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{priorities[todo.priority] | translate}}
           </span>
           <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
             {{todo.time}}{{"min" | translate }}
@@ -980,7 +980,7 @@
               </span>
               <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3 flex">
                 <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3 margin-vertical-auto" height="13">
-                <span>{{priorityFormat[todo.priority] | translate}}</span>
+                <span>{{priorities[todo.priority] | translate}}</span>
               </span>
               <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
                 {{todo.time}}{{"min" | translate }}
