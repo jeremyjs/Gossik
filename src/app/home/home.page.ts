@@ -706,7 +706,26 @@ export class HomePage {
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					this.addGoal(data.data);
+					this.addGoal(data.data.name);
+				}
+			});
+		} else if(name == 'editProject') {
+			let componentProps: any = {'project': params};
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddProjectPage,
+			cssClass: 'popover-add-project',
+			componentProps: componentProps
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					if(data.data == 'delete') {
+						this.deleteGoal(params);
+					} else {
+						let goalkey = params.key;
+						this.db.editGoal(data.data, this.auth.userid);
+						data.data.key = goalkey;
+					}
 				}
 			});
 		} else if(name == 'addThought') {
@@ -1865,11 +1884,11 @@ export class HomePage {
   	}
 	
 	goToProjectOverviewPage(goal: Goal) {
-		this.pageTitle = goal.name;
-		this.viewpoint = "ProjectOverviewPage";
-		this.content.scrollToTop();
-		this.eventSource = [];
-		this.goal = goal;
+		if(goal.key != 'unassigned') {
+			this.pageTitle = goal.name;
+			this.changePage("ProjectOverviewPage");
+			this.goal = goal;
+		}
 	}
 
   	reviewAction(action: Action) {
@@ -1907,15 +1926,7 @@ export class HomePage {
   	}
 
   	editGoal(goal: Goal) {
-  		let modal = this.modalCtrl.create({
-  			component: GoalDetailsModalPage,
-  			componentProps: {goal: goal}
-  		}).then( modal => {
-  			modal.present();
-  			modal.onDidDismiss().then ( () => {
-  				this.goToProjectOverviewPage(this.goal);
-  			})
-  		});
+  		this.presentPopover('editProject', goal);
   	}
 
   	deleteAction(action: Action) {
@@ -1947,7 +1958,7 @@ export class HomePage {
 						        	this.translate.get(["Project deleted"]).subscribe( translation => {
 								      this.presentToast(translation["Project deleted"]);
 								    });
-						          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToProjectsPage());
+						          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToItemsPage());
 						        }
 					      	}
 					    ]

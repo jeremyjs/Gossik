@@ -19,6 +19,12 @@
           -->
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="viewpoint == 'ProjectOverviewPage'" class="width-100">
+          <button class="transparent padding-5 background-EDF2FF color-39297F flex margin-horizontal-auto border-radius-30px" (click)="editGoal(goal)">
+            <img src="../../assets/icon/purple/icon_edit.svg" height="12" class="margin-vertical-center margin-right-5">
+            {{"Edit" | translate}}
+          </button>
+        </ion-row>
       </ion-grid>
       <ion-grid *ngIf="viewpoint == 'PrivacyPolicyPage'">
         <ion-row class="margin-top-32">
@@ -605,13 +611,6 @@
   <!-- ProjectOverviewPage -->
   <!-- Mobile ProjectOverviewPage -->
   <div *ngIf="viewpoint == 'ProjectOverviewPage' && isApp" class="no-scrollbar height-100-minus-95px width-100">
-    <!--
-    <ion-row class="width-100 padding-8-0-8-0 seperating-border-bottom height-25px">
-      <button class="transparent font-weight-bold" (click)="editGoal(goal)">
-        {{"Edit Project" | translate}}
-      </button>
-    </ion-row>
-    -->
     <ion-row class="width-90 padding-8-0-8-0 margin-auto font-weight-bold color-39297F">
       {{"Thoughts" | translate}}
     </ion-row>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { NavParams, PopoverController } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -11,13 +11,21 @@ import { TranslateService } from '@ngx-translate/core';
 export class PopoverAddProjectPage implements OnInit {
 
   projectName: string;
+  project: any = {name: ''};
+  type: string = 'add';
+  changed: boolean = false;
 
   constructor(
     public popoverCtrl: PopoverController,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public navParams: NavParams
   ) { }
 
   ngOnInit() {
+    if(this.navParams.get('project')) {
+      this.project = this.navParams.get('project');
+      this.type = 'show';
+    }
   }
 
   cancel() {
@@ -25,7 +33,15 @@ export class PopoverAddProjectPage implements OnInit {
   }
 
   save() {
-    this.popoverCtrl.dismiss(this.projectName);
+    this.popoverCtrl.dismiss(this.project);
+  }
+
+  change() {
+    this.changed = true;
+  }
+
+  delete() {
+    this.popoverCtrl.dismiss('delete');
   }
 
 }
