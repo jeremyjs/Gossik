@@ -801,6 +801,9 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'finishToDo') {
+			if(!params) {
+				params = this.startedAction;
+			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverFinishToDoPage,
 			cssClass: 'popover-finish-to-do'
@@ -809,11 +812,11 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
 					if(data.data == 'createNow') {
-						this.defineFollowUpTodoNow();
+						this.defineFollowUpTodoNow(params);
 					} else if(data.data == 'createLater') {
-						this.defineFollowUpTodoLater();
+						this.defineFollowUpTodoLater(params);
 					} else if(data.data == 'noFollowUp') {
-						this.noFollowUpTodoRequired();
+						this.noFollowUpTodoRequired(params);
 					}
 				}
 			});
@@ -1816,46 +1819,72 @@ export class HomePage {
 	}
 
 	finishToDo(todo?: Action) {
-		this.presentPopover('finishToDo');
+		this.presentPopover('finishToDo', todo);
 	}
 
-	defineFollowUpTodoLater() {
+	defineFollowUpTodoLater(todo?: Action) {
 		this.translate.get("Action finished").subscribe( translation => {
 			let capture = {} as Capture;
 			let stringInit = '';
-			if(this.goalDict[this.startedAction.goalid]) {
-				stringInit = this.goalDict[this.startedAction.goalid].name + ': ';
+			if(todo) {
+				if(this.goalDict[todo.goalid]) {
+					stringInit = this.goalDict[todo.goalid].name + ': ';
+					capture.content =  stringInit + translation + ': ' + todo.content;
+				}	
+			} else {
+				if(this.goalDict[this.startedAction.goalid]) {
+					stringInit = this.goalDict[this.startedAction.goalid].name + ': ';
+					capture.content =  stringInit + translation + ': ' + this.startedAction.content;
+				}
 			}
-			capture.content =  stringInit + translation + ': ' + this.startedAction.content;
 			capture.userid = this.auth.userid;
 			capture.active = true;
-			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-				this.db.addCapture(capture, this.auth.userid);
-				this.startedAction = {} as Action;
-				this.goToToDoPage();
-			});
+			if(todo) {
+				this.db.deleteAction(todo, this.auth.userid).then( () => {
+					this.db.addCapture(capture, this.auth.userid);
+					this.goToToDoPage();
+				});
+			} else {
+				this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+					this.db.addCapture(capture, this.auth.userid);
+					this.startedAction = {} as Action;
+					this.goToToDoPage();
+				});
+			}
 		});
 		this.translate.get(["One less, congrats!"]).subscribe( translation => {
 			this.presentToast(translation["One less, congrats!"]);
 		});
 	}
 
-	defineFollowUpTodoNow() {
-		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-			this.startedAction = {} as Action;
-			this.goToToDoPage();
-		});
+	defineFollowUpTodoNow(todo?: Action) {
+		if(todo) {
+			this.db.deleteAction(todo, this.auth.userid).then( () => {
+				this.goToToDoPage();
+			});
+		} else {
+			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+				this.startedAction = {} as Action;
+				this.goToToDoPage();
+			});
+		}
 		this.presentPopover('addToDo');
 		this.translate.get(["One less, congrats!"]).subscribe( translation => {
     		this.presentToast(translation["One less, congrats!"]);
     	});
 	}
 
-	noFollowUpTodoRequired() {
-		this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
-			this.startedAction = {} as Action;
-			this.goToToDoPage();
-		});
+	noFollowUpTodoRequired(todo?: Action) {
+		if(todo) {
+			this.db.deleteAction(todo, this.auth.userid).then( () => {
+				this.goToToDoPage();
+			});
+		} else {
+			this.db.deleteAction(this.startedAction, this.auth.userid).then( () => {
+				this.startedAction = {} as Action;
+				this.goToToDoPage();
+			});
+		}
 		this.translate.get(["One less, congrats!"]).subscribe( translation => {
     		this.presentToast(translation["One less, congrats!"]);
     	});
