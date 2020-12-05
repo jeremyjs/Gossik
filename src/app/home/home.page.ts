@@ -1827,14 +1827,18 @@ export class HomePage {
 			let capture = {} as Capture;
 			let stringInit = '';
 			if(todo) {
-				if(this.goalDict[todo.goalid]) {
+				if(todo.goalid != 'unassigned') {
 					stringInit = this.goalDict[todo.goalid].name + ': ';
 					capture.content =  stringInit + translation + ': ' + todo.content;
-				}	
+				} else {
+					capture.content =  translation + ': ' + todo.content;
+				}
 			} else {
-				if(this.goalDict[this.startedAction.goalid]) {
+				if(todo.goalid != 'unassigned') {
 					stringInit = this.goalDict[this.startedAction.goalid].name + ': ';
 					capture.content =  stringInit + translation + ': ' + this.startedAction.content;
+				} else {
+					capture.content =  translation + ': ' + todo.content;
 				}
 			}
 			capture.userid = this.auth.userid;
