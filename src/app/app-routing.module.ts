@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'home/calendar', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'home/settings', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'home/privacy-policy', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
-  { path: 'home/logout', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
+  { path: 'home/rerun-tutorial', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   {
     path: 'action-details-modal',
     loadChildren: () => import('./action-details-modal/action-details-modal.module').then( m => m.ActionDetailsModalPageModule)
@@ -90,7 +90,8 @@ const routes: Routes = [
   {
     path: 'popover-finish-to-do',
     loadChildren: () => import('./popover-finish-to-do/popover-finish-to-do.module').then( m => m.PopoverFinishToDoPageModule)
-  },  {
+  },
+  {
     path: 'popover-filter-to-dos',
     loadChildren: () => import('./popover-filter-to-dos/popover-filter-to-dos.module').then( m => m.PopoverFilterToDosPageModule)
   },

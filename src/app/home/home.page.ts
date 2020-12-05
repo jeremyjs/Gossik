@@ -536,8 +536,9 @@ export class HomePage {
 				this.goToSettingsPage();
 			} else if(page == 'privacy-policy') {
 				this.goToPrivacyPolicyPage();
-			} else if(page == 'logout') {
-				this.logout();
+			} else if(page == 'rerun-tutorial') {
+				this.db.startTutorial(this.auth.userid);
+				this.goToToDoPage();
 			} else if(page == 'give-feedback') {
 				this.goToFeedbackPage();
 			} else if(page == 'show-feedback') {
