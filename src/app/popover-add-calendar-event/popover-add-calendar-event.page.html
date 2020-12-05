@@ -32,6 +32,12 @@
       <ion-datetime (ionChange)="change()" max="2100" class="color-6049C4" [(ngModel)]="calendarEvent.endTime" displayFormat="DDDD, DD.MMM.YYYY HH:mm" pickerFormat="DDDD MMM YYYY HH:mm" placeholder="Select Date"></ion-datetime>
     </div>
   </ion-row>
+  <ion-row>
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
+      <span class="margin-vertical-center color-6049C4">{{"All Day Event" | translate}}</span>
+      <ion-toggle color="tertiary" [(ngModel)]="calendarEvent.allDay" (ionChange)="change()" class="margin-vertical-auto margin-left-10"></ion-toggle>
+    </div>
+  </ion-row>
   <ion-row *ngIf="type != 'show'" class="margin-bottom-10">
     <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
       <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
