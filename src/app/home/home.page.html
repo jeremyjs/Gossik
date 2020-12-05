@@ -603,9 +603,11 @@
             </span>
           </ion-row>
           <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 color-39297F margin-top-15">
-            <span class="font-size-18px font-weight-bold">X</span>
+            <span *ngIf="references[goal.key]" class="font-size-18px font-weight-bold">{{references[goal.key].length}}</span>
+            <span *ngIf="!references[goal.key]" class="font-size-18px font-weight-bold">0</span>
             <span class="font-size-18px margin-left-5">{{"Thoughts" | translate}}</span>
-            <span class="font-size-18px font-weight-bold margin-left-15">Y</span>
+            <span *ngIf="actions[goal.key]"class="font-size-18px font-weight-bold margin-left-15">{{actions[goal.key].length}}</span>
+            <span *ngIf="!actions[goal.key]" class="font-size-18px font-weight-bold margin-left-15">0</span>
             <span class="font-size-18px margin-left-5">{{"To-dos" | translate}}</span>
           </ion-row>
         </ion-row>
