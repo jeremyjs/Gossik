@@ -2447,7 +2447,6 @@ export class HomePage {
 			duration = this.duration;
 		}
 		this.doableActionArray = [];
-		this.chosenGoalArray = [];
 		for(let action of this.actionArray) {
 			if(action.active != false) {
 				let attributeCheck: boolean = true;
