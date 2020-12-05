@@ -53,6 +53,8 @@ export class AppComponent {
                 this.isAdmin = userProfile.isAdmin;
               }
             });
+          } else {
+            this.loggedin = false;
           }
       });
     });

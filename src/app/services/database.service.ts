@@ -39,7 +39,6 @@ export class DatabaseService {
 
     logout() {
         this.db.database.goOffline();
-
     }
 
     login() {

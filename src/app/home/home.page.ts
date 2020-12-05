@@ -617,12 +617,9 @@ export class HomePage {
 				});
 			  	this.changePageViaMenu();
 			  } else {
-			  	this.loggedin = false;
+				  this.loggedin = false;
 			    this.goToLoginPage();
 			  }
-			},
-			() => {
-			  this.goToLoginPage();
 			}
 		);
   	}
@@ -947,13 +944,10 @@ export class HomePage {
 			email: this.loginEmail,
 			password: this.loginPassword
 		};
-		this.db.login();
 		this.auth.signInWithEmail(credentials)
 			.then(
 				() => {
-						this.auth.afAuth.authState.subscribe( user => {
-							//this.goToToDoPage();
-						});
+					this.db.login();
 				},
 				error => this.loginError = error.message
 			);
@@ -1005,11 +999,11 @@ export class HomePage {
 
   	// SettingsPage functions
   	logout() {
-  		this.db.logout();
-		this.auth.signOut();
-		this.pageTitle = '';
-		this.goToLoginPage();
-
+		this.db.logout();
+		this.auth.signOut().then( () => {
+			this.pageTitle = '';
+			this.goToLoginPage();
+		});
     }
 
     goToFeedbackPage() {
@@ -1067,7 +1061,7 @@ export class HomePage {
 		}
 		*/
 		this.functions.httpsCallable('trackingSystemNew')({startDate: new Date("2020-08-05T00:00:00.138Z").toISOString()}).subscribe( data => {
-			console.log(data);
+			//(data);
 		})
 	}
 	

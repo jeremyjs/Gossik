@@ -15,7 +15,7 @@ export class AuthenticationService {
   		afAuth.authState.subscribe(user => {
 			this.user = user;
 		});
-  	}
+	  }
 
   	signInWithEmail(credentials) {
   		return this.afAuth.auth.signInWithEmailAndPassword(credentials.email,
@@ -26,7 +26,7 @@ export class AuthenticationService {
 		return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
 	}
 
-	signOut(): Promise<void> {
+	signOut() {
 		return this.afAuth.auth.signOut();
 	}
 
