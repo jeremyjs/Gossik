@@ -33,6 +33,7 @@ export class PopoverAddCalendarEventPage implements OnInit {
       this.calendarEvent.endTime = this.calendarEvent.endTime.toISOString();
       this.type = 'show';
     }
+    console.log(!this.calendarEvent.goalid);
   }
 
   ngOnInit() {
