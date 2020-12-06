@@ -41,12 +41,12 @@
   </ion-row>
   <ion-row class="width-90 margin-horizontal-auto margin-bottom-20 max-height-150px overflow-scroll no-scrollbar">
     <div *ngFor="let attribute of attributeArray" class="margin-right-20 margin-top-20">
-      <div *ngIf="chosenAttributeArray.indexOf(attribute.key) == -1" class="padding-10 background-EDF2FF border-radius-10px" (click)="chooseAttribute(attribute.key)">
+      <div *ngIf="chosenAttributeArray.indexOf(attribute.content) == -1" class="padding-10 background-EDF2FF border-radius-10px" (click)="chooseAttribute(attribute.content)">
         <span class="font-size-15px color-B4AEE7">
           <img src="../../assets/icon/purple/icon_checkbox.svg" height="14">
           #{{attribute.content}}</span>
       </div>
-      <div *ngIf="chosenAttributeArray.indexOf(attribute.key) != -1" class="padding-10 background-6049C4 border-radius-10px" (click)="chooseAttribute(attribute.key)">
+      <div *ngIf="chosenAttributeArray.indexOf(attribute.content) != -1" class="padding-10 background-6049C4 border-radius-10px" (click)="chooseAttribute(attribute.content)">
         <span class="font-size-15px color-FFFFFF">
           <img src="../../assets/icon/purple/icon_checkbox_checked.svg" height="14">
           #{{attribute.content}}</span>

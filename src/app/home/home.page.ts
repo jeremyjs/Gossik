@@ -1249,31 +1249,31 @@ export class HomePage {
 		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.actionArray.length >= 10) {
 			this.presentAlert("unpaidLimitedFeaturesSubscription");
 		} else {
-			/*let captureContentParts = this.captureContent.split('#');
-			for(let iter= 0; iter < captureContentParts.length; iter++) {
-				if(/\s$/.test(captureContentParts[iter])) {
-					captureContentParts[iter] = captureContentParts[iter].slice(0,-1);
+			let attributes = todo.content.split('#');
+			todo.content = attributes.shift();
+			for(let iter= 0; iter < attributes.length; iter++) {
+				while(/\s$/.test(attributes[iter])) {
+					attributes[iter] = attributes[iter].slice(0,-1);
 				}
 			}
-			let captureAttributes = [...captureContentParts];
-			while(captureAttributes.length > 0) {
+			todo.attributes = [...attributes];
+			while(attributes.length > 0) {
 				let checkAttribute: Attribute = {
 					userid: this.auth.userid,
 					active: true,
 					createDate: new Date().toISOString(),
-					content: captureAttributes.pop()
+					content: attributes.pop()
 				}
-				let saveAttribute: boolean = true;
+				let newAttribute: boolean = true;
 				for(let attribute of this.attributeArray) {
 					if(attribute.content == checkAttribute.content) {
-						saveAttribute = false;
+						newAttribute = false;
 					}
 				}
-				if(saveAttribute) {
+				if(newAttribute) {
 					this.db.addAttribute(checkAttribute, this.auth.userid);
 				}
 			}
-			*/
 			todo.userid = this.auth.userid;
 			todo.active = true;
 			todo.taken = false;
