@@ -44,7 +44,10 @@ export class PopoverAddToDoPage implements OnInit {
     }
     this.translate.get(this.priorities).subscribe( translation => {
       this.priorities = ["", translation["Low"], translation["Medium"], translation["High"]];
-    })
+    });
+    if(this.todo.deadline) {
+      this.deadlineText = new Date (this.todo.deadline).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
+    }
   }
 
   cancel() {

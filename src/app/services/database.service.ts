@@ -358,6 +358,19 @@ export class DatabaseService {
     editAction(action: Action, userid) {
         let actionkey = action.key;
         delete action.key;
+        if(action.deadline) {
+            this.db.object<CalendarEvent>('/users/' + userid + '/calendarEvents/' + action.deadlineid)
+            .valueChanges()
+            .pipe(take(1))
+            .subscribe( event => {
+                if(event) {
+                    event.key = action.deadlineid;
+                    event.startTime = new Date(action.deadline).toISOString(),
+					event.endTime = new Date (new Date(action.deadline).getTime() + 3600*1000).toISOString(),
+                    this.editCalendarEvent(event, userid);
+                }
+            });
+        }
         return this.db.database.ref('/users/' + userid + '/nextActions/' + actionkey).set(action);
     }
 
