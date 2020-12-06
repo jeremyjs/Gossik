@@ -1,3 +1,4 @@
+import { EventHandlerVars } from '@angular/compiler/src/compiler_util/expression_converter';
 import { Component, OnInit } from '@angular/core';
 import { PickerController, PopoverController, NavParams } from '@ionic/angular';
 
@@ -33,7 +34,6 @@ export class PopoverAddCalendarEventPage implements OnInit {
       this.calendarEvent.endTime = this.calendarEvent.endTime.toISOString();
       this.type = 'show';
     }
-    console.log(!this.calendarEvent.goalid);
   }
 
   ngOnInit() {
@@ -77,6 +77,11 @@ export class PopoverAddCalendarEventPage implements OnInit {
             handler: (value) => {
               console.log(value);
               this.calendarEvent.goalid = value.project.value;
+              if(this.goalDict[value.project.value].color) {
+                this,this.calendarEvent.color = this.goalDict[value.project.value].color;
+              } else {
+                this.calendarEvent.color = "#EDF2FF";
+              }
             }
           }
         ]
