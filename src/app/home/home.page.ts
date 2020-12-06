@@ -2204,6 +2204,15 @@ export class HomePage {
 		}
 		calendarEvent.startTime = new Date(calendarEvent.startTime);
 		calendarEvent.endTime = new Date(calendarEvent.endTime);
+		let events = this.eventSource;
+		let index = events.indexOf(calendarEvent);
+		events[index] = calendarEvent;
+		let calendarEventsIndex = this.calendarEvents.indexOf(calendarEvent);
+		this.calendarEvents[calendarEventsIndex] = calendarEvent;
+		this.eventSource = [];
+		setTimeout(() => {
+			this.eventSource = events;
+		});
 	}
 
 	deleteCalendarEvent(event: CalendarEvent) {
