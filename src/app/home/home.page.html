@@ -347,7 +347,16 @@
       </div>
     </div>
     <div *ngIf="pageCtrl == 'suggestions'" class="margin-top-25 height-100-minus-45px overflow-scroll no-scrollbar">
-      <div class="border-radius-15px background-EDF2FF padding-20 width-100">
+      <div *ngIf="suggestionArray.length > 0">
+        <ion-row class="margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let suggestion of suggestionArray">
+          <button  class="transparent text-align-left" (click)="showSuggestion(suggestion)">
+            <span class="font-size-18px color-39297F">
+              {{suggestion.title}}
+            </span>
+          </button>
+        </ion-row>
+      </div>
+      <div *ngIf="suggestionArray.length == 0" class="border-radius-15px background-EDF2FF padding-20 width-100">
         <ion-row class="font-size-18px color-39297F margin-auto display-block width-100 text-align-center">{{"After you’ve started using Gossik for some days I’ll be able to show you statistics on how you progress with your to-dos and I will be able to suggest improvements!" | translate}}</ion-row>
         <ion-row>
           <img src="../../assets/icon/purple/empty_state_assistant.svg" height="250" class="margin-horizontal-auto">

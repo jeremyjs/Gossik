@@ -12,6 +12,7 @@ import { Attribute } from '../../model/attribute/attribute.model';
 import { TranslateService } from '@ngx-translate/core';
 
 import { map, take } from 'rxjs/operators';
+import { Suggestion } from 'src/model/suggestion/suggestion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -322,6 +323,22 @@ export class DatabaseService {
 
     getAttributeListFromUser(userid) {
         return this.db.list<Attribute>('users/' + userid + '/attributes');
+    }
+
+    getSuggestionListFromUser(userid) {
+        return this.db.list<Suggestion>('users/' + userid + '/suggestions');
+    }
+
+    deleteSuggestion(suggestion: Suggestion, userid) {
+        suggestion.active = false;
+        suggestion.deleteDate = new Date().toISOString();
+        return this.editSuggestion(suggestion, userid);
+    }
+
+    editSuggestion(suggestion: Suggestion, userid) {
+        let suggestionkey = suggestion.key;
+        delete suggestion.key;
+        return this.db.database.ref('/users/' + userid + '/suggestions/' + suggestionkey).set(suggestion);
     }
 
     getActionFromActionid(actionid: string, userid) {

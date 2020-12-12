@@ -47,6 +47,8 @@ import { FirebaseX } from "@ionic-native/firebase-x/ngx";
 import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy.page';
 import { PopoverFilterToDosPage } from '../popover-filter-to-dos/popover-filter-to-dos.page';
 import { PopoverInteractionPage } from '../popover-interaction/popover-interaction.page';
+import { Suggestion } from 'src/model/suggestion/suggestion.model';
+import { PopoverInteractionPageModule } from '../popover-interaction/popover-interaction.module';
 
 @Component({
   selector: 'app-home',
@@ -182,7 +184,8 @@ export class HomePage {
 	showOptionals: boolean;
 	assistant: string;
 	references: any;
-	attributeArray: any[];
+	attributeArray: Attribute[];
+	suggestionArray: Suggestion[];
 	chosenAttributeArray: any[] = [];
 	smartAssistantToggle: boolean;
 	calendarEventsToday: CalendarEvent[] = [];
@@ -491,6 +494,29 @@ export class HomePage {
 		});
 	}
 
+	getSuggestions() {
+		this.db.getSuggestionListFromUser(this.auth.userid)
+		  	.snapshotChanges()
+		  	.pipe(
+				map(
+					changes => { 
+						return changes.map( c => {
+							let suggestion: Suggestion = { 
+								key: c.payload.key, ...c.payload.val()
+								};
+							return suggestion;
+			});
+		}))
+		.subscribe( suggestionArray => {
+			this.suggestionArray = [];
+			for( let suggestion of suggestionArray) {
+				if(suggestion.active != false) {
+					this.suggestionArray.push(suggestion);
+				}
+			}
+		});
+	}
+
 	initPushNotifications() {
 		this.firebase.getToken().then(token => {
 			this.db.saveDeviceToken(this.auth.userid, token);
@@ -589,6 +615,7 @@ export class HomePage {
 				this.getCaptures();
 				this.getReferences();
 				this.getAttributes();
+				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
 					this.isAdmin = this.userProfile.isAdmin;
@@ -964,6 +991,24 @@ export class HomePage {
 						let title = '(7/8)';
 						this.presentPopover('showInteraction', [text, buttons, title, 5]);
 					}
+				} else if(params[3] == 'suggestion') {
+					if(data.data) {
+						if(params[4].type == 'IncreasePriority') {
+							if(data.data == 'Follow suggestion') {
+								let todo = this.actionArray[this.actionArray.findIndex(todo => todo.key == params[4].todoid)];
+								todo.priority = 3;
+								this.db.editAction(todo, this.auth.userid).then( () => {
+									this.db.deleteSuggestion(params[4], this.auth.userid).then( () => {
+										this.translate.get(["Priority has been increased"]).subscribe( translation => {
+											this.presentToast(translation["Priority has been increased"]);
+									  });
+									});
+								});
+							} else {
+								this.db.deleteSuggestion(params[4], this.auth.userid);
+							}
+						}
+					}
 				}
 			});
 		}
@@ -1245,6 +1290,10 @@ export class HomePage {
 
 	showThought(thought, type) {
 		this.presentPopover('showThought', [thought, type]);
+	}
+
+	showSuggestion(suggestion: Suggestion) {
+		this.presentPopover('showInteraction', [suggestion.content, ["Follow suggestion", "Reject suggestion"], 'Suggestion', 'suggestion', suggestion]);
 	}
 
   	goToProcessPage() {

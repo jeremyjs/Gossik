@@ -9,8 +9,8 @@
     <span class="font-size-17px margin-left-15 width-100-minus-100px background-EDF2FF border-radius-15px color-39297F padding-20 max-height-250px overflow-scroll no-scrollbar">{{text | translate}}</span>
   </ion-row>
   <ion-row class="padding-10 background-EDF2FF margin-top-10">
-    <span class="margin-auto" *ngFor="let button of buttons">
-      <button class="font-size-20px padding-10 border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="clickButton(button)">{{button | translate}}</button>
-    </span>
+    <div class="width-100 margin-bottom-10 flex" *ngFor="let button of buttons">
+      <button class="font-size-20px padding-10 border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto" (click)="clickButton(button)">{{button | translate}}</button>
+    </div>
   </ion-row>
 </ion-content>
