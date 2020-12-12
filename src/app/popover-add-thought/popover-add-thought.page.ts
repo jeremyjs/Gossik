@@ -44,8 +44,6 @@ export class PopoverAddThoughtPage implements OnInit {
   }
 
   save() {
-    console.log(this.thought);
-    console.log(this.goalid);
     this.popoverCtrl.dismiss([this.thought, this.goalid]);
   }
 

@@ -860,7 +860,24 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				if(data.data) {
+				console.log('clicked');
+				console.log(data.data);
+				console.log(params[0]);
+				console.log(params[1]);
+				if(data.data && params[0].goalid) {
+					// Assigned thought, i.e. reference
+					console.log('reference');
+					if(data.data == 'delete') {
+						console.log('delete');
+						this.deleteReference(params[0]);
+					} else if(data.data == 'createToDo') {
+						this.presentPopover('addToDo', params[0]);
+					} else {
+						data.data[0].goalid = data.data[1];
+						this.db.editReference(data.data[0], this.auth.userid);
+					}
+				} else {
+					// Unassigned thought, i.e. capture
 					if(data.data == 'delete') {
 						this.deleteCapture(params[0]);
 					} else if(data.data == 'createToDo') {
