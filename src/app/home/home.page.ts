@@ -1013,7 +1013,7 @@ export class HomePage {
 						if(params[4].type == 'IncreasePriority') {
 							if(data.data == 'Follow suggestion') {
 								let todo = this.actionArray[this.actionArray.findIndex(todo => todo.key == params[4].todoid)];
-								todo.priority = 3;
+								todo.priority = todo.priority + 1;
 								this.db.editAction(todo, this.auth.userid).then( () => {
 									this.db.deleteSuggestion(params[4], this.auth.userid).then( () => {
 										this.translate.get(["Priority has been increased"]).subscribe( translation => {

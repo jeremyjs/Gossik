@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { Suggestion } from '../../src/model/suggestion/suggestion.model';
+import { Action } from '../../src/model/action/action.model';
 admin.initializeApp();
 
 // // Start writing Firebase Functions
@@ -206,6 +208,83 @@ exports.deadlinePush = functions.pubsub.schedule('0 * * * *').onRun((context) =>
 						Object.values(user.val().devices).forEach( (device) => {
 							promises.push(admin.messaging().sendToDevice(String(device), payload));
 						});
+					}
+				});
+	   		}
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
+
+exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( (users: any) => {
+		let promises: Promise<any>[] = [];
+		let message: any = {
+			en: {
+				title_1: "Increase priority of to-do '",
+				title_2: "'",
+				content_1: "The deadline of your to-do '",
+				content_2: "' is approaching soon. I suggest to increase the priority to get it done in time."
+			},
+			de: {
+				title_1: "Erhöhe Priorität für ToDo '",
+				title_2: "'",
+				content_1: "Die Deadline für dein ToDo '",
+				content_2: "' kommt näher. Ich schlage vor, die Priorität zu erhöhen, um es rechtzeitig zu erledigen."
+			}
+		};
+   		users.forEach(function(user: any) {
+			let language = 'en';
+			if(user.val().profile && user.val().profile.language) {
+				language = user.val().profile.language;
+			}
+   			if(user.val().calendarEvents) {
+	   			Object.values(user.val().calendarEvents).forEach( (calendarEvent: any) => {
+					if(calendarEvent.actionid &&  calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() - new Date().getTime() <= 5*24*3600*1000 && new Date(calendarEvent.startTime).getTime() - new Date().getTime() >= 4*24*3600*1000) {
+						// deadline isch in 4-5 täg
+						let todo: Action = user.val().nextActions[calendarEvent.actionid];
+						let title = message.en.title_1 + todo.content + message.en.title_2;
+						let content = message.en.content_1 + todo.content + message.en.content_2;
+						if(message[language]) {
+							title = message[language].title_1 + todo.content + message[language].title_2;
+							content = message[language].content_1 + todo.content + message[language].content_2;
+						}
+						let suggestion: Suggestion = {
+							userid: user.key,
+							title: title,
+							content: content,
+							type: "IncreasePriority",
+							todoid: calendarEvent.actionid,
+							active: true,
+							createDate: new Date().toISOString()
+						}
+						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+					} else if(calendarEvent.actionid && calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() - new Date().getTime() <= 2*24*3600*1000 && new Date(calendarEvent.startTime).getTime() - new Date().getTime() >= 24*3600*1000) {
+						// deadline isch in 1-2 täg
+						let todo: Action = user.val().nextActions[calendarEvent.actionid];
+						let title = message.en.title_1 + todo.content + message.en.title_2;
+						let content = message.en.content_1 + todo.content + message.en.content_2;
+						if(message[language]) {
+							title = message[language].title_1 + todo.content + message[language].title_2;
+							content = message[language].content_1 + todo.content + message[language].content_2;
+						}
+						let suggestion: Suggestion = {
+							userid: user.key,
+							title: title,
+							content: content,
+							type: "IncreasePriority",
+							todoid: calendarEvent.actionid,
+							active: true,
+							createDate: new Date().toISOString()
+						}
+						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
 					}
 				});
 	   		}
