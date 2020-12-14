@@ -369,7 +369,7 @@ exports.setRandomPushTimes = functions.pubsub.schedule('50 * * * *').onRun((cont
 			if(timeNowConverted.getHours() == 23) {
 	   			let randomPushTimes: number[] = [];
 	   			let numberPushForAssistant: any = {};
-				numberPushForAssistant['still'] = 0;
+				numberPushForAssistant['silent'] = 0;
 				numberPushForAssistant['chiller'] = 1;
 				numberPushForAssistant['standard'] = 3;
 				numberPushForAssistant['pusher'] = 5;
@@ -483,7 +483,7 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 			if(user.val().devices && user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				let numberPushForAssistant: any = {};
-				numberPushForAssistant['still'] = 0;
+				numberPushForAssistant['silent'] = 0;
 				numberPushForAssistant['chiller'] = 1;
 				numberPushForAssistant['standard'] = 3;
 				numberPushForAssistant['pusher'] = 5;

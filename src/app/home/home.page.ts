@@ -1026,6 +1026,10 @@ export class HomePage {
 							}
 						}
 					}
+				} else if(params[3] == 'assignAssistant') {
+					if(data.data) {
+						this.db.updateAssistant(this.auth.userid, data.data);
+					}
 				}
 			});
 		}
@@ -1138,16 +1142,16 @@ export class HomePage {
 		this.pageCtrl = event.detail.value;
 	}
 
-    assignAssistant(assistant?: string) {
+    assignAssistant() {
 		if(this.userProfile.subscription == 'assistantFeature' && !this.userProfile.subscriptionPaid) {
 			this.presentAlert("unpaidAssistantSubscription");
 			this.assistant = 'silent';
 			this.db.updateAssistant(this.auth.userid, this.assistant);
 		} else {
-			if(assistant) {
-				this.assistant = assistant;
-			}
-			this.db.updateAssistant(this.auth.userid, this.assistant);
+			let title : string = "Choose assistant type";
+			let text: string = "assistant description";
+			let buttons: string[] = ["Silent", "Chiller", "Standard", "Pusher"];
+			this.presentPopover('showInteraction', [text, buttons, title, 'assignAssistant']);
 		}
 	}
 
