@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar *ngIf="loggedin " id="headerr" class="height-169px">
+	<ion-toolbar *ngIf="loggedin && viewpoint != 'ActionPage'" id="headerr" class="height-169px">
     <div class="width-100 height-169px headerr">
       <ion-grid *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && loggedin">
         <ion-row>
