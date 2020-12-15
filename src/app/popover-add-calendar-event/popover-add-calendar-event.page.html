@@ -33,8 +33,10 @@
     </div>
   </ion-row>
   <ion-row *ngIf="calendarEvent.allDay">
-    <button class="font-size-16px transparent no-padding text-align-left display-inline-block color-6049C4 margin-left-5" (click)="assignDeadline()">{{deadlineText}}
-    </button>
+    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
+      <button class="font-size-16px transparent no-padding text-align-left display-inline-block color-6049C4 margin-left-5" (click)="assignDeadline()">{{deadlineText}}
+      </button>
+    </div>
   </ion-row>
   <ion-row>
     <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">

@@ -38,9 +38,7 @@ export class PopoverAddCalendarEventPage implements OnInit {
       this.calendarEvent.endTime = this.calendarEvent.endTime.toISOString();
       this.type = 'show';
     }
-    if(this.calendarEvent.allDay) {
-      this.deadlineText = new Date (this.calendarEvent.startTime).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
-    }
+    this.deadlineText = new Date (this.calendarEvent.startTime).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
   }
 
   ngOnInit() {
