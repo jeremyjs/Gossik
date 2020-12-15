@@ -920,12 +920,12 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
+				params.startTime = new Date(params.startTime);
+				params.endTime = new Date(params.endTime);
 				if(data.data) {
 					if(data.data == 'delete') {
 						this.deleteCalendarEvent(params);
 					} else {
-						console.log('new event');
-						console.log(data.data);
 						this.editCalendarEvent(data.data);
 					}
 				}
