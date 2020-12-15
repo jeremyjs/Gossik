@@ -160,18 +160,18 @@ export class PopoverAddToDoPage implements OnInit {
   }
 
   assignDeadline() {
-    let modal = this.modalCtrl.create({
-    component: ChangeWeekModalPage
-  }).then (modal => {
-    modal.present();
-    modal.onDidDismiss().then(data => {
-      if(data.data) {
-        this.changed = true;
-        this.todo.deadline = data.data.toISOString();
-        this.deadlineText = new Date (this.todo.deadline).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
-      }
+    this.modalCtrl.create({
+      component: ChangeWeekModalPage
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(data => {
+        if(data.data) {
+          this.changed = true;
+          this.todo.deadline = data.data.toISOString();
+          this.deadlineText = new Date (this.todo.deadline).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
+        }
+      });
     });
-  });
   }
 
 }

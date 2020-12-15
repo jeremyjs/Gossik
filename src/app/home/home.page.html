@@ -509,14 +509,14 @@
         </ion-row>
       </div>
       <div *ngIf="pageCtrl == 'projects'" class="height-100-minus-64px overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
-        <ion-row (click)="goToProjectOverviewPage(goal)" class="margin-horizontal-auto margin-bottom-20 border-radius-15px seperating-border-bottom background-F6F7FB padding-15 width-100" *ngFor="let goal of goalArray">
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100">
+        <ion-row (click)="goToProjectOverviewPage(goal)" class="margin-horizontal-auto margin-bottom-20 border-radius-15px seperating-border-bottom background-F6F7FB padding-15 width-100" *ngFor="let goal of goalArray.slice(1)">
+          <ion-row class="width-100">
             <ion-card class="project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
             <span class="font-size-20px margin-left-7 font-weight-bold width-100-minus-30px one-line overflow-x-hidden color-39297F">
               {{goal.name}}
             </span>
           </ion-row>
-          <ion-row *ngIf="goal.key != 'unassigned'" class="width-100 color-39297F margin-top-15">
+          <ion-row class="width-100 color-39297F margin-top-15">
             <span *ngIf="references[goal.key]" class="font-size-18px font-weight-bold">{{references[goal.key].length}}</span>
             <span *ngIf="!references[goal.key]" class="font-size-18px font-weight-bold">0</span>
             <span class="font-size-18px margin-left-5">{{"Thoughts" | translate}}</span>

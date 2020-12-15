@@ -51,8 +51,9 @@ export class ChangeWeekModalPage implements OnInit {
   ngOnInit() {
   }
 
-  dateSelected(date) {
-  	this.modalCtrl.dismiss(date);
+  dateSelected(date: Date) {
+    let dateAdd1Hour: Date = new Date(date.getTime() + 3600*1000);
+  	this.modalCtrl.dismiss(dateAdd1Hour);
   }
 
   cancel() {

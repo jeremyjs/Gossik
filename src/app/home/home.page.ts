@@ -924,6 +924,8 @@ export class HomePage {
 					if(data.data == 'delete') {
 						this.deleteCalendarEvent(params);
 					} else {
+						console.log('new event');
+						console.log(data.data);
 						this.editCalendarEvent(data.data);
 					}
 				}
@@ -2231,7 +2233,8 @@ export class HomePage {
 			calendarEvent.goalid = '';
 		} else {
 			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
-			if(goal) {
+			console.log(goal);
+			if(goal && goal.key != 'unassigned') {
 				calendarEvent.color = goal.color;
 			} else {
 				calendarEvent.color = "#EDF2FF";
@@ -2293,7 +2296,7 @@ export class HomePage {
 			calendarEvent.goalid = '';
 		} else {
 			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
-			if(goal) {
+			if(goal && goal.key != 'unassigned') {
 				calendarEvent.color = goal.color;
 			} else {
 				calendarEvent.color = "#EDF2FF";

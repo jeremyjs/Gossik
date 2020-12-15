@@ -1,9 +1,10 @@
 import { EventHandlerVars } from '@angular/compiler/src/compiler_util/expression_converter';
 import { Component, OnInit } from '@angular/core';
-import { PickerController, PopoverController, NavParams } from '@ionic/angular';
+import { PickerController, PopoverController, NavParams, ModalController } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CalendarEvent } from 'src/model/calendarEvent/calendarEvent.model';
+import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
 
 @Component({
   selector: 'app-popover-add-calendar-event',
@@ -16,12 +17,15 @@ export class PopoverAddCalendarEventPage implements OnInit {
   goalDict: any;
   type: any;
   changed: boolean = false;
+  deadlineText: string;
+  deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   constructor(
     public popoverCtrl: PopoverController,
     public translate: TranslateService,
     public pickerCtrl: PickerController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public modalCtrl: ModalController
   ) { 
     this.goalDict = this.navParams.get('goalDict');
     if(this.navParams.get('startTime')) {
@@ -33,6 +37,9 @@ export class PopoverAddCalendarEventPage implements OnInit {
       this.calendarEvent.startTime = this.calendarEvent.startTime.toISOString();
       this.calendarEvent.endTime = this.calendarEvent.endTime.toISOString();
       this.type = 'show';
+    }
+    if(this.calendarEvent.allDay) {
+      this.deadlineText = new Date (this.calendarEvent.startTime).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
     }
   }
 
@@ -118,6 +125,22 @@ export class PopoverAddCalendarEventPage implements OnInit {
       }
     }
     return options;
+  }
+
+  assignDeadline() {
+    this.modalCtrl.create({
+      component: ChangeWeekModalPage
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(data => {
+        if(data.data) {
+          this.changed = true;
+          this.calendarEvent.startTime = data.data.toISOString();
+          this.calendarEvent.endTime = new Date(data.data.getTime() + 3600*1000).toISOString();
+          this.deadlineText = new Date (this.calendarEvent.startTime).toLocaleDateString(this.translate.currentLang, this.deadlineFormatOptions);
+        }
+      });
+    });
   }
 
 }
