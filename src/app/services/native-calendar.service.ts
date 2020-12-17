@@ -36,7 +36,7 @@ export class NativeCalendarService {
   }
 
   async loadEventsFromNativeCalendar() {
-	this.userProfile = await this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1));
+	this.userProfile = await this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).toPromise();
 	let events = [];
 	let calendarEvents: CalendarEvent[] = [];
 	if(this.platform.is('ios') || this.platform.is('android')) {
@@ -62,8 +62,8 @@ export class NativeCalendarService {
 			calendarEvent.eventLocation = event.eventLocation;
 			calendarEvent.allDay = event.allDay;
 		} else if(this.platform.is('ios')) {
-			calendarEvent.startTime = new Date(new Date(event.startDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
-			calendarEvent.endTime = new Date(new Date(event.endDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
+			calendarEvent.startTime = new Date(new Date(event.startDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset*60*1000);
+			calendarEvent.endTime = new Date(new Date(event.endDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset*60*1000);
 			calendarEvent.event_id = event.id;
 		}
 		calendarEvents.push(calendarEvent);
