@@ -187,7 +187,6 @@ export class HomePage {
 	attributeArray: Attribute[];
 	suggestionArray: Suggestion[];
 	chosenAttributeArray: any[] = [];
-	smartAssistantToggle: boolean;
 	calendarEventsToday: CalendarEvent[] = [];
 	elapsedTime: number;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -618,6 +617,9 @@ export class HomePage {
 				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					if(this.userProfile.smartAssistant == undefined) {
+						this.db.switchSmartAssistant(true, this.auth.userid);
+					}
 					this.isAdmin = this.userProfile.isAdmin;
 					this.updateTimezoneOffset();
 					this.assistant = this.userProfile.assistant;
@@ -2581,12 +2583,13 @@ export class HomePage {
       return options;
 	}
 	
-	smartAssistant() {
+	smartAssistant(event) {
 		this.sortToDosByPriority();
+		this.db.switchSmartAssistant(event.detail.checked, this.auth.userid);
 	}
 
 	sortToDosByPriority() {
-		if(this.smartAssistantToggle) {
+		if(this.userProfile.smartAssistant) {
 			this.doableActionArray.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
 		} else {
 			this.doableActionArray.sort((a, b) => (a.priority < b.priority) ? 1 : -1);

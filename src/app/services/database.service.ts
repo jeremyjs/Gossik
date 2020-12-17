@@ -31,6 +31,7 @@ export class DatabaseService {
         this.userData.profile = {
             email: email,
             assistant: 'standard',
+            smartAssistant: false,
             tutorial: true,
             timezoneOffset: new Date().getTimezoneOffset()
         }
@@ -64,6 +65,10 @@ export class DatabaseService {
 
     updateAssistant(userid, assistant) {
         return this.db.list('users/'+ userid + '/profile').set('assistant', assistant);
+    }
+
+    switchSmartAssistant(smartAssistant, userid) {
+        return this.db.list('users/' + userid + '/profile').set('smartAssistant', smartAssistant);
     }
 
     initiateLearnedSchedule(userid) {

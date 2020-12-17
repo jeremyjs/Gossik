@@ -879,7 +879,7 @@
         </ion-row>
         <ion-row class="margin-horizontal-auto">
           <span class="margin-top-10 flex background-EDF2FF border-radius-10px color-6049C4">
-          <ion-toggle color="tertiary" [(ngModel)]="smartAssistantToggle" (ionChange)="smartAssistant()" class="margin-vertical-auto"></ion-toggle>
+          <ion-toggle color="tertiary" [(ngModel)]="userProfile.smartAssistant" (ionChange)="smartAssistant($event)" class="margin-vertical-auto"></ion-toggle>
           <span class="margin-vertical-auto font-size-18px">{{"Smart assistant" | translate}}</span>
           <button (click)="showInfo('smartAssistant')" class="transparent">
             <img src="../../assets/icon/purple/icon_info.svg" class="margin-left-7-auto" height="24">
