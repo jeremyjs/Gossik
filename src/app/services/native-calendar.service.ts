@@ -14,6 +14,7 @@ import { map, take } from 'rxjs/operators';
 export class NativeCalendarService {
 
 	calendars = [];
+	userProfile: any;
 
   constructor(
   	private calendar: Calendar,
@@ -25,7 +26,10 @@ export class NativeCalendarService {
 	  		if(platform.is('cordova')) {
 	  			this.calendar.listCalendars().then( data => {
 		  			this.calendars = data;
-		  		});
+				});
+				this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
+					this.userProfile = userProfile;
+				});  
 	  		}
 	  	});
   	}
@@ -60,8 +64,8 @@ export class NativeCalendarService {
   			calendarEvent.eventLocation = event.eventLocation;
   			calendarEvent.allDay = event.allDay;
   		} else if(this.platform.is('ios')) {
-  			calendarEvent.startTime = new Date(event.startDate.replace(' ', 'T'));
-  			calendarEvent.endTime = new Date(event.endDate.replace(' ', 'T'));
+  			calendarEvent.startTime = new Date(new Date(event.startDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
+  			calendarEvent.endTime = new Date(new Date(event.endDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
   			calendarEvent.event_id = event.id;
   		}
   		calendarEvents.push(calendarEvent);
