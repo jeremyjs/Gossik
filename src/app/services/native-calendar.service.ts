@@ -27,9 +27,6 @@ export class NativeCalendarService {
 	  			this.calendar.listCalendars().then( data => {
 		  			this.calendars = data;
 				});
-				this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
-					this.userProfile = userProfile;
-				});  
 	  		}
 	  	});
   	}
@@ -39,38 +36,41 @@ export class NativeCalendarService {
   }
 
   async loadEventsFromNativeCalendar() {
-  	let events = [];
-  	let calendarEvents: CalendarEvent[] = [];
-  	if(this.platform.is('ios') || this.platform.is('android')) {
-		let start = new Date();
-		let end = new Date();
-		start.setDate(start.getDate() - 365);
-		end.setDate(end.getDate() + 5 * 365);
-	  	let nativeEvents = await this.calendar.listEventsInRange(start, end);
-	  	events.push(...nativeEvents);
-  	}
-  	for (let event of events) {
-  		let calendarEvent = {
-  			userid: this.auth.userid,
-  			title: event.title,
-  			active: true,
-  			native: true,
-  			color: "#EDF2FF"
-  		} as CalendarEvent;
-  		if(this.platform.is('android')) {
-  			calendarEvent.startTime = new Date(event.dtstart);
-  			calendarEvent.endTime = new Date(event.dtend);
-  			calendarEvent.event_id = event.event_id;
-  			calendarEvent.eventLocation = event.eventLocation;
-  			calendarEvent.allDay = event.allDay;
-  		} else if(this.platform.is('ios')) {
-  			calendarEvent.startTime = new Date(new Date(event.startDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
-  			calendarEvent.endTime = new Date(new Date(event.endDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
-  			calendarEvent.event_id = event.id;
-  		}
-  		calendarEvents.push(calendarEvent);
-  	}
-	return calendarEvents;
+	this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
+		this.userProfile = userProfile;
+		let events = [];
+		let calendarEvents: CalendarEvent[] = [];
+		if(this.platform.is('ios') || this.platform.is('android')) {
+			let start = new Date();
+			let end = new Date();
+			start.setDate(start.getDate() - 365);
+			end.setDate(end.getDate() + 5 * 365);
+			let nativeEvents = await this.calendar.listEventsInRange(start, end);
+			events.push(...nativeEvents);
+		}
+		for (let event of events) {
+			let calendarEvent = {
+				userid: this.auth.userid,
+				title: event.title,
+				active: true,
+				native: true,
+				color: "#EDF2FF"
+			} as CalendarEvent;
+			if(this.platform.is('android')) {
+				calendarEvent.startTime = new Date(event.dtstart);
+				calendarEvent.endTime = new Date(event.dtend);
+				calendarEvent.event_id = event.event_id;
+				calendarEvent.eventLocation = event.eventLocation;
+				calendarEvent.allDay = event.allDay;
+			} else if(this.platform.is('ios')) {
+				calendarEvent.startTime = new Date(new Date(event.startDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
+				calendarEvent.endTime = new Date(new Date(event.endDate.replace(' ', 'T')).getTime() - this.userProfile.timezoneOffset);
+				calendarEvent.event_id = event.id;
+			}
+			calendarEvents.push(calendarEvent);
+		}
+		return calendarEvents;
+	});  
   }
 
   deleteEvent(eventId) {

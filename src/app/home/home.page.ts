@@ -2614,6 +2614,9 @@ export class HomePage {
 						attributeCheck = false;
 					}
 				}
+				if(!action.goalid) {
+					action.goalid = "unassigned";
+				}
 				if(action.time/1 <= duration/1 && !action.taken && (this.chosenGoalArray.indexOf(action.goalid) != -1 || this.chosenGoalArray.length == 0 ) && attributeCheck) {
 				this.doableActionArray.push(action);
 				}
