@@ -49,6 +49,7 @@ import { PopoverFilterToDosPage } from '../popover-filter-to-dos/popover-filter-
 import { PopoverInteractionPage } from '../popover-interaction/popover-interaction.page';
 import { Suggestion } from 'src/model/suggestion/suggestion.model';
 import { PopoverInteractionPageModule } from '../popover-interaction/popover-interaction.module';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -2715,7 +2716,16 @@ export class HomePage {
 			priorityInfluenceSchedule = scoreDict[action.goalid] / max * 20;
 		}
 		let priorityInfluencePriority: number = 10 * action.priority;
-		return priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule;
+		// compute influence factor based on focus
+		let priorityInfluenceFocus: number = 0;
+		console.log(action.goalid);
+		console.log(this.userProfile.focusProjects);
+		for(let key in this.userProfile.focusProjects) {
+			if(this.userProfile.focusProjects[key] == action.goalid) {
+				priorityInfluenceFocus = 15;
+			}
+		}
+		return priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule + priorityInfluenceFocus;
 	}
 
   	skipAction() {
