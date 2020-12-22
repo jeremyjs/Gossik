@@ -624,8 +624,6 @@ export class HomePage {
 					for(let key in this.userProfile.focusProjects) {
 						this.focusProjects.push(this.userProfile.focusProjects[key]);
 					}
-					console.log('generate focusProjects');
-					console.log(this.focusProjects);
 					if(this.userProfile.smartAssistant == undefined) {
 						this.db.switchSmartAssistant(true, this.auth.userid);
 					}
@@ -2718,8 +2716,6 @@ export class HomePage {
 		let priorityInfluencePriority: number = 10 * action.priority;
 		// compute influence factor based on focus
 		let priorityInfluenceFocus: number = 0;
-		console.log(action.goalid);
-		console.log(this.userProfile.focusProjects);
 		for(let key in this.userProfile.focusProjects) {
 			if(this.userProfile.focusProjects[key] == action.goalid) {
 				priorityInfluenceFocus = 15;
