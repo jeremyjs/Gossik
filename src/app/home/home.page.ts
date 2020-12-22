@@ -189,6 +189,8 @@ export class HomePage {
 	chosenAttributeArray: any[] = [];
 	calendarEventsToday: CalendarEvent[] = [];
 	elapsedTime: number;
+	focusProjects: string[];
+	ionChangeGuard: boolean = true;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170'];
@@ -617,6 +619,12 @@ export class HomePage {
 				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					this.focusProjects = [];
+					for(let key in this.userProfile.focusProjects) {
+						this.focusProjects.push(this.userProfile.focusProjects[key]);
+					}
+					console.log('generate focusProjects');
+					console.log(this.focusProjects);
 					if(this.userProfile.smartAssistant == undefined) {
 						this.db.switchSmartAssistant(true, this.auth.userid);
 					}
@@ -1133,6 +1141,8 @@ export class HomePage {
 	}
 
     goToAssistantPage() {
+		console.log('focusProjects');
+		console.log(this.userProfile.focusProjects);
 		this.checkUserTracking();
 		this.showLoggedIn7Days();
 		if(this.userProfile && !this.userProfile['assistant']) {
@@ -1158,6 +1168,37 @@ export class HomePage {
 			this.presentPopover('showInteraction', [text, buttons, title, 'assignAssistant']);
 		}
 	}
+
+	setFocus(event) {
+		console.log(event.detail.value == []);
+		if(event && this.isIterable(event.detail.value) && event.detail.value.length > 0 && this.ionChangeGuard) {
+			this.ionChangeGuard = false;
+			this.db.clearFocus(this.auth.userid).then( () => {
+				for(let focus of event.detail.value) {
+					this.db.setFocus(focus, this.auth.userid).then( () => {
+						setTimeout( () => {
+							this.ionChangeGuard = true;
+						}, 1000);
+					});
+				}
+			});
+		} else if(event && event.detail.value.length == 0 && this.ionChangeGuard) {
+			this.ionChangeGuard = false;
+			this.db.clearFocus(this.auth.userid).then( () => {
+				setTimeout( () => {
+					this.ionChangeGuard = true;
+				}, 1000);
+			})
+		}
+	}
+
+	isIterable(obj) {
+		// checks for null and undefined
+		if (obj == null) {
+		  return false;
+		}
+		return typeof obj[Symbol.iterator] === 'function';
+	  }
 
 	checkUserTracking() {
 		let dates = [];

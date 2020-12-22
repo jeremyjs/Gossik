@@ -257,6 +257,10 @@ ion-toolbar {
   width: 100px !important;
 }
 
+ion-select::part(text) {
+  color: #39297F;
+}
+
 .margin-bottom-0-auto {
   margin: auto auto 0 auto;
 }

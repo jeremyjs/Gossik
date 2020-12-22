@@ -342,6 +342,13 @@
       <ion-row (click)="assignAssistant()" class="border-radius-15px background-EDF2FF padding-5 margin-bottom-5 width-100">
         <span class="color-39297F font-size-18px margin-left-5">{{"Assistant Type" | translate}}: {{userProfile.assistant | translate}}</span>
       </ion-row>
+      <ion-row (click)="setFocus()" class="border-radius-15px background-EDF2FF padding-5 margin-bottom-5 width-100">
+        <span class="color-39297F font-size-18px margin-left-5 margin-vertical-auto">{{"Focus" | translate}}:</span>
+        <ion-select [(ngModel)]="focusProjects" (ionChange)="setFocus($event)" multiple="true" class="padding-5" placeholder="{{'None' | translate}}">
+          <ion-label>{{"Project" | translate }}</ion-label>
+          <ion-select-option *ngFor="let goal of goalArray.slice(1)" value="{{goal.key}}">{{goal.name}}</ion-select-option>
+        </ion-select>
+      </ion-row>
       <div class="border-radius-15px background-EDF2FF padding-20 width-100">
         <ion-row class="font-size-18px color-39297F margin-auto display-block width-100 text-align-center">{{"After you’ve started using Gossik for some days I’ll be able to show you statistics on how you progress with your to-dos and I will be able to suggest improvements!" | translate}}</ion-row>
         <ion-row>

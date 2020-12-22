@@ -71,6 +71,14 @@ export class DatabaseService {
         return this.db.list('users/' + userid + '/profile').set('smartAssistant', smartAssistant);
     }
 
+    setFocus(focus, userid) {
+        return this.db.list('users/' + userid + '/profile/focusProjects').push(focus);
+    }
+
+    clearFocus(userid) {
+        return this.db.list('users/' + userid + '/profile/focusProjects').remove();
+    }
+
     initiateLearnedSchedule(userid) {
         this.db.list<Goal>('/users/' + userid + '/goals')
         .snapshotChanges()
