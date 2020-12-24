@@ -909,24 +909,24 @@
       </ion-row>
       <ion-row class="overflow-scroll no-scrollbar flex-grow-1">
         <div *ngIf="!smartAssistantToggle">
-          <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="color-39297F border-radius-15px padding-15 width-100 margin-top-10 seperating-border-bottom background-F6F7FB">
+          <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="shadow color-39297F border-radius-15px padding-15 width-100 margin-top-20 seperating-border-bottom background-F6F7FB">
             <ion-row class="font-size-18px text-align-left">
               <span>
                 {{todo.content}}
               </span>
             </ion-row>
             <ion-row class="text-align-left font-size-12px">
-              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
+              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-10 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
                 {{goalDict[todo.goalid].name}}
               </span>
-              <span *ngIf="todo.deadline" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
+              <span *ngIf="todo.deadline" class="margin-right-10 border-radius-30px background-FFFFFF padding-3">
                 <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="13">{{dateFormated(todo.deadline)}}
               </span>
-              <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3 flex">
+              <span *ngIf="todo.priority" class="margin-right-10 border-radius-30px background-FFFFFF padding-3 flex">
                 <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3 margin-vertical-auto" height="13">
                 <span>{{priorities[todo.priority] | translate}}</span>
               </span>
-              <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
+              <span *ngIf="todo.time" class="margin-right-10 border-radius-30px background-FFFFFF padding-3">
                 {{todo.time}}{{"min" | translate }}
               </span>
             </ion-row>
