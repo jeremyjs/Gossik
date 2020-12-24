@@ -727,8 +727,12 @@ ion-input {
     border-bottom-color: transparent;
 }
 
-.justify-conent-space-evenly {
+.justify-content-space-evenly {
   justify-content: space-evenly;;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
 }
 
 .justify-content-center {
@@ -1134,6 +1138,10 @@ ion-input {
   height: 20%;
 }
 
+.height-23px {
+  height: 23px;
+}
+
 .height-25px {
   height: 25px;
 }
@@ -1164,6 +1172,10 @@ ion-input {
 
 .min-height-100px {
   min-height: 100px;
+}
+
+ion-toggle {
+  zoom: 0.7;
 }
 
 .no-padding {

@@ -2470,7 +2470,7 @@ export class HomePage {
 				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
 				this.changePage('ActionPage');
 			} else {
-				this.pageTitle = "Do!";
+				this.pageTitle = "Do";
 				this.doableActionArray = [];
 				this.chosenGoalArray = [];
 				let targetTodo = undefined;

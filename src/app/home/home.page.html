@@ -881,24 +881,30 @@
   <div class="height-100-minus-95px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-90 height-100 overflow-hidden no-padding flex flex-direction-column">
       <ion-row class="margin-bottom-10 min-height-75px">
-        <ion-row class="width-100 flex justify-conent-space-evenly">
+        <ion-row class="width-100 flex justify-content-space-between">
           <span (click)="setAvailableTime()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
             <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
-            <span class="margin-vertical-auto font-size-18px">{{"Set available time" | translate}}</span>
+            <span class="margin-vertical-auto font-size-16px font-weight-bold">{{"Set available time" | translate}}</span>
           </span>
           <span (click)="filterToDos()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
             <img src="../../assets/icon/purple/icon_filter.svg" class="margin-vertical-auto" height="24">
-            <span class="margin-vertical-auto margin-left-5 text-align-center font-size-18px">{{"Filter" | translate}}</span>
+            <span class="margin-vertical-auto margin-left-5 text-align-center font-size-16px font-weight-bold">{{"Filter" | translate}}</span>
           </span>
         </ion-row>
-        <ion-row class="margin-horizontal-auto">
-          <span class="margin-top-10 flex background-EDF2FF border-radius-10px color-6049C4">
-          <ion-toggle color="tertiary" [(ngModel)]="userProfile.smartAssistant" (ionChange)="smartAssistant($event)" class="margin-vertical-auto"></ion-toggle>
-          <span class="margin-vertical-auto font-size-18px">{{"Smart assistant" | translate}}</span>
-          <button (click)="showInfo('smartAssistant')" class="transparent">
-            <img src="../../assets/icon/purple/icon_info.svg" class="margin-left-7-auto" height="24">
-            </button>
-          </span>
+        <ion-row class="margin-horizontal-auto width-100">
+          <div class="margin-top-10 flex justify-content-space-between background-EDF2FF border-radius-10px color-6049C4 width-100 padding-5">
+            <span class="margin-vertical-auto font-size-16px font-weight-bold flex">
+              <span class="margin-vertical-auto">
+                {{"Smart assistant" | translate}}
+              </span>
+              <button (click)="showInfo('smartAssistant')" class="transparent margin-vertical-auto">
+                <img src="../../assets/icon/purple/icon_info.svg" class="margin-left-7-auto" height="24">
+              </button>
+            </span>
+            <span class="height-23px margin-vertical-auto">
+              <ion-toggle mode="ios" color="tertiary" [(ngModel)]="userProfile.smartAssistant" (ionChange)="smartAssistant($event)" class="margin-vertical-auto zoom-0-7"></ion-toggle>
+            </span>
+          </div>
         </ion-row>
       </ion-row>
       <ion-row class="overflow-scroll no-scrollbar flex-grow-1">
