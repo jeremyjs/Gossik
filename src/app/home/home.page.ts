@@ -1141,8 +1141,6 @@ export class HomePage {
 	}
 
     goToAssistantPage() {
-		console.log('focusProjects');
-		console.log(this.userProfile.focusProjects);
 		this.checkUserTracking();
 		this.showLoggedIn7Days();
 		if(this.userProfile && !this.userProfile['assistant']) {
