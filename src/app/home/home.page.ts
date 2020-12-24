@@ -407,10 +407,11 @@ export class HomePage {
 			)
 		);
 		this.nextActionList.subscribe( actionArray => {
-			this.actionArray = actionArray;
+			this.actionArray = [];
 			this.actions = {};
 			for(let action of actionArray) {
 				if(action.active != false) {
+					this.actionArray.push(action);
 					if(this.actions[action.goalid]) {
 						this.actions[action.goalid].push(action);
 					} else {

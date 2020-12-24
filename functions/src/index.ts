@@ -399,12 +399,16 @@ exports.setLoggedInToday = functions.pubsub.schedule('50 * * * *').onRun((contex
 		let today = new Date();
 		let yesterday = new Date(today.getTime() - 24*3600*1000);
    		users.forEach(function(user) {
-   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 23) {
-				if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime()) {
-	   				admin.database().ref('/users/' + user.key + '/loginDays').push(timeNowConverted.toISOString());
+			if(user.val().profile && user.val().profile.timezoneOffset) {
+				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+				if(timeNowConverted.getHours() == 23) {
+					if(user.val().profile.lastLogin) {
+						if(new Date(user.val().profile.lastLogin).getTime() >= yesterday.getTime()) {
+							admin.database().ref('/users/' + user.key + '/loginDays').push(timeNowConverted.toISOString());
+						}
+					}
 				}
-   			}
+			}
    		});
    	});
 });
@@ -1007,7 +1011,7 @@ exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) =
 	   	});
    	});
 });
-
+*/
 
 
 
@@ -1018,30 +1022,25 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
     return admin.database().ref('/users').once("value", function(users) {
 		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			let tutorial = {
-				tutorial: {
-		                'fivetodos': true,
-		                'thoughtprocessing': false,
-		                'projects': false,
-		                'calendar': true,
-		                'gettingToKnowPush': false,
-		                'thoughts': false,
-		                'process': false,
-		                'next': '',
-		                'triggerDate': '',
-		                'tutorialProgress': 0,
-		                'tutorialNextButton': false,
-		                'tutorialTodoPageTime': false
-		            }
-		    };
-			promises.push(admin.database().ref('/users/' + user.key + '/profile').update(tutorial));
+			
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/calendar').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/fivetodos').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/gettingToKnowPush').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/next').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/process').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/projects').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/thoughtprocessing').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/thoughts').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/triggerDate').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialNextButton').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialProgress').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialTodoPageTime').remove());
    			// update just one specific value
    			//promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscription').set('freeUser'));
-   			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(false));
+   			//promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(false));
 		   })
 		   return Promise.all(promises);
    });
 });
+
 */
-
-
