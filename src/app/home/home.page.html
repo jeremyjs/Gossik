@@ -504,12 +504,12 @@
   <div *ngIf="viewpoint == 'ItemsPage' && isApp" class="no-scrollbar height-100-minus-95px margin-0 width-100">
     <ion-grid class="height-100 width-100 no-padding">
       <ion-row class="width-90 text-align-right margin-bottom-20 margin-horizontal-auto">
-        <ion-segment (ionChange)="switchItems($event)" value="thoughts" mode="ios" class="background-EDF2FF border-radius-35px">
-          <ion-segment-button  value="thoughts" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-50per">
-            <ion-label>{{"Unassigned Thoughts" | translate}}</ion-label>
+        <ion-segment (ionChange)="switchItems($event)" value="thoughts" mode="ios" class="background-EDF2FF height-35px border-radius-35px">
+          <ion-segment-button  value="thoughts" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
+            <ion-label class="font-weight-bold">{{"Unassigned Thoughts" | translate}}</ion-label>
           </ion-segment-button>
-          <ion-segment-button value="projects" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-50per">
-            <ion-label>{{"Projects" | translate}}</ion-label>
+          <ion-segment-button value="projects" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
+            <ion-label class="font-weight-bold">{{"Projects" | translate}}</ion-label>
           </ion-segment-button>
         </ion-segment>
       </ion-row>
@@ -1057,15 +1057,15 @@
   <div class="height-100-minus-95px width-100" *ngIf="viewpoint == 'CalendarPage' && isApp">
     <ion-grid class="width-90 height-100">
       <ion-row class="width-100 text-align-right margin-bottom-20">
-        <ion-segment (ionChange)="changeCalendarMode($event)" value="{{calendar.mode}}" class="background-EDF2FF border-radius-35px">
-          <ion-segment-button value="month" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-50per">
-            <ion-label>{{"Month" | translate}}</ion-label>
+        <ion-segment (ionChange)="changeCalendarMode($event)" value="{{calendar.mode}}" class="background-EDF2FF height-35px border-radius-35px">
+          <ion-segment-button value="month" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
+            <ion-label class="font-weight-bold">{{"Month" | translate}}</ion-label>
           </ion-segment-button>
-          <ion-segment-button value="week" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-50per">
-            <ion-label>{{"Week" | translate}}</ion-label>
+          <ion-segment-button value="week" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
+            <ion-label class="font-weight-bold">{{"Week" | translate}}</ion-label>
           </ion-segment-button>
-          <ion-segment-button value="day" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-50per">
-            <ion-label>{{"Day" | translate}}</ion-label>
+          <ion-segment-button value="day" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
+            <ion-label class="font-weight-bold">{{"Day" | translate}}</ion-label>
           </ion-segment-button>
         </ion-segment>
       </ion-row>
