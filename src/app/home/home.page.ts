@@ -191,7 +191,7 @@ export class HomePage {
 	suggestionArray: Suggestion[];
 	chosenAttributeArray: any[] = [];
 	calendarEventsToday: CalendarEvent[] = [];
-	elapsedTime: number;
+	elapsedTime: number = 0;
 	focusProjects: string[];
 	ionChangeGuard: boolean = true;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -2488,7 +2488,9 @@ export class HomePage {
 			if(this.startedAction.key) {
 				this.pageTitle = "Focus";
 				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
-				this.changePage('ActionPage');
+				setTimeout( () => {
+					this.changePage('ActionPage');
+				}, 1000);
 			} else {
 				this.pageTitle = "Do";
 				this.doableActionArray = [];
