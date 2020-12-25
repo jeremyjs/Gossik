@@ -193,7 +193,7 @@ export class HomePage {
 	ionChangeGuard: boolean = true;
 	formatOptions: any = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-	projectColors: string[] = ['#F38787', '#F0D385', '#C784E4', '#B7ED7B', '#8793E8', '#87E8E5', '#B9BB86', '#EAA170'];
+	projectColors: string[] = ['#6DCADE', '#6DDEA8', '#DE6D6D', '#DEC56D', '#6D9ADE', '#F2994A'];
 	priorities: string[] = ["", "Low", "Medium", "High", "High", "High", "High", "High", "High", "High", "High"];
  
 
@@ -672,7 +672,7 @@ export class HomePage {
   			this.pageCtrl = pageCtrl;
   		} else {
   			this.pageCtrl = '';
-  		}
+		  }
   		this.viewpoint = viewpoint;
   	}
 
@@ -875,9 +875,7 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				if(data.data && params[0].goalid) {
 					// Assigned thought, i.e. reference
-					console.log('reference');
 					if(data.data == 'delete') {
-						console.log('delete');
 						this.deleteReference(params[0]);
 					} else if(data.data == 'createToDo') {
 						this.presentPopover('addToDo', params[0]);
@@ -1189,7 +1187,6 @@ export class HomePage {
 	}
 
 	setFocus(event) {
-		console.log(event.detail.value == []);
 		if(event && this.isIterable(event.detail.value) && event.detail.value.length > 0 && this.ionChangeGuard) {
 			this.ionChangeGuard = false;
 			this.db.clearFocus(this.auth.userid).then( () => {
@@ -1354,14 +1351,15 @@ export class HomePage {
 		}
 	  }
 	
-	goToItemsPage() {
-		this.changePage('ItemsPage');
+	goToItemsPage(pageCtrl?) {
+		if(pageCtrl) {
+			this.changePage('ItemsPage', pageCtrl);
+		} else {
+			this.changePage('ItemsPage', 'thoughts');
+		}
 		this.pageTitle = "Items";
-		this.pageCtrl = 'thoughts';
 		if(this.userProfile.subscription == 'thoughtsFeature' && !this.userProfile.subscriptionPaid) {
 			this.switchItems({detail: { value: 'projects'}});
-		} else {
-			this.switchItems({detail: { value: 'thoughts'}});
 		}
 	}
 
@@ -2273,7 +2271,6 @@ export class HomePage {
 			calendarEvent.goalid = '';
 		} else {
 			let goal = this.goalArray.find(goal => goal.key == calendarEvent.goalid);
-			console.log(goal);
 			if(goal && goal.key != 'unassigned') {
 				calendarEvent.color = goal.color;
 			} else {
