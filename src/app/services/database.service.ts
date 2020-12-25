@@ -231,6 +231,12 @@ export class DatabaseService {
         return this.editCapture(capture, userid);
     }
 
+    deleteAttribute(attribute: Attribute, userid) {
+        attribute.active = false;
+        attribute.deleteDate = new Date().toISOString();
+        return this.editAttribute(attribute, userid);
+    }
+
     getCalendarEventListFromUser(userid) {
         return this.db.list<CalendarEvent>('/users/' + userid + '/calendarEvents');
     }
@@ -383,6 +389,12 @@ export class DatabaseService {
         let capturekey = capture.key;
         delete capture.key;
         return this.db.database.ref('/users/' + userid + '/captures/' + capturekey).set(capture);
+    }
+
+    editAttribute(attribute: Attribute, userid) {
+        let attributekey = attribute.key;
+        delete attribute.key;
+        return this.db.database.ref('/users/' + userid + '/attributes/' + attributekey).set(attribute);
     }
 
     editAction(action: Action, userid) {

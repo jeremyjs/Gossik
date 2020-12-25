@@ -98,7 +98,11 @@ const routes: Routes = [
   {
     path: 'popover-interaction',
     loadChildren: () => import('./popover-interaction/popover-interaction.module').then( m => m.PopoverInteractionPageModule)
+  },  {
+    path: 'popover-add-attribute',
+    loadChildren: () => import('./popover-add-attribute/popover-add-attribute.module').then( m => m.PopoverAddAttributePageModule)
   },
+
 
 
 ];

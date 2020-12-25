@@ -1,0 +1,32 @@
+<ion-content class="width-100">
+  <div class="margin-bottom-20">
+    <ion-row class="margin-top-35 color-39297F">
+      <ion-col size="3">
+        <button *ngIf="type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="cancel()">
+          {{"Cancel" | translate}}
+        </button>
+        <button *ngIf="type == 'show'" class="transparent color-6049C4 font-size-17px" (click)="cancel()">
+          {{"Close" | translate}}
+        </button>
+      </ion-col>
+      <ion-col size="6" class="text-align-center font-size-17px font-weight-bold">
+        {{"Attribute" | translate}}
+      </ion-col>
+      <ion-col size="3" class="text-align-right">
+        <button *ngIf="(type == 'show' && changed) || type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
+          {{"Save" | translate}}
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <div class="width-90 border-6049C4-50per border-radius-15px margin-top-10-auto flex">
+        <ion-input (ionInput)="change()" [(ngModel)]="attribute.content" placeholder="{{'Attribute' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left color-22194D"></ion-input>
+      </div>
+    </ion-row>
+    <ion-row *ngIf="type == 'show'">
+      <div class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
+        <button class="font-size-20px transparent font-red border-1px-red border-radius-20px" (click)="delete()">{{"Delete" | translate}}</button>
+      </div>
+    </ion-row>
+  </div>
+  </ion-content>

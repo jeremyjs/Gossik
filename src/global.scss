@@ -1756,6 +1756,15 @@ ion-backdrop {
   --height: 100% !important;
 }
 
+.popover-add-attribute .popover-content {
+  top: auto !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  --width: 100%;
+  --height: auto !important;
+  overflow: hidden !important;
+}
+
 .height-200px {
   height: 200px;
 }

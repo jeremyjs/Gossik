@@ -50,6 +50,8 @@ import { PopoverInteractionPage } from '../popover-interaction/popover-interacti
 import { Suggestion } from 'src/model/suggestion/suggestion.model';
 import { PopoverInteractionPageModule } from '../popover-interaction/popover-interaction.module';
 import { stringify } from 'querystring';
+import { PopoverAddAttributePageModule } from '../popover-add-attribute/popover-add-attribute.module';
+import { PopoverAddAttributePage } from '../popover-add-attribute/popover-add-attribute.page';
 
 @Component({
   selector: 'app-home',
@@ -870,10 +872,6 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				console.log('clicked');
-				console.log(data.data);
-				console.log(params[0]);
-				console.log(params[1]);
 				if(data.data && params[0].goalid) {
 					// Assigned thought, i.e. reference
 					console.log('reference');
@@ -1044,7 +1042,25 @@ export class HomePage {
 					}
 				}
 			});
-		}
+		} else if(name == 'showAttribute') {
+			const popover = await this.popoverCtrl.create({
+			component: PopoverAddAttributePage,
+			componentProps: {
+				'attribute': params,
+			},
+			cssClass: 'popover-add-attribute'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data ) {
+					if(data.data == 'delete') {
+						this.db.deleteAttribute(params, this.auth.userid);
+					} else {
+						this.db.editAttribute(data.data, this.auth.userid);
+					}
+				}
+			});
+		} 
 	}
 
   	goToPrivacyPolicyPage() {
@@ -1128,7 +1144,11 @@ export class HomePage {
     goToFeedbackPage() {
     	this.pageTitle = "Feedback";
     	this.changePage('FeedbackPage');
-    }
+	}
+	
+	showAttribute(attribute: Attribute) {
+		this.presentPopover('showAttribute', attribute);
+	}
 	
 	goToThemesPage() {
 		if(this.userProfile.subscription != 'themesFeature' || this.userProfile.subscription == 'themesFeature' && this.userProfile.subscriptionPaid) {

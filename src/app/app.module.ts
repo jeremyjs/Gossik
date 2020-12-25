@@ -64,6 +64,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
 import { PrivacyPolicyPageModule } from './privacy-policy/privacy-policy.module';
 import { PopoverFilterToDosPageModule } from './popover-filter-to-dos/popover-filter-to-dos.module';
 import { PopoverInteractionPageModule } from './popover-interaction/popover-interaction.module';
+import { PopoverAddAttributePageModule } from './popover-add-attribute/popover-add-attribute.module';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ import { PopoverInteractionPageModule } from './popover-interaction/popover-inte
     PopoverFinishToDoPageModule,
     PopoverFilterToDosPageModule,
     PopoverInteractionPageModule,
+    PopoverAddAttributePageModule,
     PrivacyPolicyPageModule
   	],
   providers: [
