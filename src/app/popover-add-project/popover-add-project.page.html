@@ -23,8 +23,15 @@
     <ion-input (ionInput)="change()" [(ngModel)]="project.name" placeholder="{{'Project name' | translate}}" type="text" class="display-inline-block width-100-minus-26 margin-left-5 text-align-left color-22194D"></ion-input>
   </div>
 </ion-row>
+<ion-row class="margin-bottom-20 width-90 margin-horizontal-auto flex justify-content-space-between">
+  <span *ngFor="let color of projectColors">
+    <span class="height-30px width-30px border-radius-30px display-inline-block flex" [ngStyle]="{'background-color': color}" (click)="assignColor(color)">
+      <img *ngIf="color == project.color" src="../../assets/icon/purple/icon_checkmark.svg" height="15" class="margin-auto">
+    </span>
+  </span>
+</ion-row>
 <ion-row *ngIf="type == 'show'">
-  <div class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
+  <div class="margin-horizontal-auto margin-bottom-20 flex border-radius-10px padding-right-5 height-36px">
     <button class="font-size-20px transparent font-red border-1px-red border-radius-20px" (click)="delete()">{{"Delete" | translate}}</button>
   </div>
 </ion-row>

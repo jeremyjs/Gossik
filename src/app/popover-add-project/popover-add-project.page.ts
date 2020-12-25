@@ -14,6 +14,7 @@ export class PopoverAddProjectPage implements OnInit {
   project: any = {name: ''};
   type: string = 'add';
   changed: boolean = false;
+  projectColors: string[];
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -26,6 +27,7 @@ export class PopoverAddProjectPage implements OnInit {
       this.project = this.navParams.get('project');
       this.type = 'show';
     }
+    this.projectColors = this.navParams.get('projectColors');
   }
 
   cancel() {
@@ -42,6 +44,11 @@ export class PopoverAddProjectPage implements OnInit {
 
   delete() {
     this.popoverCtrl.dismiss('delete');
+  }
+
+  assignColor(color: string) {
+    this.project.color = color;
+    this.changed = true;
   }
 
 }

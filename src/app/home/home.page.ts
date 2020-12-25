@@ -88,7 +88,6 @@ export class HomePage {
 	referenceList: Observable<Reference[]>;
 	nextActionList: Observable<Action[]>;
 	delegationList: Observable<Delegation[]>;
-	newGoal = {} as Goal;
 	pageCtrl: string;
 	assignedGoal = {} as Goal;
 	showNextActions: boolean = false;
@@ -110,7 +109,6 @@ export class HomePage {
   	action = {} as Action;
   	delegation = {} as Delegation;
   	reference = {} as Reference;
-  	newGoalForm: FormGroup;
   	editActionForm: FormGroup;
   	editDelegationForm: FormGroup;
   	editReferenceForm: FormGroup;
@@ -180,7 +178,6 @@ export class HomePage {
 	skippedAllToDos: boolean = false;
 	duration: number;
 	userProfile: any;
-	addingProject: boolean = false;
 	calendarEvents: CalendarEvent[] = [];
 	todoview: string = 'list';
 	showNavigationBar: boolean = true;
@@ -738,16 +735,20 @@ export class HomePage {
 		} else if(name == 'addProject') {
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddProjectPage,
+			componentProps: {'projectColors': this.projectColors},
 			cssClass: 'popover-add-project'
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					this.addGoal(data.data.name);
+					this.addGoal(data.data);
 				}
 			});
 		} else if(name == 'editProject') {
-			let componentProps: any = {'project': params};
+			let componentProps: any = {
+				'project': params,
+				'projectColors': this.projectColors
+			};
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddProjectPage,
 			cssClass: 'popover-add-project',
@@ -1750,9 +1751,9 @@ export class HomePage {
 		this.db.addReference(reference, capture, this.auth.userid);
   	}
 
-  	addGoal(goalname) {
+  	addGoal(project: Goal) {
 		for(let goal of this.goalArray) {
-			if (goal.name == goalname) {
+			if (goal.name == project.name) {
 				this.translate.get(["You already have a goal with that name.", "OK"]).subscribe( alertMessage => {
 					this.alertCtrl.create({
 						message: alertMessage["You already have a goal with that name."],
@@ -1768,30 +1769,17 @@ export class HomePage {
 			return;
 			}
 		}
-		if(goalname !== '' && goalname !== null && goalname !== undefined) {
-			this.newGoal.userid = this.auth.userid;
-			this.newGoal.name = goalname;
-			this.newGoal.active = true;
-			let colorFound = false;
-			while(!colorFound) {
-				for(let color of this.projectColors) {
-					if(!this.goalArray.find(goal => goal.color == color)) {
-						this.newGoal.color = color;
-						colorFound = true;
-					}
-				}
-				if(!colorFound) {
-					this.newGoal.color = '#FFFFFF';
-					colorFound = true;
-				}
+		if(project.name !== '' && project.name !== null && project.name !== undefined) {
+			project.userid = this.auth.userid;
+			project.active = true;
+			if(!project.color) {
+				project.color = "#FFFFFF";
 			}
-			this.db.addGoal(this.newGoal, this.auth.userid);
-			this.goalname = "";
+			this.db.addGoal(project, this.auth.userid);
 			this.errorMsg = "";
 		} else {
 			this.errorMsg = "You cannot create a goal without a name.";
 		}
-		this.addingProject = false;
 	}
 
 	addAction(goal, capture) {
@@ -2069,16 +2057,7 @@ export class HomePage {
 	goToProjectsPage() {
 		this.pageTitle = "Overview";
 		this.goal = {name: ''} as Goal;
-		this.addingProject = false;  
 	    this.changePage('ProjectsPage');
-  	}
-
-  	addProject() {
-		if(this.userProfile.subscription == 'limitedFeatures' && !this.userProfile.subscriptionPaid && this.goalArray.length >= 3) {
-			this.presentAlert("unpaidLimitedFeaturesSubscription");
-		} else {
-			  this.addingProject = true;
-		}
   	}
 	
 	goToProjectOverviewPage(goal: Goal) {
