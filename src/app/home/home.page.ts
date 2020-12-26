@@ -620,14 +620,6 @@ export class HomePage {
 				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
-					let learnedSchedule = JSON.parse(this.userProfile['learnedSchedule'].toString());
-					for(let projectkey in learnedSchedule[0]) {
-						if(this.goalDict[projectkey]) {
-							console.log(this.goalDict[projectkey].name);
-						} else {
-							console.log('cannot find ' + projectkey);
-						}
-					}
 					this.focusProjects = [];
 					for(let key in this.userProfile.focusProjects) {
 						this.focusProjects.push(this.userProfile.focusProjects[key]);
