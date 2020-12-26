@@ -27,9 +27,10 @@ export class DatabaseService {
         public translate: TranslateService
 	) { }
     
-    createUser(userid, email) {
+    createUser(userid, email, referred?) {
         this.userData.profile = {
             email: email,
+            referred: referred,
             assistant: 'standard',
             smartAssistant: false,
             tutorial: true,

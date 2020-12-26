@@ -690,20 +690,74 @@ export class HomePage {
   	}
 
   	presentAlert(alertMessage) {
-  		this.translate.get([alertMessage, "OK"]).subscribe( translation => {
-  			let buttons = [];
-  			buttons = [
-					      	{
-						        text: translation["OK"]
-					      	}
-					    ];
-  			this.alertCtrl.create({
-				message: translation[alertMessage],
-				buttons: buttons
-			}).then( alert => {
-				alert.present();
+		if(alertMessage == "Have you been referred by another Gossik user?") {
+			this.translate.get([alertMessage, "Yes", "No"]).subscribe( translation => {
+				let buttons = [];
+				buttons = [
+								{
+								  text: translation["Yes"],
+								  handler: () => {
+									let credentials = {
+										email: this.signUpEmail,
+										password: this.signUpPassword
+									};
+									this.auth.signUp(credentials).then(user =>  {
+										this.db.createUser(user.user.uid, user.user.email, true);
+									}).then(
+										() => {
+											this.translate.get(["Successfully registered"]).subscribe( translation => {
+												  this.presentToast(translation["Successfully registered"]);
+											});
+											setTimeout(() => this.goToToDoPage());
+										},
+										error => this.signUpError = error.message
+									);
+								  }
+								},
+								{
+								  text: translation["No"],
+								  handler: () => {
+									let credentials = {
+										email: this.signUpEmail,
+										password: this.signUpPassword
+									};
+									this.auth.signUp(credentials).then(user =>  {
+										this.db.createUser(user.user.uid, user.user.email, false);
+									}).then(
+										() => {
+											this.translate.get(["Successfully registered"]).subscribe( translation => {
+												  this.presentToast(translation["Successfully registered"]);
+											});
+											setTimeout(() => this.goToToDoPage());
+										},
+										error => this.signUpError = error.message
+									);
+								  }
+								}
+						  ];
+				this.alertCtrl.create({
+				  message: translation[alertMessage],
+				  buttons: buttons
+			  }).then( alert => {
+				  alert.present();
+			  });
+			})
+		} else {
+			this.translate.get([alertMessage, "OK"]).subscribe( translation => {
+				let buttons = [];
+				buttons = [
+								{
+								  text: translation["OK"]
+								}
+						  ];
+				this.alertCtrl.create({
+				  message: translation[alertMessage],
+				  buttons: buttons
+			  }).then( alert => {
+				  alert.present();
+			  });
 			});
-  		})
+		}
 	  }
 	  
 	async presentPopover(name, params?) {
@@ -1099,21 +1153,8 @@ export class HomePage {
 	}
 
 	signUp() {
-		let credentials = {
-			email: this.signUpEmail,
-			password: this.signUpPassword
-		};
-		this.auth.signUp(credentials).then(user =>  {
-			this.db.createUser(user.user.uid, user.user.email);
-		}).then(
-			() => {
-				this.translate.get(["Successfully registered"]).subscribe( translation => {
-			  		this.presentToast(translation["Successfully registered"]);
-				});
-				setTimeout(() => this.goToToDoPage());
-			},
-			error => this.signUpError = error.message
-		);
+		this.presentAlert("Have you been referred by another Gossik user?");
+
   	}
 	
 	goToForgotPassword() {
