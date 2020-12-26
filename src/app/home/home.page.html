@@ -19,12 +19,6 @@
           -->
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="viewpoint == 'ProjectOverviewPage'" class="width-100">
-          <button class="transparent padding-5 background-EDF2FF color-39297F flex margin-horizontal-auto border-radius-30px" (click)="editGoal(goal)">
-            <img src="../../assets/icon/purple/icon_edit.svg" height="12" class="margin-vertical-center margin-right-5">
-            {{"Edit" | translate}}
-          </button>
-        </ion-row>
       </ion-grid>
       <ion-grid *ngIf="viewpoint == 'PrivacyPolicyPage'">
         <ion-row>
@@ -62,6 +56,12 @@
             </button>
           -->
           </ion-col>
+        </ion-row>
+        <ion-row class="width-100">
+          <button class="transparent padding-5 background-EDF2FF color-39297F flex margin-horizontal-auto border-radius-30px" (click)="editGoal(goal)">
+            <img src="../../assets/icon/purple/icon_edit.svg" height="12" class="margin-vertical-center margin-right-5">
+            {{"Edit" | translate}}
+          </button>
         </ion-row>
       </ion-grid>
     </div>

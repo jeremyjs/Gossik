@@ -620,6 +620,14 @@ export class HomePage {
 				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					let learnedSchedule = JSON.parse(this.userProfile['learnedSchedule'].toString());
+					for(let projectkey in learnedSchedule[0]) {
+						if(this.goalDict[projectkey]) {
+							console.log(this.goalDict[projectkey].name);
+						} else {
+							console.log('cannot find ' + projectkey);
+						}
+					}
 					this.focusProjects = [];
 					for(let key in this.userProfile.focusProjects) {
 						this.focusProjects.push(this.userProfile.focusProjects[key]);
@@ -912,6 +920,12 @@ export class HomePage {
 				if(data.data) {
 					this.chosenGoalArray = data.data.chosenGoalArray;
 					this.chosenAttributeArray = data.data.chosenAttributeArray;
+					for(let goalid of this.chosenGoalArray) {
+						if(goalid != 'unassigned') {
+							let dates = [new Date()];
+							this.db.learnLearnedSchedule(this.auth.userid, this.chosenGoalArray, dates, 1);
+						}
+					}
 					this.showDoableActions();
 				}
 			});

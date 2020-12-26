@@ -118,32 +118,59 @@ export class DatabaseService {
         this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
             if(learnedSchedule.payload.val()) {
                 this.getTimezoneOffset(userid).snapshotChanges().pipe(take(1)).subscribe( timezoneOffset => {
-                    let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
-                    for(let date of dates) {
-                        let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
-                        let weekDay = localeDate.getDay() - 1;
-                        if(weekDay == -1) {
-                            weekDay = 6;
-                        }
-                        //getHours() gives locale hours already, so no need to use localeDate
-                        let hour = date.getHours();
-                        let row = weekDay * 24 + hour;
-                        for(let projectid of projectids) {
-                            if(learnedScheduleObject[row][projectid] != undefined) {
-                                learnedScheduleObject[row][projectid] += value;
-                            } else {
-                                for(let hour = 0; hour <= 167; hour ++) {
-                                    if(hour != row) {
-                                        learnedScheduleObject[hour][projectid] = 0;
-                                    } else {
-                                        learnedScheduleObject[hour][projectid] = value;
+                    this.getGoalList(userid).snapshotChanges().pipe(take(1)).subscribe( projectList => {
+                        let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
+                        for(let date of dates) {
+                            let localeDate = new Date(date.getTime() - Number(timezoneOffset.payload.val())*60*1000);
+                            let weekDay = localeDate.getDay() - 1;
+                            if(weekDay == -1) {
+                                weekDay = 6;
+                            }
+                            //getHours() gives locale hours already, so no need to use localeDate
+                            let hour = date.getHours();
+                            let row = weekDay * 24 + hour;
+                            for(let projectid of projectids) {
+                                if(learnedScheduleObject[row][projectid] != undefined) {
+                                    learnedScheduleObject[row][projectid] += value;
+                                } else {
+                                    for(let hour = 0; hour <= 167; hour ++) {
+                                        if(hour != row) {
+                                            learnedScheduleObject[hour][projectid] = 0;
+                                        } else {
+                                            learnedScheduleObject[hour][projectid] = value;
+                                        }
                                     }
                                 }
                             }
                         }
+                        this.updateProjectsInLearnedSchedule(userid);
+                        this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
+                        })
+                });
+            } else {
+                this.initiateLearnedSchedule(userid);
+            }
+        });
+    }
+
+    updateProjectsInLearnedSchedule(userid) {
+        this.getLearnedSchedule(userid).snapshotChanges().pipe(take(1)).subscribe( learnedSchedule => {
+            if(learnedSchedule.payload.val()) {
+                this.getGoalList(userid).snapshotChanges().pipe(take(1)).subscribe( projectList => {
+                    let learnedScheduleObject = JSON.parse(learnedSchedule.payload.val().toString());
+                    for(let project of projectList) {
+                        if(!project.payload.val().active && learnedScheduleObject[0][project.key] != undefined) {
+                            for(let number in learnedScheduleObject) {
+                                delete learnedScheduleObject[number][project.key];
+                            }
+                        } else if(project.payload.val().active && learnedScheduleObject[0][project.key] == undefined) {
+                            for(let number in learnedScheduleObject) {
+                                learnedScheduleObject[number][project.key] = 0;
+                            }
+                        }
                     }
                     this.db.list('users/'+ userid + '/profile').set('learnedSchedule', JSON.stringify(learnedScheduleObject));
-                });
+                    })
             } else {
                 this.initiateLearnedSchedule(userid);
             }
