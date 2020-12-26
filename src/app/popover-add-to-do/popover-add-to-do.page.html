@@ -46,13 +46,18 @@
       </div>
     </ion-row>
     <ion-row>
-      <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5 height-36px">
-        <img src="../../assets/icon/purple/icon_project.svg" height="12" class="margin-left-5-auto">
-        <span *ngIf="todo.goalid && todo.goalid != 'unassigned'" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">
-          {{goalDict[todo.goalid].name}}
+      <ion-row class="margin-horizontal-auto">
+        <span class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5 height-36px">
+          <img src="../../assets/icon/purple/icon_project.svg" height="12" class="margin-left-5-auto">
+          <span *ngIf="todo.goalid && todo.goalid != 'unassigned'" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">
+            {{goalDict[todo.goalid].name}}
+          </span>
+          <span *ngIf="!(todo.goalid && todo.goalid != 'unassigned')" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">{{"Project" | translate}}</span>
         </span>
-        <span *ngIf="!(todo.goalid && todo.goalid != 'unassigned')" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">{{"Project" | translate}}</span>
-      </div>
+        <span class="margin-top-20-auto flex height-36px" (click)="addProject()">
+          <img src="../../assets/icon/purple/icon_add.svg" height="20" class="margin-vertical-auto margin-left-10">
+        </span>
+      </ion-row>
     </ion-row>
     <ion-row *ngIf="type != 'show'" class="margin-bottom-10">
       <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5 height-36px">

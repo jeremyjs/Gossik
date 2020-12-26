@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, PickerController, NavParams, ModalController } from '@ionic/angular';
+import { PopoverController, PickerController, NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Action } from 'src/model/action/action.model';
+import { Goal } from 'src/model/goal/goal.model';
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
+import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
+import { AuthenticationService } from '../services/authentication.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-popover-add-to-do',
@@ -19,18 +23,23 @@ export class PopoverAddToDoPage implements OnInit {
   changed: boolean = false;
   type: string;
   priorities: string[] = ["", "Low", "Medium", "High"];
+  projectColors: string[];
 
   constructor(
     public popoverCtrl: PopoverController,
     public translate: TranslateService,
     public pickerCtrl: PickerController,
     public navParams: NavParams,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private auth: AuthenticationService,
+    public db: DatabaseService,
+    public alertCtrl: AlertController
   ) { 
   }
 
   ngOnInit() {
     this.goalDict = this.navParams.get('goalDict');
+    this.projectColors = this.navParams.get('projectColors');
     if(this.navParams.get('todo')) {
       this.todo = this.navParams.get('todo');
       this.type = 'show';
@@ -69,6 +78,64 @@ export class PopoverAddToDoPage implements OnInit {
   markDoneToDo() {
     this.popoverCtrl.dismiss('markDone');
   }
+
+  async addProject() {
+    const popover = await this.popoverCtrl.create({
+    component: PopoverAddProjectPage,
+    componentProps: {'projectColors': this.projectColors},
+    cssClass: 'popover-add-project'
+    });
+    await popover.present();
+    popover.onDidDismiss().then( data => {
+      if(data.data) {
+        this.addGoal(data.data);
+      }
+    });
+  }
+  
+  addGoal(project: Goal) {
+		for(let key in this.goalDict) {
+			if (this.goalDict[key].name == project.name) {
+				this.translate.get(["You already have a goal with that name.", "OK"]).subscribe( alertMessage => {
+					this.alertCtrl.create({
+						message: alertMessage["You already have a goal with that name."],
+						buttons: [
+									{
+										text: alertMessage["OK"]
+									}
+								]
+					}).then( alert => {
+						alert.present();
+					});
+				});
+			return;
+			}
+		}
+		if(project.name !== '' && project.name !== null && project.name !== undefined) {
+			project.userid = this.auth.userid;
+			project.active = true;
+			if(!project.color) {
+				project.color = "#FFFFFF";
+			}
+			this.db.addGoal(project, this.auth.userid).then( createdProject => {
+        project.key = createdProject.key;
+        this.goalDict[createdProject.key] = project;
+      });
+		} else {
+      this.translate.get(["You cannot create a goal without a name.", "OK"]).subscribe( alertMessage => {
+        this.alertCtrl.create({
+          message: alertMessage["You cannot create a goal without a name."],
+          buttons: [
+                {
+                  text: alertMessage["OK"]
+                }
+              ]
+        }).then( alert => {
+          alert.present();
+        });
+      });
+		}
+	}
 
   openPicker(pickerName) {
     this.translate.get(["Done", "Cancel"]).subscribe( translation => {
@@ -116,8 +183,6 @@ export class PopoverAddToDoPage implements OnInit {
       }).then( picker => {
         picker.present();
         this.changed = true;
-        console.log(this.todo.priority);
-        console.log(this.priorities[this.todo.priority]);
       });	
     })
   }

@@ -837,7 +837,10 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'addToDo') {
-			let componentProps: any = {'goalDict': this.goalDict};
+			let componentProps: any = {
+				'goalDict': this.goalDict,
+				'projectColors': this.projectColors
+			};
 			if(params) {
 				componentProps['thought'] = params;
 			}
@@ -876,9 +879,14 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'showToDo') {
+			let componentProps: any = {
+				'goalDict': this.goalDict,
+				'todo': params,
+				'projectColors': this.projectColors
+			};
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddToDoPage,
-			componentProps: {'goalDict': this.goalDict, todo: params},
+			componentProps: componentProps,
 			cssClass: 'popover-add-calendar-event'
 			});
 			await popover.present();
