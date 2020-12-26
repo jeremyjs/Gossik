@@ -821,10 +821,14 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'addThought') {
+			let componentProps: any = {
+				'goalDict': this.goalDict,
+				'projectColors': this.projectColors
+			};
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddThoughtPage,
 			cssClass: 'popover-add-thought',
-			componentProps: {'goalDict': this.goalDict}
+			componentProps: componentProps
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
@@ -929,7 +933,8 @@ export class HomePage {
 			componentProps: {
 				'thought': params[0],
 				'goalid': params[1],
-				'goalDict': this.goalDict
+				'goalDict': this.goalDict,
+				'projectColors': this.projectColors
 			},
 			cssClass: 'popover-add-thought'
 			});
