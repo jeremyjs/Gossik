@@ -2199,7 +2199,7 @@ export class HomePage {
 						        	this.translate.get(["Project deleted"]).subscribe( translation => {
 								      this.presentToast(translation["Project deleted"]);
 								    });
-						          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToItemsPage());
+						          	this.db.deleteGoal(goal, this.auth.userid).then( () => this.goToItemsPage('projects'));
 						        }
 					      	}
 					    ]
