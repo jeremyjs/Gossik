@@ -109,6 +109,7 @@ export class PopoverAddThoughtPage implements OnInit {
 			this.db.addGoal(project, this.auth.userid).then( createdProject => {
         project.key = createdProject.key;
         this.goalDict[createdProject.key] = project;
+        this.goalid = createdProject.key;
       });
 		} else {
       this.translate.get(["You cannot create a goal without a name.", "OK"]).subscribe( alertMessage => {
@@ -145,7 +146,6 @@ export class PopoverAddThoughtPage implements OnInit {
           {
             text: translation["Done"],
             handler: (value) => {
-              console.log(value);
               this.goalid = value.project.value;
             }
           }

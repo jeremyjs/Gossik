@@ -867,7 +867,10 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'addCalendarEvent') {
-			let componentProps: any = {'goalDict': this.goalDict};
+			let componentProps: any = {
+				'goalDict': this.goalDict,
+				'projectColors': this.projectColors
+			};
 			if(params) {
 				componentProps['startTime'] = params;
 			}
@@ -989,7 +992,10 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'showCalendarEvent') {
-			let componentProps: any = {'goalDict': this.goalDict};
+			let componentProps: any = {
+				'goalDict': this.goalDict,
+				'projectColors': this.projectColors
+			};
 			if(params) {
 				componentProps['calendarEvent'] = params;
 			}
@@ -2398,6 +2404,12 @@ export class HomePage {
 			} else {
 				calendarEvent.color = "#EDF2FF";
 			}
+		}
+		if(calendarEvent.startTime.toISOString) {
+			calendarEvent.startTime = calendarEvent.startTime.toISOString();
+		}
+		if(calendarEvent.endTime.toISOString) {
+			calendarEvent.endTime = calendarEvent.endTime.toISOString();
 		}
 		let calendarEventkey = calendarEvent.key;
 		this.db.editCalendarEvent(calendarEvent, this.auth.userid);

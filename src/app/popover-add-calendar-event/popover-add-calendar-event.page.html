@@ -44,26 +44,22 @@
       <ion-toggle color="tertiary" [(ngModel)]="calendarEvent.allDay" (ionChange)="change()" class="margin-vertical-auto margin-left-10"></ion-toggle>
     </div>
   </ion-row>
-  <ion-row *ngIf="type != 'show'" class="margin-bottom-10">
-    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
-      <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
-      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="calendarEvent.goalid && calendarEvent.goalid != 'unassigned'" (click)="openPicker('project')">
-        {{goalDict[calendarEvent.goalid].name}}
+  <ion-row>
+    <ion-row class="margin-horizontal-auto">
+      <span class="margin-top-20-auto flex background-EDF2FF border-radius-10px padding-right-5 height-36px">
+        <img src="../../assets/icon/purple/icon_project.svg" height="12" class="margin-left-5-auto">
+        <span *ngIf="calendarEvent.goalid && calendarEvent.goalid != 'unassigned'" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">
+          {{goalDict[calendarEvent.goalid].name}}
+        </span>
+        <span *ngIf="!calendarEvent.goalid || calendarEvent.goalid == 'unassigned'" (click)="openPicker('project')" class="color-6049C4 margin-vertical-auto margin-left-5">{{"Project" | translate}}</span>
       </span>
-      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="!calendarEvent.goalid || calendarEvent.goalid == 'unassigned'" (click)="openPicker('project')">{{"Project" | translate}}</span>
-    </div>
-  </ion-row>
-  <ion-row *ngIf="type == 'show'">
-    <div class="margin-top-20-auto flex background-EDF2FF border-radius-10px height-36px padding-left-5 padding-right-5">
-      <img src="../../assets/icon/purple/icon_project.svg" height="14" class="margin-left-5-auto">
-      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="calendarEvent.goalid && calendarEvent.goalid != 'unassigned'" (click)="openPicker('project')">
-        {{goalDict[calendarEvent.goalid].name}}
+      <span class="margin-top-20-auto flex height-36px" (click)="addProject()">
+        <img src="../../assets/icon/purple/icon_add.svg" height="20" class="margin-vertical-auto margin-left-10">
       </span>
-      <span class="color-6049C4 margin-vertical-auto margin-left-5" *ngIf="!calendarEvent.goalid || calendarEvent.goalid == 'unassigned'" (click)="openPicker('project')">{{"Project" | translate}}</span>
-    </div>
+    </ion-row>
   </ion-row>
-  <ion-row *ngIf="type == 'show'" class="margin-bottom-10">
-    <div class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
+  <ion-row class="margin-bottom-10">
+    <div *ngIf="type == 'show'" class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
       <button class="font-size-20px transparent font-red border-1px-red border-radius-20px" (click)="delete()">{{"Delete" | translate}}</button>
     </div>
   </ion-row>

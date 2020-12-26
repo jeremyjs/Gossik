@@ -120,6 +120,7 @@ export class PopoverAddToDoPage implements OnInit {
 			this.db.addGoal(project, this.auth.userid).then( createdProject => {
         project.key = createdProject.key;
         this.goalDict[createdProject.key] = project;
+        this.todo.goalid = createdProject.key;
       });
 		} else {
       this.translate.get(["You cannot create a goal without a name.", "OK"]).subscribe( alertMessage => {
@@ -171,7 +172,6 @@ export class PopoverAddToDoPage implements OnInit {
           {
             text: translation["Done"],
             handler: (value) => {
-              console.log(value);
               this.todo.goalid = value.project.value;
             }
           }
@@ -206,7 +206,6 @@ export class PopoverAddToDoPage implements OnInit {
   getColumnOptions(pickerName, columnOptions: string[]) {
     let options = [];
     if(pickerName == 'priority') {
-      console.log(columnOptions);
       for (let i of columnOptions) {
         options.push({
           text: i,

@@ -1,10 +1,14 @@
 import { EventHandlerVars } from '@angular/compiler/src/compiler_util/expression_converter';
 import { Component, OnInit } from '@angular/core';
-import { PickerController, PopoverController, NavParams, ModalController } from '@ionic/angular';
+import { PickerController, PopoverController, NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CalendarEvent } from 'src/model/calendarEvent/calendarEvent.model';
+import { Goal } from 'src/model/goal/goal.model';
 import { ChangeWeekModalPage } from '../change-week-modal/change-week-modal.page';
+import { PopoverAddProjectPage } from '../popover-add-project/popover-add-project.page';
+import { AuthenticationService } from '../services/authentication.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-popover-add-calendar-event',
@@ -19,15 +23,20 @@ export class PopoverAddCalendarEventPage implements OnInit {
   changed: boolean = false;
   deadlineText: string;
   deadlineFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  projectColors: string[];
 
   constructor(
     public popoverCtrl: PopoverController,
     public translate: TranslateService,
     public pickerCtrl: PickerController,
     public navParams: NavParams,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private auth: AuthenticationService,
+    public db: DatabaseService,
+    public alertCtrl: AlertController
   ) { 
     this.goalDict = this.navParams.get('goalDict');
+    this.projectColors = this.navParams.get('projectColors');
     if(this.navParams.get('startTime')) {
       this.calendarEvent.startTime = this.navParams.get('startTime').toISOString();
       this.calendarEvent.endTime = this.navParams.get('startTime').toISOString();
@@ -60,6 +69,65 @@ export class PopoverAddCalendarEventPage implements OnInit {
     this.popoverCtrl.dismiss('delete');
   }
 
+  async addProject() {
+    const popover = await this.popoverCtrl.create({
+    component: PopoverAddProjectPage,
+    componentProps: {'projectColors': this.projectColors},
+    cssClass: 'popover-add-project'
+    });
+    await popover.present();
+    popover.onDidDismiss().then( data => {
+      if(data.data) {
+        this.addGoal(data.data);
+      }
+    });
+  }
+  
+  addGoal(project: Goal) {
+		for(let key in this.goalDict) {
+			if (this.goalDict[key].name == project.name) {
+				this.translate.get(["You already have a goal with that name.", "OK"]).subscribe( alertMessage => {
+					this.alertCtrl.create({
+						message: alertMessage["You already have a goal with that name."],
+						buttons: [
+									{
+										text: alertMessage["OK"]
+									}
+								]
+					}).then( alert => {
+						alert.present();
+					});
+				});
+			return;
+			}
+		}
+		if(project.name !== '' && project.name !== null && project.name !== undefined) {
+			project.userid = this.auth.userid;
+			project.active = true;
+			if(!project.color) {
+				project.color = "#FFFFFF";
+			}
+			this.db.addGoal(project, this.auth.userid).then( createdProject => {
+        project.key = createdProject.key;
+        this.goalDict[createdProject.key] = project;
+        this.calendarEvent.goalid = createdProject.key;
+      });
+		} else {
+      this.translate.get(["You cannot create a goal without a name.", "OK"]).subscribe( alertMessage => {
+        this.alertCtrl.create({
+          message: alertMessage["You cannot create a goal without a name."],
+          buttons: [
+                {
+                  text: alertMessage["OK"]
+                }
+              ]
+        }).then( alert => {
+          alert.present();
+        });
+      });
+		}
+	}
+
   openPicker(pickerName) {
     this.change();
     this.translate.get(["Done", "Cancel"]).subscribe( translation => {
@@ -80,10 +148,9 @@ export class PopoverAddCalendarEventPage implements OnInit {
           {
             text: translation["Done"],
             handler: (value) => {
-              console.log(value);
               this.calendarEvent.goalid = value.project.value;
               if(this.goalDict[value.project.value].color) {
-                this,this.calendarEvent.color = this.goalDict[value.project.value].color;
+                this.calendarEvent.color = this.goalDict[value.project.value].color;
               } else {
                 this.calendarEvent.color = "#EDF2FF";
               }
