@@ -157,6 +157,13 @@ ion-button {
   color: rgb(0,0,0) !important;
 }
 
+.background-navigation-bar {
+  --background: url('/assets/imgs/background_navigation_bar.svg') center center/100% 100% no-repeat;
+  background-image: url('/assets/imgs/background_navigation_bar.svg');
+  background-position: center;
+  background-size: cover;
+}
+
 .background-navigation-left {
   --background: url('/assets/imgs/navigation_left.png') center center/70% 40% no-repeat;
 }
@@ -365,7 +372,6 @@ ion-toolbar {
 
 .navigation-bar {
   filter: drop-shadow(0px -1px 50px rgba(95, 73, 196, 0.15));
-  background: #FFFFFF;
   opacity: 0.85; 
 }
 
