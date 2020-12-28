@@ -1082,9 +1082,11 @@
           <ion-segment-button value="month" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
             <ion-label class="font-weight-bold">{{"Month" | translate}}</ion-label>
           </ion-segment-button>
+        <!--
           <ion-segment-button value="week" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
             <ion-label class="font-weight-bold">{{"Week" | translate}}</ion-label>
           </ion-segment-button>
+        -->
           <ion-segment-button value="day" class="border-style-none color-39297F padding-end-3 padding-start-3 border-radius-35px height-35px min-height-35px">
             <ion-label class="font-weight-bold">{{"Day" | translate}}</ion-label>
           </ion-segment-button>
@@ -1166,6 +1168,7 @@
                       allDayLabel="{{'Deadlines' | translate }}">
             </calendar>
           </div>
+        <!--
           <div class="width-100 padding-10 height-100" *ngIf="calendar.mode == 'week'">
             <ng-template #headerTemplate let-viewDate="viewDate"> 
               <div class="custom-day-header"> {{ viewDate.dayHeader }} hi </div> 
@@ -1191,6 +1194,7 @@
                       allDayLabel="{{'Deadlines' | translate }}">
             </calendar>
           </div>
+        -->
         </ion-row>
       </div>
     </ion-grid>
