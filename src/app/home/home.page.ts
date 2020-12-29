@@ -825,6 +825,9 @@ export class HomePage {
 				'goalDict': this.goalDict,
 				'projectColors': this.projectColors
 			};
+			if(this.viewpoint == 'ProjectOverviewPage') {
+				componentProps['goalid'] = this.goal.key;
+			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddThoughtPage,
 			cssClass: 'popover-add-thought',
@@ -845,6 +848,9 @@ export class HomePage {
 				'goalDict': this.goalDict,
 				'projectColors': this.projectColors
 			};
+			if(this.viewpoint == 'ProjectOverviewPage') {
+				componentProps['project'] = this.goal;
+			}
 			if(params) {
 				componentProps['thought'] = params;
 			}
