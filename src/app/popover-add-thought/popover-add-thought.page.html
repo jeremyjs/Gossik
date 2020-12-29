@@ -16,8 +16,11 @@
         {{"Thought" | translate}}
       </ion-col>
       <ion-col size="3" class="text-align-right">
-        <button *ngIf="(type == 'show' && changed) || type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
+        <button *ngIf="(type == 'show' && changed && !goalid) || type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
           {{"Save" | translate}}
+        </button>
+        <button *ngIf="type == 'show' && changed && goalid" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
+          {{"Assign" | translate}}
         </button>
       </ion-col>
     </ion-row>
@@ -48,7 +51,7 @@
         <button class="font-size-20px transparent font-red border-1px-red border-radius-20px" (click)="deleteThought()">{{"Delete" | translate}}</button>
       </div>
     </ion-row>
-    <ion-row *ngIf="type == 'show'">
+    <ion-row *ngIf="type == 'show' && !goalid">
       <div class="margin-top-20-auto flex border-radius-10px padding-right-5 height-36px">
         <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="createToDo()">{{"Create To-do" | translate}}</button>
       </div>
