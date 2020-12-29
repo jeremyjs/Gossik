@@ -51,6 +51,9 @@ export class PopoverAddToDoPage implements OnInit {
         this.todo.goalid = this.navParams.get('thought').goalid;
       }
     }
+    if(this.navParams.get('projectid')) {
+      this.todo.goalid = this.navParams.get('projectid');
+    }
     this.translate.get(this.priorities).subscribe( translation => {
       this.priorities = ["", translation["Low"], translation["Medium"], translation["High"]];
     });

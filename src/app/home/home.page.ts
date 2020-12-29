@@ -849,7 +849,7 @@ export class HomePage {
 				'projectColors': this.projectColors
 			};
 			if(this.viewpoint == 'ProjectOverviewPage') {
-				componentProps['project'] = this.goal;
+				componentProps['projectid'] = this.goal.key;
 			}
 			if(params) {
 				componentProps['thought'] = params;
