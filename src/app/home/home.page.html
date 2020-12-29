@@ -566,45 +566,41 @@
 
   <!-- ProjectOverviewPage -->
   <!-- Mobile ProjectOverviewPage -->
-  <div *ngIf="viewpoint == 'ProjectOverviewPage' && isApp" class="no-scrollbar height-100-minus-95px width-100">
+  <div *ngIf="viewpoint == 'ProjectOverviewPage' && isApp" class="no-scrollbar overflow-scroll height-100-minus-95px width-100">
     <ion-row class="width-90 padding-8-0-8-0 margin-auto font-weight-bold color-39297F">
       {{"Thoughts" | translate}}
     </ion-row>
-    <div class="height-50-minus-34px overflow-scroll no-scrollbar width-90 margin-horizontal-auto">
-      <ion-row class="margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let reference of references[goal.key]">
-        <button  class="transparent text-align-left" (click)="showThought(reference, reference.goalid)">
-          <span class="font-size-18px color-39297F">
-            {{reference.content}}
-          </span>
-        </button>
-      </ion-row>
-    </div>
+    <ion-row class="width-90 margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let reference of references[goal.key]">
+      <button  class="transparent text-align-left" (click)="showThought(reference, reference.goalid)">
+        <span class="font-size-18px color-39297F">
+          {{reference.content}}
+        </span>
+      </button>
+    </ion-row>
     <ion-row class="width-90 padding-8-0-8-0 margin-auto font-weight-bold color-39297F">
       {{"To-dos" | translate}}
     </ion-row>
-    <ion-row class="height-50-minus-34px width-90 margin-horizontal-auto overflow-scroll no-scrollbar">
-      <div *ngFor="let todo of actions[goal.key]" (click)="showToDo(todo)" class="color-39297F width-100 padding-15 border-radius-15px margin-top-10 seperating-border-bottom background-F6F7FB">
-        <ion-row class="font-size-18px text-align-left">
-          <span>
-            {{todo.content}}
-          </span>
-        </ion-row>
-        <ion-row class="text-align-left font-size-12px">
-          <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
-            {{goalDict[todo.goalid].name}}
-          </span>
-          <span *ngIf="todo.deadline" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-            <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
-          </span>
-          <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-            <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{priorities[todo.priority] | translate}}
-          </span>
-          <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
-            {{todo.time}}{{"min" | translate }}
-          </span>
-        </ion-row>
-      </div>
-    </ion-row>
+    <div *ngFor="let todo of actions[goal.key]" (click)="showToDo(todo)" class="margin-horizontal-auto color-39297F width-90 padding-15 border-radius-15px margin-top-10 seperating-border-bottom background-F6F7FB">
+      <ion-row class="font-size-18px text-align-left">
+        <span>
+          {{todo.content}}
+        </span>
+      </ion-row>
+      <ion-row class="text-align-left font-size-12px">
+        <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-3 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
+          {{goalDict[todo.goalid].name}}
+        </span>
+        <span *ngIf="todo.deadline" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
+          <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="10">{{dateFormated(todo.deadline)}}
+        </span>
+        <span *ngIf="todo.priority" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
+          <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3" height="10">{{priorities[todo.priority] | translate}}
+        </span>
+        <span *ngIf="todo.time" class="margin-right-3 border-radius-30px background-FFFFFF padding-3">
+          {{todo.time}}{{"min" | translate }}
+        </span>
+      </ion-row>
+    </div>
   </div>
 
   <!-- ProcessCapturePage -->
