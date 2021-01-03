@@ -565,6 +565,10 @@ ion-toolbar {
   margin-top: 5px;
 }
 
+.margin-top-23 {
+  margin-top: 23px;
+}
+
 .margin-top-25 {
   margin-top: 25px;
 }
@@ -605,8 +609,8 @@ ion-toolbar {
   margin-top: 96px;
 }
 
-.margin-top-104 {
-  margin-top: 104px;
+.margin-top-90 {
+  margin-top: 90px;
 }
 
 .margin-top-115 {
@@ -1324,8 +1328,16 @@ p {
   padding-left: 0;
 }
 
+.padding-left-10 {
+  padding-left: 10px;
+}
+
 .padding-right-0 {
   padding-right: 0;
+}
+
+.padding-right-10 {
+  padding-right: 10px;
 }
 
 .padding-left-20 {
@@ -1675,7 +1687,7 @@ ion-backdrop {
   --width: calc(100% - 30px);
   --height: auto !important;
   overflow: hidden !important;
-  border-radius: 50% 50% 40px 40px;
+  border-radius: 50% 50% 40px 40px / 60% 60% 40px 40px;
 }
 
 .popover-add-tutorial .popover-content {
