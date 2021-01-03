@@ -1,17 +1,14 @@
 <ion-content class="width-100">
   <ion-row class="margin-top-35 color-39297F">
-    <ion-col size="3">
+    <ion-col size="4">
       <button class="transparent color-6049C4 font-size-17px" (click)="cancel()">
         {{"Cancel" | translate}}
       </button>
     </ion-col>
-    <ion-col *ngIf="type != 'show'" size="6" class="text-align-center font-size-17px font-weight-bold">
-      {{"Add Calendar Event" | translate}}
-    </ion-col>
-    <ion-col *ngIf="type == 'show'" size="6" class="text-align-center font-size-17px font-weight-bold">
+    <ion-col size="4" class="text-align-center font-size-17px font-weight-bold">
       {{"Calendar Event" | translate}}
     </ion-col>
-    <ion-col size="3">
+    <ion-col size="4">
       <button *ngIf="type != 'show' || (type == 'show' && changed && !calendarEvent.native)" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
         {{"Save" | translate}}
       </button>

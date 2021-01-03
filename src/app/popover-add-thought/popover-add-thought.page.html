@@ -1,7 +1,7 @@
 <ion-content class="width-100">
   <div class="margin-bottom-20">
     <ion-row class="margin-top-35 color-39297F">
-      <ion-col size="3">
+      <ion-col size="4">
         <button *ngIf="type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="cancel()">
           {{"Cancel" | translate}}
         </button>
@@ -9,17 +9,14 @@
           {{"Close" | translate}}
         </button>
       </ion-col>
-      <ion-col size="6" *ngIf="type != 'show'" class="text-align-center font-size-17px font-weight-bold">
-        {{"Add Thought" | translate}}
-      </ion-col>
-      <ion-col size="6" *ngIf="type == 'show'" class="text-align-center font-size-17px font-weight-bold">
+      <ion-col size="4" class="text-align-center font-size-17px font-weight-bold">
         {{"Thought" | translate}}
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="4">
         <button *ngIf="(type == 'show' && changed && !goalid) || type != 'show'" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
           {{"Save" | translate}}
         </button>
-        <button *ngIf="type == 'show' && changed && goalid" class="transparent color-6049C4 font-size-17px" (click)="save()" color="tertiary">
+        <button *ngIf="type == 'show' && changed && goalid" class="transparent color-6049C4 font-size-17px margin-vertical-auto" (click)="save()" color="tertiary">
           {{"Assign" | translate}}
         </button>
       </ion-col>
