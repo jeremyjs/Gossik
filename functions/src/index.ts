@@ -300,6 +300,46 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
    	});
 });
 
+exports.setFocusToNewProjectSuggestion = functions.database.ref('/users/{user}/goals/{newGoal}').onCreate((newGoal, context) => {
+	let project = newGoal.val();
+	return admin.database().ref('/users/' + project.userid + '/profile').once("value").then( (userProfile: any) => {
+		let language = 'en';
+		if(userProfile.val().language) {
+			language = userProfile.val().language;
+		}
+		let message: any = {
+			en: {
+				title_1: "Set focus to new project '",
+				title_2: "'",
+				content_1: "You created a new project '",
+				content_2: "'. Do you want me to set the focus to this project so that I will prioritize it's to-dos higher and we get started faster with it?"
+			},
+			de: {
+				title_1: "Fokus auf neues Projekt '",
+				title_2: "' legen",
+				content_1: "Du hast ein neues Projekt '",
+				content_2: "' erstellt. Möchtest du, dass ich den Fokus auf dieses Projekt lege, sodass ich dessen ToDos höher priorisiere und wir schneller mit diesem Projekt starten?"
+			}
+		};
+		let title = message.en.title_1 + project.name + message.en.title_2;
+		let content = message.en.content_1 + project.name + message.en.content_2;
+		if(message[language]) {
+			title = message[language].title_1 + project.name + message[language].title_2;
+			content = message[language].content_1 + project.name + message[language].content_2;
+		}
+		let suggestion: Suggestion = {
+			userid: project.userid,
+			title: title,
+			content: content,
+			type: "SetFocus",
+			projectid: newGoal.key,
+			active: true,
+			createDate: new Date().toISOString()
+		}
+		return admin.database().ref('/users/' + project.userid + '/suggestions').push(suggestion);
+	});
+});
+
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];

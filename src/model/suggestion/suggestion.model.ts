@@ -5,6 +5,7 @@ export interface Suggestion {
     content: string;
     type: string;
     todoid?: string;
+    projectid?: string;
     active?: boolean;
     createDate?: any;
     deleteDate?: any;

@@ -1118,6 +1118,18 @@ export class HomePage {
 							} else {
 								this.db.deleteSuggestion(params[4], this.auth.userid);
 							}
+						} else if (params[4].type == 'SetFocus') {
+							if(data.data == 'Follow suggestion') {
+								this.db.setFocus(params[4].projectid, this.auth.userid).then( () => {
+									this.db.deleteSuggestion(params[4], this.auth.userid).then( () => {
+										this.translate.get(["Focus set"]).subscribe( translation => {
+											this.presentToast(translation["Focus set"]);
+									  });
+									});
+								});
+							} else {
+								this.db.deleteSuggestion(params[4], this.auth.userid);
+							}
 						}
 					}
 				} else if(params[3] == 'assignAssistant') {
