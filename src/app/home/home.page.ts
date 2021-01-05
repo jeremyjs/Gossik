@@ -1130,6 +1130,14 @@ export class HomePage {
 							} else {
 								this.db.deleteSuggestion(params[4], this.auth.userid);
 							}
+						} else if (params[4].type == 'SliceTask') {
+							if(data.data == 'Follow suggestion') {
+								let todo = this.actionArray[this.actionArray.findIndex(todo => todo.key == params[4].todoid)];
+								this.showToDo(todo);
+								this.db.deleteSuggestion(params[4], this.auth.userid);
+							} else {
+								this.db.deleteSuggestion(params[4], this.auth.userid);
+							}
 						}
 					}
 				} else if(params[3] == 'assignAssistant') {

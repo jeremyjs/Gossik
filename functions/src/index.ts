@@ -340,6 +340,50 @@ exports.setFocusToNewProjectSuggestion = functions.database.ref('/users/{user}/g
 	});
 });
 
+exports.sliceTaskSuggestion = functions.database.ref('/users/{user}/nextActions/{newToDo}').onCreate((newToDo, context) => {
+	let todo = newToDo.val();
+	if(todo.time >= 30) {
+		return admin.database().ref('/users/' + todo.userid + '/profile').once("value").then( (userProfile: any) => {
+			let language = 'en';
+			if(userProfile.val().language) {
+				language = userProfile.val().language;
+			}
+			let message: any = {
+				en: {
+					title_1: "Slice to-do '",
+					title_2: "'",
+					content_1: "Your newly created to-do '",
+					content_2: "' is rather long. If you slice it into smaller sub to-dos, it will be easier to work it off during short breaks. I suggest to change this to-do into the immediate next action that does not take longer than 30min."
+				},
+				de: {
+					title_1: "Zerkleinere ToDo '",
+					title_2: "'",
+					content_1: "Dein neu erstelltes ToDo '",
+					content_2: "' ist etwas lang. Wenn du es in mehrere kleinere ToDos zerkleinerst, wird es einfacher sein, diese in kurzen Pausen abzuarbeiten. Ich schlage vor, dieses ToDo in den nächsten konkreten Schritt zu ändern, welcher nicht länger als 30min dauert."
+				}
+			};
+			let title = message.en.title_1 + todo.content + message.en.title_2;
+			let content = message.en.content_1 + todo.content + message.en.content_2;
+			if(message[language]) {
+				title = message[language].title_1 + todo.content + message[language].title_2;
+				content = message[language].content_1 + todo.content + message[language].content_2;
+			}
+			let suggestion: Suggestion = {
+				userid: todo.userid,
+				title: title,
+				content: content,
+				type: "SliceTask",
+				todoid: newToDo.key,
+				active: true,
+				createDate: new Date().toISOString()
+			}
+			return admin.database().ref('/users/' + todo.userid + '/suggestions').push(suggestion);
+		});
+	} else {
+		return 0;
+	}
+});
+
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];
