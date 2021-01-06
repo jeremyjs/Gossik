@@ -300,6 +300,64 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
    	});
 });
 
+exports.deleteOldToDoSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( (users: any) => {
+		let promises: Promise<any>[] = [];
+		let message: any = {
+			en: {
+				title_1: "Delete to-do '",
+				title_2: "'",
+				content_1: "Your to-do '",
+				content_2: "' has been on your to-do list for a long time. I suggest to delete this to-do because it seems like you will not do it anyway."
+			},
+			de: {
+				title_1: "Lösche ToDo '",
+				title_2: "'",
+				content_1: "Dein ToDo '",
+				content_2: "' ist schon eine lange Zeit auf deiner ToDo-Liste. Ich schlage vor, es zu löschen, da du es offenbar sowieso nicht erledigen wirst."
+			}
+		};
+   		users.forEach(function(user: any) {
+			let language = 'en';
+			if(user.val().profile && user.val().profile.language) {
+				language = user.val().profile.language;
+			}
+   			if(user.val().nextActions) {
+	   			Object.entries(user.val().nextActions).forEach( ([key, todo]: [string, any]) => {
+					if(todo.active && !todo.taken && new Date(todo.createDate).getTime() < new Date().getTime() - 10*24*3600*1000) {
+						let title = message.en.title_1 + todo.content + message.en.title_2;
+						let content = message.en.content_1 + todo.content + message.en.content_2;
+						if(message[language]) {
+							title = message[language].title_1 + todo.content + message[language].title_2;
+							content = message[language].content_1 + todo.content + message[language].content_2;
+						}
+						admin.database().ref('/users/' +  + '/profile').once("value").then( (userProfile: any) => {
+						});
+						let suggestion: Suggestion = {
+							userid: user.key,
+							title: title,
+							content: content,
+							type: "DeleteToDo",
+							todoid: key,
+							active: true,
+							createDate: new Date().toISOString()
+						}
+						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+					}
+				});
+	   		}
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
+
 exports.setFocusToNewProjectSuggestion = functions.database.ref('/users/{user}/goals/{newGoal}').onCreate((newGoal, context) => {
 	let project = newGoal.val();
 	return admin.database().ref('/users/' + project.userid + '/profile').once("value").then( (userProfile: any) => {
