@@ -300,6 +300,63 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
    	});
 });
 
+exports.setNewDeadlineSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
+    return admin.database().ref('/users').once("value").then( (users: any) => {
+		let promises: Promise<any>[] = [];
+		let message: any = {
+			en: {
+				title_1: "Set new deadline for to-do '",
+				title_2: "'",
+				content_1: "The deadline of your to-do '",
+				content_2: "' has expired. I suggest to set a new deadline to not forget about this to-do."
+			},
+			de: {
+				title_1: "Setze neue Deadline für ToDo '",
+				title_2: "'",
+				content_1: "Die Deadline für dein ToDo '",
+				content_2: "' ist abgelaufen. Ich schlage for, eine neue zu setzen, um dieses ToDo nicht zu vergessen."
+			}
+		};
+   		users.forEach(function(user: any) {
+			let language = 'en';
+			if(user.val().profile && user.val().profile.language) {
+				language = user.val().profile.language;
+			}
+   			if(user.val().calendarEvents) {
+	   			Object.values(user.val().calendarEvents).forEach( (calendarEvent: any) => {
+					if(calendarEvent.actionid &&  calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() <= new Date().getTime()) {
+						let todo: Action = user.val().nextActions[calendarEvent.actionid];
+						let title = message.en.title_1 + todo.content + message.en.title_2;
+						let content = message.en.content_1 + todo.content + message.en.content_2;
+						if(message[language]) {
+							title = message[language].title_1 + todo.content + message[language].title_2;
+							content = message[language].content_1 + todo.content + message[language].content_2;
+						}
+						let suggestion: Suggestion = {
+							userid: user.key,
+							title: title,
+							content: content,
+							type: "SetNewDeadline",
+							todoid: calendarEvent.actionid,
+							active: true,
+							createDate: new Date().toISOString()
+						}
+						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+					}
+				});
+	   		}
+   		});
+   		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+   	});
+});
+
 exports.deleteOldToDoSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( (users: any) => {
 		let promises: Promise<any>[] = [];
