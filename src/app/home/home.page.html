@@ -993,7 +993,7 @@
         </span>
       </ion-row>
       <ion-row class="margin-auto color-39297F text-align-center">
-        <span class="margin-auto" *ngIf="startedAction.goalid != 'unassigned'">
+        <span class="margin-auto" *ngIf="startedAction.goalid != 'unassigned' && goalDict[startedAction.goalid] != undefined">
           {{goalDict[startedAction.goalid].name}}
         </span>
       </ion-row>

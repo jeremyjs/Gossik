@@ -22,7 +22,7 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
 		let promises: Promise<any>[] = [];
 		users.forEach(function(user) {
 			if(user.val().devices) {
-				if(user.val().profile.language == 'de') {
+				if(user.val().profile && user.val().profile.language && user.val().profile.language == 'de') {
 					let payload = {
 						notification: {
 							title: 'Gossik Info',
@@ -69,42 +69,44 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-   			let timeNowMiliseconds = new Date().getTime();
-   			let timeNowSeconds = timeNowMiliseconds/1000;
-			let lastLoginTimeMiliseconds = new Date(user.val().profile.lastLogin).getTime();
-   			let lastLoginTimeSeconds = lastLoginTimeMiliseconds/1000;
-   			if(timeNowSeconds - lastLoginTimeSeconds >= 172800 && timeNowSeconds - lastLoginTimeSeconds < 173100) {
-				let message: any = {};
-				let title: any = {};
-				title['de'] = "Alles gut?";
-				message['de'] = "Hey, ich habe schon lange nichts mehr von dir gehört. Alles okay? Ich würde dir liebend gerne helfen, nutze mich doch für ein Projekt um dich davon zu überzeugen!";
-				title['en'] = "Everything okay?";
-				message['en'] = "Hey, I haven't heard from you in a while. Everything okay? I'd love to help you, use me for a project to convince you!";
-				let language = 'en';
-	    		if(user.val().profile.language) {
-	   				language = user.val().profile.language;
-	   			}
-				let msg = message['en'];
-				let ttl = title['en'];
-	   			if(message[language]) {
-	   				msg = message[language];
-	   			}
-	   			if(title[language]) {
-	   				ttl = title[language];
-	   			}
-	    		let payload = {
-		            notification: {
-		                title: ttl,
-		                body: msg
-		            },
-		            data: {
-		              	title: ttl,
-		                body: msg
-		            }
-		        };
-		        Object.values(user.val().devices).forEach( (device) => {
-					promises.push(admin.messaging().sendToDevice(String(device), payload));
-				});
+			if(user.val().profile && user.val().profile.lastLogin) {
+				let timeNowMiliseconds = new Date().getTime();
+				let timeNowSeconds = timeNowMiliseconds/1000;
+				let lastLoginTimeMiliseconds = new Date(user.val().profile.lastLogin).getTime();
+				let lastLoginTimeSeconds = lastLoginTimeMiliseconds/1000;
+				if(timeNowSeconds - lastLoginTimeSeconds >= 172800 && timeNowSeconds - lastLoginTimeSeconds < 173100) {
+					let message: any = {};
+					let title: any = {};
+					title['de'] = "Alles gut?";
+					message['de'] = "Hey, ich habe schon lange nichts mehr von dir gehört. Alles okay? Ich würde dir liebend gerne helfen, nutze mich doch für ein Projekt um dich davon zu überzeugen!";
+					title['en'] = "Everything okay?";
+					message['en'] = "Hey, I haven't heard from you in a while. Everything okay? I'd love to help you, use me for a project to convince you!";
+					let language = 'en';
+					if(user.val().profile && user.val().profile.language) {
+						language = user.val().profile.language;
+					}
+					let msg = message['en'];
+					let ttl = title['en'];
+					if(message[language]) {
+						msg = message[language];
+					}
+					if(title[language]) {
+						ttl = title[language];
+					}
+					let payload = {
+						notification: {
+							title: ttl,
+							body: msg
+						},
+						data: {
+							title: ttl,
+							body: msg
+						}
+					};
+					Object.values(user.val().devices).forEach( (device) => {
+						promises.push(admin.messaging().sendToDevice(String(device), payload));
+					});
+				}
 			}
 		});
 		return Promise.all(promises)
@@ -130,7 +132,7 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 					let timeNowSeconds = timeNowMiliseconds/1000;
 					if(!calendarEvent.allDay && calendarEvent.active != false && eventStartTimeSeconds - timeNowSeconds < 1200 && eventStartTimeSeconds - timeNowSeconds >= 900) {
 						let language = 'en';
-			    		if(user.val().profile.language) {
+			    		if(user.val().profile && user.val().profile.language) {
 			   				language = user.val().profile.language;
 			   			}
 			   			let message: any = {};
@@ -173,9 +175,12 @@ exports.deadlinePush = functions.pubsub.schedule('0 * * * *').onRun((context) =>
 		let promises: Promise<any>[] = [];
 		let message: any = {};
    		users.forEach(function(user) {
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			let timeNowConverted = new Date();
+			if(user.val().profile && user.val().profile.timezoneOffset) {
+				timeNowConverted =  convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			}
 			let language = 'en';
-			if(user.val().profile.language) {
+			if(user.val().profile && user.val().profile.language) {
 				language = user.val().profile.language;
 			}
    			if(user.val().calendarEvents && timeNowConverted.getHours() == 6) {
@@ -265,7 +270,15 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
 							active: true,
 							createDate: new Date().toISOString()
 						}
-						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						let suggestionAlreadyPresent: boolean = false;
+						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+							if(oldSuggestion.active && oldSuggestion.type == "IncreasePriority" && oldSuggestion.todoid == suggestion.todoid) {
+								suggestionAlreadyPresent = true;
+							}
+						})
+						if(!suggestionAlreadyPresent) {
+							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						}
 					} else if(calendarEvent.actionid && calendarEvent.allDay && calendarEvent.active != false && new Date(calendarEvent.startTime).getTime() - new Date().getTime() <= 2*24*3600*1000 && new Date(calendarEvent.startTime).getTime() - new Date().getTime() >= 24*3600*1000) {
 						// deadline isch in 1-2 täg
 						let todo: Action = user.val().nextActions[calendarEvent.actionid];
@@ -284,7 +297,15 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
 							active: true,
 							createDate: new Date().toISOString()
 						}
-						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						let suggestionAlreadyPresent: boolean = false;
+						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+							if(oldSuggestion.active && oldSuggestion.type == "IncreasePriority" && oldSuggestion.todoid == suggestion.todoid) {
+								suggestionAlreadyPresent = true;
+							}
+						})
+						if(!suggestionAlreadyPresent) {
+							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						}
 					}
 				});
 	   		}
@@ -341,7 +362,15 @@ exports.setNewDeadlineSuggestion = functions.pubsub.schedule('0 0 * * *').onRun(
 							active: true,
 							createDate: new Date().toISOString()
 						}
-						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						let suggestionAlreadyPresent: boolean = false;
+						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+							if(oldSuggestion.active && oldSuggestion.type == "SetNewDeadline" && oldSuggestion.todoid == suggestion.todoid) {
+								suggestionAlreadyPresent = true;
+							}
+						})
+						if(!suggestionAlreadyPresent) {
+							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						}
 					}
 				});
 	   		}
@@ -388,8 +417,6 @@ exports.deleteOldToDoSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((
 							title = message[language].title_1 + todo.content + message[language].title_2;
 							content = message[language].content_1 + todo.content + message[language].content_2;
 						}
-						admin.database().ref('/users/' +  + '/profile').once("value").then( (userProfile: any) => {
-						});
 						let suggestion: Suggestion = {
 							userid: user.key,
 							title: title,
@@ -399,7 +426,15 @@ exports.deleteOldToDoSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((
 							active: true,
 							createDate: new Date().toISOString()
 						}
-						promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						let suggestionAlreadyPresent: boolean = false;
+						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+							if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
+								suggestionAlreadyPresent = true;
+							}
+						})
+						if(!suggestionAlreadyPresent) {
+							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
+						}
 					}
 				});
 	   		}
@@ -539,8 +574,6 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 						});
 					}
 				}
-			} else {
-				console.log('no timezoneoffset or profile for user ' + String(user.key));
 			}
 		});
 		return Promise.all(promises)
@@ -564,14 +597,17 @@ exports.setRandomPushTimes = functions.pubsub.schedule('50 * * * *').onRun((cont
     return admin.database().ref('/users').once("value").then( users => {
    		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-   			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
-			if(timeNowConverted.getHours() == 23) {
+			let timeNowConverted = new Date();
+			if(user.val().profile && user.val().profile.timezoneOffset) {
+				timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			}
+			if(timeNowConverted.getHours() == 23 && user.val().profile && user.val().profile.assistant) {
 	   			let randomPushTimes: number[] = [];
 	   			let numberPushForAssistant: any = {};
-				numberPushForAssistant['silent'] = 0;
-				numberPushForAssistant['chiller'] = 1;
-				numberPushForAssistant['standard'] = 3;
-				numberPushForAssistant['pusher'] = 5;
+				numberPushForAssistant['Silent'] = 0;
+				numberPushForAssistant['Chiller'] = 1;
+				numberPushForAssistant['Standard'] = 3;
+				numberPushForAssistant['Pusher'] = 5;
 				while(randomPushTimes.length < numberPushForAssistant[user.val().profile.assistant]) {
 	   				let nextNumber = getRandomInteger(8,21);
 	   				if(randomPushTimes.indexOf(nextNumber) == -1) {
@@ -616,14 +652,17 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('50 * * * *').onRun(asyn
 	return admin.database().ref('/users').once("value", function(users) {
 		let promises: Promise<any>[] = [];
 		users.forEach(function(user) {
-			let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			let timeNowConverted = new Date();
+			if(user.val().profile && user.val().profile.timezoneOffset) {
+				timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			}
 			if(timeNowConverted.getHours() != 23) {
 				if(user.val().pushNotifications) {
 					for(let key in user.val().pushNotifications) {
-						if(user.val().nextActions && user.val().pushNotifications[key] && user.val().nextActions[user.val().pushNotifications[key].todoid]) {
+						if(user.val().nextActions && user.val().pushNotifications[key] && user.val().nextActions && user.val().nextActions[user.val().pushNotifications[key].todoid]) {
 							let pushNotification = user.val().pushNotifications[key];
 							let todo = user.val().nextActions[pushNotification.todoid];
-							if(todo.startDate && todo.goalid) {
+							if(todo.startDate && todo.goalid && user.val().profile && user.val().profile.learnedSchedule && user.val().profile.timezoneOffset) {
 								let startDate = new Date(todo.startDate);
 								let randomPushTimeDate = new Date(pushNotification.createDate);
 								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
@@ -645,7 +684,7 @@ exports.checkRandomTodoDone = functions.pubsub.schedule('50 * * * *').onRun(asyn
 									}
 									promises.push(admin.database().ref('/users/' + user.key + '/profile').child('learnedSchedule').set(JSON.stringify(learnedScheduleObject)));
 								}
-							} else if(!todo.startDate) {
+							} else if(!todo.startDate && user.val().profile && user.val().profile.learnedSchedule && user.val().profile.timezoneOffset) {
 								let startDate = new Date(pushNotification.createDate);
 								let learnedScheduleObject = JSON.parse(user.val().profile.learnedSchedule.toString());
 								let localeDate = convertDateToLocaleDate(startDate, user.val().profile.timezoneOffset);
@@ -683,14 +722,17 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
     return admin.database().ref('/users').once("value").then( users => {
     	let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			if(user.val().devices && user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
-				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+			if(user.val().profile && user.val().profile.assistant && user.val().devices && user.val().subscription != 'assistantFeature' || (user.val().subscription == 'assistantFeature' && user.val().subscriptionPaid)) {
+				let timeNowConverted = new Date();
+				if(user.val().profile.timezoneOffset) {
+					timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
+				}
 				let numberPushForAssistant: any = {};
-				numberPushForAssistant['silent'] = 0;
-				numberPushForAssistant['chiller'] = 1;
-				numberPushForAssistant['standard'] = 3;
-				numberPushForAssistant['pusher'] = 5;
-				if(user.val().profile.randomPushTimes && user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
+				numberPushForAssistant['Silent'] = 0;
+				numberPushForAssistant['Chiller'] = 1;
+				numberPushForAssistant['Standard'] = 3;
+				numberPushForAssistant['Pusher'] = 5;
+				if(user.val().profile.randomPushTimes &&  user.val().profile.randomPushTodosReceived < numberPushForAssistant[user.val().profile.assistant]) {
 					if(user.val().profile.randomPushTimes.indexOf(timeNowConverted.getHours()) != -1) {
 						if(user.val().nextActions) {
 							let todos = [];
@@ -921,23 +963,14 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 				}
 				for(let iter = 1; iter < checkDates.length; iter++) {
 					if(user.val().loginDays) {
-						console.log('ho');
 						let loggedInInRange: number = 0;
 						let loginDays = Object.values(user.val().loginDays);
 						loginDays.shift();
 						loginDays.forEach( loginDay => {
-							console.log('hi');
-							if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-								console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkDates[iter-1].toISOString() + ' and ' + checkDates[iter].toISOString());
-							}
 							if(checkDates[iter-1].getTime() <= new Date(String(loginDay)).getTime() &&  checkDates[iter].getTime() >= new Date(String(loginDay)).getTime()) {
 								loggedInInRange++;
-								console.log('yup');
 							}
 						});
-						if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-							console.log('loggedInInRange ' + String(loggedInInRange));
-						}
 						if(loggedInInRange > 0) {
 							loginCounts[checkDates[iter].toISOString()]++;
 						}
@@ -963,7 +996,6 @@ export const trackingSystem = functions.https.onCall(async (data, context) => {
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginCounts: loginCounts,
 		activeCounts: activeCounts
-		//activeUserEmails: activeUserEmails
 	}
 });
 
@@ -988,18 +1020,13 @@ export const trackingSystemNew = functions.https.onCall(async (data, context) =>
 	today.setHours(0,0,0);
 	let checkDate = new Date(data.startDate)
 	checkDate.setDate(new Date(data.startDate).getDate() + 7);
-	
-	console.log('ha');
 	while(today.getTime() >= checkDate.getTime()) {
 		checkDate.setDate(checkDate.getDate() + 7);
 		checkRanges.push([checkRanges[checkRanges.length -1][1], new Date(checkDate), 0, 0]);
 	}
-	console.log('ho');
-
 	while(checkRanges[checkRanges.length - 1][1].getTime() >= today.getTime()) {
 		checkRanges.pop();
 	}
-	console.log('hi');
 	users.forEach( user => {
 		if(user.val().profile?.signUpDate) {
 			let signUpDate = new Date(user.val().profile.signUpDate);
@@ -1071,17 +1098,10 @@ export const trackingSystemNew = functions.https.onCall(async (data, context) =>
 							let loginDays = Object.values(user.val().loginDays);
 							loginDays.shift();
 							loginDays.forEach( loginDay => {
-								if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-									console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkRanges[iter][0].toISOString() + ' and ' + checkRanges[iter][1].toISOString());
-								}
 								if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
 									loggedInInRange++;
-									console.log('yup');
 								}
 							});
-							if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-								console.log('loggedInInRange ' + String(loggedInInRange));
-							}
 							if(loggedInInRange > 0) {
 								checkRanges[iter][2]++;
 							}
@@ -1098,16 +1118,10 @@ export const trackingSystemNew = functions.https.onCall(async (data, context) =>
 					let loginDays = Object.values(user.val().loginDays);
 					loginDays.shift();
 					loginDays.forEach( loginDay => {
-						if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-							console.log('checking loginDay ' + String(loginDay) + ' is between ' + checkRanges[iter][0].toISOString() + ' and ' + checkRanges[iter][1].toISOString());
-						}
 						if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
 							loggedInInRange++;
 						}
 					});
-					if(user.key == 'R1CFRqnvsmdJtxIJZIvgF1Md0lr1') {
-						console.log('loggedInInRange ' + String(loggedInInRange));
-					}
 					if(loggedInInRange > 0) {
 						checkRanges[iter][2]++;
 					}
@@ -1142,7 +1156,6 @@ export const trackingSystemNew = functions.https.onCall(async (data, context) =>
 		numberUsersWith5ThoughtsWithin7Days: numberUsersWith5ThoughtsWithin7Days,
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginAndActiveCounts: loginAndActiveCounts
-		//activeUserEmails: activeUserEmails
 	}
 });
 
