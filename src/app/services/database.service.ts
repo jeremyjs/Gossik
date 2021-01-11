@@ -31,7 +31,7 @@ export class DatabaseService {
         this.userData.profile = {
             email: email,
             referred: referred,
-            assistant: 'standard',
+            assistant: 'Standard',
             smartAssistant: false,
             tutorial: true,
             timezoneOffset: new Date().getTimezoneOffset()
