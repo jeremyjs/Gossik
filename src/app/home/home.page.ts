@@ -655,7 +655,7 @@ export class HomePage {
 			  	this.changePageViaMenu();
 			  } else {
 				  this.loggedin = false;
-			    this.goToLoginPage();
+			    this.goToLaunchPage();
 			  }
 			}
 		);
@@ -1186,9 +1186,12 @@ export class HomePage {
   	goToPrivacyPolicyPage() {
 		  this.changePage('PrivacyPolicyPage');
 		  this.pageTitle = 'Privacy Policy';
-  	}
+	  }
+	  
+	goToLaunchPage() {
+		this.changePage('LaunchPage');
+	}
 
-  	// LoginPage functions
 	goToLoginPage() {
 		this.loginError = undefined;
 		this.changePage('LoginPage');
@@ -1244,7 +1247,7 @@ export class HomePage {
 		this.db.logout();
 		this.auth.signOut().then( () => {
 			this.pageTitle = '';
-			this.goToLoginPage();
+			this.goToLaunchPage();
 		});
     }
 

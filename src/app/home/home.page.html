@@ -66,7 +66,7 @@
       </ion-grid>
     </div>
   </ion-toolbar>
-  <ion-toolbar *ngIf="!loggedin" class="background-color-white">
+  <ion-toolbar *ngIf="!loggedin" class="background-F0F3F9">
     <div *ngIf="!loggedin" class="width-45px">
       <ion-menu-button class="no-padding">
         <img src="../../assets/icon/purple/icon_menu.svg" height="44">
@@ -75,7 +75,22 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content class="background-FCFDFF">
+<ion-content class="background-F0F3F9">
+
+  <!-- Mobile LaunchPage -->
+	<div *ngIf="viewpoint == 'LaunchPage'" class="height-100 width-100">
+    <div class="margin-horizontal-auto font-size-48px color-6049C4 text-align-center">{{"Hi there, I'm Gossik" | translate}}</div>
+    <img src="../../assets/icon/purple/robot_circle.svg" class="margin-top-20 margin-horizontal-auto display-block" height="180">
+    <div class="width-90 margin-horizontal-auto font-size-16px color-6049C4 text-align-center margin-top-30">{{"I am your digital organizing assistant." | translate}}</div>
+    <br>
+    <div class="width-90 margin-horizontal-auto font-size-16px color-6049C4 text-align-center">{{"I will get to know you and learn from you to actively help you organize your day and manage your to-do list and calendar." | translate}}</div>
+    <ion-row class="width-90 margin-horizontal-auto flex margin-top-20">
+      <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto" (click)="launchNext('1')">{{"Start Tour!" | translate}}</button>
+    </ion-row>
+    <ion-row class="width-90 margin-horizontal-auto flex margin-top-20">
+      <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-FFFFFF color-6049C4 margin-horizontal-auto" (click)="goToLoginPage()">{{"I already have an account" | translate}}</button>
+    </ion-row>
+    </div>
 
   <!-- Mobile LoginPage -->
 	<div *ngIf="viewpoint == 'LoginPage'" class="height-100 width-100">
