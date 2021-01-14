@@ -1192,6 +1192,16 @@ export class HomePage {
 		this.changePage('LaunchPage');
 	}
 
+	launchNext(pageNumber:string) {
+		if(pageNumber == '1') {
+			this.changePage('OnboardingPageOne');
+		} else if(pageNumber == '2') {
+			this.changePage('OnboardingPageTwo');
+		} else if(pageNumber == '3') {
+			this.changePage('OnboardingPageThree');
+		}
+	}
+
 	goToLoginPage() {
 		this.loginError = undefined;
 		this.changePage('LoginPage');
@@ -1211,7 +1221,7 @@ export class HomePage {
 			);
   	} 
 
-  	goToSignUp(){
+  	goToSignUpPage(){
   		this.signUpError = undefined;
 		  this.changePage('SignUpPage');
 	}
