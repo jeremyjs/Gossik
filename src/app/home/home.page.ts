@@ -764,10 +764,6 @@ export class HomePage {
 		if(name == 'add') {
 			let cssClass: string = 'popover-add';
 			let componentProps: any = {};
-			if(params && params.tutorial) {
-				cssClass = 'popover-add-tutorial';
-				componentProps = {'tutorial': true};
-			}
 			const popover = await this.popoverCtrl.create({
 			component: PopoverAddPage,
 			componentProps: componentProps,
@@ -777,13 +773,6 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
 					this.presentPopover(data.data);
-				} else {
-					if(params && params.tutorial) {
-						let text = "Here on the Do page, you can work off your to-dos.";
-						let buttons = ["Next"];
-						let title = '(3/8)';
-						this.presentPopover('showInteraction', [text, buttons, title,1]);
-					}
 				}
 			});
 		} else if(name == 'addProject') {
@@ -1037,71 +1026,6 @@ export class HomePage {
 			popover.onDidDismiss().then( data => {
 				if(params[3] == 0) {
 					this.presentPopover('add', {tutorial: true});
-				} else if(params[3] == 1) {
-					if(data.data == 'Next') {
-						let text = "On the top, you can enter your available time. For example, when you have 20min available, I will only show you to-dos that are doable within 20min.";
-						let buttons = ["Back", "Next"];
-						let title = '(4/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 2]);
-					}
-				} else if(params[3] == 2) {
-					if(data.data == 'Next') {
-						let text = "The smart assistant will prioritize your to-dos for you and show your the most relevant tasks according to your current situation.";
-						let buttons = ["Back", "Next"];
-						let title = '(5/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 3]);
-					} else if(data.data == 'Back') {
-						let text = "Here on the Do page, you can work off your to-dos.";
-						let buttons = ["Next"];
-						let title = '(3/8)';
-						this.presentPopover('showInteraction', [text, buttons, title,1]);
-					}
-				} else if(params[3] == 3) {
-					this.goToAssistantPage();
-					if(data.data == 'Next') {
-						let text = "Here on the Assistant page, I show you statistics and facts that I learned and observed.";
-						let buttons = ["Back", "Next"];
-						let title = '(6/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 4]);
-					} else if(data.data == 'Back') {
-						let text = "On the top, you can enter your available time. For example, when you have 20min available, I will only show you to-dos that are doable within 20min.";
-						let buttons = ["Back", "Next"];
-						let title = '(4/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 2]);
-					}
-				} else if(params[3] == 4) {
-					if(data.data == 'Next') {
-						let text = "You can also change these things to modify how I prioritize and schedule your to-dos for you.";
-						let buttons = ["Back", "Next"];
-						let title = '(7/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 5]);
-					} else if(data.data == 'Back') {
-						let text = "The smart assistant will prioritize your to-dos for you and show your the most relevant tasks according to your current situation.";
-						let buttons = ["Back", "Next"];
-						let title = '(5/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 3]);
-					}
-				} else if(params[3] == 5) {
-					if(data.data == 'Next') {
-						let text = "And I give you suggestions that should help you to get everything under control. For example, when a deadline approaches, I will suggest you to increase the priority of this task to avoid stress.";
-						let buttons = ["Back", "Close"];
-						let title = '(8/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 6]);
-					} else if(data.data == 'Back') {
-						let text = "Here on the Assistant page, I show you statistics and facts that I learned and observed.";
-						let buttons = ["Back", "Next"];
-						let title = '(6/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 4]);
-					}
-				} else if(params[3] == 6) {
-					if(data.data == 'Close') {
-						this.db.finishTutorial(this.auth.userid);
-					} else if(data.data == 'Back') {
-						let text = "You can also change these things to modify how I prioritize and schedule your to-dos for you.";
-						let buttons = ["Back", "Next"];
-						let title = '(7/8)';
-						this.presentPopover('showInteraction', [text, buttons, title, 5]);
-					}
 				} else if(params[3] == 'suggestion') {
 					if(data.data) {
 						if(params[4].type == 'IncreasePriority') {
@@ -2580,13 +2504,6 @@ export class HomePage {
 		this.skippedAllToDos = false;
 		this.db.getUserProfile(this.auth.userid).valueChanges().pipe(take(1)).subscribe( userProfile => {
 			this.userProfile = userProfile;
-			if(this.userProfile.tutorial) {
-				this.db.finishTutorial(this.auth.userid);
-				let text = "I am your personal digital assistant. I will get to know you and learn from you to actively help you organize your day and manage your tasks.";						   
-				let buttons = ['Next'];
-				let title = "Welcome to Gossik!";
-				this.presentPopover('showInteraction', [text, buttons, title, 0]);
-			}
 			this.duration = 0;
 			if(this.startedAction.key) {
 				this.pageTitle = "Focus";

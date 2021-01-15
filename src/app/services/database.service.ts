@@ -28,16 +28,34 @@ export class DatabaseService {
 	) { }
     
     createUser(userid, email, referred?) {
+        let promises: Promise<any>[] = [];
         this.userData.profile = {
             email: email,
             referred: referred,
             assistant: 'Standard',
             smartAssistant: false,
-            tutorial: true,
-            timezoneOffset: new Date().getTimezoneOffset()
+            tutorial: false,
+            timezoneOffset: new Date().getTimezoneOffset(),
+            signUpDate: new Date().toISOString()
         }
-        this.userData.profile["signUpDate"] = new Date().toISOString();
-        return this.db.list('users').set(userid, this.userData); 
+        this.db.list('users').set(userid, this.userData).then( () => {
+            this.translate.get(["I am a to-do. Click on me to start working on me or mark me as done.", "OK"]).subscribe( translation => {
+                let todo: Action = {
+                    userid: userid,
+                    content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
+                    time: 0,
+                    priority: 1,
+                    goalid: "unassigned",
+                    createDate: new Date().toISOString(),
+                    taken: false,
+                    active: true
+                }
+                this.addAction(todo, {} as Capture, userid);
+                return 1;
+            });
+        })
+        
+        
     }
 
     logout() {
