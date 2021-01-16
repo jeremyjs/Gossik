@@ -40,6 +40,7 @@
     "elliptic": "^6.5.3",
     "eslint": "^6.8.0",
     "firebase": "^7.6.1",
+    "firebase-admin": "^8.13.0",
     "firebase-functions": "^3.7.0",
     "ionic2-calendar": "^0.5.7",
     "ionic4-date-picker": "^0.1.0",

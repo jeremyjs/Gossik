@@ -94,7 +94,8 @@
 
   <!-- Mobile OnboardingPageOne -->
 	<div *ngIf="viewpoint == 'OnboardingPageOne'" class="height-100-minus-10px width-100">
-    <div class="height-100-minus-64px">
+    <div class="height-100-minus-64px flex flex-direction-column">
+      <div class="flex-grow-1"></div>
       <div class="width-90 margin-horizontal-auto font-size-24px color-6049C4 text-align-center margin-top-10">{{"A free and focused mind helps you to achieve anything you want!" | translate}}</div>
       <div class="width-90 margin-horizontal-auto font-size-24px color-6049C4 text-align-center margin-top-10">{{"Tell me everything that is going on in your mind and let me take care of it." | translate}}</div>
       <img src="../../assets/icon/purple/robot_arms_open.svg" class="margin-top-20 margin-horizontal-auto display-block" height="180">
@@ -106,7 +107,8 @@
 
   <!-- Mobile OnboardingPageTwo -->
 	<div *ngIf="viewpoint == 'OnboardingPageTwo'" class="height-100-minus-10px width-100">
-    <div class="height-100-minus-64px">
+    <div class="height-100-minus-64px flex flex-direction-column">
+      <div class="flex-grow-1"></div>
       <div class="width-90 margin-horizontal-auto font-size-20px color-6049C4 text-align-center margin-top-10">{{"I will learn your routines and get an overview of your to-dos, schedule, deadlines, and so on." | translate}}</div>
       <div class="width-90 margin-horizontal-auto font-size-20px color-6049C4 text-align-center margin-top-10">{{"With that knowledge, I will try my best to keep your to-do list up-to-date and help you get everything done in time." | translate}}</div>
       <img src="../../assets/icon/purple/robot_arms_together.svg" class="margin-top-20 margin-horizontal-auto display-block" height="180">
@@ -118,7 +120,8 @@
 
   <!-- Mobile OnboardingPageThree -->
 	<div *ngIf="viewpoint == 'OnboardingPageThree'" class="height-100-minus-10px width-100">
-    <div class="height-100-minus-64px">
+    <div class="height-100-minus-64px flex flex-direction-column">
+      <div class="flex-grow-1"></div>
       <div class="width-90 margin-horizontal-auto font-size-20px color-6049C4 text-align-center margin-top-10">{{"To help you even more, I’m going to actively remind you of the right things at the right time." | translate}}</div>
       <div class="width-90 margin-horizontal-auto font-size-20px color-6049C4 text-align-center margin-top-10">{{"With me, you don’t have to worry about anything anymore." | translate}}</div>
       <img src="../../assets/icon/purple/robot_one_arm_up.svg" class="margin-top-20 margin-horizontal-auto display-block" height="180">
@@ -981,6 +984,7 @@
             <ion-row class="font-size-18px text-align-left">
               <span>
                 {{todo.content}}
+                <span *ngFor="let attribute of todo.attributes"> #{{attribute}}</span>
               </span>
             </ion-row>
             <ion-row class="text-align-left font-size-12px">

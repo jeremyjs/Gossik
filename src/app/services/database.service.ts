@@ -28,34 +28,15 @@ export class DatabaseService {
 	) { }
     
     createUser(userid, email, referred?) {
-        let promises: Promise<any>[] = [];
         this.userData.profile = {
             email: email,
             referred: referred,
             assistant: 'Standard',
             smartAssistant: false,
-            tutorial: false,
             timezoneOffset: new Date().getTimezoneOffset(),
             signUpDate: new Date().toISOString()
         }
-        this.db.list('users').set(userid, this.userData).then( () => {
-            this.translate.get(["I am a to-do. Click on me to start working on me or mark me as done.", "OK"]).subscribe( translation => {
-                let todo: Action = {
-                    userid: userid,
-                    content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
-                    time: 0,
-                    priority: 1,
-                    goalid: "unassigned",
-                    createDate: new Date().toISOString(),
-                    taken: false,
-                    active: true
-                }
-                this.addAction(todo, {} as Capture, userid);
-                return 1;
-            });
-        })
-        
-        
+        return this.db.list('users').set(userid, this.userData);
     }
 
     logout() {
@@ -275,6 +256,10 @@ export class DatabaseService {
         capture.active = false;
         capture.deleteDate = new Date().toISOString();
         return this.editCapture(capture, userid);
+    }
+
+    addSuggestion(suggestion: Suggestion, userid) {
+        return this.db.list('/users/' + userid + '/suggestions').push(suggestion);
     }
 
     deleteAttribute(attribute: Attribute, userid) {

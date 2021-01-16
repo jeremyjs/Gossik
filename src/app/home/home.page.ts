@@ -52,6 +52,7 @@ import { PopoverInteractionPageModule } from '../popover-interaction/popover-int
 import { stringify } from 'querystring';
 import { PopoverAddAttributePageModule } from '../popover-add-attribute/popover-add-attribute.module';
 import { PopoverAddAttributePage } from '../popover-add-attribute/popover-add-attribute.page';
+import { user } from 'firebase-functions/lib/providers/auth';
 
 @Component({
   selector: 'app-home',
@@ -139,7 +140,7 @@ export class HomePage {
 	takenActionArray: Action[];
 	goalDict = {};
 	loggedin: boolean;
-	chosenGoalArray: string[];
+	chosenGoalArray: string[] = [];
 	backButton: any;
 	capturePageStarted: boolean = false;
 	feedback: string;
@@ -613,7 +614,6 @@ export class HomePage {
 				}
 				this.getStartedAction();
 				this.getGoals();
-				this.getActions();
 				this.getCaptures();
 				this.getReferences();
 				this.getAttributes();
@@ -638,6 +638,7 @@ export class HomePage {
 						this.logout();
 					}
 					this.getCalendarEvents();
+					this.getActions();
 				});
 				if(this.isApp) {
 					this.calendar.mode = 'month'
@@ -687,7 +688,66 @@ export class HomePage {
 	      duration: 3000
 	    });
 	    toast.present();
-  	}
+	}
+	  
+	createUser(referral: boolean) {
+		let credentials = {
+			email: this.signUpEmail,
+			password: this.signUpPassword
+		};
+		this.auth.signUp(credentials).then(user =>  {
+			this.db.createUser(user.user.uid, user.user.email, referral).then( () => {
+				this.translate.get(["Successfully registered"]).subscribe( translation => {
+					this.presentToast(translation["Successfully registered"]);
+				});
+				this.db.getUserProfile(user.user.uid).query.once("value").then( userProfile => {
+					this.translate.get(["Thoughts are great to quickly write something down anywhere and anytime and take care of it later.", "I am a thought. Click on me to transform me into a to-do or assign me to a project.", "This is a suggestion", "As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you.", "Sample project", "I am a to-do. Click on me to start working on me or mark me as done.", "Attributes can be used to better filter to-dos. #work #call", "The smart assistant gives me a higher priority because my deadline is approaching soon.", "Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."]).subscribe( translation => {
+						let todo: any = {
+							content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
+						}
+						this.addToDo(todo);
+						todo.content = translation["Attributes can be used to better filter to-dos. #work #call"];
+						this.addToDo(todo);
+						todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
+						todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
+						this.addToDo(todo);
+						let project: any = {
+							userid: this.auth.userid,
+							active: true,
+							color: "#6DCADE",
+							name: translation["Sample project"]
+						}
+						this.db.addGoal(project, this.auth.userid).then( createdProject => {
+							todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
+							todo.time = 60;
+							todo.priority = 1;
+							todo.goalid = createdProject.key;
+							todo.deadline = new Date(new Date().getTime() + 15*24*3600*1000).toISOString();
+							this.addToDo(todo);
+						});
+						let suggestion: Suggestion = {
+							userid: this.auth.userid,
+							title: translation["This is a suggestion"],
+							content: translation["As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you."],
+							type: "Info",
+							active: true,
+							createDate: new Date().toISOString()
+						}
+						this.db.addSuggestion(suggestion, this.auth.userid);
+						let thought: any = {
+							content: translation["I am a thought. Click on me to transform me into a to-do or assign me to a project."]
+						}
+						this.addCapture(thought);
+						thought.content = translation["Thoughts are great to quickly write something down anywhere and anytime and take care of it later."];
+						this.addCapture(thought);
+					});
+					setTimeout(() => this.goToToDoPage(), 1000);
+				});
+			});
+		},
+		error => this.signUpError = error.message
+		);
+	}
 
   	presentAlert(alertMessage) {
 		if(alertMessage == "Have you been referred by another Gossik user?") {
@@ -697,41 +757,13 @@ export class HomePage {
 								{
 								  text: translation["Yes"],
 								  handler: () => {
-									let credentials = {
-										email: this.signUpEmail,
-										password: this.signUpPassword
-									};
-									this.auth.signUp(credentials).then(user =>  {
-										this.db.createUser(user.user.uid, user.user.email, true);
-									}).then(
-										() => {
-											this.translate.get(["Successfully registered"]).subscribe( translation => {
-												  this.presentToast(translation["Successfully registered"]);
-											});
-											setTimeout(() => this.goToToDoPage());
-										},
-										error => this.signUpError = error.message
-									);
+									this.createUser(true);
 								  }
 								},
 								{
 								  text: translation["No"],
 								  handler: () => {
-									let credentials = {
-										email: this.signUpEmail,
-										password: this.signUpPassword
-									};
-									this.auth.signUp(credentials).then(user =>  {
-										this.db.createUser(user.user.uid, user.user.email, false);
-									}).then(
-										() => {
-											this.translate.get(["Successfully registered"]).subscribe( translation => {
-												  this.presentToast(translation["Successfully registered"]);
-											});
-											setTimeout(() => this.goToToDoPage());
-										},
-										error => this.signUpError = error.message
-									);
+									this.createUser(false);
 								  }
 								}
 						  ];
@@ -938,26 +970,28 @@ export class HomePage {
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
-				if(data.data && params[0].goalid) {
-					// Assigned thought, i.e. reference
-					if(data.data == 'delete') {
-						this.deleteReference(params[0]);
-					} else if(data.data == 'createToDo') {
-						this.presentPopover('addToDo', params[0]);
+				if(data.data) {
+					if(params[0].goalid) {
+						// Assigned thought, i.e. reference
+						if(data.data == 'delete') {
+							this.deleteReference(params[0]);
+						} else if(data.data == 'createToDo') {
+							this.presentPopover('addToDo', params[0]);
+						} else {
+							data.data[0].goalid = data.data[1];
+							this.db.editReference(data.data[0], this.auth.userid);
+						}
 					} else {
-						data.data[0].goalid = data.data[1];
-						this.db.editReference(data.data[0], this.auth.userid);
-					}
-				} else {
-					// Unassigned thought, i.e. capture
-					if(data.data == 'delete') {
-						this.deleteCapture(params[0]);
-					} else if(data.data == 'createToDo') {
-						this.presentPopover('addToDo', params[0]);
-					} else if(!data.data[1]) {
-						this.db.editCapture(data.data[0], this.auth.userid);
-					} else if(data.data[1]) {
-						this.addNoteFromCapture(data.data[0], data.data[1]);
+						// Unassigned thought, i.e. capture
+						if(data.data == 'delete') {
+							this.deleteCapture(params[0]);
+						} else if(data.data == 'createToDo') {
+							this.presentPopover('addToDo', params[0]);
+						} else if(!data.data[1]) {
+							this.db.editCapture(data.data[0], this.auth.userid);
+						} else if(data.data[1]) {
+							this.addNoteFromCapture(data.data[0], data.data[1]);
+						}
 					}
 				}
 			});
@@ -1078,6 +1112,8 @@ export class HomePage {
 							} else {
 								this.db.deleteSuggestion(params[4], this.auth.userid);
 							}
+						} else if (params[4].type == 'Info') {
+							this.db.deleteSuggestion(params[4], this.auth.userid);
 						}
 					}
 				} else if(params[3] == 'assignAssistant') {
