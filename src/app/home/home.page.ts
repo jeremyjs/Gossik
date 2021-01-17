@@ -702,15 +702,6 @@ export class HomePage {
 				});
 				this.db.getUserProfile(user.user.uid).query.once("value").then( userProfile => {
 					this.translate.get(["Thoughts are great to quickly write something down anywhere and anytime and take care of it later.", "I am a thought. Click on me to transform me into a to-do or assign me to a project.", "This is a suggestion", "As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you.", "Sample project", "I am a to-do. Click on me to start working on me or mark me as done.", "Attributes can be used to better filter to-dos. #work #call", "The smart assistant gives me a higher priority because my deadline is approaching soon.", "Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."]).subscribe( translation => {
-						let todo: any = {
-							content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
-						}
-						this.addToDo(todo);
-						todo.content = translation["Attributes can be used to better filter to-dos. #work #call"];
-						this.addToDo(todo);
-						todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
-						todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
-						this.addToDo(todo);
 						let project: any = {
 							userid: this.auth.userid,
 							active: true,
@@ -718,6 +709,17 @@ export class HomePage {
 							name: translation["Sample project"]
 						}
 						this.db.addGoal(project, this.auth.userid).then( createdProject => {
+							// Put all to-do stuff in here because otherwise, it gets mixed because code is running
+							// and then the code in here starts running and modifies stuff
+							let todo: any = {
+								content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
+							}
+							this.addToDo(todo);
+							todo.content = translation["Attributes can be used to better filter to-dos. #work #call"];
+							this.addToDo(todo);
+							todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
+							todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
+							this.addToDo(todo);
 							todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
 							todo.time = 60;
 							todo.priority = 1;
