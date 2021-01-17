@@ -720,12 +720,14 @@ export class HomePage {
 							todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
 							todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
 							this.addToDo(todo);
-							todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
-							todo.time = 60;
-							todo.priority = 1;
-							todo.goalid = createdProject.key;
-							todo.deadline = new Date(new Date().getTime() + 15*24*3600*1000).toISOString();
-							this.addToDo(todo);
+							setTimeout(() => {
+								todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
+								todo.time = 60;
+								todo.priority = 1;
+								todo.goalid = createdProject.key;
+								todo.deadline = new Date(new Date().getTime() + 15*24*3600*1000).toISOString();
+								this.addToDo(todo);
+							}, 2000);
 						});
 						let suggestion: Suggestion = {
 							userid: this.auth.userid,
