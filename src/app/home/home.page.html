@@ -126,7 +126,8 @@
       <div class="width-90 margin-horizontal-auto font-size-20px color-6049C4 text-align-center margin-top-10">{{"With me, you don’t have to worry about anything anymore." | translate}}</div>
       <img src="../../assets/icon/purple/robot_one_arm_up.svg" class="margin-top-20 margin-horizontal-auto display-block" height="180">
       <ion-row class="width-90 margin-horizontal-auto flex margin-top-10">
-        <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto margin-top-20 margin-bottom-100" (click)="goToSignUpPage()">{{"Sign Me Up!" | translate}}</button>
+        <button *ngIf="!loggedin" class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto margin-top-20 margin-bottom-100" (click)="goToSignUpPage()">{{"Sign Me Up!" | translate}}</button>
+        <button *ngIf="loggedin" class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto margin-top-20 margin-bottom-100" (click)="goToToDoPage()">{{"Login" | translate}}</button>
       </ion-row>
     </div>
   </div>

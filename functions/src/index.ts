@@ -1234,25 +1234,12 @@ exports.modifyUsers = functions.pubsub.schedule('* * * * *').onRun((context) => 
     return admin.database().ref('/users').once("value", function(users) {
 		let promises: Promise<any>[] = [];
    		users.forEach(function(user) {
-			
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/calendar').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/fivetodos').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/gettingToKnowPush').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/next').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/process').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/projects').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/thoughtprocessing').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/thoughts').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/triggerDate').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialNextButton').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialProgress').remove());
-			promises.push(admin.database().ref('/users/' + user.key + '/profile/tutorialTodoPageTime').remove());
+			promises.push(admin.database().ref('/users/' + user.key + '/profile').child('oldUser').set(true));
    			// update just one specific value
    			//promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscription').set('freeUser'));
    			//promises.push(admin.database().ref('/users/' + user.key + '/profile').child('subscriptionPaid').set(false));
-		   })
-		   return Promise.all(promises);
+		})
+		return Promise.all(promises);
    });
 });
-
 */

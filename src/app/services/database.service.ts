@@ -79,6 +79,10 @@ export class DatabaseService {
         return this.db.list('users/' + userid + '/profile/focusProjects').remove();
     }
 
+    removeOldUserTag(userid) {
+        return this.db.object('users/' + userid + '/profile/oldUser').remove();
+    }
+
     initiateLearnedSchedule(userid) {
         this.db.list<Goal>('/users/' + userid + '/goals')
         .snapshotChanges()

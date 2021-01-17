@@ -185,7 +185,7 @@ export class HomePage {
 	showOptionals: boolean;
 	assistant: string;
 	references: any;
-	attributeArray: Attribute[];
+	attributeArray: Attribute[] = [];
 	suggestionArray: Suggestion[];
 	chosenAttributeArray: any[] = [];
 	calendarEventsToday: CalendarEvent[] = [];
@@ -620,6 +620,10 @@ export class HomePage {
 				this.getSuggestions();
 				this.db.getUserProfile(this.auth.userid).valueChanges().subscribe( userProfile => {
 					this.userProfile = userProfile;
+					if(this.userProfile.oldUser) {
+						this.addSampleItems();
+						this.db.removeOldUserTag(this.auth.userid);
+					}
 					this.focusProjects = [];
 					for(let key in this.userProfile.focusProjects) {
 						this.focusProjects.push(this.userProfile.focusProjects[key]);
@@ -685,7 +689,7 @@ export class HomePage {
 	    const toast = await this.toastCtrl.create({
 	      message: toastMessage,
 	      cssClass: 'toast',
-	      duration: 3000
+	      duration: 1500
 	    });
 	    toast.present();
 	}
@@ -701,56 +705,60 @@ export class HomePage {
 					this.presentToast(translation["Successfully registered"]);
 				});
 				this.db.getUserProfile(user.user.uid).query.once("value").then( userProfile => {
-					this.translate.get(["Thoughts are great to quickly write something down anywhere and anytime and take care of it later.", "I am a thought. Click on me to transform me into a to-do or assign me to a project.", "This is a suggestion", "As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you.", "Sample project", "I am a to-do. Click on me to start working on me or mark me as done.", "Attributes can be used to better filter to-dos. #work #call", "The smart assistant gives me a higher priority because my deadline is approaching soon.", "Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."]).subscribe( translation => {
-						let project: any = {
-							userid: this.auth.userid,
-							active: true,
-							color: "#6DCADE",
-							name: translation["Sample project"]
-						}
-						this.db.addGoal(project, this.auth.userid).then( createdProject => {
-							// Put all to-do stuff in here because otherwise, it gets mixed because code is running
-							// and then the code in here starts running and modifies stuff
-							let todo: any = {
-								content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
-							}
-							this.addToDo(todo);
-							todo.content = translation["Attributes can be used to better filter to-dos. #work #call"];
-							this.addToDo(todo);
-							todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
-							todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
-							this.addToDo(todo);
-							setTimeout(() => {
-								todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
-								todo.time = 60;
-								todo.priority = 1;
-								todo.goalid = createdProject.key;
-								todo.deadline = new Date(new Date().getTime() + 15*24*3600*1000).toISOString();
-								this.addToDo(todo);
-							}, 2000);
-						});
-						let suggestion: Suggestion = {
-							userid: this.auth.userid,
-							title: translation["This is a suggestion"],
-							content: translation["As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you."],
-							type: "Info",
-							active: true,
-							createDate: new Date().toISOString()
-						}
-						this.db.addSuggestion(suggestion, this.auth.userid);
-						let thought: any = {
-							content: translation["I am a thought. Click on me to transform me into a to-do or assign me to a project."]
-						}
-						this.addCapture(thought);
-						thought.content = translation["Thoughts are great to quickly write something down anywhere and anytime and take care of it later."];
-						this.addCapture(thought);
-					});
+					this.addSampleItems();
 					setTimeout(() => this.goToToDoPage(), 1000);
 				});
 			});
 		},
 		error => this.signUpError = error.message
 		);
+	}
+
+	addSampleItems() {
+		this.translate.get(["Thoughts are great to quickly write something down anywhere and anytime and take care of it later.", "I am a thought. Click on me to transform me into a to-do or assign me to a project.", "This is a suggestion", "As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you.", "Sample project", "I am a to-do. Click on me to start working on me or mark me as done.", "Attributes can be used to better filter to-dos. #work #call", "The smart assistant gives me a higher priority because my deadline is approaching soon.", "Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."]).subscribe( translation => {
+			let project: any = {
+				userid: this.auth.userid,
+				active: true,
+				color: "#6DCADE",
+				name: translation["Sample project"]
+			}
+			this.db.addGoal(project, this.auth.userid).then( createdProject => {
+				// Put all to-do stuff in here because otherwise, it gets mixed because code is running
+				// and then the code in here starts running and modifies stuff
+				let todo: any = {
+					content: translation["I am a to-do. Click on me to start working on me or mark me as done."],
+				}
+				this.addToDo(todo);
+				todo.content = translation["Attributes can be used to better filter to-dos. #work #call"];
+				this.addToDo(todo);
+				todo.content = translation["The smart assistant gives me a higher priority because my deadline is approaching soon."];
+				todo.deadline = new Date(new Date().getTime() + 3*24*3600*1000).toISOString();
+				this.addToDo(todo);
+				setTimeout(() => {
+					todo.content = translation["Duration, priority, deadline etc. are optional elements for a to-do. I am a to-do with all of them used."];
+					todo.time = 60;
+					todo.priority = 1;
+					todo.goalid = createdProject.key;
+					todo.deadline = new Date(new Date().getTime() + 15*24*3600*1000).toISOString();
+					this.addToDo(todo);
+				}, 2000);
+			});
+			let suggestion: Suggestion = {
+				userid: this.auth.userid,
+				title: translation["This is a suggestion"],
+				content: translation["As your assistant, I'll keep an overview of everything you tell me. With this, I will regularly make suggestions to actively support you."],
+				type: "Info",
+				active: true,
+				createDate: new Date().toISOString()
+			}
+			this.db.addSuggestion(suggestion, this.auth.userid);
+			let thought: any = {
+				content: translation["I am a thought. Click on me to transform me into a to-do or assign me to a project."]
+			}
+			this.addCapture(thought);
+			thought.content = translation["Thoughts are great to quickly write something down anywhere and anytime and take care of it later."];
+			this.addCapture(thought);
+		});
 	}
 
   	presentAlert(alertMessage) {
@@ -1176,13 +1184,9 @@ export class HomePage {
 			email: this.loginEmail,
 			password: this.loginPassword
 		};
-		this.auth.signInWithEmail(credentials)
-			.then(
-				() => {
-					this.db.login();
-				},
-				error => this.loginError = error.message
-			);
+		this.auth.signInWithEmail(credentials).then( () => {
+				this.db.login();
+		}, error => this.loginError = error.message);
   	} 
 
   	goToSignUpPage(){
@@ -1551,7 +1555,7 @@ export class HomePage {
 					active: true,
 					color: "#EDF2FF"
 				};
-				if(this.goalDict[todo.goalid].color) {
+				if(this.goalDict[todo.goalid] && this.goalDict[todo.goalid].color) {
 					eventData.color = this.goalDict[todo.goalid].color;
 				}
 				if(this.platform.is('cordova')) {
