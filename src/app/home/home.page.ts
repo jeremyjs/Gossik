@@ -1460,8 +1460,8 @@ export class HomePage {
 		}
 	}
 
-	showThought(thought, type) {
-		this.presentPopover('showThought', [thought, type]);
+	showThought(thought, goalid) {
+		this.presentPopover('showThought', [thought, goalid]);
 	}
 
 	showSuggestion(suggestion: Suggestion) {
