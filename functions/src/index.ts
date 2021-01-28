@@ -33,9 +33,11 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
 							body: push.DE
 						}
 					};
-					Object.values(user.val().devices).forEach( (device) => {
-						promises.push(admin.messaging().sendToDevice(String(device), payload));
-					});
+					if(user.val().devices) {
+						Object.values(user.val().devices).forEach( (device) => {
+							promises.push(admin.messaging().sendToDevice(String(device), payload));
+						});
+					}
 				} else {
 					let payload = {
 						notification: {
@@ -47,9 +49,11 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
 							body: push.EN
 						}
 					};
-					Object.values(user.val().devices).forEach( (device) => {
-						promises.push(admin.messaging().sendToDevice(String(device), payload));
-					});
+					if(user.val().devices) {
+						Object.values(user.val().devices).forEach( (device) => {
+							promises.push(admin.messaging().sendToDevice(String(device), payload));
+						});
+					}
 				}
 			}
 		});
@@ -103,9 +107,11 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
 							body: msg
 						}
 					};
-					Object.values(user.val().devices).forEach( (device) => {
-						promises.push(admin.messaging().sendToDevice(String(device), payload));
-					});
+					if(user.val().devices) {
+						Object.values(user.val().devices).forEach( (device) => {
+							promises.push(admin.messaging().sendToDevice(String(device), payload));
+						});
+					}
 				}
 			}
 		});
@@ -152,9 +158,11 @@ exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((cont
 				                body: msg
 				            }
 				        };
-						Object.values(user.val().devices).forEach( (device) => {
-				        	promises.push(admin.messaging().sendToDevice(String(device), payload));
-				        });
+						if(user.val().devices) {
+							Object.values(user.val().devices).forEach( (device) => {
+								promises.push(admin.messaging().sendToDevice(String(device), payload));
+							});
+						}
 					}
 				});
 	   		}
@@ -210,9 +218,11 @@ exports.deadlinePush = functions.pubsub.schedule('0 * * * *').onRun((context) =>
 						}
 					};
 					if(send) {
-						Object.values(user.val().devices).forEach( (device) => {
-							promises.push(admin.messaging().sendToDevice(String(device), payload));
-						});
+						if(user.val().devices) {
+							Object.values(user.val().devices).forEach( (device) => {
+								promises.push(admin.messaging().sendToDevice(String(device), payload));
+							});
+						}
 					}
 				});
 	   		}
@@ -271,11 +281,13 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
 							createDate: new Date().toISOString()
 						}
 						let suggestionAlreadyPresent: boolean = false;
-						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
-							if(oldSuggestion.active && oldSuggestion.type == "IncreasePriority" && oldSuggestion.todoid == suggestion.todoid) {
-								suggestionAlreadyPresent = true;
-							}
-						})
+						if(user.val().suggestions) {
+							Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+								if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
+									suggestionAlreadyPresent = true;
+								}
+							});
+						}
 						if(!suggestionAlreadyPresent) {
 							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
 						}
@@ -298,11 +310,13 @@ exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRu
 							createDate: new Date().toISOString()
 						}
 						let suggestionAlreadyPresent: boolean = false;
-						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
-							if(oldSuggestion.active && oldSuggestion.type == "IncreasePriority" && oldSuggestion.todoid == suggestion.todoid) {
-								suggestionAlreadyPresent = true;
-							}
-						})
+						if(user.val().suggestions) {
+							Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+								if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
+									suggestionAlreadyPresent = true;
+								}
+							});
+						}
 						if(!suggestionAlreadyPresent) {
 							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
 						}
@@ -363,11 +377,13 @@ exports.setNewDeadlineSuggestion = functions.pubsub.schedule('0 0 * * *').onRun(
 							createDate: new Date().toISOString()
 						}
 						let suggestionAlreadyPresent: boolean = false;
-						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
-							if(oldSuggestion.active && oldSuggestion.type == "SetNewDeadline" && oldSuggestion.todoid == suggestion.todoid) {
-								suggestionAlreadyPresent = true;
-							}
-						})
+						if(user.val().suggestions) {
+							Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+								if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
+									suggestionAlreadyPresent = true;
+								}
+							});
+						}
 						if(!suggestionAlreadyPresent) {
 							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
 						}
@@ -427,11 +443,13 @@ exports.deleteOldToDoSuggestion = functions.pubsub.schedule('0 0 * * *').onRun((
 							createDate: new Date().toISOString()
 						}
 						let suggestionAlreadyPresent: boolean = false;
-						Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
-							if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
-								suggestionAlreadyPresent = true;
-							}
-						})
+						if(user.val().suggestions) {
+							Object.values(user.val().suggestions).forEach( (oldSuggestion: any) => {
+								if(oldSuggestion.active && oldSuggestion.type == "DeleteToDo" && oldSuggestion.todoid == suggestion.todoid) {
+									suggestionAlreadyPresent = true;
+								}
+							});
+						}
 						if(!suggestionAlreadyPresent) {
 							promises.push(admin.database().ref('/users/' + user.key + '/suggestions').push(suggestion));
 						}
@@ -569,9 +587,11 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 								body: msg
 							}
 						};
-						Object.values(user.val().devices).forEach( (device) => {
-							promises.push(admin.messaging().sendToDevice(String(device), payload));
-						});
+						if(user.val().devices) {
+							Object.values(user.val().devices).forEach( (device) => {
+								promises.push(admin.messaging().sendToDevice(String(device), payload));
+							});
+						}
 					}
 				}
 			}
@@ -773,9 +793,11 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 										todoid: randomTodo.todoid
 									}
 								};
-								Object.values(user.val().devices).forEach( (device) => {
-									promises.push(admin.messaging().sendToDevice(String(device), payload));
-								});
+								if(user.val().devices) {
+									Object.values(user.val().devices).forEach( (device) => {
+										promises.push(admin.messaging().sendToDevice(String(device), payload));
+									});
+								}
 								let pushNotification = {
 									message: msg,
 									todoid: randomTodo.todoid,
@@ -1175,58 +1197,6 @@ exports.countWeeklyUsers = functions.pubsub.schedule('* * * * *').onRun((context
    	});
 });
 */
-
-/*
-exports.sendDebugPush = functions.pubsub.schedule('* * * * *').onRun((context) => {
-	let promises: Promise<any>[] = [];
-    return admin.database().ref('/users/R1CFRqnvsmdJtxIJZIvgF1Md0lr1').once("value")
-    .then( user => {
-		let todos = [];
-		for(let key in user.val().nextActions) {
-			if(user.val().nextActions[key].active != false) {
-				let todo = user.val().nextActions[key]
-				todo['todoid'] = key;
-				todos.push(todo);
-			}
-		}
-		if(todos.length > 0) {
-			//currently we pick a random todo, later on the one with the highest priority
-			//todos.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
-			let randomTodo = todos[Math.floor(Math.random()*todos.length)]      
-   			let payload: any = {
-	            notification: {
-	                title: "Gossik",
-	                body: "Hoiiiii " + new Date().toISOString()
-	            },
-	            data: {
-	              	title: "Gossik",
-	                body: "Hoiiiii " + new Date().toISOString(),
-	                target: 'todo',
-					todoid: randomTodo.todoid,
-					"actions": [
-						{ "icon": "approve_icon", "title": "APPROVE", "callback": "AppComponent.approve", "foreground": true},
-						{ "icon": "reject_icon", "title": "REJECT", "callback": "AppComponent.reject", "foreground": true}
-					]
-	            }
-	        };
-	        Object.values(user.val().devices).forEach( (device) => {
-	        	promises.push(admin.messaging().sendToDevice(String(device), payload));
-	        });
-		}
-		return Promise.all(promises)
-	   	.then( () => {
-	   		console.log('success!');
-	   	})
-	   	.catch( error => {
-	   		console.log('failed :(');
-	   		console.log(error);
-	   	});
-   	});
-});
-*/
-
-
-
 
 // Modifying the database manually for each user
 /*
