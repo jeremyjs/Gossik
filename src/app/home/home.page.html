@@ -669,7 +669,7 @@
               </span>
             </ion-row>
             <ion-row class="text-align-left font-size-12px">
-              <span *ngIf="todo.goalid != 'unassigned'" class="margin-right-10 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
+              <span *ngIf="goalDict[todo.goalid] && todo.goalid != 'unassigned'" class="margin-right-10 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[todo.goalid].color}">
                 {{goalDict[todo.goalid].name}}
               </span>
               <span *ngIf="todo.deadline" class="margin-right-10 border-radius-30px background-FFFFFF padding-3">
