@@ -698,6 +698,12 @@ export class HomePage {
 	}
 	  
 	createUser(referral: boolean) {
+		if(/^\s+$/.test(this.signUpEmail[0])) {
+			this.signUpEmail = this.signUpEmail.slice(1,this.signUpEmail.length);
+		}
+		if(/\s+$/.test(this.signUpEmail)) {
+			this.signUpEmail = this.signUpEmail.slice(0,this.signUpEmail.length -1);
+		}
 		let credentials = {
 			email: this.signUpEmail,
 			password: this.signUpPassword
@@ -1183,6 +1189,12 @@ export class HomePage {
 	}
 
   	login() {
+		if(/^\s+$/.test(this.loginEmail[0])) {
+			this.loginEmail = this.loginEmail.slice(1,this.loginEmail.length);
+		}
+		if(/\s+$/.test(this.loginEmail)) {
+			this.loginEmail = this.loginEmail.slice(0,this.loginEmail.length -1);
+		}
 		let credentials = {
 			email: this.loginEmail,
 			password: this.loginPassword
