@@ -552,6 +552,37 @@ exports.sliceTaskSuggestion = functions.database.ref('/users/{user}/nextActions/
 	}
 });
 
+exports.suggestionPushNotification = functions.database.ref('/users/{user}/suggestions/{newSuggestion}').onCreate((newSuggestion, context) => {
+	let suggestion = newSuggestion.val();
+	return admin.database().ref('/users/' + suggestion.userid).once("value").then( (user: any) => {
+		let promises: Promise<any>[] = [];
+		let payload = {
+			notification: {
+				title: "Gossik",
+				body: suggestion.content
+			},
+			data: {
+				title: "Gossik",
+				body: suggestion.content,
+				suggestionid: newSuggestion.key
+			}
+		};
+		if(user.val().devices) {
+			Object.values(user.val().devices).forEach( (device) => {
+				promises.push(admin.messaging().sendToDevice(String(device), payload));
+			});
+		}
+		return Promise.all(promises)
+	   	.then( () => {
+	   		console.log('success!');
+	   	})
+	   	.catch( error => {
+	   		console.log('failed :(');
+	   		console.log(error);
+	   	});
+	});
+});
+
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];
@@ -1179,6 +1210,142 @@ export const trackingSystemNew = functions.https.onCall(async (data, context) =>
 		numberUsersWith5ThoughtsWithin3Days: numberUsersWith5ThoughtsWithin3Days,
 		loginAndActiveCounts: loginAndActiveCounts
 	}
+});
+
+exports.getEmailAdressFromSignUpRange = functions.https.onCall(async (data, context) => {
+    return admin.database().ref('/users').once("value").then( users => {
+		let startDate = new Date(data.startDate);
+		let endDate = new Date(data.endDate);
+		let emails: String[] = [];
+   		users.forEach(function(user) {
+			if(new Date(user.val().profile.signUpDate).getTime() >= startDate.getTime() && new Date(user.val().profile.signUpDate).getTime() <= endDate.getTime()) {
+				emails.push(user.val().profile.email);
+			}
+		});
+		return emails;
+   	});
+});
+
+export const getEmailAdressFromActiveUsers = functions.https.onCall(async (data, context) => {
+	let emails: any[] = [];
+	let today = new Date("2021-01-20T00:00:00.000Z");
+	today.setHours(0,0,0);
+	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+	let users = await getAllUsers();
+	users.forEach( user => {
+		if(user.val().loginDays) {
+			let numberActiveDays: number = 0;
+			let loginDays = Object.values(user.val().loginDays);
+			loginDays.forEach( (loginDay: any) => {
+				if(new Date(loginDay).getTime() >= oneWeekAgo.getTime() && new Date(loginDay).getTime() <= today.getTime()) {
+					numberActiveDays++;
+				}
+			});
+			if(numberActiveDays >= 3 && user.val().profile && user.val().profile.email) {
+				emails.push([user.val().profile.signUpDate, user.val().profile.email])
+			}
+		}
+		/*
+			if(user.val().nextActions) {
+				let numberTodosWithin3Days: number = 0;
+				let numberTodosWithin7Days: number = 0;
+				let numberTodosDoneWithin3Days: number = 0;
+				let numberTodosDoneWithin7Days: number = 0;
+				Object.values(user.val().nextActions).forEach( (todo:any) => {
+					if(todo.createDate) {
+						let createDate = new Date(todo.createDate);
+						if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+							numberTodosWithin3Days++;
+						}
+						if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+							numberTodosWithin7Days++;
+						}
+					}
+					if(todo.taken && todo.deleteDate) {
+						let deleteDate = new Date(todo.deleteDate);
+						if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 3*24*3600*1000) {
+							numberTodosDoneWithin3Days++;
+						}
+						if(deleteDate.getTime() <= new Date(todo.createDate).getTime() + 7*24*3600*1000) {
+							numberTodosDoneWithin7Days++;
+						}
+					}
+				});
+				if(numberTodosWithin3Days >= 5) {
+					numberUsersWith5TodosWithin3Days++;
+				}
+				if(numberTodosWithin7Days >= 5) {
+					numberUsersWith5TodosWithin7Days++;
+				}
+				if(numberTodosDoneWithin3Days >= 3) {
+					numberUsersWith3TodosDoneWithin3Days++;
+				}
+				if(numberTodosDoneWithin7Days >= 3) {
+					numberUsersWith3TodosDoneWithin7Days++;
+				}
+			}
+			if(user.val().captures) {
+				let numberThoughtsWithin3Days: number = 0;
+				let numberThoughtsWithin7Days: number = 0;
+				Object.values(user.val().captures).forEach( (thought:any) => {
+					if(thought.createDate) {
+						let createDate = new Date(thought.createDate);
+						if(createDate.getTime() <= signUpDate.getTime() + 3*24*3600*1000) {
+							numberThoughtsWithin3Days++;
+						}
+						if(createDate.getTime() <= signUpDate.getTime() + 7*24*3600*1000) {
+							numberThoughtsWithin7Days++;
+						}
+					}
+				});
+				if(numberThoughtsWithin3Days >= 5) {
+					numberUsersWith5ThoughtsWithin3Days++;
+				}
+				if(numberThoughtsWithin7Days >= 5) {
+					numberUsersWith5ThoughtsWithin7Days++;
+				}
+			}
+			if(checkRanges.length >= 3) {
+				for(let iter = 2; iter < checkRanges.length; iter++) {
+					if(user.val().loginDays) {
+						let loggedInInRange: number = 0;
+						let loginDays = Object.values(user.val().loginDays);
+						loginDays.shift();
+						loginDays.forEach( loginDay => {
+							if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
+								loggedInInRange++;
+							}
+						});
+						if(loggedInInRange > 0) {
+							checkRanges[iter][2]++;
+						}
+						if(loggedInInRange >= 3) {
+							checkRanges[iter][3]++;
+						}
+					}
+				}
+			}	
+			for(let iter = 0; iter < 2; iter++) {
+				if(user.val().loginDays) {
+					let loggedInInRange: number = 0;
+					let loginDays = Object.values(user.val().loginDays);
+					loginDays.shift();
+					loginDays.forEach( loginDay => {
+						if(checkRanges[iter][0].getTime() <= new Date(String(loginDay)).getTime() && checkRanges[iter][1].getTime() >= new Date(String(loginDay)).getTime()) {
+							loggedInInRange++;
+						}
+					});
+					if(loggedInInRange > 0) {
+						checkRanges[iter][2]++;
+					}
+					if(loggedInInRange >= 3) {
+						checkRanges[iter][3]++;
+					}
+				}
+			}
+			*/
+	});
+	return emails;
 });
 
 

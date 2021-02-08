@@ -526,32 +526,37 @@ export class HomePage {
 		});
 		this.firebase.onMessageReceived().subscribe(data => {
 			if(!data.target) {
-				let title = '';
-				if(data.title) {
-					title = data.title;
-				} else if(data.notification && data.notification.title) {
-					title = data.notification.title;
-				} else if(data.aps && data.aps.alert && data.aps.alert.title) {
-					title = data.aps.alert.title;
+				if(!data.suggestionid) {
+					let title = '';
+					if(data.title) {
+						title = data.title;
+					} else if(data.notification && data.notification.title) {
+						title = data.notification.title;
+					} else if(data.aps && data.aps.alert && data.aps.alert.title) {
+						title = data.aps.alert.title;
+					}
+					let body = '';
+					if(data.body){
+						body = data.body;
+					} else if(data.notification && data.notification.body){
+						body = data.notification.body;
+					} else if(data.aps && data.aps.alert && data.aps.alert.body){
+						body = data.aps.alert.body;
+					}
+					this.alertCtrl.create({
+						message: title + ' ' + body,
+						buttons: [
+									{
+										text: "Ok"
+									}
+								]
+					}).then( alert => {
+						alert.present();
+					});
+				} else {
+					let suggestion = this.suggestionArray[this.suggestionArray.findIndex(suggestion => suggestion.key == data.suggestionid)];
+					this.showSuggestion(suggestion);
 				}
-				let body = '';
-				if(data.body){
-			        body = data.body;
-			    } else if(data.notification && data.notification.body){
-			        body = data.notification.body;
-			    } else if(data.aps && data.aps.alert && data.aps.alert.body){
-			        body = data.aps.alert.body;
-			    }
-				this.alertCtrl.create({
-					message: title + ' ' + body,
-					buttons: [
-						    	{
-							        text: "Ok"
-						      	}
-						    ]
-				}).then( alert => {
-					alert.present();
-				});
 			} else {
 				this.goToToDoPage(data.todoid);
 			}
@@ -664,7 +669,8 @@ export class HomePage {
   	}
 
   	openMenu() {
-  		this.menuCtrl.toggle();
+		  this.menuCtrl.toggle();
+		  this.getEmailAdressFromActiveUsers();
   	}
 
 	changePage(viewpoint: string, pageCtrl?: string) {
@@ -1316,6 +1322,18 @@ export class HomePage {
 		*/
 		this.functions.httpsCallable('trackingSystemNew')({startDate: new Date("2020-08-05T00:00:00.138Z").toISOString()}).subscribe( data => {
 			//(data);
+		})
+	}
+
+	getEmailAdressFromSignUpRange() {
+		this.functions.httpsCallable('getEmailAdressFromSignUpRange')({startDate: new Date("2021-01-20T00:00:00.000Z").toISOString(), endDate: new Date().toISOString()}).subscribe( data => {
+			console.log(data);
+		})
+	}
+
+	getEmailAdressFromActiveUsers() {
+		this.functions.httpsCallable('getEmailAdressFromActiveUsers')({}).subscribe( data => {
+			console.log(data);
 		})
 	}
 	
