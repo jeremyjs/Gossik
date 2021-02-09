@@ -214,7 +214,7 @@
         </span>
       </ion-row>
       <ion-row>
-        <button *ngIf="userProfile.subscription == 'themesFeature'" class="font-size-20px margin-top-10" (click)="goToThemesPage()">{{"Themes" | translate}}</button>
+        <button *ngIf="userProfile && userProfile.subscription == 'themesFeature'" class="font-size-20px margin-top-10" (click)="goToThemesPage()">{{"Themes" | translate}}</button>
       </ion-row>
     </ion-grid>
   </div>
