@@ -685,7 +685,7 @@ exports.setLoggedInToday = functions.pubsub.schedule('50 * * * *').onRun((contex
 		let today = new Date();
 		let yesterday = new Date(today.getTime() - 24*3600*1000);
    		users.forEach(function(user) {
-			if(user.val().profile && user.val().profile.timezoneOffset) {
+			if(user.val().profile && user.val().profile.timezoneOffset != undefined) {
 				let timeNowConverted = convertDateToLocaleDate(new Date(), user.val().profile.timezoneOffset);
 				if(timeNowConverted.getHours() == 23) {
 					if(user.val().profile.lastLogin) {
