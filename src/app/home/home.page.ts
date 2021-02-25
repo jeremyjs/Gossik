@@ -1163,21 +1163,20 @@ export class HomePage {
 				}
 			});
 		} else if(name == 'whatShouldIDoNow') {
-			let doableActionArraySorted = this.doableActionArray.slice();
-			doableActionArraySorted.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
 			const popover = await this.popoverCtrl.create({
 			component: PopoverWhatShouldIDoNowPage,
 			componentProps: {
-				'doableActionArray': doableActionArraySorted,
+				'doableActionArray': this.doableActionArray,
 				'goalDict': this.goalDict,
-				'priorities': this.priorities
+				'priorities': this.priorities,
+				'userProfile': this.userProfile
 			},
 			cssClass: 'popover-what-should-ido-now'
 			});
 			await popover.present();
 			popover.onDidDismiss().then( data => {
 				if(data.data) {
-					
+					this.startAction(data.data);
 				}
 			});
 		}
@@ -2802,57 +2801,6 @@ export class HomePage {
 				this.presentToast(translation["There is no doable action for that time."]);
 			})
 		}
-	}
-
-	computeDynamicPriority(action: Action): number {
-		let priorityInfluenceDeadlie: number = 0;
-		let daysUntilDeadline: number;
-		if(action.deadline) {
-			daysUntilDeadline = Math.round((new Date(action.deadline).getTime() - new Date().getTime())/(24*3600*1000));
-			if(daysUntilDeadline < 5) {
-				priorityInfluenceDeadlie = (5-daysUntilDeadline)*10;
-			}
-		}
-		let priorityInfluenceProcastination: number = 0;
-		let daysSinceCreated: number;
-		if(action.createDate) {
-			daysSinceCreated = Math.round((new Date().getTime() - new Date(action.createDate).getTime())/(24*3600*1000));
-			priorityInfluenceProcastination = daysSinceCreated / 6;
-		}
-		let priorityInfluenceSchedule: number = 0;
-		let learnedSchedule = JSON.parse(this.userProfile['learnedSchedule'].toString());
-		let localeDate = new Date(new Date().getTime() - Number(this.userProfile.timezoneOffset*60*1000));
-		let weekDay = localeDate.getDay() - 1;
-		if(weekDay == -1) {
-			weekDay = 6;
-		}
-		//getHours() gives locale hours already, so no need to use localeDate
-		let hour = new Date().getHours();
-		let learnedScheduleHour = weekDay * 24 + hour;
-		let max: number = 0;
-		let maxKey = undefined;
-		let scoreDict:any = {};
-		for(let projectid in learnedSchedule[learnedScheduleHour]) {
-			if(learnedSchedule[learnedScheduleHour][projectid] > max) {
-				max = learnedSchedule[learnedScheduleHour][projectid];
-				maxKey = projectid;
-			}
-			if(learnedSchedule[learnedScheduleHour][projectid] > 0) {
-				scoreDict[projectid] = learnedSchedule[learnedScheduleHour][projectid];
-			}
-		}
-		if(max > 0 && scoreDict[action.goalid]) {
-			priorityInfluenceSchedule = scoreDict[action.goalid] / max * 20;
-		}
-		let priorityInfluencePriority: number = 10 * action.priority;
-		// compute influence factor based on focus
-		let priorityInfluenceFocus: number = 0;
-		for(let key in this.userProfile.focusProjects) {
-			if(this.userProfile.focusProjects[key] == action.goalid) {
-				priorityInfluenceFocus = 15;
-			}
-		}
-		return priorityInfluenceDeadlie + priorityInfluencePriority + priorityInfluenceProcastination + priorityInfluenceSchedule + priorityInfluenceFocus;
 	}
 
   	skipAction() {
