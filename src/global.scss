@@ -1738,6 +1738,16 @@ ion-backdrop {
   overflow: hidden !important;
 }
 
+.popover-what-should-ido-now .popover-content {
+  top: 100px !important;
+  bottom: auto !important;
+  left: calc(5% / 2) !important;
+  --width: 95%;
+  --height: auto !important;
+  overflow: hidden !important;
+  border-radius: 30px !important;
+}
+
 .popover-add-project .popover-content {
   top: auto !important;
   bottom: 0px !important;

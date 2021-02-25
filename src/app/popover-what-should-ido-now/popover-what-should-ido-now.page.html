@@ -1,0 +1,38 @@
+<ion-content>
+  <ion-row class="width-90 margin-top-10 color-39297F">
+    <ion-col class="text-align-center font-size-17px font-weight-bold">
+      {{"Optimal to-do for you" | translate}}
+    </ion-col>
+  </ion-row>
+  <ion-grid *ngIf="doableActionArray[0] != undefined" class="shadow color-39297F border-radius-15px padding-15 width-90 margin-top-20 seperating-border-bottom background-F6F7FB">
+    <ion-row class="font-size-18px text-align-left">
+      <span>
+        {{doableActionArray[0].content}}
+        <span *ngFor="let attribute of doableActionArray[0].attributes"> #{{attribute}}</span>
+      </span>
+    </ion-row>
+    <ion-row class="text-align-left font-size-12px">
+      <span *ngIf="goalDict[doableActionArray[0].goalid] && doableActionArray[0].goalid != 'unassigned'" class="margin-right-10 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[doableActionArray[0].goalid].color}">
+        {{goalDict[doableActionArray[0].goalid].name}}
+      </span>
+      <span *ngIf="doableActionArray[0].deadline" class="margin-right-10 border-radius-30px background-FFFFFF padding-3">
+        <img src="../../assets/icon/purple/icon_calendar.svg" class="margin-left-7-auto margin-right-3" height="13">{{dateFormated(doableActionArray[0].deadline)}}
+      </span>
+      <span *ngIf="doableActionArray[0].priority" class="margin-right-10 border-radius-30px background-FFFFFF padding-3 flex">
+        <img src="../../assets/icon/purple/icon_priority.svg" class="margin-left-7-auto margin-right-3 margin-vertical-auto" height="13">
+        <span>{{priorities[doableActionArray[0].priority] | translate}}</span>
+      </span>
+      <span *ngIf="doableActionArray[0].time" class="margin-right-10 border-radius-30px background-FFFFFF padding-3">
+        {{doableActionArray[0].time}}{{"min" | translate }}
+      </span>
+    </ion-row>
+  </ion-grid>
+  <ion-row class="padding-10 background-EDF2FF margin-top-10">
+    <div class="width-100 margin-bottom-10 flex">
+      <span class="margin-auto">
+        <button class="font-size-20px height-36px border-radius-20px background-FFFFFF color-6049C4" (click)="showNext()">{{"Next" | translate}}</button>
+        <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="startToDo(doableActionArray[0])">{{"Start To-do" | translate}}</button>
+      </span>
+    </div>
+  </ion-row>
+</ion-content>

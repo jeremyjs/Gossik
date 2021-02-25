@@ -65,6 +65,7 @@ import { PrivacyPolicyPageModule } from './privacy-policy/privacy-policy.module'
 import { PopoverFilterToDosPageModule } from './popover-filter-to-dos/popover-filter-to-dos.module';
 import { PopoverInteractionPageModule } from './popover-interaction/popover-interaction.module';
 import { PopoverAddAttributePageModule } from './popover-add-attribute/popover-add-attribute.module';
+import { PopoverWhatShouldIDoNowPageModule } from './popover-what-should-ido-now/popover-what-should-ido-now.module';
 
 
 @NgModule({
@@ -110,7 +111,8 @@ import { PopoverAddAttributePageModule } from './popover-add-attribute/popover-a
     PopoverFilterToDosPageModule,
     PopoverInteractionPageModule,
     PopoverAddAttributePageModule,
-    PrivacyPolicyPageModule
+    PrivacyPolicyPageModule,
+    PopoverWhatShouldIDoNowPageModule
   	],
   providers: [
     Calendar,

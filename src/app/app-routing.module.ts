@@ -102,6 +102,10 @@ const routes: Routes = [
     path: 'popover-add-attribute',
     loadChildren: () => import('./popover-add-attribute/popover-add-attribute.module').then( m => m.PopoverAddAttributePageModule)
   },
+  {
+    path: 'popover-what-should-ido-now',
+    loadChildren: () => import('./popover-what-should-ido-now/popover-what-should-ido-now.module').then( m => m.PopoverWhatShouldIDoNowPageModule)
+  },
 
 
 

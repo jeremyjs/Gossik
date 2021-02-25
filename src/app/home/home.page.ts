@@ -53,6 +53,7 @@ import { stringify } from 'querystring';
 import { PopoverAddAttributePageModule } from '../popover-add-attribute/popover-add-attribute.module';
 import { PopoverAddAttributePage } from '../popover-add-attribute/popover-add-attribute.page';
 import { user } from 'firebase-functions/lib/providers/auth';
+import { PopoverWhatShouldIDoNowPage } from '../popover-what-should-ido-now/popover-what-should-ido-now.page';
 
 @Component({
   selector: 'app-home',
@@ -1161,7 +1162,25 @@ export class HomePage {
 					}
 				}
 			});
-		} 
+		} else if(name == 'whatShouldIDoNow') {
+			let doableActionArraySorted = this.doableActionArray.slice();
+			doableActionArraySorted.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
+			const popover = await this.popoverCtrl.create({
+			component: PopoverWhatShouldIDoNowPage,
+			componentProps: {
+				'doableActionArray': doableActionArraySorted,
+				'goalDict': this.goalDict,
+				'priorities': this.priorities
+			},
+			cssClass: 'popover-what-should-ido-now'
+			});
+			await popover.present();
+			popover.onDidDismiss().then( data => {
+				if(data.data) {
+					
+				}
+			});
+		}
 	}
 
   	goToPrivacyPolicyPage() {
@@ -2583,7 +2602,7 @@ export class HomePage {
 					this.changePage('ActionPage');
 				}, 1000);
 			} else {
-				this.pageTitle = "Do";
+				this.pageTitle = "To-Do List";
 				this.doableActionArray = [];
 				this.chosenGoalArray = [];
 				let targetTodo = undefined;
@@ -2599,7 +2618,7 @@ export class HomePage {
 							}
 						}
 					}
-					this.doableActionArray.sort((a, b) => (a.priority/1 < b.priority/1) ? 1 : -1);
+					this.sortToDosByPriority();
 					if(todoid) {
 						this.doableActionArray.unshift(targetTodo);
 					}
@@ -2643,6 +2662,10 @@ export class HomePage {
 				alert.present();
 			});
 		});
+	}
+
+	whatShouldIDoNow() {
+		this.presentPopover('whatShouldIDoNow');
 	}
 
 	filterToDos() {
@@ -2741,11 +2764,7 @@ export class HomePage {
 	}
 
 	sortToDosByPriority() {
-		if(this.userProfile.smartAssistant) {
-			this.doableActionArray.sort((a, b) => (this.computeDynamicPriority(a) < this.computeDynamicPriority(b)) ? 1 : -1);
-		} else {
-			this.doableActionArray.sort((a, b) => (a.priority < b.priority) ? 1 : -1);
-		}
+		this.doableActionArray.sort((a, b) => (a.priority < b.priority) ? 1 : -1);
 	}
 
   	showDoableActions() {

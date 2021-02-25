@@ -632,8 +632,7 @@
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-95px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-90 height-100 overflow-hidden no-padding flex flex-direction-column">
-      <ion-row class="margin-bottom-10 min-height-75px">
-        <ion-row class="width-100 flex justify-content-space-between">
+        <ion-row class="width-100 flex justify-content-space-between margin-bottom-10">
           <span (click)="setAvailableTime()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
             <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
             <span class="margin-vertical-auto font-size-16px font-weight-bold">{{"Set available time" | translate}}</span>
@@ -643,6 +642,7 @@
             <span class="margin-vertical-auto margin-left-5 text-align-center font-size-16px font-weight-bold">{{"Filter" | translate}}</span>
           </span>
         </ion-row>
+      <!--
         <ion-row class="margin-horizontal-auto width-100">
           <div class="margin-top-10 flex justify-content-space-between background-EDF2FF border-radius-10px color-6049C4 width-100 padding-5">
             <span class="margin-vertical-auto font-size-16px font-weight-bold flex">
@@ -658,6 +658,9 @@
             </span>
           </div>
         </ion-row>
+      -->
+      <ion-row class="margin-bottom-10">
+        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto" (click)="whatShouldIDoNow()">{{"What should I do now?" | translate}}</button>
       </ion-row>
       <ion-row class="overflow-scroll no-scrollbar flex-grow-1">
         <div *ngIf="!userProfile.smartAssistant">
