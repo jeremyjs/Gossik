@@ -2703,11 +2703,12 @@ export class HomePage {
 				let selectedIndices = [0]
 				if(pickerName == 'ToDoPageDuration' || pickerName == 'ProcessCapturePageDuration') {
 					columnNames = ['duration'];
-					for(let i = 0; i <= 80; i++) {
-						columnOptions[0].push(5*i);
+					columnOptions[0].push('-');
+					for(let i = 1; i <= 80; i++) {
+						columnOptions[0].push(5*i + ' min');
 					}
 					if(this.duration) {
-						selectedIndices[0] = columnOptions[0].findIndex(option => option == this.duration);
+						selectedIndices[0] = columnOptions[0].findIndex(option => option == this.duration + ' min');
 					}
 				}
 				this.pickerCtrl.create({
@@ -2721,7 +2722,11 @@ export class HomePage {
 						text: translation["Done"],
 						handler: (value) => {
 							if(pickerName == 'ToDoPageDuration') {
-								this.duration = value.duration.value;
+								if(value.duration.value != '-') {
+									this.duration = Number(value.duration.value.slice(0,-3));
+								} else {
+									this.duration = 0;
+								}
 								this.showDoableActions();
 							}
 						}

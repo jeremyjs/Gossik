@@ -635,7 +635,8 @@
         <ion-row class="width-100 flex justify-content-space-between margin-bottom-10">
           <span (click)="setAvailableTime()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
             <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
-            <span class="margin-vertical-auto font-size-16px font-weight-bold">{{"Set available time" | translate}}</span>
+            <span *ngIf="!duration" class="margin-vertical-auto font-size-16px font-weight-bold">{{"Set available time" | translate}}</span>
+            <span *ngIf="duration" class="margin-vertical-auto font-size-16px font-weight-bold">{{duration}}{{"min" | translate}}</span>
           </span>
           <span (click)="filterToDos()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
             <img src="../../assets/icon/purple/icon_filter.svg" class="margin-vertical-auto" height="24">
