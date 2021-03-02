@@ -1,8 +1,12 @@
 <ion-content>
-  <ion-row class="width-90 margin-top-10 color-39297F">
-    <ion-col class="text-align-center font-size-17px font-weight-bold">
-      {{"Optimal to-do for you" | translate}}
-    </ion-col>
+  <ion-row class="width-90 margin-top-10 margin-horizontal-auto color-6049C4 font-size-17px font-weight-bold">
+      {{"This is the optimal to-do for you to do right now because:" | translate}}
+    <ul>
+      <li *ngIf="priorityInfluenceFactorDeadlineText">{{priorityInfluenceFactorDeadlineText | translate}}</li>
+      <li *ngIf="priorityInfluenceFactorFocusText">{{priorityInfluenceFactorFocusText | translate}}</li>
+      <li *ngIf="priorityInfluenceFactorLearnedScheduleText">{{priorityInfluenceFactorLearnedScheduleText | translate}}</li>
+      <li *ngIf="priorityInfluenceFactorProcrastinationText">{{priorityInfluenceFactorProcrastinationText | translate}}</li>
+    </ul>
   </ion-row>
   <ion-grid *ngIf="doableActionArray[0] != undefined" class="shadow color-39297F border-radius-15px padding-15 width-90 margin-top-20 seperating-border-bottom background-F6F7FB">
     <ion-row class="font-size-18px text-align-left">
