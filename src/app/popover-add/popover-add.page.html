@@ -11,44 +11,24 @@
     </ion-row>
   </span>
   <div class="background-EDF2FF">
-    <ion-row class="height-200px background-FFFFFF width-100 padding-left-10 padding-right-10 font-size-12px">
-      <ion-col size="3" (click)="addProject()">
-        <ion-grid class="margin-top-90">
-          <ion-row class="background-6049C4 border-radius-30px height-60px width-60px margin-horizontal-auto">
-            <img src="../../assets/icon/purple/icon_add_project.svg" height="24" class="margin-auto">
+    <ion-row class="height-200px background-FFFFFF width-100 padding-left-10 padding-right-10 font-size-18px">
+      <ion-col (click)="addProject()">
+        <ion-grid class="margin-top-70">
+          <ion-row class="background-6049C4 border-radius-40px height-80px width-80px margin-horizontal-auto">
+            <img src="../../assets/icon/purple/icon_add_project.svg" height="32" class="margin-auto">
           </ion-row>
           <ion-row>
             <span class="margin-auto color-39297F">{{"Project" | translate}}</span>
           </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col size="3" (click)="addToDo()" class="padding-right-10">
-        <ion-grid class="margin-top-23">
-          <ion-row class="background-6049C4 border-radius-30px height-60px width-60px margin-horizontal-auto">
-            <img src="../../assets/icon/purple/icon_add_todo.svg" height="24" class="margin-auto">
+      <ion-col (click)="addToDo()" class="padding-right-10">
+        <ion-grid class="margin-top-70">
+          <ion-row class="background-6049C4 border-radius-40px height-80px width-80px margin-horizontal-auto">
+            <img src="../../assets/icon/purple/icon_add_todo.svg" height="32" class="margin-auto">
           </ion-row>
           <ion-row>
             <span class="margin-auto color-39297F">{{"To-Do" | translate}}</span>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-      <ion-col size="3" (click)="addThought()" class="padding-left-10">
-        <ion-grid class="margin-top-23">
-          <ion-row class="background-6049C4 border-radius-30px height-60px width-60px margin-horizontal-auto">
-            <img src="../../assets/icon/purple/icon_add_thought.svg" height="24" class="margin-auto">
-          </ion-row>
-          <ion-row>
-            <span class="margin-auto color-39297F">{{"Thought" | translate}}</span>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-      <ion-col size="3" (click)="addCalendarEvent()">
-        <ion-grid class="margin-top-90">
-          <ion-row class="background-6049C4 border-radius-30px height-60px width-60px margin-horizontal-auto">
-            <img src="../../assets/icon/purple/icon_add_event.svg" height="24" class="margin-auto">
-          </ion-row>
-          <ion-row>
-            <span class="margin-auto color-39297F">{{"Event" | translate}}</span>
           </ion-row>
         </ion-grid>
       </ion-col>
