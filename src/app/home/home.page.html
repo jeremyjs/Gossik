@@ -630,7 +630,7 @@
   </div>
 
   <!-- Mobile ToDoPage -->
-  <div class="height-100-minus-95px" *ngIf="viewpoint == 'ToDoPage' && isApp">
+  <div class="height-100-minus-70px" *ngIf="viewpoint == 'ToDoPage' && isApp">
     <ion-grid class="width-90 height-100 overflow-hidden no-padding flex flex-direction-column">
         <ion-row class="width-100 flex justify-content-space-between margin-bottom-10">
           <span (click)="setAvailableTime()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
@@ -887,48 +887,16 @@
   </div>
 
   <!-- Mobile Navigation Footer -->
-  <div class="width-90 height-80px margin-bottom-15 margin-horizontal-auto flex background-navigation-bar" *ngIf="loggedin && isApp && userProfile && viewpoint != 'CapturePage' && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
-    <ion-row class="width-100 height-90 margin-vertical-auto border-radius-15px border-50per navigation-bar background-navigation-bar">
+  <div class="margin-bottom-15 margin-horizontal-auto flex transparent" *ngIf="loggedin && isApp && userProfile && viewpoint != 'CapturePage' && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
+     
       <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToToDoPage()">
-          <ion-row>
-          <img *ngIf="viewpoint == 'ToDoPage'" src="../../assets/icon/purple/icon_todo_active.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'ToDoPage'" src="../../assets/icon/purple/icon_todo.svg" height="24" class="margin-auto">
-          </ion-row>
-        </button>
-      </ion-col>
-      <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToItemsPage()">
-          <ion-row>
-          <img *ngIf="viewpoint == 'ItemsPage'" src="../../assets/icon/purple/icon_items_active.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'ItemsPage'" src="../../assets/icon/purple/icon_items.svg" height="24" class="margin-auto">
-          </ion-row>
-        </button>
-      </ion-col>
-      <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="presentPopover('add')">
+        <button class="transparent no-padding margin-horizontal-auto width-100 height-100" (click)="presentPopover('add')" *ngIf="loggedin && isApp && userProfile && viewpoint != 'CapturePage' && viewpoint != 'ProcessCapturePage' && pageCtrl != 'ProjectOverview' && viewpoint != 'FeedbackPage'">
           <ion-row>
           <img src="../../assets/icon/purple/icon_add.svg" height="48" class="margin-auto">
           </ion-row>
         </button>
       </ion-col>
-      <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToAssistantPage()">
-          <ion-row>
-          <img *ngIf="viewpoint == 'AssistantPage'" src="../../assets/icon/purple/icon_assistant_active.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'AssistantPage'" src="../../assets/icon/purple/icon_assistant.svg" height="24" class="margin-auto">
-          </ion-row>
-        </button>
-      </ion-col>
-      <ion-col class="no-padding">
-        <button class="transparent no-padding margin-auto width-100 height-100" (click)="goToCalendarPage()">
-          <ion-row>
-          <img *ngIf="viewpoint == 'CalendarPage'" src="../../assets/icon/purple/icon_calendar_active.svg" height="24" class="margin-auto">
-          <img *ngIf="viewpoint != 'CalendarPage'" src="../../assets/icon/purple/icon_calendar.svg" height="24" class="margin-auto">
-          </ion-row>
-        </button>
-      </ion-col>
-    </ion-row>
+      
   </div>
 
 
