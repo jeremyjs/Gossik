@@ -21,6 +21,9 @@
 					<span class="margin-auto font-size-32px color-FFFFFF">Gossik</span>
 				</ion-row>
 				<ion-list class="transparent margin-top-20 margin-left-10">
+					<ion-menu-toggle>
+						<span (click)="goToPage('home/to-do-list')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"To-Do List" | translate}}</span>
+					</ion-menu-toggle>
 					<ion-menu-toggle *ngIf="loggedin">
 						<span (click)="goToPage('home/settings')" class="transparent margin-top-20 font-size-24px color-FFFFFF width-100 display-block">{{"Settings" | translate}}</span>
 					</ion-menu-toggle>
