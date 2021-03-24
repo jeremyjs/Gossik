@@ -650,7 +650,7 @@
 
   <!-- Mobile ToDoPage -->
   <div class="height-100-minus-70px" *ngIf="viewpoint == 'ToDoPage' && isApp">
-    <ion-grid class="width-90 height-100 overflow-hidden no-padding flex flex-direction-column">
+    <ion-grid class="width-90 height-100 overflow-scroll no-scrollbar no-padding">
       <ion-row class="width-100 flex justify-content-space-between margin-bottom-10">
         <span (click)="setAvailableTime()" class="flex background-EDF2FF border-radius-10px color-6049C4 padding-5">
           <img src="../../assets/icon/purple/icon_duration.svg" class="margin-vertical-auto" height="24">
@@ -662,27 +662,14 @@
           <span class="margin-vertical-auto margin-left-5 text-align-center font-size-16px font-weight-bold">{{"Filter" | translate}}</span>
         </span>
       </ion-row>
-      <ion-row class="margin-bottom-10">
-        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-horizontal-auto" (click)="whatShouldIDoNow()">{{"What should I do now?" | translate}}</button>
-      </ion-row>
-
-      <ion-row class="width-90 margin-top-10 margin-horizontal-auto color-6049C4 font-size-17px font-weight-bold">
-        {{"This is the optimal to-do for you to do right now because:" | translate}}
-        <ul>
-          <li *ngIf="priorityInfluenceFactorDeadlineText">{{priorityInfluenceFactorDeadlineText | translate}}</li>
-          <li *ngIf="priorityInfluenceFactorFocusText">{{priorityInfluenceFactorFocusText | translate}}</li>
-          <li *ngIf="priorityInfluenceFactorLearnedScheduleText">{{priorityInfluenceFactorLearnedScheduleText | translate}}</li>
-          <li *ngIf="priorityInfluenceFactorProcrastinationText">{{priorityInfluenceFactorProcrastinationText | translate}}</li>
-        </ul>
-      </ion-row>
-      <ion-grid *ngIf="doableActionArray[0] != undefined" class="shadow color-39297F border-radius-15px padding-15 width-90 margin-top-20 seperating-border-bottom background-F6F7FB">
-        <ion-row class="font-size-18px text-align-left">
+      <ion-grid *ngIf="doableActionArray[0] != undefined" class="shadow color-39297F border-radius-15px padding-15 width-90 margin-top-20 background-F6F7FB">
+        <ion-row class="font-size-32px text-align-left">
           <span>
             {{doableActionArray[0].content}}
             <span *ngFor="let attribute of doableActionArray[0].attributes"> #{{attribute}}</span>
           </span>
         </ion-row>
-        <ion-row class="text-align-left font-size-12px">
+        <ion-row class="text-align-left font-size-12px margin-top-10">
           <span *ngIf="goalDict[doableActionArray[0].goalid] && doableActionArray[0].goalid != 'unassigned'" class="margin-right-10 border-radius-30px padding-3" [ngStyle]="{'background-color': goalDict[doableActionArray[0].goalid].color}">
             {{goalDict[doableActionArray[0].goalid].name}}
           </span>
@@ -698,21 +685,28 @@
           </span>
         </ion-row>
       </ion-grid>
-      <ion-row class="padding-10 background-EDF2FF margin-top-10">
+      <ion-row class="width-90 margin-top-10 margin-horizontal-auto color-6049C4 font-size-17px font-weight-bold">
+        {{"This is the optimal to-do for you to do right now because:" | translate}}
+        <ul>
+          <li *ngIf="priorityInfluenceFactorPriorityText">{{priorityInfluenceFactorPriorityText | translate}}</li>
+          <li *ngIf="priorityInfluenceFactorDeadlineText">{{priorityInfluenceFactorDeadlineText | translate}}</li>
+          <li *ngIf="priorityInfluenceFactorFocusText">{{priorityInfluenceFactorFocusText | translate}}</li>
+          <li *ngIf="priorityInfluenceFactorLearnedScheduleText">{{priorityInfluenceFactorLearnedScheduleText | translate}}</li>
+          <li *ngIf="priorityInfluenceFactorProcrastinationText">{{priorityInfluenceFactorProcrastinationText | translate}}</li>
+        </ul>
+      </ion-row>
+      <ion-row class="padding-10 transparent margin-top-10">
         <div class="width-100 margin-bottom-10 flex">
           <span class="margin-auto">
-            <button class="font-size-20px height-36px border-radius-20px background-FFFFFF color-6049C4" (click)="showNext()">{{"Next" | translate}}</button>
-            <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="startToDo(doableActionArray[0])">{{"Start To-do" | translate}}</button>
+            <button class="font-size-20px height-36px border-radius-20px background-FFFFFF color-6049C4" (click)="showNextToDo()">{{"Next" | translate}}</button>
+            <button class="font-size-18px padding-vertical-10 padding-horizontal-20 border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="startAction(doableActionArray[0])">{{"Start To-do" | translate}}</button>
           </span>
         </div>
-      </ion-row>
-
-
-
-      
+      </ion-row>      
     </ion-grid>
   </div>
 
+  <!-- Mobile ToDoListPage -->
   <div class="height-100-minus-70px overflow-scroll no-scrollbar" *ngIf="viewpoint == 'ToDoListPage' && isApp">
     <div *ngIf="!userProfile.smartAssistant">
       <ion-grid *ngFor="let todo of doableActionArray" (click)="showToDo(todo)" class="shadow color-39297F border-radius-15px padding-15 width-100 margin-top-20 seperating-border-bottom background-F6F7FB">

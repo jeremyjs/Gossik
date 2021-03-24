@@ -201,6 +201,7 @@ export class HomePage {
 	priorityInfluenceFactorProcrastinationText: string;
 	priorityInfluenceFactorLearnedScheduleText: string;
 	priorityInfluenceFactorFocusText: string;
+	priorityInfluenceFactorPriorityText: string;
  
 
 	constructor(
@@ -1166,23 +1167,6 @@ export class HomePage {
 					} else {
 						this.db.editAttribute(data.data, this.auth.userid);
 					}
-				}
-			});
-		} else if(name == 'whatShouldIDoNow') {
-			const popover = await this.popoverCtrl.create({
-			component: PopoverWhatShouldIDoNowPage,
-			componentProps: {
-				'doableActionArray': this.doableActionArray,
-				'goalDict': this.goalDict,
-				'priorities': this.priorities,
-				'userProfile': this.userProfile
-			},
-			cssClass: 'popover-what-should-ido-now'
-			});
-			await popover.present();
-			popover.onDidDismiss().then( data => {
-				if(data.data) {
-					this.startAction(data.data);
 				}
 			});
 		}
@@ -2714,10 +2698,6 @@ export class HomePage {
 		});
 	}
 
-	whatShouldIDoNow() {
-		this.presentPopover('whatShouldIDoNow');
-	}
-
 	computePriorityInfluenceFactorDeadline(action: Action, text: boolean): number {
 		let priorityInfluenceFactorDeadline: number = 0;
 			let daysUntilDeadline: number;
@@ -2782,19 +2762,22 @@ export class HomePage {
 	
 	  computePriorityInfluenceFactorFocus(action: Action, text: boolean): number {
 		let priorityInfluenceFactorFocus: number = 0;
-			for(let key in this.userProfile.focusProjects) {
-				if(this.userProfile.focusProjects[key] == action.goalid) {
-					priorityInfluenceFactorFocus = 15;
-					if(text) {
-					this.priorityInfluenceFactorFocusText = "You set the focus to this project";
-					}
+		for(let key in this.userProfile.focusProjects) {
+			if(this.userProfile.focusProjects[key] == action.goalid) {
+				priorityInfluenceFactorFocus = 15;
+				if(text) {
+				this.priorityInfluenceFactorFocusText = "You set the focus to this project";
 				}
+			}
 		}
 		return priorityInfluenceFactorFocus;
 	  }
 	
-	  computePriorityInfluenceFactorPriority(action: Action): number {
+	  computePriorityInfluenceFactorPriority(action: Action, text: boolean): number {
 		let priorityInfluenceFactorPriority: number = 10 * action.priority;
+		if(action.priority >= 2 && text) {
+			this.priorityInfluenceFactorPriorityText = "It has a high priority";
+		}
 		return priorityInfluenceFactorPriority
 	  }
 	
@@ -2803,11 +2786,12 @@ export class HomePage {
 		this.priorityInfluenceFactorProcrastinationText = undefined;
 		this.priorityInfluenceFactorLearnedScheduleText = undefined;
 		this.priorityInfluenceFactorFocusText = undefined;
+		this.priorityInfluenceFactorPriorityText = undefined;
 			let priorityInfluenceFactorDeadline = this.computePriorityInfluenceFactorDeadline(action, text);
 			let priorityInfluenceFactorProcrastination = this.computePriorityInfluenceFactorProcrastination(action, text);
 		let priorityInfluenceFactorLearnedSchedule = this.computePriorityInfluenceFactorLearnedSchedule(action, text);
 		let priorityInfluenceFactorFocus = this.computePriorityInfluenceFactorFocus(action, text);
-			let priorityInfluenceFactorPriority = this.computePriorityInfluenceFactorPriority(action);
+			let priorityInfluenceFactorPriority = this.computePriorityInfluenceFactorPriority(action, text);
 			return priorityInfluenceFactorDeadline + priorityInfluenceFactorProcrastination + priorityInfluenceFactorLearnedSchedule + priorityInfluenceFactorFocus + priorityInfluenceFactorPriority;
 		}
 
@@ -2817,7 +2801,14 @@ export class HomePage {
 		} else {
 			this.presentPopover('filterToDos');
 		}
-	  }
+	}
+
+	showNextToDo() {
+		if(this.doableActionArray.length > 1) {
+		  this.doableActionArray.shift();
+		  this.computeDynamicPriority(this.doableActionArray[0], true);
+		}
+	}
 	  
 	dateFormated(date) {
 		return new Date(date).toLocaleDateString();
