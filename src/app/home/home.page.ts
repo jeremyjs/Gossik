@@ -2588,6 +2588,7 @@ export class HomePage {
 				this.pageTitle = "Focus";
 				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
 				setTimeout( () => {
+					this.pageTitle = "Focus on";
 					this.changePage('ActionPage');
 				}, 1000);
 			} else {
@@ -2633,6 +2634,7 @@ export class HomePage {
 				this.pageTitle = "Focus";
 				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
 				setTimeout( () => {
+					this.pageTitle = "Focus on";
 					this.changePage('ActionPage');
 				}, 1000);
 			} else {
@@ -2974,7 +2976,7 @@ export class HomePage {
 			}
 			this.db.learnLearnedSchedule(this.auth.userid, [action.goalid], dates, 1);
 		}
-		this.pageTitle = "Focus";
+		this.pageTitle = "Focus on";
 		this.changePage('ActionPage');
 		this.translate.get(["Todo started"]).subscribe( translation => {
 	  		this.presentToast(translation["Todo started"]);

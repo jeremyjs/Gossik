@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-toolbar *ngIf="loggedin && viewpoint != 'ActionPage'" id="headerr" class="height-169px">
     <div class="width-100 height-169px headerr">
-      <ion-grid *ngIf="viewpoint != 'ActionPage' && viewpoint != 'PrivacyPolicyPage' && viewpoint != 'ProjectOverviewPage' && viewpoint != 'ToDoListPage' && loggedin">
+      <ion-grid *ngIf="viewpoint != 'PrivacyPolicyPage' && viewpoint != 'ProjectOverviewPage' && viewpoint != 'ToDoListPage' && loggedin">
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
             <button (click)="openMenu()" class="transparent margin-top-34">
@@ -84,6 +84,25 @@
         </ion-row>
       </ion-grid>
     </div>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="loggedin && viewpoint == 'ActionPage'" class="background-FCFDFF">
+    <ion-row>
+          <ion-col size="2" class="flex text-align-center no-padding">
+            <button (click)="openMenu()" class="transparent margin-top-34">
+              <img src="../../assets/icon/purple/icon_menu.svg" height="44">
+            </button>
+          </ion-col>
+          <ion-col size="8" class="page-title flex no-padding">
+            <span class="margin-top-40 margin-horizontal-auto color-39297F">{{pageTitle | translate}}</span>
+          </ion-col>
+          <ion-col size="2" class="flex text-align-center no-padding">
+            <!--
+            <button (click)="search()" class="transparent margin-top-26">
+              <img src="../../assets/icon/purple/icon_search.svg" height="44" class="margin-auto-auto">
+            </button>
+          -->
+          </ion-col>
+        </ion-row>
   </ion-toolbar>
   <ion-toolbar *ngIf="!loggedin" class="background-FCFDFF">
     <div *ngIf="!loggedin" class="width-45px margin-top-34">
@@ -215,14 +234,17 @@
   <div class="width-90 padding-10 height-100-minus-95px overflow-scroll no-scrollbar" *ngIf="viewpoint == 'SettingsPage' && isApp">
     <ion-grid>
       <ion-row>
-        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20" (click)="logout()">
+        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF" (click)="logout()">
           {{"Logout" | translate }}
         </button>
       </ion-row>
-      <ion-row>
-        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-left-20 margin-top-10" (click)="goToSendPushPage()" *ngIf="isAdmin">
+      <ion-row *ngIf="isAdmin">
+        <button class="font-size-20px height-36px border-radius-20px background-6049C4 color-FFFFFF margin-top-10" (click)="goToSendPushPage()">
           {{"Send Push" | translate }}
         </button>
+      </ion-row>
+      <ion-row (click)="assignAssistant()" class="border-radius-15px background-EDF2FF padding-5 margin-bottom-5 width-100 margin-top-10">
+        <span class="color-39297F font-size-18px margin-left-5">{{"Assistant Type" | translate}}: {{userProfile.assistant | translate}}</span>
       </ion-row>
       <ion-row class="margin-top-20">
         <span class="font-size-18px color-39297F font-weight-bold">{{"Manage Attributes" | translate}}</span>
@@ -762,11 +784,6 @@
   <!-- Mobile ActionPage -->
   <div class="height-100-minus-95px" *ngIf="viewpoint == 'ActionPage' && isApp">
     <ion-grid class="height-100 width-90 overflow-scroll no-scrollbar">
-      <ion-row class="margin-top-45 margin-auto font-size-32px text-align-center">
-        <span class="margin-auto color-6049C4">
-          {{"Focus on" | translate}}:
-        </span>
-      </ion-row>
       <ion-row class="margin-auto font-size-32px text-align-center">
         <span class="margin-auto color-39297F">
           {{startedAction.content}}
