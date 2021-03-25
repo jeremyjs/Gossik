@@ -42,7 +42,7 @@
       <ion-grid *ngIf="viewpoint == 'ProjectOverviewPage'">
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
-            <button class="transparent margin-top-40" (click)="goToItemsPage('projects')">
+            <button class="transparent margin-top-40" (click)="goToProjectsPage()">
               <img src="../../assets/icon/purple/icon_arrow_left.svg" height="24">
             </button>
           </ion-col>
@@ -611,18 +611,29 @@
     </ion-grid>
   </div>
 
+  <!-- Mobile ProjectsPage -->
+  <div *ngIf="viewpoint == 'ProjectsPage' && isApp" class="no-scrollbar height-100-minus-95px margin-0 width-100">
+    <ion-grid class="height-100 width-100 no-padding flex flex-direction-column">
+      <div class="overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
+        <ion-row (click)="goToProjectOverviewPage(goal)" class="margin-horizontal-auto margin-bottom-20 border-radius-15px seperating-border-bottom background-F6F7FB padding-15 width-100" *ngFor="let goal of goalArray.slice(1)">
+          <ion-row class="width-100">
+            <ion-card class="project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>
+            <span class="font-size-20px margin-left-7 font-weight-bold width-100-minus-30px one-line overflow-x-hidden color-39297F">
+              {{goal.name}}
+            </span>
+          </ion-row>
+          <ion-row class="width-100 color-39297F margin-top-15">
+            <span *ngIf="actions[goal.key]"class="font-size-18px font-weight-bold margin-left-15">{{actions[goal.key].length}}</span>
+            <span *ngIf="!actions[goal.key]" class="font-size-18px font-weight-bold margin-left-15">0</span>
+            <span class="font-size-18px margin-left-5">{{"To-dos" | translate}}</span>
+          </ion-row>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </div>
+
   <!-- Mobile ProjectOverviewPage -->
   <div *ngIf="viewpoint == 'ProjectOverviewPage' && isApp" class="no-scrollbar overflow-scroll height-100-minus-95px width-100">
-    <ion-row class="width-90 padding-8-0-8-0 margin-auto font-weight-bold color-39297F">
-      {{"Thoughts" | translate}}
-    </ion-row>
-    <ion-row class="width-90 margin-horizontal-auto margin-bottom-20 padding-15 border-radius-15px seperating-border-bottom background-F6F7FB" *ngFor="let reference of references[goal.key]">
-      <button  class="transparent text-align-left" (click)="showThought(reference, reference.goalid)">
-        <span class="font-size-18px color-39297F">
-          {{reference.content}}
-        </span>
-      </button>
-    </ion-row>
     <ion-row class="width-90 padding-8-0-8-0 margin-auto font-weight-bold color-39297F">
       {{"To-dos" | translate}}
     </ion-row>

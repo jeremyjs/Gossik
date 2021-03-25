@@ -582,6 +582,8 @@ export class HomePage {
 				this.goToShowFeedbackPage();
 			} else if(page == 'to-do-list') {
 				this.goToToDoListPage();
+			} else if(page == 'projects') {
+				this.goToProjectsPage();
 			}
 		} else {
 			this.goToToDoPage();
@@ -2177,8 +2179,7 @@ export class HomePage {
 
 	// ProjectsPage functions
 	goToProjectsPage() {
-		this.pageTitle = "Overview";
-		this.goal = {name: ''} as Goal;
+		this.pageTitle = "Projects";
 	    this.changePage('ProjectsPage');
   	}
 	
