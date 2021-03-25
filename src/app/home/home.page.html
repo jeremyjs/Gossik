@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-toolbar *ngIf="loggedin && viewpoint != 'ActionPage'" id="headerr" class="height-169px">
     <div class="width-100 height-169px headerr">
-      <ion-grid *ngIf="viewpoint != 'PrivacyPolicyPage' && viewpoint != 'ProjectOverviewPage' && viewpoint != 'ToDoListPage' && loggedin">
+      <ion-grid *ngIf="viewpoint != 'PrivacyPolicyPage' && viewpoint != 'ProjectOverviewPage' && viewpoint != 'SettingsPage' && viewpoint != 'ProjectsPage' && viewpoint != 'ToDoListPage' && loggedin">
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
             <button (click)="openMenu()" class="transparent margin-top-34">
@@ -64,7 +64,7 @@
           </button>
         </ion-row>
       </ion-grid>
-      <ion-grid *ngIf="viewpoint == 'ToDoListPage'">
+      <ion-grid *ngIf="viewpoint == 'ToDoListPage' || viewpoint == 'ProjectsPage' || viewpoint == 'SettingsPage'">
         <ion-row>
           <ion-col size="2" class="flex text-align-center no-padding">
             <button class="transparent margin-top-40" (click)="goToToDoPage()">

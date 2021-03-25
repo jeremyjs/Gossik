@@ -2586,14 +2586,13 @@ export class HomePage {
 			this.userProfile = userProfile;
 			this.duration = 0;
 			if(this.startedAction.key) {
-				this.pageTitle = "Focus";
 				this.elapsedTime = Math.floor((new Date().getTime() - new Date(this.startedAction.startDate).getTime()) / 60000);
 				setTimeout( () => {
 					this.pageTitle = "Focus on";
 					this.changePage('ActionPage');
 				}, 1000);
 			} else {
-				this.pageTitle = "To-Do List";
+				this.pageTitle = "Gossik";
 				this.doableActionArray = [];
 				this.chosenGoalArray = [];
 				let targetTodo = undefined;
