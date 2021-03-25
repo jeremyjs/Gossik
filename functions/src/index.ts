@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { Suggestion } from '../../src/model/suggestion/suggestion.model';
-import { Action } from '../../src/model/action/action.model';
+//import { Suggestion } from '../../src/model/suggestion/suggestion.model';
+//import { Action } from '../../src/model/action/action.model';
 admin.initializeApp();
 
 // // Start writing Firebase Functions
@@ -238,6 +238,7 @@ exports.deadlinePush = functions.pubsub.schedule('0 * * * *').onRun((context) =>
    	});
 });
 
+/*
 exports.increasePrioritySuggestion = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( (users: any) => {
 		let promises: Promise<any>[] = [];
@@ -583,6 +584,10 @@ exports.suggestionPushNotification = functions.database.ref('/users/{user}/sugge
 	});
 });
 
+*/
+
+
+/*
 exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];
@@ -637,6 +642,8 @@ exports.interactProcessThoughtsPush = functions.pubsub.schedule('0 * * * *').onR
 	   	});
    	});
 });
+
+*/
 
 function getRandomInteger(min: number, max: number) {
     min = Math.ceil(min);
@@ -804,8 +811,13 @@ exports.sendRandomTodoPush = functions.pubsub.schedule('16 * * * *').onRun((cont
 								}
 								let message: any = {};
 								let title: any = {};
-								message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
-								message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
+								if(randomTodo.time > 0) {
+									message['de'] = "Hey, hast du " + String(randomTodo.time) + " Minuten Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
+									message['en'] = "Hey, do you have " + String(randomTodo.time) + "min? You could open me and get the following to-do done: " + String(randomTodo.content);
+								} else {
+									message['de'] = "Hey, hast du etwas Zeit? Dann könntest du mich öffnen und folgendes ToDo abarbeiten: " + String(randomTodo.content);
+									message['en'] = "Hey, do you have some time? You could open me and get the following to-do done: " + String(randomTodo.content);
+								}
 								title['de'] = "Lass uns das erledigen";
 								title['en'] = "Let's get this done";
 								let msg = message['en'];
@@ -1228,7 +1240,7 @@ exports.getEmailAdressFromSignUpRange = functions.https.onCall(async (data, cont
 
 export const getEmailAdressFromActiveUsers = functions.https.onCall(async (data, context) => {
 	let emails: any[] = [];
-	let today = new Date("2021-01-20T00:00:00.000Z");
+	let today = new Date();
 	today.setHours(0,0,0);
 	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
 	let users = await getAllUsers();

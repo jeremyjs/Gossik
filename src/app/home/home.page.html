@@ -243,7 +243,7 @@
           {{"Send Push" | translate }}
         </button>
       </ion-row>
-      <ion-row (click)="assignAssistant()" class="border-radius-15px background-EDF2FF padding-5 margin-bottom-5 width-100 margin-top-10">
+      <ion-row *ngIf="userProfile" (click)="assignAssistant()" class="border-radius-15px background-EDF2FF padding-5 margin-bottom-5 width-100 margin-top-10">
         <span class="color-39297F font-size-18px margin-left-5">{{"Assistant Type" | translate}}: {{userProfile.assistant | translate}}</span>
       </ion-row>
       <ion-row class="margin-top-20">
@@ -614,7 +614,7 @@
   <!-- Mobile ProjectsPage -->
   <div *ngIf="viewpoint == 'ProjectsPage' && isApp" class="no-scrollbar height-100-minus-95px margin-0 width-100">
     <ion-grid class="height-100 width-100 no-padding flex flex-direction-column">
-      <div class="overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20">
+      <div class="overflow-scroll no-scrollbar width-90 margin-horizontal-auto margin-top-20" *ngIf="goalArray">
         <ion-row (click)="goToProjectOverviewPage(goal)" class="margin-horizontal-auto margin-bottom-20 border-radius-15px seperating-border-bottom background-F6F7FB padding-15 width-100" *ngFor="let goal of goalArray.slice(1)">
           <ion-row class="width-100">
             <ion-card class="project-color" [ngStyle]="{'background-color': goal.color}"></ion-card>

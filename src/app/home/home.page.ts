@@ -1355,7 +1355,7 @@ export class HomePage {
 
 	getEmailAdressFromActiveUsers() {
 		this.functions.httpsCallable('getEmailAdressFromActiveUsers')({}).subscribe( data => {
-			//console.log(data);
+			console.log(data);
 		})
 	}
 	
