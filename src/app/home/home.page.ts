@@ -680,7 +680,7 @@ export class HomePage {
 
   	openMenu() {
 		  this.menuCtrl.toggle();
-		  this.getEmailAdressFromSignUpRange();
+		  this.getEmailAdressFromActiveUsers();
   	}
 
 	changePage(viewpoint: string, pageCtrl?: string) {
