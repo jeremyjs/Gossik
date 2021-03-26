@@ -680,7 +680,7 @@ export class HomePage {
 
   	openMenu() {
 		  this.menuCtrl.toggle();
-		  this.getEmailAdressFromActiveUsers();
+		  this.getEmailAdressFromSignUpRange();
   	}
 
 	changePage(viewpoint: string, pageCtrl?: string) {
@@ -1348,7 +1348,7 @@ export class HomePage {
 	}
 
 	getEmailAdressFromSignUpRange() {
-		this.functions.httpsCallable('getEmailAdressFromSignUpRange')({startDate: new Date("2021-01-20T00:00:00.000Z").toISOString(), endDate: new Date().toISOString()}).subscribe( data => {
+		this.functions.httpsCallable('getEmailAdressFromSignUpRange')({startDate: new Date("2021-03-10T00:00:00.000Z").toISOString(), endDate: new Date().toISOString()}).subscribe( data => {
 			console.log(data);
 		})
 	}

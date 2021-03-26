@@ -69,6 +69,8 @@ exports.sendManualPush = functions.database.ref('/push/{newPush}').onCreate((new
    	});
 });
 
+
+/*
 exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
 		let promises: Promise<any>[] = [];
@@ -125,6 +127,8 @@ exports.checkInactivePush = functions.pubsub.schedule('0 12 * * *').onRun((conte
 	   	});
    });
 });
+
+*/
 
 exports.calendarEventPush = functions.pubsub.schedule('*/5 * * * *').onRun((context) => {
     return admin.database().ref('/users').once("value").then( users => {
@@ -1239,10 +1243,12 @@ exports.getEmailAdressFromSignUpRange = functions.https.onCall(async (data, cont
 });
 
 export const getEmailAdressFromActiveUsers = functions.https.onCall(async (data, context) => {
-	let emails: any[] = [];
+	console.log("I'm heeere");
+	let emails: any[] = ['maip', 'miepidi'];
 	let today = new Date();
 	today.setHours(0,0,0);
 	let oneWeekAgo = new Date(today.getTime() - 7*24*3600*1000);
+	console.log(oneWeekAgo.toISOString() + ' until ' + today.toISOString());
 	let users = await getAllUsers();
 	users.forEach( user => {
 		if(user.val().loginDays) {
